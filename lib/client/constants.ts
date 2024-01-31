@@ -1,3 +1,5 @@
+import { NftCardActionType, NftCardStyleType } from "@/components/02-molecules";
+
 export const ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
 
 export const WIDE_SCREEN_SIZE = 1279;
@@ -38,17 +40,62 @@ interface ChainProps {
 export const ChainInfo: Record<SupportedNetworks, ChainProps> = {
   [SupportedNetworks.SEPOLIA]: {
     id: 11155111,
-    name: "Sepolia",
+    name: "eth-sepolia",
   },
   [SupportedNetworks.MUMBAI]: {
     id: 80001,
-    name: "Polygon Mumbai",
+    name: "polygon-mumbai",
   },
   [SupportedNetworks.HARDHAT]: {
     id: 31337,
     name: "Hardhat",
   },
 };
+
+export interface ERC721 {
+  id?: Record<string, any>;
+  metadata?: Record<string, any>;
+  contract?: Record<string, any>;
+  contractMetadata?: Record<string, any>;
+}
+
+export interface ERC20 {
+  balance?: Record<string, any>;
+  contractAddress?: Record<string, any>;
+  decimals?: Record<number, any>;
+  logo?: Record<string, any>;
+  name?: Record<string, any>;
+  symbol?: Record<string, any>;
+  ownerAddress: string | null;
+}
+
+export interface ERC721Token {
+  data: ERC721[];
+  ownerAddress: string | null;
+}
+
+export interface ERC20Token {
+  data: ERC20[];
+  ownerAddress: string | null;
+}
+
+export interface Token {
+  fungibleToken: ERC20Token;
+  nonFungibleToken: ERC721Token;
+}
+
+export interface ITokenCard {
+  token: Token;
+  onClickAction?: NftCardActionType;
+  withSelectionValidation?: boolean;
+  styleType?: NftCardStyleType;
+}
+
+export let getApiKeyForNetwork: Map<number, string> = new Map([
+  [ChainInfo.SEPOLIA.id, process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA_KEY ?? ""],
+  [ChainInfo.MUMBAI.id, process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_KEY ?? ""],
+  [ChainInfo.HARDHAT.id, "http://127.0.0.1:8545/"],
+]);
 
 export let getRpcHttpUrlForNetwork: Map<number, string> = new Map([
   [ChainInfo.SEPOLIA.id, process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA_HTTP ?? ""],
