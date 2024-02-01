@@ -13,10 +13,10 @@ export interface NFT {
   contractMetadata?: Record<string, any>;
 }
 
-export interface INftsList {
-  nftsList: NFT[];
-  ownerAddress: string | null;
-}
+// export interface INftsList {
+//   nftsList: NFT[];
+//   ownerAddress: string | null;
+// }
 
 export enum NFTsQueryStatus {
   EMPTY_QUERY = "EMPTY_QUERY",
@@ -40,11 +40,11 @@ interface ChainProps {
 export const ChainInfo: Record<SupportedNetworks, ChainProps> = {
   [SupportedNetworks.SEPOLIA]: {
     id: 11155111,
-    name: "eth-sepolia",
+    name: "Sepolia",
   },
   [SupportedNetworks.MUMBAI]: {
     id: 80001,
-    name: "polygon-mumbai",
+    name: "Polygon Mumbai",
   },
   [SupportedNetworks.HARDHAT]: {
     id: 31337,
@@ -62,11 +62,11 @@ export interface ERC721 {
 export interface ERC20 {
   balance?: Record<string, any>;
   contractAddress?: Record<string, any>;
-  decimals?: Record<number, any>;
+  error?: Record<string, any>;
   logo?: Record<string, any>;
   name?: Record<string, any>;
+  rawBalance: Record<string, any>;
   symbol?: Record<string, any>;
-  ownerAddress: string | null;
 }
 
 export interface ERC721Token {

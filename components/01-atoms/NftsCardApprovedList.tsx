@@ -5,7 +5,7 @@ import {
 } from "@/lib/client/constants";
 import { SwapContext } from "@/components/01-atoms";
 import {
-  NftCard,
+  TokenCard,
   NftCardActionType,
   NftCardStyleType,
 } from "@/components/02-molecules";
@@ -119,11 +119,11 @@ export const NftsCardApprovedList = () => {
             onClick={() => approveNftForSwapping(nft, index)}
           >
             <div>
-              <NftCard
+              <TokenCard
                 withSelectionValidation={false}
                 onClickAction={NftCardActionType.NFT_ONCLICK}
                 ownerAddress={authenticatedUserAddress.address}
-                nftData={nftAuthUser[index]}
+                erc721Data={nftAuthUser[index]}
                 styleType={NftCardStyleType.SMALL}
               />
             </div>

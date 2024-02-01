@@ -153,6 +153,7 @@ export const getNftsFrom = async (
     });
 };
 
+/// Alchemy getTokensForOwner v3
 export const getTokensFrom = async (address: string, chainId: number) => {
   const { Alchemy } = require("alchemy-sdk");
 

@@ -1,2 +1,2 @@
-export * from "./NftsShelf";
+export * from "./TokensShelf";
 export * from "./SwappingShelfs";

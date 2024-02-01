@@ -4,8 +4,8 @@ import { EthereumAddress } from "@/lib/shared/types";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { SwapContext } from "@/components/01-atoms";
 import { PersonIcon } from "@/components/01-atoms/icons";
-import { NftCard } from "@/components/02-molecules";
-import { EmptyNftsCards } from "@/components/01-atoms";
+import { TokenCard } from "@/components/02-molecules";
+import { EmptyTokensCards } from "@/components/01-atoms";
 
 interface IOfferSummary {
   forAuthedUser: boolean;
@@ -20,8 +20,14 @@ export const OfferSummary = ({ forAuthedUser }: IOfferSummary) => {
   });
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  const emptySquaresAuthUser = EmptyNftsCards(nftAuthUser.length, 4, 8, 12, 12);
-  const emptySquaresInputUser = EmptyNftsCards(
+  const emptySquaresAuthUser = EmptyTokensCards(
+    nftAuthUser.length,
+    4,
+    8,
+    12,
+    12,
+  );
+  const emptySquaresInputUser = EmptyTokensCards(
     nftInputUser.length,
     4,
     8,
@@ -68,7 +74,7 @@ export const OfferSummary = ({ forAuthedUser }: IOfferSummary) => {
           (!forAuthedUser && !validatedAddressToSwap) ? null : (
             <>
               {nftUser.map((nft, index) => (
-                <NftCard
+                <TokenCard
                   key={index}
                   withSelectionValidation={false}
                   ownerAddress={
@@ -78,7 +84,7 @@ export const OfferSummary = ({ forAuthedUser }: IOfferSummary) => {
                         : null
                       : validatedAddressToSwap
                   }
-                  nftData={nft}
+                  erc721Data={nft}
                 />
               ))}
 

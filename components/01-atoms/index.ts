@@ -1,6 +1,6 @@
 export * from "./SwapModalLayout";
 export * from "./ConnectWallet";
-export * from "./EmptyNftsCards";
+export * from "./EmptyTokensCards";
 export * from "./LoadingIndicator";
 export * from "./NftsCardApprovedList";
 export * from "./ProgressBar";

@@ -1,7 +1,7 @@
 import cc from "classcat";
 import { useContext, useEffect, useState } from "react";
 import { SwapContext, SwappingShelfID, Tab } from "@/components/01-atoms/";
-import { NftsShelf } from "@/components/03-organisms";
+import { TokensShelf } from "@/components/03-organisms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useNetwork } from "wagmi";
 
@@ -37,10 +37,10 @@ export const SwappingShelfs = () => {
         setActiveSwappingShelfID={(input) => setActiveSwappingShelfID(input)}
       />
       <div className={cc([activeSwappingShelfID ? "hidden" : "block"])}>
-        <NftsShelf address={validatedAddressToSwap} />
+        <TokensShelf address={validatedAddressToSwap} />
       </div>
       <div className={cc([activeSwappingShelfID ? "block" : "hidden"])}>
-        <NftsShelf address={authenticatedUserAddress?.address ?? null} />
+        <TokensShelf address={authenticatedUserAddress?.address ?? null} />
       </div>
     </div>
   );
