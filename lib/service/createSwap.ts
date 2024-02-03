@@ -11,6 +11,7 @@ export async function createSwap({
   validatedAddressToSwap,
   authenticatedUserAddress,
   chain,
+  config,
 }: ICreateSwap) {
   const data = encodeFunctionData({
     abi: [
@@ -24,13 +25,8 @@ export async function createSwap({
                 type: "address",
               },
               {
-                internalType: "address",
-                name: "allowed",
-                type: "address",
-              },
-              {
                 internalType: "uint256",
-                name: "expiry",
+                name: "config",
                 type: "uint256",
               },
               {
@@ -88,8 +84,7 @@ export async function createSwap({
     args: [
       {
         owner: authenticatedUserAddress.address as `0x${string}`,
-        allowed: validatedAddressToSwap as `0x${string}`,
-        expiry: expireDate,
+        config: config,
         biding: nftAuthUser,
         asking: nftInputUser,
       },

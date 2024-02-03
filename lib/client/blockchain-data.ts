@@ -11,6 +11,7 @@ export interface ICreateSwap {
   validatedAddressToSwap: string;
   authenticatedUserAddress: any;
   chain: number;
+  config: bigint;
 }
 
 export interface IApproveMulticall {
@@ -155,17 +156,12 @@ export interface Swap {
   asking: NFT[];
 }
 
-export async function makeConfig(
+export async function packingData(
   Contract: any,
   allowed: any,
-  destinationChainSelector: any,
   expiration: any,
 ) {
-  const config = await Contract.packData(
-    allowed,
-    destinationChainSelector,
-    expiration,
-  );
+  const config = await Contract.read.packData([allowed, expiration]);
   return config;
 }
 

@@ -15,10 +15,15 @@ import {
   ComposeNftSwap,
   ICreateSwap,
   SwapModalSteps,
+  packingData,
 } from "@/lib/client/blockchain-data";
 import toast from "react-hot-toast";
 import { updateNftsToSwapApprovalStatus } from "@/lib/client/swap-utils";
 import { useTheme } from "next-themes";
+import { SwaplaceAbi } from "@/lib/client/abi";
+import { SWAPLACE_SMART_CONTRACT_ADDRESS } from "@/lib/client/constants";
+import { publicClientViem } from "@/lib/wallet/wallet-config";
+import { getContract } from "viem";
 
 interface ConfirmSwapApprovalModalProps {
   open: boolean;
@@ -88,6 +93,17 @@ export const ConfirmSwapModal = ({
       throw new Error("Chain ID is undefined");
     }
 
+    const SwaplaceContract = getContract({
+      address: SWAPLACE_SMART_CONTRACT_ADDRESS[chainId] as `0x${string}`,
+      abi: SwaplaceAbi,
+      publicClient: publicClientViem,
+    });
+    const packedData = await packingData(
+      SwaplaceContract,
+      validatedAddressToSwap as `0x${string}`,
+      timeDate,
+    );
+
     const swapData: ICreateSwap = {
       walletClient: walletClient,
       expireDate: timeDate,
@@ -96,6 +112,7 @@ export const ConfirmSwapModal = ({
       validatedAddressToSwap: validatedAddressToSwap,
       authenticatedUserAddress: authenticatedUserAddress,
       chain: chainId,
+      config: packedData,
     };
 
     try {
