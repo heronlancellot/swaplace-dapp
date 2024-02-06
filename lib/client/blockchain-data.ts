@@ -11,7 +11,6 @@ export interface ICreateSwap {
   validatedAddressToSwap: string;
   authenticatedUserAddress: any;
   chain: number;
-  config: bigint;
 }
 
 export interface IApproveMulticall {
