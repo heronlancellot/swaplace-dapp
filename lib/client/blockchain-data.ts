@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import {
   ERC20,
   ERC721,
@@ -7,14 +6,14 @@ import {
   getApiKeyForNetwork,
   getRpcHttpUrlForNetwork,
 } from "./constants";
-import { getTimestamp } from "./utils";
+import { Asset, makeAsset } from "./swap-utils";
 import {
   GetTokensForOwnerResponse,
   OwnedNftsResponse,
-  OwnedToken,
   OwnedNft,
+  OwnedToken,
 } from "alchemy-sdk";
-import { Asset, makeAsset } from "./swap-utils";
+import { Dispatch, SetStateAction } from "react";
 
 export interface ICreateSwap {
   walletClient: any;
@@ -70,7 +69,7 @@ export type NftSwappingInfo = {
 export async function ComposeTokenUserAssets(
   nftUser: Token[],
 ): Promise<Asset[]> {
-  let tokenAssetArray: Asset[] = [];
+  const tokenAssetArray: Asset[] = [];
   const assetPromisesArray: Promise<void>[] = [];
 
   for (let i = 0; i < nftUser.length; i += 1) {
@@ -91,7 +90,7 @@ export async function ComposeTokenUserAssets(
 }
 
 export function getNftsInfoToSwap(userNfts: Token[]): NftSwappingInfo[] {
-  let nftsInfoArray: NftSwappingInfo[] = [];
+  const nftsInfoArray: NftSwappingInfo[] = [];
 
   for (let i = 0; i < userNfts.length; i++) {
     const nftAmountOrTokenId = BigInt(userNfts[i]?.id as unknown as number);

@@ -1,5 +1,5 @@
+import { CheckIcon, XMarkIcon } from "@/components/01-atoms";
 import React from "react";
-import { CheckIcon, XMarkIcon } from ".";
 
 export const SwapOfferDetails = () => (
   <div className="flex w-full justify-between items-center py-1 px-3 p-xsmall">
