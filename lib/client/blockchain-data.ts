@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable import/named */
 import {
   ERC20,
   ERC721,
@@ -120,6 +122,7 @@ export function getNftsInfoToSwap(userNfts: Token[]): NftSwappingInfo[] {
 export const getERC721TokensFromAddress = async (
   address: string,
   chainId: number,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   stateSetter: Dispatch<SetStateAction<NFTsQueryStatus>>,
 ) => {
   const { Alchemy } = require("alchemy-sdk");
