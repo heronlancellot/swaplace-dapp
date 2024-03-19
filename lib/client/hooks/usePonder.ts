@@ -2,11 +2,11 @@
 import { cleanJsonString } from "../utils";
 import { Asset } from "../swap-utils";
 import { SwapContext } from "@/components/01-atoms";
+import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { type NftMetadataBatchToken } from "alchemy-sdk";
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 
 interface Item {
   swapId: string;
