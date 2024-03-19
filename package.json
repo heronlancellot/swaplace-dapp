@@ -15,6 +15,7 @@
     "@rainbow-me/rainbowkit-siwe-next-auth": "0.1.8",
     "@tanstack/react-query": "^5.28.8",
     "@typescript-eslint/eslint-plugin": "5.54.1",
+    "@wagmi/core": "^2.6.9",
     "alchemy-sdk": "^3.1.2",
     "axios": "^1.6.7",
     "boring-avatars": "1.7.0",
@@ -24,6 +25,7 @@
     "next": "14.0.3",
     "next-auth": "^4.20.1",
     "next-themes": "^0.2.1",
+    "prop-types": "^15.8.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
@@ -45,6 +47,7 @@
     "eslint": "8.7.0",
     "eslint-config-next": "13.4.19",
     "postcss": "^8",
+    "semantic-release": "23.0.2",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
