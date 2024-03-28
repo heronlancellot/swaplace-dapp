@@ -22,9 +22,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   }, [authenticatedUserAddress, isNetworkSupported]);
   return (
     <>
-      <div
-      // className={cc(["lg:block hidden"])} - temporary comment
-      >
+      <div className={cc(["lg:block hidden"])}>
         <SidebarProvider>
           <meta
             content="initial-scale=1.0, width=device-width"

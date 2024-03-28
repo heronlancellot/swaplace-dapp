@@ -3,18 +3,6 @@ body {
   overflow-x: hidden;
 }
 
-/* RaibowWallet Height Hack */
-.iekbcc0
-  .ju367v2
-  .ju367v8q
-  ._9pm4ki3
-  /* .ju367v9h */
-  /* .ju367vb3 */
-  /* .ju367va */
-  .ju367v2q {
-  height: 100vh;
-}
-
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
