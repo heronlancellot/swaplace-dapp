@@ -9,7 +9,6 @@ import { TokensList } from "@/components/02-molecules";
 import { SelectUserIcon, SwapContext } from "@/components/01-atoms";
 import { useSupportedNetworks } from "@/lib/client/hooks/useSupportedNetworks";
 import { useContext, useEffect, useState } from "react";
-import { useTheme } from "next-themes";
 import { useNetwork } from "wagmi";
 /* eslint-disable react-hooks/exhaustive-deps */
 
@@ -36,7 +35,6 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
   const [tokensQueryStatus, setTokensQueryStatus] = useState<TokensQueryStatus>(
     TokensQueryStatus.EMPTY_QUERY,
   );
-  const { theme } = useTheme();
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { validatedAddressToSwap, inputAddress, destinyChain } =
