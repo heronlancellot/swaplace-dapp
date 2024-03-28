@@ -52,12 +52,14 @@ interface TokenBodyProps {
 const TokenBody = ({ forWhom }: TokenBodyProps) => {
   const [tokenType, setTokenType] = useState<TokenType>(TokenType.ERC20);
   const [contractAddress, setContractAddress] = useState<string>("");
+  const [tokenId, setTokenId] = useState<string>("");
+  // const {  data } = useWalletClient();
 
   const { chain } = useNetwork();
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { validatedAddressToSwap } = useContext(SwapContext);
 
-  const addTokenCard = () => {
+  const addTokenCard = async () => {
     const address =
       forWhom === ForWhom.Your
         ? authenticatedUserAddress
@@ -78,16 +80,66 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       throw new Error("No chain was found.");
     }
 
-    const abi = tokenType === TokenType.ERC20 ? MockERC20Abi : MockERC721Abi;
+    const [abi, functionName, args] =
+      tokenType === TokenType.ERC20
+        ? [MockERC20Abi, "balanceOf", [address]]
+        : [MockERC721Abi, "ownerOf", [tokenId]];
 
     const newTokenContract = getContract({
       address: contractAddress,
       publicClient: publicClient({ chainId: chain.id }),
       abi,
     });
-
     // TODO: verify token ownership
     console.log(newTokenContract);
+    try {
+      const { request } = await publicClient({
+        chainId: chain.id,
+      }).simulateContract({
+        account: address.address,
+        address: contractAddress,
+        args: args,
+        functionName,
+        abi,
+      });
+
+      console.log(request);
+      // const transactionHash: Hash = await data.re;
+      // const data = await publicClient.readContract(request)
+
+      // onWalletConfirmation();
+      // let txReceipt = {} as TransactionReceipt;
+      // while (typeof txReceipt.blockHash === "undefined") {
+      /*
+          It is guaranteed that at some point we'll have a valid TransactionReceipt in here.
+          If we had a valid transaction sent (which is confirmed at this point by the try/catch block),
+          it is a matter of waiting the transaction to be mined in order to know whether it was successful or not.
+          So why are we using a while loop here?
+          - Because it is possible that the transaction was not yet mined by the time
+          we reach this point. So we keep waiting until we have a valid TransactionReceipt.
+        */
+      //   const transactionReceipt = await publicClient({
+      //     chainId,
+      //   }).waitForTransactionReceipt({
+      //     hash: transactionHash,
+      //   });
+      //   if (transactionReceipt) {
+      //     txReceipt = transactionReceipt;
+      //   }
+      // }
+      // return {
+      //   success: true,
+      //   receipt: txReceipt,
+      //   errorMessage: null,
+      // };
+    } catch (error) {
+      console.error(error);
+      return {
+        receipt: null,
+        success: false,
+        errorMessage: String(error),
+      };
+    }
   };
 
   return (
@@ -151,7 +203,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
                 Token ID
               </div>
               <div>
-                <input className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]" />
+                <input
+                  onChange={(e) => setTokenId(e.target.value)}
+                  className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]"
+                />
               </div>
             </div>
           </div>
