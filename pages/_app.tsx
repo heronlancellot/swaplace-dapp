@@ -51,6 +51,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                       overlayBlur: "small",
                     }),
                   }}
+                  // modalSize="compact"
                   chains={chains}
                 >
                   <Toaster />
