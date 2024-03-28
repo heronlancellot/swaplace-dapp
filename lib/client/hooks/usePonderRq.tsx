@@ -4,13 +4,14 @@ import { useContext } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 // Define the expected data structure
-export interface SwapResponse {
-  pages: Page[];
+interface Data {
   pageParams: any[];
+  pages: Page[];
 }
 
-export interface Page {
-  user: Swap;
+interface Page {
+  items: Swap;
+  pageInfo: PageInfo;
 }
 interface Swap {
   swapId: string;
@@ -69,13 +70,11 @@ export const usePonder = () => {
       }
     }
  `;
-
-    // Define the variables object with actual values
     const variables = {
       orderBy: "blockTimestamp",
       orderDirection: "desc",
       inputAddress: "0x12a0AA4054CDa340492228B1ee2AF0315276092b",
-      ponderFilterStatus: ponderFilterStatus, // Use the variable from context
+      ponderFilterStatus: ponderFilterStatus,
       after: after,
     };
 
@@ -92,7 +91,15 @@ export const usePonder = () => {
         { headers },
       );
       console.log("Full response:", response);
-      return response.data.data.databases;
+
+      return {
+        pages: response.data.data.databases.items.map((item: Swap) => ({
+          item,
+        })),
+        pageParams: response.data.data.databases.pageInfo.endCursor
+          ? [response.data.data.databases.pageInfo.endCursor]
+          : [],
+      };
     } catch (error) {
       console.error("Error fetching swaps:", error);
       throw error;
@@ -103,7 +110,7 @@ export const usePonder = () => {
     queryFn: fetchSwaps,
     initialPageParam: null,
     getNextPageParam: (lastPage) =>
-      lastPage?.databases?.pageInfo?.endCursor ?? null,
+      lastPage?.pages?.pageInfo?.endCursor ?? null,
   });
 
   console.log("status:", status);
@@ -114,7 +121,7 @@ export const usePonder = () => {
   const pages = data?.pages ?? [];
   console.log("pages:", pages);
 
-  const extras = pages[pages.length]?.databases?.items;
+  const extras = pages[pages.length]?.pages?.items;
   console.log("extras:", extras);
 
   return { allSwaps };
