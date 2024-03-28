@@ -51,7 +51,7 @@ interface TokenBodyProps {
 
 const TokenBody = ({ forWhom }: TokenBodyProps) => {
   const [tokenType, setTokenType] = useState<TokenType>(TokenType.ERC20);
-  const [contractAddress, setContractAddress] = useState<string>("");
+  const [contractAddress, setContractAddress] = useState<string>("oi");
   const [tokenId, setTokenId] = useState<string>("");
   // const {  data } = useWalletClient();
 
@@ -68,7 +68,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     if (!address) {
       throw new Error("No valid address was given to add a token card for.");
     }
-
+    console.log("contractAddress ", contractAddress);
     if (!contractAddress) {
       throw new Error("No contract address was given to add a token card for.");
     } else if (isAddress(contractAddress) === false) {
@@ -105,7 +105,14 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
 
       console.log(request);
       // const transactionHash: Hash = await data.re;
-      // const data = await publicClient.readContract(request)
+      const data = await publicClient({
+        chainId: chain.id,
+      }).readContract({
+        address: contractAddress,
+        abi: abi,
+        functionName: functionName,
+      });
+      console.log("data", data);
 
       // onWalletConfirmation();
       // let txReceipt = {} as TransactionReceipt;
@@ -193,7 +200,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
               </div>
               <div>
                 <input
-                  onChange={(e) => setContractAddress(e.target.value)}
+                  onChange={({ target }) => setContractAddress(target.value)}
                   className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]"
                 />
               </div>
