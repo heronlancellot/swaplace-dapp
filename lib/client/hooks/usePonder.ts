@@ -158,11 +158,6 @@ export const usePonder = () => {
       getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
     });
 
-  console.log("status:", status);
-  console.log("error:", error?.message);
-  const allSwaps = data;
-  console.log("data:", allSwaps);
-
   const pages = data?.pages ?? [];
   console.log("pages:", pages);
 
