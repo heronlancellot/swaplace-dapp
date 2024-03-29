@@ -1,19 +1,11 @@
 import { SwapContext } from "@/components/01-atoms";
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 
-// Define the expected data structure
-interface Data {
-  pageParams: any[];
-  pages: Page[];
-}
-
-interface Page {
-  items: Swap;
-  pageInfo: PageInfo;
-}
-interface Swap {
+//Swaps
+interface Item {
   swapId: string;
   status: string;
   owner: string;
@@ -24,56 +16,61 @@ interface Swap {
 }
 
 interface PageInfo {
-  endCursor: string;
   hasNextPage: boolean;
+  endCursor: string | null;
+}
+
+interface PageParam {
+  pageParam: string | null;
 }
 
 export enum PonderFilter {
-  ALL_OFFERS = "ALL OFFERS", //
+  ALL_OFFERS = "ALL OFFERS",
   CREATED = "CREATED",
-  RECEIVED = "RECEIVED", // Not yet
+  RECEIVED = "RECEIVED",
   ACCEPTED = "ACCEPTED",
   CANCELED = "CANCELED",
-  EXPIRED = "EXPIRED", // Not yet
+  EXPIRED = "EXPIRED",
 }
 
 export const usePonder = () => {
   const { inputAddress, ponderFilterStatus } = useContext(SwapContext);
 
-  const fetchSwaps = async (deps: any) => {
-    const after = deps?.pageParam ? deps.pageParam : null;
+  const fetchSwaps = async ({ pageParam }: PageParam) => {
+    const after = pageParam ? pageParam : null;
 
     const query = `
-    query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $ponderFilterStatus: Status!, $after: String) {
-      databases(
-        orderBy: $orderBy,
-        orderDirection: $orderDirection,
-        where: { owner: $inputAddress, status: $ponderFilterStatus },
-        limit: 20,
-        after: $after
-      ) {
-        items {
-          swapId
-          status
-          owner
-          allowed
-          expiry
-          bid
-          ask
-          blockTimestamp
-          transactionHash
-        }
-        pageInfo {
-          hasNextPage
-          endCursor
+      query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $ponderFilterStatus: Status!, $after: String) {
+        databases(
+          orderBy: $orderBy,
+          orderDirection: $orderDirection,
+          where: { owner: $inputAddress, status: $ponderFilterStatus },
+          limit: 20,
+          after: $after
+        ) {
+          items {
+            swapId
+            status
+            owner
+            allowed
+            expiry
+            bid
+            ask
+            blockTimestamp
+            transactionHash
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
         }
       }
-    }
- `;
+  `;
+
     const variables = {
       orderBy: "blockTimestamp",
       orderDirection: "desc",
-      inputAddress: "0x12a0AA4054CDa340492228B1ee2AF0315276092b",
+      inputAddress: "0x12a0AA4054CDa340492228B1ee2AF0315276092b", //Test hardcoded
       ponderFilterStatus: ponderFilterStatus,
       after: after,
     };
@@ -92,37 +89,77 @@ export const usePonder = () => {
       );
       console.log("Full response:", response);
 
+      const items = response.data.data.databases.items as Item[];
+      const pageInfo = response.data.data.databases.pageInfo as PageInfo;
+      console.log("Items:", items);
+      console.log("PageInfo:", pageInfo);
+
       return {
-        pages: response.data.data.databases.items.map((item: Swap) => ({
-          item,
-        })),
-        pageParams: response.data.data.databases.pageInfo.endCursor
-          ? [response.data.data.databases.pageInfo.endCursor]
-          : [],
+        items,
+        pageInfo,
       };
     } catch (error) {
       console.error("Error fetching swaps:", error);
       throw error;
     }
   };
-  const { data, status, error } = useInfiniteQuery({
-    queryKey: ["swaps", inputAddress, ponderFilterStatus],
-    queryFn: fetchSwaps,
-    initialPageParam: null,
-    getNextPageParam: (lastPage) =>
-      lastPage?.pages?.pageInfo?.endCursor ?? null,
-  });
 
-  console.log("status:", status);
-  console.log("error:", error?.message);
-  const allSwaps = data;
-  console.log("data:", allSwaps);
+  const { data, status, error, isFetchingNextPage, fetchNextPage } =
+    useInfiniteQuery({
+      queryKey: ["swaps", inputAddress, ponderFilterStatus],
+      queryFn: ({ pageParam }: { pageParam: string | null }) =>
+        fetchSwaps({ pageParam }),
+      initialPageParam: null,
+      getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
+    });
 
-  const pages = data?.pages ?? [];
-  console.log("pages:", pages);
+  const { ref, inView } = useInView();
 
-  const extras = pages[pages.length]?.pages?.items;
-  console.log("extras:", extras);
+  // useEffect(() => {
+  //   if (inView) {
+  //     fetchNextPage();
+  //   }
+  // }, [fetchNextPage, inView]);
 
-  return { allSwaps };
+  //   console.log("status:", status);
+  //   console.log("error:", error?.message);
+  //   const allSwaps = data;
+  //   console.log("data:", allSwaps);
+
+  //   const pages = data?.pages ?? [];
+  //   console.log("pages:", pages);
+
+  //   return {
+  //     data,
+  //     status,
+  //     error,
+  //     fetchNextPage,
+  // };
+
+  return status === "pending" ? (
+    <div>Loading...</div>
+  ) : status === "error" ? (
+    <div>{error.message}</div>
+  ) : (
+    <div className="flex flex-col gap-2">
+      {data.pages.map((page) => {
+        return (
+          <div key={page.pageInfo.endCursor} className="flex flex-col gap-2">
+            {page.items.map((item) => {
+              return (
+                <div
+                  key={item.swapId}
+                  className="rounded-md bg-grayscale-700 p-4"
+                >
+                  {item.status}
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+
+      <div ref={ref}>{isFetchingNextPage && "Loading..."}</div>
+    </div>
+  );
 };
