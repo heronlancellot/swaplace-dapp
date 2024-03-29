@@ -51,6 +51,7 @@ export const SwapOffers = ({}: TokenOffersConfig) => {
     setIsLoading(true);
 
     const tokensTokenizedPromises = allSwaps.map(async (swap) => {
+      // TODO: Expiry date is not working properly yet
       const expiry = swap.expiry.toString();
       const allowed = new EthereumAddress(
         "0x" + BigInt(swap.allowed!).toString(16),
@@ -59,8 +60,6 @@ export const SwapOffers = ({}: TokenOffersConfig) => {
 
       const date = new Date(Number(expiry) * 1000);
       let isDateValid = true;
-
-      console.log(expiry);
 
       // Check if the date is valid
       if (isNaN(date.getTime())) {

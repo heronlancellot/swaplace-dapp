@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { ForWhom, TokensShelf } from ".";
 import {
   SearchItemsShelf,
   SwapContext,
@@ -9,7 +10,6 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
-import { ForWhom, TokensShelf } from ".";
 
 /**
  * SwappingShelfs Component
