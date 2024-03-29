@@ -27,9 +27,7 @@ const onest = localFont({
   variable: "--font-onest",
 });
 
-// Instantiate QueryClient
 const queryClient = new QueryClient();
-console.log("queryClient:", queryClient);
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
