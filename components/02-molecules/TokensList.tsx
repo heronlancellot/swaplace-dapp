@@ -1,4 +1,4 @@
-import { ForWhom } from "@/components/03-organisms";
+import { ForWhom } from "../03-organisms";
 import {
   AddTokenCardManually,
   TokenAmountSelectionModal,
@@ -53,6 +53,7 @@ export const TokensList = ({
   tabletTotalCards,
   desktopTotalCards,
   wideScreenTotalCards,
+  confirmationModalTotalSquares = 0,
   withPlaceholders = true,
   withAddTokenCard = true,
   withSelectionValidation = true,
@@ -99,6 +100,7 @@ export const TokensList = ({
         tabletTotalSquares: tabletTotalCards,
         desktopTotalSquares: desktopTotalCards,
         wideScreenTotalSquares: wideScreenTotalCards,
+        confirmationModalTotalSquares: confirmationModalTotalSquares,
         styleType: tokenCardStyleType,
       })
     : [<></>];

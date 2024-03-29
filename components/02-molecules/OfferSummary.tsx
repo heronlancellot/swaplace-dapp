@@ -1,3 +1,4 @@
+import { ForWhom } from "../03-organisms";
 import {
   ENSAvatar,
   ENSAvatarSize,
@@ -5,7 +6,6 @@ import {
   SwapContext,
 } from "@/components/01-atoms";
 import { TokenCardStyleType, TokensList } from "@/components/02-molecules";
-import { ForWhom } from "@/components/03-organisms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useEnsData } from "@/lib/client/hooks/useENSData";
 import { useContext } from "react";

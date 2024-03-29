@@ -4,10 +4,10 @@ import {
   getERC721TokensFromAddress,
   getERC20TokensFromAddress,
 } from "@/lib/client/blockchain-utils";
-import { Token } from "@/lib/shared/types";
 import { TokensList } from "@/components/02-molecules";
 import { SelectUserIcon, SwapContext } from "@/components/01-atoms";
 import { useSupportedNetworks } from "@/lib/client/hooks/useSupportedNetworks";
+import { Token } from "@/lib/shared/types";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 /* eslint-disable react-hooks/exhaustive-deps */

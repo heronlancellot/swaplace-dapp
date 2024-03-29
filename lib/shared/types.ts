@@ -21,12 +21,11 @@ export interface ERC20 {
   logo?: string;
   symbol?: string;
   contract?: string;
-  rawBalance: number;
-  decimals?: number;
+  rawBalance: bigint;
 }
 
 export interface ERC20WithTokenAmountSelection extends ERC20 {
-  tokenAmount: number;
+  tokenAmount: bigint;
 }
 
 export class EthereumAddress {
