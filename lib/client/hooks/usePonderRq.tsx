@@ -1,8 +1,7 @@
 import { SwapContext } from "@/components/01-atoms";
 import axios from "axios";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
 
 //Swaps
 interface Item {
@@ -71,7 +70,7 @@ export const usePonder = () => {
       orderBy: "blockTimestamp",
       orderDirection: "desc",
       inputAddress: "0x12a0AA4054CDa340492228B1ee2AF0315276092b", //Test hardcoded
-      ponderFilterStatus: ponderFilterStatus,
+      ponderFilterStatus: "ACCEPTED",
       after: after,
     };
 
@@ -113,53 +112,19 @@ export const usePonder = () => {
       getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
     });
 
-  const { ref, inView } = useInView();
+  console.log("status:", status);
+  console.log("error:", error?.message);
+  const allSwaps = data;
+  console.log("data:", allSwaps);
 
-  // useEffect(() => {
-  //   if (inView) {
-  //     fetchNextPage();
-  //   }
-  // }, [fetchNextPage, inView]);
+  const pages = data?.pages ?? [];
+  console.log("pages:", pages);
 
-  //   console.log("status:", status);
-  //   console.log("error:", error?.message);
-  //   const allSwaps = data;
-  //   console.log("data:", allSwaps);
-
-  //   const pages = data?.pages ?? [];
-  //   console.log("pages:", pages);
-
-  //   return {
-  //     data,
-  //     status,
-  //     error,
-  //     fetchNextPage,
-  // };
-
-  return status === "pending" ? (
-    <div>Loading...</div>
-  ) : status === "error" ? (
-    <div>{error.message}</div>
-  ) : (
-    <div className="flex flex-col gap-2">
-      {data.pages.map((page) => {
-        return (
-          <div key={page.pageInfo.endCursor} className="flex flex-col gap-2">
-            {page.items.map((item) => {
-              return (
-                <div
-                  key={item.swapId}
-                  className="rounded-md bg-grayscale-700 p-4"
-                >
-                  {item.status}
-                </div>
-              );
-            })}
-          </div>
-        );
-      })}
-
-      <div ref={ref}>{isFetchingNextPage && "Loading..."}</div>
-    </div>
-  );
+  return {
+    data,
+    status,
+    error,
+    fetchNextPage,
+    isFetchingNextPage,
+  };
 };
