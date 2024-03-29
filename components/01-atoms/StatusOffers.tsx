@@ -1,5 +1,5 @@
 import { SwapContext } from "@/components/01-atoms";
-import { PonderFilter, usePonder } from "@/lib/client/hooks/usePonderRq";
+import { PonderFilter, usePonder } from "@/lib/client/hooks/usePonder";
 import { useState, useContext, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import cc from "classcat";
@@ -16,21 +16,9 @@ export enum DisplayFilterOptions {
 export const StatusOffers = () => {
   const { setPonderFilterStatus } = useContext(SwapContext);
   const [offerIsActive, setOfferIsActive] = useState<number>(0);
-  const {
-    /*allSwaps*/ data,
-    status,
-    error,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = usePonder();
-  console.log(
-    "AllSwaps Ponder Status Filter = ",
-    data,
-    status,
-    error,
-    fetchNextPage,
-    isFetchingNextPage,
-  );
+  const { data, status, error, fetchNextPage, isFetchingNextPage } =
+    usePonder();
+
   interface IFilterOffers {
     id: number;
     name: DisplayFilterOptions;
@@ -102,33 +90,6 @@ export const StatusOffers = () => {
 
   return (
     <>
-      {status === "pending" ? (
-        <div>Loading...</div>
-      ) : status === "error" ? (
-        error && <div>{error.message}</div> // Check if error is not null
-      ) : (
-        data && ( // Check if data is not undefined
-          <div className="flex flex-col gap-2">
-            {data.pages.map((page) => (
-              <div
-                key={page.pageInfo.endCursor}
-                className="flex flex-col gap-2"
-              >
-                {page.items.map((item) => (
-                  <div
-                    key={item.swapId}
-                    className="rounded-md bg-grayscale-700 p-4"
-                  >
-                    {item.status}, {item.swapId}
-                  </div>
-                ))}
-              </div>
-            ))}
-            <div ref={ref}>{isFetchingNextPage && "Loading..."}</div>
-          </div>
-        )
-      )}
-
       {Object.keys(OffersFilter).map((key, index) => {
         const filterOption = key as DisplayFilterOptions;
         const { id, name } = OffersFilter[filterOption];
@@ -166,6 +127,10 @@ export const StatusOffers = () => {
           </div>
         );
       })}
+      {/* Temporary button to fetch more  */}
+      <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+        {isFetchingNextPage ? "Loading..." : "Load More"}
+      </button>
     </>
   );
 };
