@@ -36,16 +36,12 @@ interface Ponder {
   };
 }
 
-// get allSwaps
-
 // Determine if ERC20 / ERC721 and fetch data for each one of these
 // Through a function that gets the array of items and formats it
 
 export const usePonder = () => {
   const { ponderFilterStatus } = useContext(SwapContext);
   const [allSwaps, setAllSwaps] = useState<Swap[]>([]);
-  // const [acceptedSwaps, setAcceptedSwaps] = useState<Swap[]>([]);
-  // const [canceledSwaps, setCanceledSwaps] = useState<Swap[]>([]);
   const [isPonderSwapsLoading, setIsPonderSwapsLoading] = useState(false);
   //Typing those states the way Alchemy understand
   const [erc721AskSwaps, setERC721AskSwaps] = useState<NftMetadataBatchToken[]>(
@@ -55,8 +51,6 @@ export const usePonder = () => {
   // endereço com contratos sepolia scan: 0xb7A42919ae66745Ffa69940De9d3DD99703eACb1
 
   // TODO: place the actual ADDRESS_ZERO, not a hardcoded one
-  // const inputAddress = "0x12a0AA4054CDa340492228B1ee2AF0315276092b";
-  const inputAddress = "0x8c74F3aAAA448dAfB5D5402F80cD16b2D7d95c16";
 
   useEffect(() => {
     setIsPonderSwapsLoading(true);
@@ -77,11 +71,6 @@ export const usePonder = () => {
           },
         );
 
-        // ponderFilterStatus === PonderFilter.ACCEPTED
-        //   ? setAcceptedSwaps(allSwapsResponseData)
-        //   : ponderFilterStatus === PonderFilter.CANCELED
-        //   ? setCanceledSwaps(allSwapsResponseData)
-        //   : setAllSwaps(allSwapsResponseData); /// ALL OFFERS
         setAllSwaps(allSwapsResponseData);
 
         const PonderAlchemyERC721Ask: NftMetadataBatchToken[] =
@@ -117,6 +106,9 @@ export const usePonder = () => {
   const headers = {
     "content-type": "application/json",
   };
+
+  // TODO: Replace hardcoded user address by autheticated user address
+  const inputAddress = "0x8c74f3aaaa448dafb5d5402f80cd16b2d7d95c16";
 
   const formattedInputAddress = inputAddress.startsWith("0x")
     ? inputAddress
@@ -193,8 +185,6 @@ export const usePonder = () => {
 
   return {
     allSwaps,
-    // acceptedSwaps,
-    // canceledSwaps,
     erc721AskSwaps,
     isPonderSwapsLoading,
   };

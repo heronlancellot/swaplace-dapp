@@ -1,15 +1,21 @@
+import { ForWhom } from "../03-organisms";
 import {
   AddTokenOrSwapManuallyModal,
   AddTokenOrSwapManuallyModalVariant,
 } from "@/components/02-molecules";
-import { PlusIcon } from "@/components/01-atoms";
+import { PlusIcon, Tooltip } from "@/components/01-atoms";
 import { useState } from "react";
+interface AddTokenCardManuallyProps {
+  forWhom: ForWhom;
+}
 
-export const AddTokenCardManually = () => {
+export const AddTokenCardManually = ({
+  forWhom,
+}: AddTokenCardManuallyProps) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div key="add-card">
+    <>
       <div
         className="
           group shadow-inner 
@@ -24,6 +30,7 @@ export const AddTokenCardManually = () => {
           transition-all duration-200
         "
       >
+        <Tooltip content="Add Token" position="top" />
         <div className="flex items-center justify-center h-full">
           <button
             onClick={() => setOpen(!open)}
@@ -37,8 +44,9 @@ export const AddTokenCardManually = () => {
       <AddTokenOrSwapManuallyModal
         variant={AddTokenOrSwapManuallyModalVariant.TOKEN}
         onClose={() => setOpen(false)}
+        forWhom={forWhom}
         open={open}
       />
-    </div>
+    </>
   );
 };

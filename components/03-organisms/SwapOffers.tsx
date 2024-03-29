@@ -15,6 +15,7 @@ interface TokenOffersConfig {
 }
 
 export interface SwapOfferInterface {
+  id: number;
   status: string;
   expiryDate?: string;
   bid: {
@@ -54,7 +55,6 @@ export const SwapOffers = ({}: TokenOffersConfig) => {
       const allowed = new EthereumAddress(
         "0x" + BigInt(swap.allowed!).toString(16),
       );
-
       const owner = new EthereumAddress(swap.owner);
 
       const date = new Date(Number(expiry) * 1000);
@@ -77,6 +77,7 @@ export const SwapOffers = ({}: TokenOffersConfig) => {
       const formattedAskArray = await retrieveDataFromTokensArray(swap.ask);
       const formattedBidArray = await retrieveDataFromTokensArray(swap.bid);
       return {
+        id: Number(swap.swapId),
         status: swap.status,
         expiryDate: formattedDate ?? "",
         ask: { address: owner, tokens: formattedAskArray },
@@ -85,9 +86,9 @@ export const SwapOffers = ({}: TokenOffersConfig) => {
     });
     EthereumAddress;
     // Wait for all promises to resolve
-    const tokensTokenized = await Promise.all(tokensTokenizedPromises);
+    const formattedTokens = await Promise.all(tokensTokenizedPromises);
     setIsLoading(false);
-    setAllTokensListByPonder(tokensTokenized);
+    setAllTokensListByPonder(formattedTokens);
   }
 
   return isLoading || isPonderSwapsLoading ? (

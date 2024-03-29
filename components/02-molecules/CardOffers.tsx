@@ -1,7 +1,4 @@
-import {
-  CreateTokenOfferVariant,
-  TokensShelfVariant,
-} from "@/components/03-organisms";
+import { CreateTokenOfferVariant, ForWhom } from "@/components/03-organisms";
 import {
   TokenCardActionType,
   TokenCardStyleType,
@@ -32,11 +29,11 @@ export const CardOffers = ({
     useContext(SwapContext);
 
   const tokenShelfVariant = authenticatedUserAddress?.equals(address)
-    ? TokensShelfVariant.Your
-    : TokensShelfVariant.Their;
-  const tokensOfferFor: Record<TokensShelfVariant, Token[]> = {
-    [TokensShelfVariant.Your]: searchedUserTokensList,
-    [TokensShelfVariant.Their]: authenticatedUserTokensList,
+    ? ForWhom.Your
+    : ForWhom.Their;
+  const tokensOfferFor: Record<ForWhom, Token[]> = {
+    [ForWhom.Your]: searchedUserTokensList,
+    [ForWhom.Their]: authenticatedUserTokensList,
   };
 
   const HorizontalVariant = (address: EthereumAddress | null) => {
@@ -68,19 +65,20 @@ export const CardOffers = ({
     if (!address) return null;
 
     return (
-      <div className="flex flex-col justify-content gap-4 md:w-[400px] max-h-[150px] overflow-y-auto no-scrollbar">
+      <div className="flex flex-col justify-content gap-4 md:w-[400px] overflow-x-hidden no-scrollbar">
         <UserOfferInfo address={address} variant={UserOfferVariant.SECONDARY} />
         <TokensList
           ownerAddress={address}
           withAddTokenCard={false}
-          withPlaceholders={false}
+          withPlaceholders={true}
           variant={tokenShelfVariant}
           displayERC20TokensAmount={true}
           withSelectionValidation={false}
           tokenCardClickAction={TokenCardActionType.NO_ACTION}
           tokensList={tokensOfferFor[tokenShelfVariant]}
+          confirmationModalTotalSquares={5}
           tokenCardStyleType={TokenCardStyleType.MEDIUM}
-          gridClassNames="grid md:grid-cols-5 md:gap-4"
+          gridClassNames="grid md:grid-cols-5 md:gap-3"
         />
       </div>
     );

@@ -4,22 +4,21 @@ import {
   getERC721TokensFromAddress,
   getERC20TokensFromAddress,
 } from "@/lib/client/blockchain-utils";
-import { EthereumAddress, Token } from "@/lib/shared/types";
+import { Token } from "@/lib/shared/types";
 import { TokensList } from "@/components/02-molecules";
 import { SelectUserIcon, SwapContext } from "@/components/01-atoms";
+import { useSupportedNetworks } from "@/lib/client/hooks/useSupportedNetworks";
 import { useContext, useEffect, useState } from "react";
-import { useTheme } from "next-themes";
 import { useNetwork } from "wagmi";
 /* eslint-disable react-hooks/exhaustive-deps */
 
-export enum TokensShelfVariant {
+export enum ForWhom {
   Your,
   Their,
 }
 
 interface TokensShelfProps {
-  address: EthereumAddress | null;
-  variant: TokensShelfVariant;
+  variant: ForWhom;
 }
 
 /**
@@ -29,22 +28,22 @@ interface TokensShelfProps {
  *
  * @returns Tokens Shelf based in status of given address
  */
-export const TokensShelf = ({ address, variant }: TokensShelfProps) => {
+export const TokensShelf = ({ variant }: TokensShelfProps) => {
   const { chain } = useNetwork();
+  const { isNetworkSupported } = useSupportedNetworks();
   const [allTokensList, setAllTokensList] = useState<Token[]>([]);
-
   const [tokensQueryStatus, setTokensQueryStatus] = useState<TokensQueryStatus>(
     TokensQueryStatus.EMPTY_QUERY,
   );
-  const { theme } = useTheme();
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  const {
-    validatedAddressToSwap,
-    inputAddress,
-    destinyChain,
-    ponderFilterStatus,
-  } = useContext(SwapContext);
+  const { validatedAddressToSwap, inputAddress, destinyChain } =
+    useContext(SwapContext);
+
+  const address =
+    variant === ForWhom.Their
+      ? validatedAddressToSwap
+      : authenticatedUserAddress;
 
   const getUserTokens = async () => {
     const chainId = authenticatedUserAddress?.equals(address)
@@ -54,7 +53,7 @@ export const TokensShelf = ({ address, variant }: TokensShelfProps) => {
     let queriedTokens: Token[] = [];
     let tokensCount = allTokensList.length;
 
-    if (address && chainId) {
+    if (address && chainId && !!authenticatedUserAddress) {
       setTokensQueryStatus(TokensQueryStatus.LOADING);
 
       Promise.all([
@@ -82,10 +81,16 @@ export const TokensShelf = ({ address, variant }: TokensShelfProps) => {
     }
   };
 
+  // will only reload if network isNetworkSupported changes
   useEffect(() => {
-    getUserTokens();
-    // getUserTokensByPonder();
-  }, [address, chain, destinyChain, ponderFilterStatus]); // PonderFilterStatus & destinyChain addded probably must be moved to another place
+    !!authenticatedUserAddress && isNetworkSupported && getUserTokens();
+  }, [
+    address,
+    isNetworkSupported,
+    authenticatedUserAddress,
+    validatedAddressToSwap,
+    destinyChain,
+  ]);
 
   const conditionallyCleanTokensList = (condition: boolean) => {
     if (condition) {
@@ -96,7 +101,7 @@ export const TokensShelf = ({ address, variant }: TokensShelfProps) => {
 
   useEffect(() => {
     conditionallyCleanTokensList(
-      !authenticatedUserAddress && variant === TokensShelfVariant.Your,
+      !authenticatedUserAddress && variant === ForWhom.Your,
     );
   }, [authenticatedUserAddress]);
 
@@ -105,7 +110,7 @@ export const TokensShelf = ({ address, variant }: TokensShelfProps) => {
       !!authenticatedUserAddress &&
         !!address &&
         authenticatedUserAddress.equals(address) &&
-        variant === TokensShelfVariant.Their,
+        variant === ForWhom.Their,
     );
   }, [variant]);
 
@@ -119,8 +124,7 @@ export const TokensShelf = ({ address, variant }: TokensShelfProps) => {
 
   useEffect(() => {
     conditionallyCleanTokensList(
-      !authenticatedUserAddress?.equals(address) &&
-        variant === TokensShelfVariant.Their,
+      !authenticatedUserAddress?.equals(address) && variant === ForWhom.Their,
     );
   }, [chain]);
 
@@ -133,9 +137,13 @@ export const TokensShelf = ({ address, variant }: TokensShelfProps) => {
 
   useEffect(() => {
     conditionallyCleanTokensList(
-      !validatedAddressToSwap && variant === TokensShelfVariant.Their,
+      !validatedAddressToSwap && variant === ForWhom.Their,
     );
   }, [validatedAddressToSwap]);
+
+  useEffect(() => {
+    conditionallyCleanTokensList(!isNetworkSupported);
+  }, [isNetworkSupported]);
 
   return (
     <div className="w-full flex rounded-t-none overflow-y-auto lg:max-w-[600px] h-[356px] no-scrollbar">
@@ -151,20 +159,19 @@ export const TokensShelf = ({ address, variant }: TokensShelfProps) => {
         <div className="flex w-full h-full bg-inherit  justify-center items-center">
           <div className="flex-col flex items-center gap-5">
             <div className="w-[80px] h-[80px] flex items-center border-[3px] rounded-full dark:border-[#DDF23D] border-[#A3A9A5] ">
-              <SelectUserIcon
-                className="w-[100px]"
-                fill={theme == "dark" ? "#DDF23D" : "#A3A9A5"}
-              />
+              <SelectUserIcon className="w-[100px] dark:text-[#DDF23D] text-[#A3A9A5]" />
             </div>
             <div className="flex items-center justify-center flex-col gap-1 text-center">
-              <p className="dark:text-[#F6F6F6] font-onest font-medium text-[16px] leading-[20px]">
-                {variant === TokensShelfVariant.Their
+              <p className="p-normal-2-light dark:p-normal-2-dark contrast-50 text-[16px] leading-[20px]">
+                {variant === ForWhom.Their && !!authenticatedUserAddress
                   ? "No user selected yet"
                   : "No wallet is connected yet"}
               </p>
-              <p className="dark:text-[#A3A9A5] font-onest font-normal text-[14px] leading-[20px]">
-                {variant === TokensShelfVariant.Their
+              <p className="p-normal-2-light dark:p-normal-2-dark contrast-50 text-[14px] leading-[20px]">
+                {variant === ForWhom.Their && !!authenticatedUserAddress
                   ? "Search for a user to start swapping items"
+                  : variant === ForWhom.Their
+                  ? "Sign in to search for users"
                   : "Sign in to see your tokens"}
               </p>
             </div>
