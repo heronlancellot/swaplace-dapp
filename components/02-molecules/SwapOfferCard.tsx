@@ -1,5 +1,5 @@
 import { TokensSwapList } from "./TokensSwapList";
-import { TokensShelfVariant } from "@/components/03-organisms";
+import { ForWhom } from "../03-organisms";
 import {
   TokenCardActionType,
   TokenCardStyleType,
@@ -18,8 +18,8 @@ export const SwapOfferCard = ({ address, tokens }: SwapOfferCardProps) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
 
   const tokenShelfVariant = authenticatedUserAddress?.equals(address)
-    ? TokensShelfVariant.Your
-    : TokensShelfVariant.Their;
+    ? ForWhom.Your
+    : ForWhom.Their;
 
   return (
     <div className="md:p-4">

@@ -1,5 +1,5 @@
 import { TokenSwapCard } from "./TokenSwapCard";
-import { TokensShelfVariant } from "@/components/03-organisms";
+import { ForWhom } from "../03-organisms";
 import {
   TokenCardActionType,
   TokenCardStyleType,
@@ -26,7 +26,7 @@ export interface TokensListProps {
   displayERC20TokensAmount?: boolean;
   tokenCardStyleType?: TokenCardStyleType;
   tokenCardClickAction?: TokenCardActionType;
-  variant: TokensShelfVariant;
+  variant: ForWhom;
   gridClassNames?: string;
 }
 
