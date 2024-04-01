@@ -51,7 +51,7 @@ interface TokenBodyProps {
 
 const TokenBody = ({ forWhom }: TokenBodyProps) => {
   const [tokenType, setTokenType] = useState<TokenType>(TokenType.ERC20);
-  const [contractAddress, setContractAddress] = useState<string>("oi");
+  const [contractAddress, setContractAddress] = useState<string>("");
   const [tokenId, setTokenId] = useState<string>("");
   // const {  data } = useWalletClient();
 
@@ -82,7 +82,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
 
     const [abi, functionName, args] =
       tokenType === TokenType.ERC20
-        ? [MockERC20Abi, "balanceOf", [address]]
+        ? [MockERC20Abi, "balanceOf", [address.address]]
         : [MockERC721Abi, "ownerOf", [tokenId]];
 
     const newTokenContract = getContract({
@@ -103,7 +103,8 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         abi,
       });
 
-      console.log(request);
+      console.log("request = ", request);
+
       // const transactionHash: Hash = await data.re;
       const data = await publicClient({
         chainId: chain.id,
@@ -111,6 +112,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         address: contractAddress,
         abi: abi,
         functionName: functionName,
+        args: args,
       });
       console.log("data", data);
 
@@ -189,7 +191,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
               Contract address
             </div>
             <div>
-              <input className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]" />
+              <input
+                onChange={(e) => setContractAddress(e.target.value)}
+                className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]"
+              />
             </div>
           </div>
         ) : (
@@ -200,7 +205,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
               </div>
               <div>
                 <input
-                  onChange={({ target }) => setContractAddress(target.value)}
+                  onChange={(e) => setContractAddress(e.target.value)}
                   className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]"
                 />
               </div>
