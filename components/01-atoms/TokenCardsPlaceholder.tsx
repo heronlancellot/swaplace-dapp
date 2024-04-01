@@ -69,8 +69,6 @@ export const TokenCardsPlaceholder = ({
     emptySquaresCountX < spareTokens ? spareTokens : emptySquaresCountX;
 
   return Array.from({ length: emptySquaresCount }, (_, index) => (
-    <>
-      <div key={`empty-${index}`} className={TokenSizeClassNames[styleType]} />
-    </>
+    <div key={`empty-${index}`} className={TokenSizeClassNames[styleType]} />
   ));
 };
