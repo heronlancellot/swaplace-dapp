@@ -35,7 +35,7 @@ export enum PonderFilter {
 export const usePonder = () => {
   const { inputAddress, ponderFilterStatus } = useContext(SwapContext);
 
-  const formattedInputAddress = inputAddress.startsWith("0x")
+  const formattedInputAddress = inputAddress.startsWith("0x") // Temporary replacing the authAddress
     ? inputAddress
     : `0x${inputAddress}`;
 
@@ -44,13 +44,19 @@ export const usePonder = () => {
     let query = "";
     let variables = {};
 
+    const currentTimeDate = new Date();
+    const currentUnixTime = currentTimeDate.getTime();
+    const currentUnixTimeSeconds = Math.floor(new Date().getTime() / 1000);
+    console.log("CurrentUnixTimeSeconds:", currentUnixTimeSeconds);
+    console.log("currentUnixTime:", currentUnixTime);
+
     if (ponderFilterStatus === PonderFilter.ALL_OFFERS) {
       query = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $after: String) {
+         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $after: String, $allowed: String) {
            databases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
-             where: { owner: $inputAddress },
+             where: { OR: [{owner: $inputAddress}, {allowed: $allowed}] },
              limit: 20,
              after: $after
            ) {
@@ -77,8 +83,120 @@ export const usePonder = () => {
         orderDirection: "desc",
         inputAddress: formattedInputAddress,
         after: after,
+        allowed: formattedInputAddress,
       };
-    } else {
+    } else if (ponderFilterStatus === PonderFilter.CREATED) {
+      //Done
+      query = `
+         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $ponderFilterStatus: Status!, $after: String, $expiry_gt: BigInt) {
+           databases(
+             orderBy: $orderBy,
+             orderDirection: $orderDirection,
+             where: { owner: $inputAddress, status: $ponderFilterStatus, expiry_gt: $expiry_gt },
+             limit: 20,
+             after: $after
+           ) {
+             items {
+               swapId
+               status
+               owner
+               allowed
+               expiry
+               bid
+               ask
+               blockTimestamp
+               transactionHash
+             }
+             pageInfo {
+               hasNextPage
+               endCursor
+             }
+           }
+         }
+       `;
+      variables = {
+        orderBy: "blockTimestamp",
+        orderDirection: "desc",
+        inputAddress: formattedInputAddress,
+        ponderFilterStatus: ponderFilterStatus,
+        after: after,
+        expiry_gt: currentUnixTimeSeconds,
+      };
+    } else if (ponderFilterStatus === PonderFilter.RECEIVED) {
+      // Done
+      query = `
+         query databases($orderBy: String!, $orderDirection: String!, $after: String, $allowed: String, $expiry_gt: BigInt) {
+           databases(
+             orderBy: $orderBy,
+             orderDirection: $orderDirection,
+             where: { allowed: $allowed, status_not: ACCEPTED, expiry_gt: $expiry_gt },
+             limit: 20,
+             after: $after
+           ) {
+             items {
+               swapId
+               status
+               owner
+               allowed
+               expiry
+               bid
+               ask
+               blockTimestamp
+               transactionHash
+             }
+             pageInfo {
+               hasNextPage
+               endCursor
+             }
+           }
+         }
+       `;
+      variables = {
+        orderBy: "blockTimestamp",
+        orderDirection: "desc",
+        after: after,
+        allowed: formattedInputAddress,
+        expiry_gt: currentUnixTimeSeconds,
+      };
+    } else if (ponderFilterStatus === PonderFilter.ACCEPTED) {
+      //Done
+      query = `
+         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $after: String, $allowed: String) {
+           databases(
+             orderBy: $orderBy,
+             orderDirection: $orderDirection,
+             where: { AND: [ {status: ACCEPTED}, {OR: [ {owner: $inputAddress},{allowed: $allowed}]}]},
+             limit: 20,
+             after: $after
+           ) {
+             items {
+               swapId
+               status
+               owner
+               allowed
+               expiry
+               bid
+               ask
+               blockTimestamp
+               transactionHash
+             }
+             pageInfo {
+               hasNextPage
+               endCursor
+             }
+           }
+         }
+       `;
+      variables = {
+        orderBy: "blockTimestamp",
+        orderDirection: "desc",
+        inputAddress: formattedInputAddress,
+        ponderFilterStatus: ponderFilterStatus,
+        after: after,
+        allowed: formattedInputAddress,
+      };
+    } else if (ponderFilterStatus === PonderFilter.CANCELED) {
+      // Done
       query = `
          query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $ponderFilterStatus: Status!, $after: String) {
            databases(
@@ -113,8 +231,44 @@ export const usePonder = () => {
         ponderFilterStatus: ponderFilterStatus,
         after: after,
       };
+    } else if (ponderFilterStatus === PonderFilter.EXPIRED) {
+      query = `
+           query databases($orderBy: String!, $orderDirection: String!, $expiry_lt: BigInt ) {
+             databases(
+               orderBy: $orderBy,
+               orderDirection: $orderDirection,
+               where: {expiry_lt: $expiry_lt },
+               limit: 20,
+               after: $after
+             ) {
+               items {
+                 swapId
+                 status
+                 owner
+                 allowed
+                 expiry
+                 bid
+                 ask
+                 blockTimestamp
+                 transactionHash
+               }
+               pageInfo {
+                 hasNextPage
+                 endCursor
+               }
+             }
+           }
+         `;
+      variables = {
+        orderBy: "blockTimestamp",
+        orderDirection: "desc",
+        //inputAddress: formattedInputAddress,
+        expiry_lt: 1712078046,
+        //after: after,
+      };
     }
 
+    console.log("currentUnixTimeSeconds:", currentUnixTimeSeconds);
     const endpoint =
       "https://rascar-swaplace-ponder-production.up.railway.app/";
     const headers = {
