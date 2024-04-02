@@ -1,4 +1,4 @@
-import { ForWhom } from "../03-organisms";
+import { ForWhom } from "@/components/03-organisms";
 import {
   AddTokenCardManually,
   TokenAmountSelectionModal,

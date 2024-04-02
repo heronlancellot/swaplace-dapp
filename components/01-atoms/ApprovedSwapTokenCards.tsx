@@ -5,19 +5,23 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { Token } from "@/lib/shared/types";
 import { useContext, useEffect, useState } from "react";
 
-// TODO: Review this component for the approve token swap
-export const ApprovedTokenCards = () => {
+interface ApprovedSwapTokenCardsProps {
+  tokensList: Token[];
+}
+
+export const ApprovedSwapTokenCards = ({
+  tokensList,
+}: ApprovedSwapTokenCardsProps) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const [tokensApprovedForSwap, setTokensApprovedForSwap] = useState<Token[]>(
     [],
   );
 
-  const { authenticatedUserTokensList, setApprovedTokensCount } =
-    useContext(SwapContext);
+  const { setApprovedTokensCount } = useContext(SwapContext);
 
   useEffect(() => {
     setApprovedTokensCount(0);
-  }, [authenticatedUserTokensList]);
+  }, [tokensList]);
 
   if (!authenticatedUserAddress?.address) {
     return null;
@@ -34,7 +38,7 @@ export const ApprovedTokenCards = () => {
   return (
     <div className="flex justify-center items-center relative">
       <div className="grid grid-cols-1 w-[100%] gap-3 relative overflow-y-auto max-h-[370px] no-scrollbar">
-        {authenticatedUserTokensList.map((token, index) => (
+        {tokensList.map((token, index) => (
           <ApproveTokenCard
             setTokenWasApprovedForSwap={addNewTokenToApprovedList}
             key={index}
