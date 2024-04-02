@@ -118,7 +118,8 @@ export const TokensList = ({
   ));
 
   const addTokenSquare =
-    withAddTokenCard && variant === ForWhom.Your ? (
+    (withAddTokenCard && variant === ForWhom.Your) ||
+    (withAddTokenCard && variant === ForWhom.Their) ? (
       AddTokenCardManually({ forWhom: variant })
     ) : (
       <></>
