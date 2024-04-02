@@ -1,7 +1,4 @@
-import {
-  TokenOfferVariant,
-  TokensShelfVariant,
-} from "@/components/03-organisms";
+import { CreateTokenOfferVariant, ForWhom } from "@/components/03-organisms";
 import {
   TokenCardActionType,
   TokenCardStyleType,
@@ -16,7 +13,7 @@ import { useContext } from "react";
 
 interface CardOffersProps {
   address: EthereumAddress | null;
-  variant?: TokenOfferVariant;
+  variant?: CreateTokenOfferVariant;
 }
 
 interface CardOfferSConfig {
@@ -25,18 +22,18 @@ interface CardOfferSConfig {
 
 export const CardOffers = ({
   address,
-  variant = TokenOfferVariant.HORIZONTAL,
+  variant = CreateTokenOfferVariant.HORIZONTAL,
 }: CardOffersProps) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { authenticatedUserTokensList, searchedUserTokensList } =
     useContext(SwapContext);
 
   const tokenShelfVariant = authenticatedUserAddress?.equals(address)
-    ? TokensShelfVariant.Your
-    : TokensShelfVariant.Their;
-  const tokensOfferFor: Record<TokensShelfVariant, Token[]> = {
-    [TokensShelfVariant.Your]: searchedUserTokensList,
-    [TokensShelfVariant.Their]: authenticatedUserTokensList,
+    ? ForWhom.Your
+    : ForWhom.Their;
+  const tokensOfferFor: Record<ForWhom, Token[]> = {
+    [ForWhom.Your]: searchedUserTokensList,
+    [ForWhom.Their]: authenticatedUserTokensList,
   };
 
   const HorizontalVariant = (address: EthereumAddress | null) => {
@@ -87,11 +84,14 @@ export const CardOffers = ({
     );
   };
 
-  const CardOfferVariantsConfig: Record<TokenOfferVariant, CardOfferSConfig> = {
-    [TokenOfferVariant.HORIZONTAL]: {
+  const CardOfferVariantsConfig: Record<
+    CreateTokenOfferVariant,
+    CardOfferSConfig
+  > = {
+    [CreateTokenOfferVariant.HORIZONTAL]: {
       body: HorizontalVariant(address),
     },
-    [TokenOfferVariant.VERTICAL]: {
+    [CreateTokenOfferVariant.VERTICAL]: {
       body: VerticalVariant(address),
     },
   };
