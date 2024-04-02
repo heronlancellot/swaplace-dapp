@@ -16,8 +16,14 @@ export enum DisplayFilterOptions {
 export const StatusOffers = () => {
   const { setPonderFilterStatus } = useContext(SwapContext);
   const [offerIsActive, setOfferIsActive] = useState<number>(0);
-  const { data, status, error, fetchNextPage, isFetchingNextPage } =
-    usePonder();
+  const {
+    data,
+    status,
+    error,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+  } = usePonder();
 
   interface IFilterOffers {
     id: number;
@@ -80,6 +86,10 @@ export const StatusOffers = () => {
 
       case DisplayFilterOptions.CANCELED:
         setPonderFilterStatus(PonderFilter.CANCELED);
+        break;
+
+      case DisplayFilterOptions.EXPIRED:
+        setPonderFilterStatus(PonderFilter.EXPIRED);
         break;
 
       default:
