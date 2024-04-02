@@ -5,10 +5,10 @@ interface CloseCTAProps {
   props?: SVGProps<SVGSVGElement>;
 }
 
-export const CloseCTA = ({ onClick, props }: CloseCTAProps) => {
+export const CloseCTA = (props: CloseCTAProps) => {
   return (
     <button
-      onClick={onClick}
+      onClick={props.onClick}
       className="p-2 rounded-full border border-[#353836] dark:hover:bg-[#353836] hover:bg-zinc-200 transition"
     >
       <svg

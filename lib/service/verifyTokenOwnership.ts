@@ -2,6 +2,7 @@ import { MockERC20Abi, MockERC721Abi } from "../client/abi";
 import { EthereumAddress, TokenType } from "../shared/types";
 import { publicClient } from "../wallet/wallet-config";
 import toast from "react-hot-toast";
+import { getContract } from "viem";
 
 interface verifyTokensOwnershipProps {
   address: EthereumAddress;
@@ -11,11 +12,6 @@ interface verifyTokensOwnershipProps {
   chainId: number;
 }
 
-enum functionNameByTokenType {
-  ERC20 = "balanceOf",
-  ERC721 = "ownerOf",
-}
-
 export async function verifyTokenOwnership({
   address,
   contractAddress,
@@ -23,37 +19,35 @@ export async function verifyTokenOwnership({
   tokenType,
   chainId,
 }: verifyTokensOwnershipProps) {
-  let isOwner: boolean;
-  const [abi, functionName, args] =
+  const [abi, args] =
     tokenType === TokenType.ERC20
-      ? [MockERC20Abi, functionNameByTokenType.ERC20, [address.address]]
-      : [MockERC721Abi, functionNameByTokenType.ERC721, [tokenId]];
+      ? [MockERC20Abi, [address.address]]
+      : [MockERC721Abi, [tokenId]];
 
   try {
-    type ContractReturnType<T extends TokenType> = T extends TokenType.ERC721
-      ? string
-      : T extends TokenType.ERC20
-      ? bigint
-      : never;
-
-    const data: ContractReturnType<TokenType> = (await publicClient({
-      chainId: chainId,
-    }).readContract({
+    const contract = getContract({
       address: contractAddress,
-      abi: abi,
-      functionName: functionName,
-      args: args,
-    })) as ContractReturnType<TokenType>;
+      publicClient: publicClient({ chainId: chainId }),
+      abi,
+    });
 
-    typeof data === "string"
-      ? data.toUpperCase() !== address.address.toUpperCase()
-        ? (owner = false)
-        : (owner = true)
-      : typeof data === "bigint"
-      ? data > 0
-        ? (owner = true)
-        : (owner = false)
-      : (owner = false);
+    if (tokenType === TokenType.ERC721) {
+      const tokenOwner = await contract.read.ownerOf(args);
+
+      if (typeof tokenOwner === "string") {
+        return {
+          isOwner: tokenOwner.toUpperCase() !== address.address.toUpperCase(),
+        };
+      } else throw new Error("Invalid Token ownerOf response type");
+    } else if (tokenType === TokenType.ERC20) {
+      const tokenBalance = await contract.read.balanceOf(args);
+
+      if (typeof tokenBalance === "bigint") {
+        return {
+          isOwner: tokenBalance > 0,
+        };
+      } else throw new Error("Invalid Token balance response type");
+    }
 
     // onWalletConfirmation();
     // let txReceipt = {} as TransactionReceipt;
@@ -91,5 +85,4 @@ export async function verifyTokenOwnership({
       errorMessage: String(error),
     };
   }
-  return { owner };
 }

@@ -1,3 +1,4 @@
+import { ForWhom } from "../03-organisms";
 import {
   AddTokenOrSwapManuallyModal,
   AddTokenOrSwapManuallyModalVariant,
@@ -72,6 +73,7 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
               </button>
               <AddTokenOrSwapManuallyModal
                 open={toggleManually}
+                forWhom={ForWhom.Your}
                 onClose={() => {
                   setToggleManually(false);
                 }}

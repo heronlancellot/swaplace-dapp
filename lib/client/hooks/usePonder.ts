@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { cleanJsonString } from "../utils";
 import { Asset } from "../swap-utils";
 import { SwapContext } from "@/components/01-atoms";

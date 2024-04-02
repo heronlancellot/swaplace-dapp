@@ -86,13 +86,20 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       contractAddress: contractAddress,
       tokenId: tokenId,
       tokenType: tokenType,
-    }).then((owner) => {
-      owner.owner =
-        false &&
-        toast.error(
-          `The token does not belong to the address + ${authenticatedUserAddress}`,
-        );
-    });
+    })
+      .then((verification) => {
+        if (verification && verification.isOwner) {
+          // TODO: implement logic to be done to add token card
+        } else {
+          toast.error(
+            `The token does not belong to the address: ${authenticatedUserAddress}`,
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("Transaction failed");
+      });
   };
 
   return (
