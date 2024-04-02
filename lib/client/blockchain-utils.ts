@@ -135,7 +135,7 @@ async function getERC20OrERC721Metadata(token: Asset): Promise<Token> {
         logo: response.logo ?? undefined,
         symbol: response.symbol ?? undefined,
         contract: token.addr,
-        rawBalance: Number(token.amountOrId),
+        rawBalance: token.amountOrId,
         decimals: response.decimals,
       };
     } else {
