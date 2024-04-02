@@ -67,7 +67,6 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       toast.error("No valid address was given to add a token card for.");
       throw new Error("No valid address was given to add a token card for.");
     }
-    console.log("contractAddress ", contractAddress);
     if (!contractAddress) {
       toast.error("No contract address was given to add a token card for.");
       throw new Error("No contract address was given to add a token card for.");
