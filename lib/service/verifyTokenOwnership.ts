@@ -23,7 +23,7 @@ export async function verifyTokenOwnership({
   tokenType,
   chainId,
 }: verifyTokensOwnershipProps) {
-  let owner: boolean;
+  let isOwner: boolean;
   const [abi, functionName, args] =
     tokenType === TokenType.ERC20
       ? [MockERC20Abi, functionNameByTokenType.ERC20, [address.address]]
