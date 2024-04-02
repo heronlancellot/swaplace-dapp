@@ -95,7 +95,7 @@ export const TokensList = ({
         totalCardsLength:
           withAddTokenCard && variant === ForWhom.Your
             ? tokensList.length + 1 // Removes one empty square, so there is space for addTokenSquare
-            : tokensList.length,
+            : tokensList.length + 1, // Removes one empty square, so there is space for addTokenSquare
         mobileTotalSquares: mobileTotalCards,
         tabletTotalSquares: tabletTotalCards,
         desktopTotalSquares: desktopTotalCards,
