@@ -1,6 +1,7 @@
 import { MockERC20Abi, MockERC721Abi } from "../client/abi";
 import { EthereumAddress, TokenType } from "../shared/types";
 import { publicClient } from "../wallet/wallet-config";
+import toast from "react-hot-toast";
 
 interface verifyTokensOwnershipProps {
   address: EthereumAddress;
@@ -48,8 +49,10 @@ export async function verifyTokenOwnership({
       ? data.toUpperCase() !== address.address.toUpperCase()
         ? (owner = false)
         : (owner = true)
-      : data > 0
-      ? (owner = true)
+      : typeof data === "bigint"
+      ? data > 0
+        ? (owner = true)
+        : (owner = false)
       : (owner = false);
 
     // onWalletConfirmation();
@@ -79,6 +82,9 @@ export async function verifyTokenOwnership({
     // };
   } catch (error) {
     console.error(error);
+    toast.error(
+      "Transaction failed. Check the Contract address and the token chain",
+    );
     return {
       receipt: null,
       success: false,

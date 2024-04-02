@@ -52,7 +52,6 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
   const [tokenType, setTokenType] = useState<TokenType>(TokenType.ERC20);
   const [contractAddress, setContractAddress] = useState<string>("");
   const [tokenId, setTokenId] = useState<string>("");
-  // const {  data } = useWalletClient();
 
   const { chain } = useNetwork();
   const { authenticatedUserAddress } = useAuthenticatedUser();
@@ -65,10 +64,12 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         : validatedAddressToSwap;
 
     if (!address) {
+      toast.error("No valid address was given to add a token card for.");
       throw new Error("No valid address was given to add a token card for.");
     }
     console.log("contractAddress ", contractAddress);
     if (!contractAddress) {
+      toast.error("No contract address was given to add a token card for.");
       throw new Error("No contract address was given to add a token card for.");
     } else if (isAddress(contractAddress) === false) {
       toast.error("Invalid contract address.");
@@ -85,7 +86,13 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       contractAddress: contractAddress,
       tokenId: tokenId,
       tokenType: tokenType,
-    }).then((owner) => console.log("verifyOwner ", owner));
+    }).then((owner) => {
+      owner.owner =
+        false &&
+        toast.error(
+          `The token does not belong to the address + ${authenticatedUserAddress}`,
+        );
+    });
   };
 
   return (
