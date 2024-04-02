@@ -40,17 +40,15 @@ export const usePonder = () => {
     : `0x${inputAddress}`;
 
   const fetchSwaps = async ({ pageParam }: PageParam) => {
+    console.log("Ponder Filter Inside FetchSwaps:", ponderFilterStatus);
     const after = pageParam ? pageParam : null;
     let query = "";
     let variables = {};
 
-    const currentTimeDate = new Date();
-    const currentUnixTime = currentTimeDate.getTime();
     const currentUnixTimeSeconds = Math.floor(new Date().getTime() / 1000);
-    console.log("CurrentUnixTimeSeconds:", currentUnixTimeSeconds);
-    console.log("currentUnixTime:", currentUnixTime);
 
     if (ponderFilterStatus === PonderFilter.ALL_OFFERS) {
+      //Done
       query = `
          query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $after: String, $allowed: String) {
            databases(
@@ -233,11 +231,11 @@ export const usePonder = () => {
       };
     } else if (ponderFilterStatus === PonderFilter.EXPIRED) {
       query = `
-           query databases($orderBy: String!, $orderDirection: String!, $expiry_lt: BigInt ) {
+           query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $after: String, $expiry_lt: BigInt) {
              databases(
                orderBy: $orderBy,
                orderDirection: $orderDirection,
-               where: {expiry_lt: $expiry_lt },
+               where: {OR: [{ owner: $inputAddress }, { allowed: $inputAddress }, { status_not: ACCEPTED }, { status_not: CANCELED }], expiry_lt: $expiry_lt },
                limit: 20,
                after: $after
              ) {
@@ -262,13 +260,12 @@ export const usePonder = () => {
       variables = {
         orderBy: "blockTimestamp",
         orderDirection: "desc",
-        //inputAddress: formattedInputAddress,
-        expiry_lt: 1712078046,
-        //after: after,
+        inputAddress: formattedInputAddress,
+        expiry_lt: currentUnixTimeSeconds,
+        after: after,
       };
     }
 
-    console.log("currentUnixTimeSeconds:", currentUnixTimeSeconds);
     const endpoint =
       "https://rascar-swaplace-ponder-production.up.railway.app/";
     const headers = {
@@ -281,13 +278,13 @@ export const usePonder = () => {
         { query, variables },
         { headers },
       );
-      console.log("Full response:", response);
+      // console.log("Full response:", response);
 
       if (response.data && response.data.data) {
         const items = response.data.data.databases.items as Item[];
         const pageInfo = response.data.data.databases.pageInfo as PageInfo;
-        console.log("Items:", items);
-        console.log("PageInfo:", pageInfo);
+        // console.log("Items:", items);
+        // console.log("PageInfo:", pageInfo);
 
         return {
           items,
@@ -303,14 +300,20 @@ export const usePonder = () => {
     }
   };
 
-  const { data, status, error, isFetchingNextPage, fetchNextPage } =
-    useInfiniteQuery({
-      queryKey: ["swaps", inputAddress, ponderFilterStatus],
-      queryFn: ({ pageParam }: { pageParam: string | null }) =>
-        fetchSwaps({ pageParam }),
-      initialPageParam: null,
-      getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
-    });
+  const {
+    data,
+    status,
+    error,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["swaps", inputAddress, ponderFilterStatus],
+    queryFn: ({ pageParam }: { pageParam: string | null }) =>
+      fetchSwaps({ pageParam }),
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
+  });
 
   const pages = data?.pages ?? [];
   console.log("pages:", pages);
@@ -321,5 +324,6 @@ export const usePonder = () => {
     error,
     fetchNextPage,
     isFetchingNextPage,
+    hasNextPage,
   };
 };
