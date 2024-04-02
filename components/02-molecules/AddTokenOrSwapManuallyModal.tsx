@@ -91,7 +91,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
           // TODO: implement logic to be done to add token card
         } else {
           toast.error(
-            `The token does not belong to the address: ${authenticatedUserAddress}`,
+            `The token does not belong to the address: ${address.getEllipsedAddress()}`,
           );
         }
       })

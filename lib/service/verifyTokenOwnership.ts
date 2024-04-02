@@ -36,7 +36,7 @@ export async function verifyTokenOwnership({
 
       if (typeof tokenOwner === "string") {
         return {
-          isOwner: tokenOwner.toUpperCase() !== address.address.toUpperCase(),
+          isOwner: tokenOwner.toUpperCase() === address.address.toUpperCase(),
         };
       } else throw new Error("Invalid Token ownerOf response type");
     } else if (tokenType === TokenType.ERC20) {
