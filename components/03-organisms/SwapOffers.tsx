@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { SwapOfferCard } from "../02-molecules/SwapOfferCard";
 import {
   TokenOfferDetails,

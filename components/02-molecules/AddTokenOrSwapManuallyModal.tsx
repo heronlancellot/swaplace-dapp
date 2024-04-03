@@ -1,12 +1,11 @@
-import { ForWhom } from "../03-organisms";
-import { publicClient } from "@/lib/wallet/wallet-config";
+import { ForWhom } from "@/components/03-organisms";
 import { SwapContext, SwapModalLayout } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import { MockERC20Abi, MockERC721Abi } from "@/lib/client/abi";
 import { TokenType } from "@/lib/shared/types";
+import { verifyTokenOwnership } from "@/lib/service/verifyTokenOwnership";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
-import { getContract, isAddress } from "viem";
+import { isAddress } from "viem";
 import { useNetwork } from "wagmi";
 import toast from "react-hot-toast";
 
@@ -52,22 +51,24 @@ interface TokenBodyProps {
 const TokenBody = ({ forWhom }: TokenBodyProps) => {
   const [tokenType, setTokenType] = useState<TokenType>(TokenType.ERC20);
   const [contractAddress, setContractAddress] = useState<string>("");
+  const [tokenId, setTokenId] = useState<string>("");
 
   const { chain } = useNetwork();
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { validatedAddressToSwap } = useContext(SwapContext);
 
-  const addTokenCard = () => {
+  const addTokenCard = async () => {
     const address =
       forWhom === ForWhom.Your
         ? authenticatedUserAddress
         : validatedAddressToSwap;
 
     if (!address) {
+      toast.error("No valid address was given to add a token card for.");
       throw new Error("No valid address was given to add a token card for.");
     }
-
     if (!contractAddress) {
+      toast.error("No contract address was given to add a token card for.");
       throw new Error("No contract address was given to add a token card for.");
     } else if (isAddress(contractAddress) === false) {
       toast.error("Invalid contract address.");
@@ -78,16 +79,26 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       throw new Error("No chain was found.");
     }
 
-    const abi = tokenType === TokenType.ERC20 ? MockERC20Abi : MockERC721Abi;
-
-    const newTokenContract = getContract({
-      address: contractAddress,
-      publicClient: publicClient({ chainId: chain.id }),
-      abi,
-    });
-
-    // TODO: verify token ownership
-    console.log(newTokenContract);
+    await verifyTokenOwnership({
+      address: address,
+      chainId: chain.id,
+      contractAddress: contractAddress,
+      tokenId: tokenId,
+      tokenType: tokenType,
+    })
+      .then((verification) => {
+        if (verification && verification.isOwner) {
+          // TODO: implement logic to be done to add token card
+        } else {
+          toast.error(
+            `The token does not belong to the address: ${address.getEllipsedAddress()}`,
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("Transaction failed");
+      });
   };
 
   return (
@@ -130,7 +141,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
               Contract address
             </div>
             <div>
-              <input className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]" />
+              <input
+                onChange={(e) => setContractAddress(e.target.value)}
+                className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]"
+              />
             </div>
           </div>
         ) : (
@@ -151,7 +165,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
                 Token ID
               </div>
               <div>
-                <input className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]" />
+                <input
+                  onChange={(e) => setTokenId(e.target.value)}
+                  className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]"
+                />
               </div>
             </div>
           </div>

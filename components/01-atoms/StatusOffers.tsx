@@ -15,37 +15,6 @@ export enum DisplayFilterOptions {
 export const StatusOffers = () => {
   const { setPonderFilterStatus } = useContext(SwapContext);
   const [offerIsActive, setOfferIsActive] = useState<number>(0);
-  interface IFilterOffers {
-    id: number;
-    name: DisplayFilterOptions;
-  }
-
-  const OffersFilter: Record<DisplayFilterOptions, IFilterOffers> = {
-    [DisplayFilterOptions.ALL_OFFERS]: {
-      id: 1,
-      name: DisplayFilterOptions.ALL_OFFERS,
-    },
-    [DisplayFilterOptions.CREATED]: {
-      id: 2,
-      name: DisplayFilterOptions.CREATED,
-    },
-    [DisplayFilterOptions.RECEIVED]: {
-      id: 3,
-      name: DisplayFilterOptions.RECEIVED,
-    },
-    [DisplayFilterOptions.ACCEPTED]: {
-      id: 4,
-      name: DisplayFilterOptions.ACCEPTED,
-    },
-    [DisplayFilterOptions.CANCELED]: {
-      id: 5,
-      name: DisplayFilterOptions.CANCELED,
-    },
-    [DisplayFilterOptions.EXPIRED]: {
-      id: 6,
-      name: DisplayFilterOptions.EXPIRED,
-    },
-  };
 
   const handleFilterClick = (
     filterOption: DisplayFilterOptions,
@@ -78,10 +47,7 @@ export const StatusOffers = () => {
 
   return (
     <>
-      {Object.keys(OffersFilter).map((key, index) => {
-        const filterOption = key as DisplayFilterOptions;
-        const { id, name } = OffersFilter[filterOption];
-
+      {Object.keys(DisplayFilterOptions).map((key, index) => {
         return (
           <button
             className={cc([
@@ -91,7 +57,9 @@ export const StatusOffers = () => {
                 : "dark:hover:bg-[#282B29]",
             ])}
             key={index}
-            onClick={() => handleFilterClick(filterOption, index)}
+            onClick={() =>
+              handleFilterClick(key as DisplayFilterOptions, index)
+            }
           >
             <div
               className={cc([
@@ -100,17 +68,7 @@ export const StatusOffers = () => {
                   : "dark:text-[#A3A9A5] dark:group-hover:text-[#F6F6F6]",
               ])}
             >
-              {name}
-            </div>
-            <div
-              className={cc([
-                "bg-[#c7c7c7] rounded px-2 w-9 h-6 flex justify-center items-center dark:p-small-dark p-small dark:group-hover:bg-[#353836]",
-                offerIsActive === index
-                  ? "dark:bg-[#353836]"
-                  : "dark:bg-[#282B29]",
-              ])}
-            >
-              {id}
+              {DisplayFilterOptions[key as keyof typeof DisplayFilterOptions]}
             </div>
           </button>
         );
