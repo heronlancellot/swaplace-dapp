@@ -1,4 +1,4 @@
-import { TokenOffers } from "@/components/03-organisms";
+import { SwapOffers } from "../03-organisms/SwapOffers";
 import { FilterOffers, TheHeader } from "@/components/02-molecules";
 
 export const OfferSection = () => {
@@ -10,8 +10,8 @@ export const OfferSection = () => {
           <div className="flex flex-col">
             <FilterOffers />
           </div>
-          <div className="flex xl:flex-col ">
-            <TokenOffers />
+          <div className="flex xl:flex-col w-full items-center h-full overflow-auto">
+            <SwapOffers />
           </div>
         </div>
       </section>

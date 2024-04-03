@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { CreateTokenOffer } from "../03-organisms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   SwapModalLayout,
@@ -9,37 +10,33 @@ import {
   OfferExpiryConfirmSwap,
 } from "@/components/01-atoms";
 import { ProgressStatus } from "@/components/02-molecules";
-import { SwapUserConfiguration, createSwap } from "@/lib/service/createSwap";
+import { SwapUserConfiguration, acceptSwap } from "@/lib/service/acceptSwap";
 import {
   ButtonClickPossibilities,
-  packingData,
   toastBlockchainTxError,
 } from "@/lib/client/blockchain-utils";
-import { CreateTokenOffer } from "@/components/03-organisms";
-import { fromTokensToAssets, getSwapConfig } from "@/lib/client/swap-utils";
-import { SWAPLACE_SMART_CONTRACT_ADDRESS } from "@/lib/client/constants";
-import { publicClient } from "@/lib/wallet/wallet-config";
 import { SwapModalSteps } from "@/lib/client/ui-utils";
-import { SwaplaceAbi } from "@/lib/client/abi";
-import { EthereumAddress } from "@/lib/shared/types";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
 import { useContext, useEffect } from "react";
 import { useTheme } from "next-themes";
 import toast from "react-hot-toast";
-import { getContract } from "viem";
 
 interface ConfirmSwapApprovalModalProps {
+  swapId: number;
+  receiver: `0x${string}`;
   open: boolean;
   onClose: () => void;
 }
 
-export const ConfirmSwapModal = ({
+// TODO: Review this component for Swap
+export const ConfirmAcceptSwapModal = ({
+  swapId,
+  receiver,
   open,
   onClose,
 }: ConfirmSwapApprovalModalProps) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const {
-    timeDate,
     authenticatedUserTokensList,
     searchedUserTokensList,
     approvedTokensCount,
@@ -93,31 +90,6 @@ export const ConfirmSwapModal = ({
     if (!validatedAddressToSwap)
       throw new Error("No Swap offer receiver is defined");
 
-    const SwaplaceContract = getContract({
-      address: SWAPLACE_SMART_CONTRACT_ADDRESS[chainId] as `0x${string}`,
-      publicClient: publicClient({ chainId: chain.id }),
-      abi: SwaplaceAbi,
-    });
-    const packedData = await packingData(
-      SwaplaceContract,
-      validatedAddressToSwap,
-      timeDate,
-    );
-
-    const authenticatedUserAssets = await fromTokensToAssets(
-      authenticatedUserTokensList,
-    );
-    const searchedUserAssets = await fromTokensToAssets(searchedUserTokensList);
-
-    const swapConfig = await getSwapConfig(
-      new EthereumAddress(userWalletClient.account.address),
-      packedData,
-      timeDate,
-      authenticatedUserAssets,
-      searchedUserAssets,
-      chainId,
-    );
-
     const configurations: SwapUserConfiguration = {
       walletClient: userWalletClient,
       chain: chainId,
@@ -125,7 +97,11 @@ export const ConfirmSwapModal = ({
 
     try {
       if (approvedTokensCount) {
-        const transactionReceipt = await createSwap(swapConfig, configurations);
+        const transactionReceipt = await acceptSwap(
+          swapId,
+          receiver,
+          configurations,
+        );
 
         if (transactionReceipt != undefined) {
           toast.success("Successfully created swap offer!");
@@ -160,7 +136,7 @@ export const ConfirmSwapModal = ({
       <SwapModalLayout
         toggleCloseButton={{ open: open, onClose: onClose }}
         text={{
-          title: "Swap offer confirmation",
+          title: "Swap accept confirmation",
           description:
             "Before sending your offer, please approve the assets you want to trade by clicking on them.",
         }}

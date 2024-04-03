@@ -1,4 +1,4 @@
-import { TokensShelfVariant } from "@/components/03-organisms";
+import { ForWhom } from "@/components/03-organisms";
 import {
   AddTokenCardManually,
   TokenAmountSelectionModal,
@@ -10,6 +10,7 @@ import { TokenCardsPlaceholder } from "@/components/01-atoms";
 import { ERC20, EthereumAddress, Token } from "@/lib/shared/types";
 import { EMPTY_ERC_20_BALANCE } from "@/lib/client/blockchain-utils";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export interface TokensListProps {
   tokensList: Token[];
@@ -31,7 +32,7 @@ export interface TokensListProps {
   displayERC20TokensAmount?: boolean;
   tokenCardStyleType?: TokenCardStyleType;
   tokenCardClickAction?: TokenCardActionType;
-  variant: TokensShelfVariant;
+  variant: ForWhom;
   gridClassNames?: string;
 }
 
@@ -57,7 +58,7 @@ export const TokensList = ({
   withAddTokenCard = true,
   withSelectionValidation = true,
   displayERC20TokensAmount = false,
-  variant = TokensShelfVariant.Your,
+  variant = ForWhom.Your,
   tokenCardStyleType = TokenCardStyleType.NORMAL,
   tokenCardClickAction = TokenCardActionType.SELECT_TOKEN_FOR_SWAP,
   gridClassNames = "w-full h-full grid grid-cols-3 md:grid-cols-6 lg:grid-cols-6 gap-3",
@@ -71,6 +72,10 @@ export const TokensList = ({
     owner: EthereumAddress,
     token: Token,
   ) => {
+    toast("You have selected one ERC20 token!", {
+      icon: "⬇️",
+    });
+
     setSelectTokenAmountFor(token);
     setSelectTokenAmountOf(owner);
   };
@@ -87,7 +92,10 @@ export const TokensList = ({
 
   const placeholders = withPlaceholders
     ? TokenCardsPlaceholder({
-        totalCardsLength: tokensList.length,
+        totalCardsLength:
+          withAddTokenCard && variant === ForWhom.Your
+            ? tokensList.length + 1 // Removes one empty square, so there is space for addTokenSquare
+            : tokensList.length + 1, // Removes one empty square, so there is space for addTokenSquare
         mobileTotalSquares: mobileTotalCards,
         tabletTotalSquares: tabletTotalCards,
         desktopTotalSquares: desktopTotalCards,
@@ -97,23 +105,28 @@ export const TokensList = ({
       })
     : [<></>];
   const tokenCards = tokensList.map((token: Token, index) => (
-      <TokenCard
-        key={index}
-        styleType={tokenCardStyleType}
-        onClickAction={tokenCardClickAction}
-        displayERC20TokensAmount={displayERC20TokensAmount}
-        openTokenAmountSelectionModal={openTokenAmountSelectionModal}
-        withSelectionValidation={withSelectionValidation}
-        ownerAddress={ownerAddress}
-        tokenData={token}
-      />
+    <TokenCard
+      key={index}
+      styleType={tokenCardStyleType}
+      onClickAction={tokenCardClickAction}
+      displayERC20TokensAmount={displayERC20TokensAmount}
+      openTokenAmountSelectionModal={openTokenAmountSelectionModal}
+      withSelectionValidation={withSelectionValidation}
+      ownerAddress={ownerAddress}
+      tokenData={token}
+    />
   ));
 
-  let allSquares = [...tokenCards, ...placeholders];
+  const addTokenSquare =
+    (withAddTokenCard && variant === ForWhom.Your) ||
+    (withAddTokenCard && variant === ForWhom.Their) ? (
+      AddTokenCardManually({ forWhom: variant })
+    ) : (
+      <></>
+    );
+  const allSquares = [...tokenCards, addTokenSquare, ...placeholders];
 
-  const addTokenSquare = withAddTokenCard ? AddTokenCardManually() : <></>;
-
-  const Layout = (squares: React.JSX.Element[]) => {
+  const Layout = (squares: JSX.Element[]) => {
     return (
       <div className={gridClassNames}>
         {squares}
@@ -126,10 +139,5 @@ export const TokensList = ({
     );
   };
 
-  if (variant === TokensShelfVariant.Your) {
-    placeholders.pop(); // Removes the last element to fill with addToken
-    allSquares = [...allSquares, addTokenSquare];
-    return Layout(allSquares);
-  }
   return Layout(allSquares);
 };

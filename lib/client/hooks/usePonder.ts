@@ -1,15 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { cleanJsonString } from "../utils";
+import { Asset } from "../swap-utils";
 import { SwapContext } from "@/components/01-atoms";
+import { type NftMetadataBatchToken } from "alchemy-sdk";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 
+// We should update that function after to improve the type like the other swap
 interface Swap {
   swapId: string;
   status: string;
   owner: string;
   allowed: string | null;
   expiry: bigint;
-  bid: string;
-  ask: string;
+  bid: Asset[]; // Asset
+  ask: Asset[]; // Asset
 }
 
 export enum PonderFilter {
@@ -32,33 +37,79 @@ interface Ponder {
   };
 }
 
+// Determine if ERC20 / ERC721 and fetch data for each one of these
+// Through a function that gets the array of items and formats it
+
 export const usePonder = () => {
-  const { inputAddress, ponderFilterStatus } = useContext(SwapContext);
+  const { ponderFilterStatus } = useContext(SwapContext);
   const [allSwaps, setAllSwaps] = useState<Swap[]>([]);
+  const [isPonderSwapsLoading, setIsPonderSwapsLoading] = useState(false);
+  //Typing those states the way Alchemy understand
+  const [erc721AskSwaps, setERC721AskSwaps] = useState<NftMetadataBatchToken[]>(
+    [],
+  );
+
+  // endereço com contratos sepolia scan: 0xb7A42919ae66745Ffa69940De9d3DD99703eACb1
+
+  // TODO: place the actual ADDRESS_ZERO, not a hardcoded one
 
   useEffect(() => {
+    setIsPonderSwapsLoading(true);
     const fetchAllSwaps = async () => {
       try {
         const response = await axios(config);
-        console.log("response =", response);
 
-        const allSwapsResponseData = response.data.data.databases.items;
-        console.log("allSwapsResponseData", allSwapsResponseData);
+        const allSwapsResponseDataNotCleaned =
+          response.data.data.databases.items;
+
+        const allSwapsResponseData = allSwapsResponseDataNotCleaned.map(
+          (obj: any) => {
+            return {
+              ...obj,
+              bid: cleanJsonString(obj.bid),
+              ask: cleanJsonString(obj.ask),
+            };
+          },
+        );
 
         setAllSwaps(allSwapsResponseData);
+
+        const PonderAlchemyERC721Ask: NftMetadataBatchToken[] =
+          allSwapsResponseData.map((swap: Swap) => {
+            // We are verifying here because the types are not aligned yet, we must change in the future
+            // Must change the type Swap from ponder to update this probably
+            if (Array.isArray(swap.ask) && swap.ask.length > 0) {
+              const askObject = swap.ask[0];
+              return {
+                contractAddress: askObject.addr,
+                tokenId: BigInt(askObject.amountOrId),
+              };
+            } else {
+              console.error("Error ASK is not an array");
+              return null;
+            }
+          });
+
+        await setERC721AskSwaps(PonderAlchemyERC721Ask);
+        setIsPonderSwapsLoading(false);
       } catch (error) {
-        console.error(error);
+        console.error("error loading allSwaps :", error);
+        setIsPonderSwapsLoading(false);
         return [];
       }
     };
 
     fetchAllSwaps();
-  }, [ponderFilterStatus, inputAddress]);
+  }, [ponderFilterStatus]);
 
+  // For some reason the process.env isn't working here, must hardcode to test it
   const endpoint = process.env.NEXT_PUBLIC_PONDER_ENDPOINT;
   const headers = {
     "content-type": "application/json",
   };
+
+  // TODO: Replace hardcoded user address by autheticated user address
+  const inputAddress = "0x8c74f3aaaa448dafb5d5402f80cd16b2d7d95c16";
 
   const formattedInputAddress = inputAddress.startsWith("0x")
     ? inputAddress
@@ -69,7 +120,7 @@ export const usePonder = () => {
     ponderQuery = {
       operationName: "databases",
       query: `query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String! ) {
-        databases(orderBy: $orderBy, orderDirection: $orderDirection, where: { owner: $inputAddress }, limit: 20) {
+        databases(orderBy: $orderBy, orderDirection: $orderDirection, where: { owner: $inputAddress }, limit: 200) {
           items {
             swapId
             status
@@ -98,7 +149,7 @@ export const usePonder = () => {
     ponderQuery = {
       operationName: "databases",
       query: `query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $ponderFilterStatus: Status!  ) {
-        databases(orderBy: $orderBy, orderDirection: $orderDirection, where: { owner: $inputAddress, status: $ponderFilterStatus }, limit: 20) {
+        databases(orderBy: $orderBy, orderDirection: $orderDirection, where: { owner: $inputAddress, status: $ponderFilterStatus }, limit: 200) {
           items {
             swapId
             status
@@ -133,5 +184,9 @@ export const usePonder = () => {
     data: ponderQuery,
   };
 
-  return { allSwaps };
+  return {
+    allSwaps,
+    erc721AskSwaps,
+    isPonderSwapsLoading,
+  };
 };

@@ -1,32 +1,34 @@
 import { CardOffers } from "@/components/02-molecules";
-import {
-  TokenOfferDetails,
-  SwapIcon,
-  SwapContext,
-  SwapIconVariant,
-} from "@/components/01-atoms";
+import { SwapIcon, SwapContext, SwapIconVariant } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import cc from "classcat";
 import { useContext } from "react";
 
-export enum TokenOfferVariant {
+export enum CreateTokenOfferVariant {
   HORIZONTAL = "horizontal",
   VERTICAL = "vertical",
 }
 
-interface TokenOffersProps {
-  variant?: TokenOfferVariant;
+interface CreateTokenOfferProps {
+  variant?: CreateTokenOfferVariant;
 }
 
-interface TokenOffersConfig {
+interface CreateTokenOfferConfig {
   body: React.ReactNode;
 }
 
-export const TokenOffers = ({
-  variant = TokenOfferVariant.VERTICAL,
-}: TokenOffersProps) => {
+export const CreateTokenOffer = ({
+  variant = CreateTokenOfferVariant.VERTICAL,
+}: CreateTokenOfferProps) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { validatedAddressToSwap } = useContext(SwapContext);
+
+  /**
+   * The horizonalVariant from TokenOffers get the data from Ponder
+   * This variant will handle the offers to the authenticatedUserAddress
+   *
+   * @returns
+   */
 
   const HorizontalVariant = () => {
     return (
@@ -42,9 +44,7 @@ export const TokenOffers = ({
             <SwapIcon />
           </div>
         </div>
-        <div className="flex-col">
-          <TokenOfferDetails />
-        </div>
+        <div className="flex-col"></div>
       </div>
     );
   };
@@ -56,7 +56,7 @@ export const TokenOffers = ({
           <div className="p-4 relative flex flex-grow border border-[#353836] rounded-lg dark:bg-[#282B29]">
             <CardOffers
               address={authenticatedUserAddress}
-              variant={TokenOfferVariant.VERTICAL}
+              variant={CreateTokenOfferVariant.VERTICAL}
             />
           </div>
 
@@ -69,7 +69,7 @@ export const TokenOffers = ({
           <div className="p-4 flex flex-grow border border-[#353836] rounded-lg dark:bg-[#282B29]">
             <CardOffers
               address={validatedAddressToSwap}
-              variant={TokenOfferVariant.VERTICAL}
+              variant={CreateTokenOfferVariant.VERTICAL}
             />
           </div>
         </div>
@@ -77,14 +77,17 @@ export const TokenOffers = ({
     );
   };
 
-  const TokenOffersPropsConfig: Record<TokenOfferVariant, TokenOffersConfig> = {
-    [TokenOfferVariant.HORIZONTAL]: {
+  const CreateTokenOfferPropsConfig: Record<
+    CreateTokenOfferVariant,
+    CreateTokenOfferConfig
+  > = {
+    [CreateTokenOfferVariant.HORIZONTAL]: {
       body: <HorizontalVariant />,
     },
-    [TokenOfferVariant.VERTICAL]: {
+    [CreateTokenOfferVariant.VERTICAL]: {
       body: <VerticalVariant />,
     },
   };
 
-  return <>{TokenOffersPropsConfig[variant].body}</>;
+  return <>{CreateTokenOfferPropsConfig[variant].body}</>;
 };
