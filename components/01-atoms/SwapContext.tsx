@@ -82,7 +82,7 @@ export const SwapContextProvider = ({ children }: any) => {
     _inputEnsAddress: string | null | undefined,
   ) => {
     if (!inputAddress && !_inputEnsAddress) {
-      toast.error("Please enter a valid address or some registered ENS domain");
+      toast.error("Your wallet was disconnected successfully");
       setUserJustValidatedInput(true);
       return;
     }
