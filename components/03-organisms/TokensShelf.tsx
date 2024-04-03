@@ -8,6 +8,7 @@ import { TokensList } from "@/components/02-molecules";
 import { SelectUserIcon, SwapContext } from "@/components/01-atoms";
 import { useSupportedNetworks } from "@/lib/client/hooks/useSupportedNetworks";
 import { Token } from "@/lib/shared/types";
+import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -31,7 +32,12 @@ interface TokensShelfProps {
 export const TokensShelf = ({ variant }: TokensShelfProps) => {
   const { chain } = useNetwork();
   const { isNetworkSupported } = useSupportedNetworks();
-  const [allTokensList, setAllTokensList] = useState<Token[]>([]);
+  const {
+    yourTokensList,
+    setYourTokensList,
+    setTheirTokensList,
+    theirTokensList,
+  } = useContext(ShelfContext);
   const [tokensQueryStatus, setTokensQueryStatus] = useState<TokensQueryStatus>(
     TokensQueryStatus.EMPTY_QUERY,
   );
@@ -51,7 +57,10 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
       : ChainInfo[destinyChain].id;
 
     let queriedTokens: Token[] = [];
-    let tokensCount = allTokensList.length;
+    let tokensCount =
+      variant === ForWhom.Their
+        ? theirTokensList.length
+        : yourTokensList.length;
 
     if (address && chainId && !!authenticatedUserAddress) {
       setTokensQueryStatus(TokensQueryStatus.LOADING);
@@ -74,7 +83,9 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
           if (tokensCount === 0) {
             setTokensQueryStatus(TokensQueryStatus.NO_RESULTS);
           } else {
-            setAllTokensList(queriedTokens);
+            variant === ForWhom.Their
+              ? setTheirTokensList(queriedTokens)
+              : setYourTokensList(queriedTokens);
             setTokensQueryStatus(TokensQueryStatus.WITH_RESULTS);
           }
         });
@@ -83,19 +94,30 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
 
   // will only reload if network isNetworkSupported changes
   useEffect(() => {
-    !!authenticatedUserAddress && isNetworkSupported && getUserTokens();
-  }, [
-    address,
-    isNetworkSupported,
-    authenticatedUserAddress,
-    validatedAddressToSwap,
-    destinyChain,
-  ]);
+    if (variant === ForWhom.Your) {
+      !!authenticatedUserAddress && isNetworkSupported && getUserTokens();
+    }
+  }, [address, isNetworkSupported, authenticatedUserAddress]);
+
+  useEffect(() => {
+    if (variant === ForWhom.Their) {
+      validatedAddressToSwap &&
+        destinyChain &&
+        !!authenticatedUserAddress &&
+        isNetworkSupported &&
+        getUserTokens();
+    }
+  }, [validatedAddressToSwap, destinyChain]);
 
   const conditionallyCleanTokensList = (condition: boolean) => {
     if (condition) {
-      setAllTokensList([]);
-      setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
+      if (variant === ForWhom.Their) {
+        setTheirTokensList([]);
+        setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
+      } else {
+        setYourTokensList([]);
+        setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
+      }
     }
   };
 
@@ -131,7 +153,8 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
   useEffect(() => {
     conditionallyCleanTokensList(
       !authenticatedUserAddress?.equals(address) &&
-        !validatedAddressToSwap?.equals(authenticatedUserAddress),
+        !validatedAddressToSwap?.equals(authenticatedUserAddress) &&
+        variant === ForWhom.Their,
     );
   }, [inputAddress]);
 
@@ -144,6 +167,9 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
   useEffect(() => {
     conditionallyCleanTokensList(!isNetworkSupported);
   }, [isNetworkSupported]);
+
+  const allTokensList =
+    variant === ForWhom.Their ? theirTokensList : yourTokensList;
 
   return (
     <div className="w-full flex rounded-t-none overflow-y-auto lg:max-w-[600px] h-[356px] no-scrollbar">
@@ -189,7 +215,7 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
         <div className="flex justify-center w-full h-full bg-[#f8f8f8] dark:bg-[#212322] p-4">
           <div className="flex items-center">
             <p className="dark:text-[#F6F6F6] font-onest font-medium text-[16px] leading-[20px]">
-              Loading tokens of {address.getEllipsedAddress()}...
+              Loading tokens of {address.getEllipsedAddress()}
             </p>
           </div>
         </div>
