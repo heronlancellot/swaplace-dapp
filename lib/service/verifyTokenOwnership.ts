@@ -32,22 +32,35 @@ export async function verifyTokenOwnership({
     });
 
     if (tokenType === TokenType.ERC721) {
-      const tokenOwner = await contract.read.ownerOf(args);
-
-      if (typeof tokenOwner === "string") {
+      const tokenOwner = await contract.simulate.ownerOf(args);
+      if (typeof tokenOwner.result === "string") {
         return {
-          isOwner: tokenOwner.toUpperCase() === address.address.toUpperCase(),
+          isOwner:
+            (tokenOwner.result as string).toUpperCase() ===
+            address.address.toUpperCase(),
+          erc20Balance: undefined,
         };
       } else throw new Error("Invalid Token ownerOf response type");
     } else if (tokenType === TokenType.ERC20) {
-      const tokenBalance = await contract.read.balanceOf(args);
-
-      if (typeof tokenBalance === "bigint") {
-        return {
-          isOwner: tokenBalance > 0,
-          erc20Balance: tokenBalance,
-        };
-      } else throw new Error("Invalid Token balance response type");
+      // The array [] should not be used.
+      // This is a turn around for the current viem version: "^1.19.11"
+      await contract.simulate
+        .decimals([])
+        .then(async (hasDecimals) => {
+          hasDecimals &&
+            (await contract.simulate.balanceOf(args).then((tokenBalance) => {
+              if (typeof tokenBalance.result === "bigint") {
+                return {
+                  isOwner: tokenBalance.result > 0,
+                  erc20Balance: tokenBalance.result,
+                };
+              } else throw new Error("Invalid Token balance response type");
+            }));
+        })
+        .catch((error) => {
+          toast.error("This contract is not an ERC20 contract.");
+          console.error(error);
+        });
     }
   } catch (error) {
     console.error(error);
