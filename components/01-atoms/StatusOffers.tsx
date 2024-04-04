@@ -1,6 +1,7 @@
 import { SwapContext } from "@/components/01-atoms";
-import { PonderFilter } from "@/lib/client/hooks/usePonder";
-import { useState, useContext } from "react";
+import { PonderFilter, usePonder } from "@/lib/client/hooks/usePonder";
+import { useState, useContext, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import cc from "classcat";
 
 export enum DisplayFilterOptions {
@@ -15,6 +16,15 @@ export enum DisplayFilterOptions {
 export const StatusOffers = () => {
   const { setPonderFilterStatus } = useContext(SwapContext);
   const [offerIsActive, setOfferIsActive] = useState<number>(0);
+  const { fetchNextPage, isFetchingNextPage } = usePonder();
+
+  const { inView } = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView]);
 
   const handleFilterClick = (
     filterOption: DisplayFilterOptions,
@@ -37,6 +47,10 @@ export const StatusOffers = () => {
 
       case DisplayFilterOptions.CANCELED:
         setPonderFilterStatus(PonderFilter.CANCELED);
+        break;
+
+      case DisplayFilterOptions.EXPIRED:
+        setPonderFilterStatus(PonderFilter.EXPIRED);
         break;
 
       default:
@@ -73,6 +87,10 @@ export const StatusOffers = () => {
           </button>
         );
       })}
+      {/* Temporary button to fetch more  */}
+      <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+        {isFetchingNextPage ? "Loading..." : "Load More"}
+      </button>
     </>
   );
 };
