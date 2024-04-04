@@ -16,21 +16,14 @@ export enum DisplayFilterOptions {
 export const StatusOffers = () => {
   const { setPonderFilterStatus } = useContext(SwapContext);
   const [offerIsActive, setOfferIsActive] = useState<number>(0);
-  const {
-    data,
-    status,
-    error,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
-  } = usePonder();
+  const { fetchNextPage, isFetchingNextPage } = usePonder();
 
   interface IFilterOffers {
     id: number;
     name: DisplayFilterOptions;
   }
 
-  const { ref, inView } = useInView();
+  const { inView } = useInView();
 
   useEffect(() => {
     if (inView) {
