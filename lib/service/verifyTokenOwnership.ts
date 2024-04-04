@@ -45,6 +45,7 @@ export async function verifyTokenOwnership({
       if (typeof tokenBalance === "bigint") {
         return {
           isOwner: tokenBalance > 0,
+          erc20Balance: tokenBalance,
         };
       } else throw new Error("Invalid Token balance response type");
     }

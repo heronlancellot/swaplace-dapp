@@ -64,6 +64,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     tokenType: TokenType;
     contractAddress: `0x${string}`;
     tokenId: string;
+    balance?: bigint;
   }
 
   const verifyTokenAlreadyInTokenList = async (token: Token) => {
@@ -87,10 +88,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
 
   const addTokenToTokensList = (token: TokenManually) => {
     if (forWhom === ForWhom.Your) {
-      if (token.tokenType === TokenType.ERC20) {
+      if (token.tokenType === TokenType.ERC20 && token.balance) {
         const tokenERC20: ERC20 = {
           contract: token.contractAddress,
-          rawBalance: 0n, // Todo: should update to get by contract
+          rawBalance: token.balance,
           tokenType: token.tokenType,
         };
 
@@ -156,6 +157,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
             contractAddress: contractAddress,
             tokenId: tokenId,
             tokenType: tokenType,
+            balance: verification.erc20Balance,
           });
         } else {
           toast.error(
