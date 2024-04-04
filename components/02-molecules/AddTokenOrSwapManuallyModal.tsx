@@ -90,7 +90,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       if (token.tokenType === TokenType.ERC20) {
         const tokenERC20: ERC20 = {
           contract: token.contractAddress,
-          rawBalance: 0n, // should update to get by contract
+          rawBalance: 0n, // Todo: should update to get by contract
           tokenType: token.tokenType,
         };
 
