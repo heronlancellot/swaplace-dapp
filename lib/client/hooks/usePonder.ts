@@ -5,13 +5,13 @@ import { type NftMetadataBatchToken } from "alchemy-sdk";
 import axios from "axios";
 import { useContext } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 
-//Swaps
 interface Item {
   swapId: string;
   status: string;
   owner: string;
-  allowed: string | null;
+  allowed: string;
   expiry: bigint;
   bid: string;
   ask: string;
@@ -36,24 +36,21 @@ export enum PonderFilter {
 }
 
 export const usePonder = () => {
-  const { inputAddress, ponderFilterStatus } = useContext(SwapContext);
+  const { ponderFilterStatus } = useContext(SwapContext);
+  const { authenticatedUserAddress } = useAuthenticatedUser();
 
-  const formattedInputAddress = inputAddress.startsWith("0x") // Temporary replacing the authAddress
-    ? inputAddress
-    : `0x${inputAddress}`;
+  const userAddress = authenticatedUserAddress?.address;
+
+  const currentUnixTimeSeconds = Math.floor(new Date().getTime() / 1000);
 
   const fetchSwaps = async ({ pageParam }: PageParam) => {
-    console.log("Ponder Filter Inside FetchSwaps:", ponderFilterStatus);
     const after = pageParam ? pageParam : null;
     let query = "";
     let variables = {};
 
-    const currentUnixTimeSeconds = Math.floor(new Date().getTime() / 1000);
-
     if (ponderFilterStatus === PonderFilter.ALL_OFFERS) {
-      //Done
       query = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $after: String, $allowed: String) {
+         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
            databases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
@@ -82,18 +79,17 @@ export const usePonder = () => {
       variables = {
         orderBy: "blockTimestamp",
         orderDirection: "desc",
-        inputAddress: formattedInputAddress,
+        inputAddress: userAddress,
         after: after,
-        allowed: formattedInputAddress,
+        allowed: userAddress,
       };
     } else if (ponderFilterStatus === PonderFilter.CREATED) {
-      //Done
       query = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $ponderFilterStatus: Status!, $after: String, $expiry_gt: BigInt) {
+         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_gt: BigInt) {
            databases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
-             where: { owner: $inputAddress, status: $ponderFilterStatus, expiry_gt: $expiry_gt },
+             where: { owner: $inputAddress, status: CREATED, expiry_gt: $expiry_gt },
              limit: 20,
              after: $after
            ) {
@@ -118,13 +114,11 @@ export const usePonder = () => {
       variables = {
         orderBy: "blockTimestamp",
         orderDirection: "desc",
-        inputAddress: formattedInputAddress,
-        ponderFilterStatus: ponderFilterStatus,
+        inputAddress: userAddress,
         after: after,
         expiry_gt: currentUnixTimeSeconds,
       };
     } else if (ponderFilterStatus === PonderFilter.RECEIVED) {
-      // Done
       query = `
          query databases($orderBy: String!, $orderDirection: String!, $after: String, $allowed: String, $expiry_gt: BigInt) {
            databases(
@@ -156,13 +150,12 @@ export const usePonder = () => {
         orderBy: "blockTimestamp",
         orderDirection: "desc",
         after: after,
-        allowed: formattedInputAddress,
+        allowed: userAddress,
         expiry_gt: currentUnixTimeSeconds,
       };
     } else if (ponderFilterStatus === PonderFilter.ACCEPTED) {
-      //Done
       query = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $after: String, $allowed: String) {
+         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
            databases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
@@ -191,19 +184,17 @@ export const usePonder = () => {
       variables = {
         orderBy: "blockTimestamp",
         orderDirection: "desc",
-        inputAddress: formattedInputAddress,
-        ponderFilterStatus: ponderFilterStatus,
+        inputAddress: userAddress,
         after: after,
-        allowed: formattedInputAddress,
+        allowed: userAddress,
       };
     } else if (ponderFilterStatus === PonderFilter.CANCELED) {
-      // Done
       query = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $ponderFilterStatus: Status!, $after: String) {
+         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
            databases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
-             where: { owner: $inputAddress, status: $ponderFilterStatus },
+             where: { AND: [ {status: CANCELED}, {OR: [ {owner: $inputAddress}, {allowed: $allowed}]}]},
              limit: 20,
              after: $after
            ) {
@@ -228,13 +219,14 @@ export const usePonder = () => {
       variables = {
         orderBy: "blockTimestamp",
         orderDirection: "desc",
-        inputAddress: formattedInputAddress,
-        ponderFilterStatus: ponderFilterStatus,
+        inputAddress: userAddress,
+
         after: after,
+        allowed: userAddress,
       };
     } else if (ponderFilterStatus === PonderFilter.EXPIRED) {
       query = `
-           query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String!, $after: String, $expiry_lt: BigInt) {
+           query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_lt: BigInt) {
              databases(
                orderBy: $orderBy,
                orderDirection: $orderDirection,
@@ -263,7 +255,7 @@ export const usePonder = () => {
       variables = {
         orderBy: "blockTimestamp",
         orderDirection: "desc",
-        inputAddress: formattedInputAddress,
+        inputAddress: userAddress,
         expiry_lt: currentUnixTimeSeconds,
         after: after,
       };
@@ -281,13 +273,10 @@ export const usePonder = () => {
         { query, variables },
         { headers },
       );
-      // console.log("Full response:", response);
 
       if (response.data && response.data.data) {
         const items = response.data.data.databases.items as Item[];
         const pageInfo = response.data.data.databases.pageInfo as PageInfo;
-        // console.log("Items:", items);
-        // console.log("PageInfo:", pageInfo);
 
         return {
           items,
@@ -311,7 +300,7 @@ export const usePonder = () => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: ["swaps", inputAddress, ponderFilterStatus],
+    queryKey: ["PonderQuerySwaps", userAddress, ponderFilterStatus],
     queryFn: ({ pageParam }: { pageParam: string | null }) =>
       fetchSwaps({ pageParam }),
     initialPageParam: null,
