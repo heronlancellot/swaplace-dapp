@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ForWhom, TokensShelf } from ".";
+import { TokensShelf, ForWhom } from "@/components/03-organisms";
 import {
   SearchItemsShelf,
   SwapContext,

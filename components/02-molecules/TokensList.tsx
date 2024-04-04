@@ -1,4 +1,4 @@
-import { ForWhom } from "../03-organisms";
+import { ForWhom } from "@/components/03-organisms";
 import {
   AddTokenCardManually,
   TokenAmountSelectionModal,
@@ -95,7 +95,7 @@ export const TokensList = ({
         totalCardsLength:
           withAddTokenCard && variant === ForWhom.Your
             ? tokensList.length + 1 // Removes one empty square, so there is space for addTokenSquare
-            : tokensList.length,
+            : tokensList.length + 1, // Removes one empty square, so there is space for addTokenSquare
         mobileTotalSquares: mobileTotalCards,
         tabletTotalSquares: tabletTotalCards,
         desktopTotalSquares: desktopTotalCards,
@@ -118,7 +118,8 @@ export const TokensList = ({
   ));
 
   const addTokenSquare =
-    withAddTokenCard && variant === ForWhom.Your ? (
+    (withAddTokenCard && variant === ForWhom.Your) ||
+    (withAddTokenCard && variant === ForWhom.Their) ? (
       AddTokenCardManually({ forWhom: variant })
     ) : (
       <></>
