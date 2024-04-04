@@ -4,7 +4,7 @@ import { Asset } from "../swap-utils";
 import { SwapContext } from "@/components/01-atoms";
 import { type NftMetadataBatchToken } from "alchemy-sdk";
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 
@@ -14,8 +14,8 @@ interface Item {
   owner: string;
   allowed: string;
   expiry: bigint;
-  bid: string;
-  ask: string;
+  bid: Asset[]; // Asset
+  ask: Asset[]; // Asset
 }
 
 interface PageInfo {
@@ -39,6 +39,9 @@ export enum PonderFilter {
 export const usePonder = () => {
   const { ponderFilterStatus } = useContext(SwapContext);
   const { authenticatedUserAddress } = useAuthenticatedUser();
+  const [erc721AskSwaps, setERC721AskSwaps] = useState<NftMetadataBatchToken[]>(
+    [],
+  );
 
   const userAddress = authenticatedUserAddress?.address;
 
@@ -279,8 +282,37 @@ export const usePonder = () => {
         const items = response.data.data.databases.items as Item[];
         const pageInfo = response.data.data.databases.pageInfo as PageInfo;
 
+        // const processedItems = items.map(item => ({
+        //   ...item,
+        //   bid: cleanJsonString(item.bid),
+        //   ask: cleanJsonString(item.ask),
+        // }));
+
+        const processedItems = items.map((obj: any) => {
+          return {
+            ...obj,
+            bid: cleanJsonString(obj.bid),
+            ask: cleanJsonString(obj.ask),
+          };
+        });
+
+        const PonderAlchemyERC721Ask: NftMetadataBatchToken[] = processedItems
+          .map((swap: Item) => {
+            if (Array.isArray(swap.ask) && swap.ask.length > 0) {
+              const askObject = swap.ask[0];
+              return {
+                contractAddress: askObject.addr,
+                tokenId: BigInt(askObject.amountOrId),
+              };
+            } else {
+              console.error("Error ASK is not an array");
+              return null;
+            }
+          })
+          .filter((item) => item !== null) as NftMetadataBatchToken[];
+
         return {
-          items,
+          items: processedItems,
           pageInfo,
         };
       } else {
