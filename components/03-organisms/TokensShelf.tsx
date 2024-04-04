@@ -86,14 +86,8 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
             setTokensQueryStatus(TokensQueryStatus.NO_RESULTS);
           } else {
             variant === ForWhom.Their
-              ? setTheirTokensList([
-                  ...queriedTokens,
-                  ...theirManuallyAddedTokensList,
-                ])
-              : setYourTokensList([
-                  ...queriedTokens,
-                  ...yourManuallyAddedTokensList,
-                ]);
+              ? setTheirTokensList(queriedTokens)
+              : setYourTokensList(queriedTokens);
             setTokensQueryStatus(TokensQueryStatus.WITH_RESULTS);
           }
         });
@@ -116,6 +110,15 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
         getUserTokens();
     }
   }, [validatedAddressToSwap, destinyChain]);
+
+  /// Add Manually Token to TokensList & update Shelf
+  useEffect(() => {
+    setTheirTokensList([...theirTokensList, ...theirManuallyAddedTokensList]);
+  }, [theirManuallyAddedTokensList]);
+
+  useEffect(() => {
+    setYourTokensList([...yourTokensList, ...yourManuallyAddedTokensList]);
+  }, [yourManuallyAddedTokensList]);
 
   const conditionallyCleanTokensList = (condition: boolean) => {
     if (condition) {
