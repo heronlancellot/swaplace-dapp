@@ -14,8 +14,8 @@ interface Item {
   owner: string;
   allowed: string;
   expiry: bigint;
-  bid: Asset[]; // Asset
-  ask: Asset[]; // Asset
+  bid: Asset[];
+  ask: Asset[];
 }
 
 interface PageInfo {
@@ -48,188 +48,193 @@ export const usePonder = () => {
   const currentUnixTimeSeconds = Math.floor(new Date().getTime() / 1000);
 
   const fetchSwaps = async ({ pageParam }: PageParam) => {
-    const after = pageParam ? pageParam : null;
+    const after = pageParam || null;
     let query = "";
     let variables = {};
 
-    if (ponderFilterStatus === PonderFilter.ALL_OFFERS) {
-      query = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
-           databases(
-             orderBy: $orderBy,
-             orderDirection: $orderDirection,
-             where: { OR: [{owner: $inputAddress}, {allowed: $allowed}] },
-             limit: 20,
-             after: $after
-           ) {
-             items {
-               swapId
-               status
-               owner
-               allowed
-               expiry
-               bid
-               ask
-               blockTimestamp
-               transactionHash
-             }
-             pageInfo {
-               hasNextPage
-               endCursor
-             }
-           }
-         }
-       `;
-      variables = {
-        orderBy: "blockTimestamp",
-        orderDirection: "desc",
-        inputAddress: userAddress,
-        after: after,
-        allowed: userAddress,
-      };
-    } else if (ponderFilterStatus === PonderFilter.CREATED) {
-      query = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_gt: BigInt) {
-           databases(
-             orderBy: $orderBy,
-             orderDirection: $orderDirection,
-             where: { owner: $inputAddress, status: CREATED, expiry_gt: $expiry_gt },
-             limit: 20,
-             after: $after
-           ) {
-             items {
-               swapId
-               status
-               owner
-               allowed
-               expiry
-               bid
-               ask
-               blockTimestamp
-               transactionHash
-             }
-             pageInfo {
-               hasNextPage
-               endCursor
+    switch (ponderFilterStatus) {
+      case PonderFilter.ALL_OFFERS:
+        query = `
+           query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
+             databases(
+               orderBy: $orderBy,
+               orderDirection: $orderDirection,
+               where: { OR: [{owner: $inputAddress}, {allowed: $allowed}] },
+               limit: 20,
+               after: $after
+             ) {
+               items {
+                 swapId
+                 status
+                 owner
+                 allowed
+                 expiry
+                 bid
+                 ask
+                 blockTimestamp
+                 transactionHash
+               }
+               pageInfo {
+                 hasNextPage
+                 endCursor
+               }
              }
            }
-         }
-       `;
-      variables = {
-        orderBy: "blockTimestamp",
-        orderDirection: "desc",
-        inputAddress: userAddress,
-        after: after,
-        expiry_gt: currentUnixTimeSeconds,
-      };
-    } else if (ponderFilterStatus === PonderFilter.RECEIVED) {
-      query = `
-         query databases($orderBy: String!, $orderDirection: String!, $after: String, $allowed: String, $expiry_gt: BigInt) {
-           databases(
-             orderBy: $orderBy,
-             orderDirection: $orderDirection,
-             where: { allowed: $allowed, status_not: ACCEPTED, expiry_gt: $expiry_gt },
-             limit: 20,
-             after: $after
-           ) {
-             items {
-               swapId
-               status
-               owner
-               allowed
-               expiry
-               bid
-               ask
-               blockTimestamp
-               transactionHash
-             }
-             pageInfo {
-               hasNextPage
-               endCursor
-             }
-           }
-         }
-       `;
-      variables = {
-        orderBy: "blockTimestamp",
-        orderDirection: "desc",
-        after: after,
-        allowed: userAddress,
-        expiry_gt: currentUnixTimeSeconds,
-      };
-    } else if (ponderFilterStatus === PonderFilter.ACCEPTED) {
-      query = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
-           databases(
-             orderBy: $orderBy,
-             orderDirection: $orderDirection,
-             where: { AND: [ {status: ACCEPTED}, {OR: [ {owner: $inputAddress},{allowed: $allowed}]}]},
-             limit: 20,
-             after: $after
-           ) {
-             items {
-               swapId
-               status
-               owner
-               allowed
-               expiry
-               bid
-               ask
-               blockTimestamp
-               transactionHash
-             }
-             pageInfo {
-               hasNextPage
-               endCursor
+         `;
+        variables = {
+          orderBy: "blockTimestamp",
+          orderDirection: "desc",
+          inputAddress: userAddress,
+          after: after,
+          allowed: userAddress,
+        };
+        break;
+      case PonderFilter.CREATED:
+        query = `
+           query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_gt: BigInt) {
+             databases(
+               orderBy: $orderBy,
+               orderDirection: $orderDirection,
+               where: { owner: $inputAddress, status: CREATED, expiry_gt: $expiry_gt },
+               limit: 20,
+               after: $after
+             ) {
+               items {
+                 swapId
+                 status
+                 owner
+                 allowed
+                 expiry
+                 bid
+                 ask
+                 blockTimestamp
+                 transactionHash
+               }
+               pageInfo {
+                 hasNextPage
+                 endCursor
+               }
              }
            }
-         }
-       `;
-      variables = {
-        orderBy: "blockTimestamp",
-        orderDirection: "desc",
-        inputAddress: userAddress,
-        after: after,
-        allowed: userAddress,
-      };
-    } else if (ponderFilterStatus === PonderFilter.CANCELED) {
-      query = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
-           databases(
-             orderBy: $orderBy,
-             orderDirection: $orderDirection,
-             where: { AND: [ {status: CANCELED}, {OR: [ {owner: $inputAddress}, {allowed: $allowed}]}]},
-             limit: 20,
-             after: $after
-           ) {
-             items {
-               swapId
-               status
-               owner
-               allowed
-               expiry
-               bid
-               ask
-               blockTimestamp
-               transactionHash
-             }
-             pageInfo {
-               hasNextPage
-               endCursor
+         `;
+        variables = {
+          orderBy: "blockTimestamp",
+          orderDirection: "desc",
+          inputAddress: userAddress,
+          after: after,
+          expiry_gt: currentUnixTimeSeconds,
+        };
+        break;
+      case PonderFilter.RECEIVED:
+        query = `
+           query databases($orderBy: String!, $orderDirection: String!, $after: String, $allowed: String, $expiry_gt: BigInt) {
+             databases(
+               orderBy: $orderBy,
+               orderDirection: $orderDirection,
+               where: { allowed: $allowed, status_not: ACCEPTED, expiry_gt: $expiry_gt },
+               limit: 20,
+               after: $after
+             ) {
+               items {
+                 swapId
+                 status
+                 owner
+                 allowed
+                 expiry
+                 bid
+                 ask
+                 blockTimestamp
+                 transactionHash
+               }
+               pageInfo {
+                 hasNextPage
+                 endCursor
+               }
              }
            }
-         }
-       `;
-      variables = {
-        orderBy: "blockTimestamp",
-        orderDirection: "desc",
-        inputAddress: userAddress,
-
-        after: after,
-        allowed: userAddress,
-      };
-    } else if (ponderFilterStatus === PonderFilter.EXPIRED) {
-      query = `
+         `;
+        variables = {
+          orderBy: "blockTimestamp",
+          orderDirection: "desc",
+          after: after,
+          allowed: userAddress,
+          expiry_gt: currentUnixTimeSeconds,
+        };
+        break;
+      case PonderFilter.ACCEPTED:
+        query = `
+           query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
+             databases(
+               orderBy: $orderBy,
+               orderDirection: $orderDirection,
+               where: { AND: [ {status: ACCEPTED}, {OR: [ {owner: $inputAddress},{allowed: $allowed}]}]},
+               limit: 20,
+               after: $after
+             ) {
+               items {
+                 swapId
+                 status
+                 owner
+                 allowed
+                 expiry
+                 bid
+                 ask
+                 blockTimestamp
+                 transactionHash
+               }
+               pageInfo {
+                 hasNextPage
+                 endCursor
+               }
+             }
+           }
+         `;
+        variables = {
+          orderBy: "blockTimestamp",
+          orderDirection: "desc",
+          inputAddress: userAddress,
+          after: after,
+          allowed: userAddress,
+        };
+        break;
+      case PonderFilter.CANCELED:
+        query = `
+           query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
+             databases(
+               orderBy: $orderBy,
+               orderDirection: $orderDirection,
+               where: { AND: [ {status: CANCELED}, {OR: [ {owner: $inputAddress}, {allowed: $allowed}]}]},
+               limit: 20,
+               after: $after
+             ) {
+               items {
+                 swapId
+                 status
+                 owner
+                 allowed
+                 expiry
+                 bid
+                 ask
+                 blockTimestamp
+                 transactionHash
+               }
+               pageInfo {
+                 hasNextPage
+                 endCursor
+               }
+             }
+           }
+         `;
+        variables = {
+          orderBy: "blockTimestamp",
+          orderDirection: "desc",
+          inputAddress: userAddress,
+          after: after,
+          allowed: userAddress,
+        };
+        break;
+      case PonderFilter.EXPIRED:
+        query = `
            query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_lt: BigInt) {
              databases(
                orderBy: $orderBy,
@@ -256,20 +261,29 @@ export const usePonder = () => {
              }
            }
          `;
-      variables = {
-        orderBy: "blockTimestamp",
-        orderDirection: "desc",
-        inputAddress: userAddress,
-        expiry_lt: currentUnixTimeSeconds,
-        after: after,
-      };
+        variables = {
+          orderBy: "blockTimestamp",
+          orderDirection: "desc",
+          inputAddress: userAddress,
+          expiry_lt: currentUnixTimeSeconds,
+          after: after,
+        };
+        break;
+      default:
+        console.error("Invalid ponderFilterStatus:", ponderFilterStatus);
+        throw new Error("Invalid ponderFilterStatus");
     }
 
-    const endpoint =
-      "https://rascar-swaplace-ponder-production.up.railway.app/";
+    const endpoint = process.env.NEXT_PUBLIC_PONDER_ENDPOINT;
     const headers = {
       "Content-Type": "application/json",
     };
+
+    if (!endpoint) {
+      throw new Error(
+        "NEXT_PUBLIC_PONDER_ENDPOINT is not defined in the environment variables.",
+      );
+    }
 
     try {
       const response = await axios.post(
@@ -281,12 +295,6 @@ export const usePonder = () => {
       if (response.data && response.data.data) {
         const items = response.data.data.databases.items as Item[];
         const pageInfo = response.data.data.databases.pageInfo as PageInfo;
-
-        // const processedItems = items.map(item => ({
-        //   ...item,
-        //   bid: cleanJsonString(item.bid),
-        //   ask: cleanJsonString(item.ask),
-        // }));
 
         const processedItems = items.map((obj: any) => {
           return {
@@ -310,6 +318,8 @@ export const usePonder = () => {
             }
           })
           .filter((item) => item !== null) as NftMetadataBatchToken[];
+
+        setERC721AskSwaps(PonderAlchemyERC721Ask);
 
         return {
           items: processedItems,
@@ -340,8 +350,7 @@ export const usePonder = () => {
     getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
   });
 
-  const pages = data?.pages ?? [];
-  console.log("pages:", pages);
+  console.log("pages:", data?.pages);
 
   return {
     data,
@@ -350,5 +359,6 @@ export const usePonder = () => {
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
+    erc721AskSwaps,
   };
 };
