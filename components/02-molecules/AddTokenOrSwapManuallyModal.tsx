@@ -119,9 +119,9 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
 
         verifyTokenAlreadyInTokenList(tokenERC20).then((tokenAlreadyInList) => {
           tokenAlreadyInList
-            ? toast.error("Token ERC20 already in Token List")
-            : (setYourManuallyAddedTokensList([tokenERC20]),
-              toast.success("Token ERC20 added in Token List"));
+            ? (setYourManuallyAddedTokensList([tokenERC20]),
+              toast.success("Token ERC20 added in Token List"))
+            : toast.error("Token ERC20 already in Token List");
         });
       } else if (token.tokenType === TokenType.ERC721) {
         const tokenERC721: ERC721 = {
@@ -132,9 +132,9 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         verifyTokenAlreadyInTokenList(tokenERC721).then(
           (tokenAlreadyInList) => {
             tokenAlreadyInList
-              ? toast.error("Token ERC721 already in Token List")
-              : (setYourManuallyAddedTokensList([tokenERC721]),
-                toast.success("Token ERC721 added in Token List"));
+              ? (setYourManuallyAddedTokensList([tokenERC721]),
+                toast.success("Token ERC721 added in Token List"))
+              : toast.error("Token ERC721 already in Token List");
           },
         );
       }
@@ -148,9 +148,9 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
 
         verifyTokenAlreadyInTokenList(tokenERC20).then((tokenAlreadyInList) => {
           tokenAlreadyInList
-            ? toast.error("Token ERC20 already in Token List")
-            : (setTheirManuallyAddedTokensList([tokenERC20]),
-              toast.success("Token ERC20 added in Token List"));
+            ? (setTheirManuallyAddedTokensList([tokenERC20]),
+              toast.success("Token ERC20 added in Token List"))
+            : toast.error("Token ERC20 already in Token List");
         });
       } else if (token.tokenType === TokenType.ERC721) {
         const tokenERC721: ERC721 = {
@@ -162,9 +162,9 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         verifyTokenAlreadyInTokenList(tokenERC721).then(
           (tokenAlreadyInList) => {
             tokenAlreadyInList
-              ? toast.error("Token ERC721 already in Token List")
-              : (setYourManuallyAddedTokensList([tokenERC721]),
-                toast.success("Token ERC721 added in Token List"));
+              ? (setYourManuallyAddedTokensList([tokenERC721]),
+                toast.success("Token ERC721 added in Token List"))
+              : toast.error("Token ERC721 already in Token List");
           },
         );
       }
@@ -208,7 +208,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
             tokenType: tokenType,
             balance: verification.erc20Balance,
           });
-        } else {
+        } else if (verification && !verification.isOwner) {
           toast.error(
             `The token does not belong to the address: ${address.getEllipsedAddress()}`,
           );
