@@ -1,8 +1,9 @@
 import { ForWhom } from "@/components/03-organisms";
 import { SwapContext, SwapModalLayout } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import { TokenType } from "@/lib/shared/types";
+import { ERC20, ERC721, Token, TokenType } from "@/lib/shared/types";
 import { verifyTokenOwnership } from "@/lib/service/verifyTokenOwnership";
+import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
 import { isAddress } from "viem";
@@ -56,6 +57,69 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
   const { chain } = useNetwork();
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { validatedAddressToSwap } = useContext(SwapContext);
+  const { yourTokensList, setYourManuallyAddedTokensList } =
+    useContext(ShelfContext);
+
+  interface TokenManually {
+    tokenType: TokenType;
+    contractAddress: `0x${string}`;
+    tokenId: string;
+  }
+
+  const verifyTokenAlreadyInTokenList = async (token: Token) => {
+    if (token.tokenType === TokenType.ERC20) {
+      return yourTokensList.some(
+        (t) =>
+          t.contract &&
+          token.contract &&
+          t.contract.toUpperCase() === token.contract.toUpperCase(),
+      );
+    } else if (token.tokenType === TokenType.ERC721) {
+      return yourTokensList.some(
+        (t) =>
+          t.contract &&
+          token.contract &&
+          t.contract.toUpperCase() === token.contract.toUpperCase() &&
+          t.id === token.id,
+      );
+    }
+  };
+
+  const addTokenToTokensList = (token: TokenManually) => {
+    if (forWhom === ForWhom.Your) {
+      if (token.tokenType === TokenType.ERC20) {
+        const tokenERC20: ERC20 = {
+          contract: token.contractAddress,
+          rawBalance: 0n, // should update to get by contract
+          tokenType: token.tokenType,
+        };
+
+        verifyTokenAlreadyInTokenList(tokenERC20).then((tokenAlreadyInList) => {
+          tokenAlreadyInList
+            ? toast.error("Token ERC20 already in Token List")
+            : (setYourManuallyAddedTokensList([tokenERC20]),
+              toast.success("Token ERC20 added in Token List"));
+        });
+      } else if (token.tokenType === TokenType.ERC721) {
+        const tokenERC721: ERC721 = {
+          contract: token.contractAddress,
+          id: token.tokenId,
+          tokenType: token.tokenType,
+        };
+
+        verifyTokenAlreadyInTokenList(tokenERC721).then(
+          (tokenAlreadyInList) => {
+            tokenAlreadyInList
+              ? toast.error("Token ERC721 already in Token List")
+              : (setYourManuallyAddedTokensList([tokenERC721]),
+                toast.success("Token ERC721 added in Token List"));
+          },
+        );
+      }
+    } else if (forWhom === ForWhom.Their) {
+      // Todo: Implement the code or do only once temporary comment
+    }
+  };
 
   const addTokenCard = async () => {
     const address =
@@ -88,7 +152,11 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     })
       .then((verification) => {
         if (verification && verification.isOwner) {
-          // TODO: implement logic to be done to add token card
+          addTokenToTokensList({
+            contractAddress: contractAddress,
+            tokenId: tokenId,
+            tokenType: tokenType,
+          });
         } else {
           toast.error(
             `The token does not belong to the address: ${address.getEllipsedAddress()}`,

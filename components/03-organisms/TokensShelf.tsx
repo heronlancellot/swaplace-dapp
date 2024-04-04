@@ -37,6 +37,8 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
     setYourTokensList,
     setTheirTokensList,
     theirTokensList,
+    yourManuallyAddedTokensList,
+    theirManuallyAddedTokensList,
   } = useContext(ShelfContext);
   const [tokensQueryStatus, setTokensQueryStatus] = useState<TokensQueryStatus>(
     TokensQueryStatus.EMPTY_QUERY,
@@ -84,8 +86,14 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
             setTokensQueryStatus(TokensQueryStatus.NO_RESULTS);
           } else {
             variant === ForWhom.Their
-              ? setTheirTokensList(queriedTokens)
-              : setYourTokensList(queriedTokens);
+              ? setTheirTokensList([
+                  ...queriedTokens,
+                  ...theirManuallyAddedTokensList,
+                ])
+              : setYourTokensList([
+                  ...queriedTokens,
+                  ...yourManuallyAddedTokensList,
+                ]);
             setTokensQueryStatus(TokensQueryStatus.WITH_RESULTS);
           }
         });
