@@ -12,13 +12,18 @@ interface verifyTokensOwnershipProps {
   chainId: number;
 }
 
+interface VerifyTokensResponse {
+  isOwner: boolean;
+  erc20Balance: bigint | null;
+}
+
 export async function verifyTokenOwnership({
   address,
   contractAddress,
   tokenId,
   tokenType,
   chainId,
-}: verifyTokensOwnershipProps) {
+}: verifyTokensOwnershipProps): Promise<VerifyTokensResponse> {
   const [abi, args] =
     tokenType === TokenType.ERC20
       ? [MockERC20Abi, [address.address]]
@@ -38,39 +43,44 @@ export async function verifyTokenOwnership({
           isOwner:
             (tokenOwner.result as string).toUpperCase() ===
             address.address.toUpperCase(),
-          erc20Balance: undefined,
+          erc20Balance: null,
         };
       } else throw new Error("Invalid Token ownerOf response type");
     } else if (tokenType === TokenType.ERC20) {
       // The array [] should not be used.
       // This is a turn around for the current viem version: "^1.19.11"
-      await contract.simulate
-        .decimals([])
-        .then(async (hasDecimals) => {
-          hasDecimals &&
-            (await contract.simulate.balanceOf(args).then((tokenBalance) => {
-              if (typeof tokenBalance.result === "bigint") {
-                return {
-                  isOwner: tokenBalance.result > 0,
-                  erc20Balance: tokenBalance.result,
-                };
-              } else throw new Error("Invalid Token balance response type");
-            }));
-        })
-        .catch((error) => {
-          toast.error("This contract is not an ERC20 contract.");
-          console.error(error);
-        });
+      const hasDecimals = await contract.read.decimals([]).catch((error) => {
+        toast.error("This contract is not an ERC20 contract.");
+        console.error(error);
+        throw error;
+      });
+
+      if (hasDecimals) {
+        const tokenBalance = await contract.read
+          .balanceOf(args)
+          .catch((error) => {
+            console.error(error);
+            throw error;
+          });
+
+        if (typeof tokenBalance === "bigint") {
+          return {
+            isOwner: tokenBalance > 0,
+            erc20Balance: tokenBalance,
+          };
+        } else throw new Error("Invalid Token balance response type");
+      }
     }
   } catch (error) {
     console.error(error);
     toast.error(
       "Transaction failed. Check the Contract address and the token chain",
     );
-    return {
-      receipt: null,
-      success: false,
-      errorMessage: String(error),
-    };
+    throw error;
   }
+
+  return {
+    isOwner: false,
+    erc20Balance: null,
+  };
 }
