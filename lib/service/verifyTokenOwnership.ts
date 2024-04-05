@@ -14,7 +14,7 @@ interface verifyTokensOwnershipProps {
 
 interface VerifyTokensResponse {
   isOwner: boolean;
-  erc20Balance: bigint | null;
+  erc20Balance: bigint;
 }
 
 export async function verifyTokenOwnership({
@@ -43,7 +43,7 @@ export async function verifyTokenOwnership({
           isOwner:
             (tokenOwner.result as string).toUpperCase() ===
             address.address.toUpperCase(),
-          erc20Balance: null,
+          erc20Balance: 0n,
         };
       } else throw new Error("Invalid Token ownerOf response type");
     } else if (tokenType === TokenType.ERC20) {
@@ -81,6 +81,6 @@ export async function verifyTokenOwnership({
 
   return {
     isOwner: false,
-    erc20Balance: null,
+    erc20Balance: 0n,
   };
 }

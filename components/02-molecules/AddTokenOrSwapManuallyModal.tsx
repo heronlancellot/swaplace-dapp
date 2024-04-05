@@ -71,38 +71,32 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
   }
 
   const verifyTokenAlreadyInTokenList = async (token: Token) => {
+    const filteringYourToken = yourTokensList.some(
+      (t) =>
+        t.contract &&
+        token.contract &&
+        t.contract.toUpperCase() === token.contract.toUpperCase(),
+    );
+    const filteringTheirToken = theirTokensList.some(
+      (t) =>
+        t.contract &&
+        token.contract &&
+        t.contract.toUpperCase() === token.contract.toUpperCase(),
+    );
     if (forWhom === ForWhom.Your) {
       if (token.tokenType === TokenType.ERC20) {
-        return yourTokensList.some(
-          (t) =>
-            t.contract &&
-            token.contract &&
-            t.contract.toUpperCase() === token.contract.toUpperCase(),
-        );
+        return filteringYourToken;
       } else if (token.tokenType === TokenType.ERC721) {
         return yourTokensList.some(
-          (t) =>
-            t.contract &&
-            token.contract &&
-            t.contract.toUpperCase() === token.contract.toUpperCase() &&
-            t.id === token.id,
+          (t) => filteringYourToken && t.id === token.id,
         );
       }
     } else if (forWhom === ForWhom.Their) {
       if (token.tokenType === TokenType.ERC20) {
-        return theirTokensList.some(
-          (t) =>
-            t.contract &&
-            token.contract &&
-            t.contract.toUpperCase() === token.contract.toUpperCase(),
-        );
+        return filteringTheirToken;
       } else if (token.tokenType === TokenType.ERC721) {
         return theirTokensList.some(
-          (t) =>
-            t.contract &&
-            token.contract &&
-            t.contract.toUpperCase() === token.contract.toUpperCase() &&
-            t.id === token.id,
+          (t) => filteringTheirToken && t.id === token.id,
         );
       }
     }
@@ -118,10 +112,12 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         };
 
         verifyTokenAlreadyInTokenList(tokenERC20).then((tokenAlreadyInList) => {
-          tokenAlreadyInList
-            ? (setYourManuallyAddedTokensList([tokenERC20]),
-              toast.success("Token ERC20 added in Token List"))
-            : toast.error("Token ERC20 already in Token List");
+          if (tokenAlreadyInList) {
+            toast.error("Token ERC20 already in Token List");
+          } else {
+            setYourManuallyAddedTokensList([tokenERC20]);
+            toast.success("Token ERC20 added in Token List");
+          }
         });
       } else if (token.tokenType === TokenType.ERC721) {
         const tokenERC721: ERC721 = {
@@ -131,10 +127,12 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         };
         verifyTokenAlreadyInTokenList(tokenERC721).then(
           (tokenAlreadyInList) => {
-            tokenAlreadyInList
-              ? (setYourManuallyAddedTokensList([tokenERC721]),
-                toast.success("Token ERC721 added in Token List"))
-              : toast.error("Token ERC721 already in Token List");
+            if (tokenAlreadyInList) {
+              toast.error("Token ERC721 already in Token List");
+            } else {
+              setYourManuallyAddedTokensList([tokenERC721]);
+              toast.success("Token ERC721 added in Token List");
+            }
           },
         );
       }
@@ -147,10 +145,12 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         };
 
         verifyTokenAlreadyInTokenList(tokenERC20).then((tokenAlreadyInList) => {
-          tokenAlreadyInList
-            ? (setTheirManuallyAddedTokensList([tokenERC20]),
-              toast.success("Token ERC20 added in Token List"))
-            : toast.error("Token ERC20 already in Token List");
+          if (tokenAlreadyInList) {
+            toast.error("Token ERC20 already in Token List");
+          } else {
+            setTheirManuallyAddedTokensList([tokenERC20]);
+            toast.success("Token ERC20 added in Token List");
+          }
         });
       } else if (token.tokenType === TokenType.ERC721) {
         const tokenERC721: ERC721 = {
@@ -161,10 +161,12 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
 
         verifyTokenAlreadyInTokenList(tokenERC721).then(
           (tokenAlreadyInList) => {
-            tokenAlreadyInList
-              ? (setYourManuallyAddedTokensList([tokenERC721]),
-                toast.success("Token ERC721 added in Token List"))
-              : toast.error("Token ERC721 already in Token List");
+            if (tokenAlreadyInList) {
+              toast.error("Token ERC721 already in Token List");
+            } else {
+              setYourManuallyAddedTokensList([tokenERC721]);
+              toast.success("Token ERC721 added in Token List");
+            }
           },
         );
       }
@@ -211,7 +213,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
             contractAddress: contractAddress,
             tokenId: tokenId,
             tokenType: tokenType,
-            balance: verification.erc20Balance ?? undefined,
+            balance: verification.erc20Balance ?? 0n,
           });
         }
       })
