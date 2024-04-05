@@ -206,7 +206,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
             contractAddress: contractAddress,
             tokenId: tokenId,
             tokenType: tokenType,
-            balance: verification.erc20Balance,
+            balance: verification.erc20Balance ?? undefined,
           });
         } else if (verification && !verification.isOwner) {
           toast.error(
