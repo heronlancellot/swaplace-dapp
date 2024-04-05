@@ -201,22 +201,22 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       tokenType: tokenType,
     })
       .then((verification) => {
-        if (verification && verification.isOwner) {
+        if (!verification.isOwner) {
+          toast.error(
+            `The token does not belong to the address: ${address.getEllipsedAddress()}`,
+          );
+          throw new Error("The token does not belong to the address");
+        } else if (verification && verification.isOwner) {
           addTokenToTokensList({
             contractAddress: contractAddress,
             tokenId: tokenId,
             tokenType: tokenType,
             balance: verification.erc20Balance ?? undefined,
           });
-        } else if (verification && !verification.isOwner) {
-          toast.error(
-            `The token does not belong to the address: ${address.getEllipsedAddress()}`,
-          );
         }
       })
       .catch((error) => {
         console.error(error);
-        toast.error("Transaction failed");
       });
   };
 
