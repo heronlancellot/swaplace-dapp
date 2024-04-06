@@ -65,6 +65,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
 
   interface TokenManually {
     tokenType: TokenType;
+    tokenName: string;
     contractAddress: `0x${string}`;
     tokenId: string;
     balance?: bigint;
@@ -106,6 +107,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     if (forWhom === ForWhom.Your) {
       if (token.tokenType === TokenType.ERC20 && token.balance) {
         const tokenERC20: ERC20 = {
+          name: token.tokenName,
           contract: token.contractAddress,
           rawBalance: token.balance,
           tokenType: token.tokenType,
@@ -121,6 +123,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         });
       } else if (token.tokenType === TokenType.ERC721) {
         const tokenERC721: ERC721 = {
+          name: token.tokenName,
           contract: token.contractAddress,
           id: token.tokenId,
           tokenType: token.tokenType,
@@ -139,6 +142,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     } else if (forWhom === ForWhom.Their) {
       if (token.tokenType === TokenType.ERC20 && token.balance) {
         const tokenERC20: ERC20 = {
+          name: token.tokenName,
           contract: token.contractAddress,
           rawBalance: token.balance,
           tokenType: token.tokenType,
@@ -154,6 +158,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         });
       } else if (token.tokenType === TokenType.ERC721) {
         const tokenERC721: ERC721 = {
+          name: token.tokenName,
           contract: token.contractAddress,
           id: token.tokenId,
           tokenType: token.tokenType,
@@ -210,6 +215,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
           throw new Error("The token does not belong to the address");
         } else if (verification && verification.isOwner) {
           addTokenToTokensList({
+            tokenName: verification.name,
             contractAddress: contractAddress,
             tokenId: tokenId,
             tokenType: tokenType,
