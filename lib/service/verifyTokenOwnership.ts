@@ -15,6 +15,7 @@ interface verifyTokensOwnershipProps {
 interface VerifyTokensResponse {
   isOwner: boolean;
   erc20Balance: bigint;
+  name: string;
 }
 
 export async function verifyTokenOwnership({
@@ -36,6 +37,10 @@ export async function verifyTokenOwnership({
       abi,
     });
 
+    let tokenName = await contract.read.name([]);
+    if (typeof tokenName !== "string") {
+      tokenName = "";
+    }
     if (tokenType === TokenType.ERC721) {
       const tokenOwner = await contract.simulate.ownerOf(args);
       if (typeof tokenOwner.result === "string") {
@@ -44,6 +49,7 @@ export async function verifyTokenOwnership({
             (tokenOwner.result as string).toUpperCase() ===
             address.address.toUpperCase(),
           erc20Balance: 0n,
+          name: tokenName as string,
         };
       } else throw new Error("Invalid Token ownerOf response type");
     } else if (tokenType === TokenType.ERC20) {
@@ -56,17 +62,13 @@ export async function verifyTokenOwnership({
       });
 
       if (hasDecimals) {
-        const tokenBalance = await contract.read
-          .balanceOf(args)
-          .catch((error) => {
-            console.error(error);
-            throw error;
-          });
+        const tokenBalance = await contract.read.balanceOf(args);
 
         if (typeof tokenBalance === "bigint") {
           return {
             isOwner: tokenBalance > 0,
             erc20Balance: tokenBalance,
+            name: tokenName as string,
           };
         } else throw new Error("Invalid Token balance response type");
       }
@@ -82,5 +84,6 @@ export async function verifyTokenOwnership({
   return {
     isOwner: false,
     erc20Balance: 0n,
+    name: "",
   };
 }

@@ -17,7 +17,7 @@ import {
   Alchemy,
 } from "alchemy-sdk";
 import toast from "react-hot-toast";
-import { hexToNumber } from "viem";
+//import { hexToNumber } from "viem";
 import { sepolia } from "wagmi";
 
 export enum ButtonClickPossibilities {
@@ -173,6 +173,8 @@ export const retrieveDataFromTokensArray = async (
 };
 
 const parseAlchemyERC721Tokens = (tokens: OwnedNft[]): ERC721[] => {
+  console.log(tokens);
+
   return tokens.map((token) => {
     return {
       tokenType: TokenType.ERC721,
@@ -222,12 +224,29 @@ export const getERC20TokensFromAddress = async (
 export const EMPTY_ERC_20_BALANCE = 0n;
 
 const parseAlchemyERC20Tokens = (tokens: OwnedToken[]): ERC20[] => {
-  return tokens.map((token) => {
-    const rawBalanceAsBigInt = token.rawBalance
-      ? BigInt(hexToNumber(token.rawBalance as `0x${string}`))
-      : EMPTY_ERC_20_BALANCE;
+  console.log(tokens);
+  //return tokens.map((token) => {
+  return tokens.map(() => {
+    //const rawBalanceAsBigInt = token.rawBalance
+    //? BigInt(hexToNumber(token.rawBalance as `0x${string}`))
+    //: EMPTY_ERC_20_BALANCE;
 
     return {
+      // tokenType: TokenType.ERC20,
+      // /*
+      //   This ID is only used for TokenCard selection, in the Ui of the dApp.
+      //   We want it to be as randomic and unique as possible besides being
+      //   yet, mathematically possible to have same IDs on two different
+      //   tokens. Possible, but very unlikely to generate non-unique
+      //   IDs, below maths solve our ID generation goal, today.
+      // */
+      // id: ((Date.now() * Math.random()) / Math.random()).toFixed(0),
+      // name: token.name,
+      // decimals: token.decimals,
+      // logo: token.logo,
+      // symbol: token.symbol,
+      // rawBalance: rawBalanceAsBigInt,
+      // contract: token.contractAddress,
       tokenType: TokenType.ERC20,
       /*
         This ID is only used for TokenCard selection, in the Ui of the dApp.
@@ -236,13 +255,14 @@ const parseAlchemyERC20Tokens = (tokens: OwnedToken[]): ERC20[] => {
         tokens. Possible, but very unlikely to generate non-unique 
         IDs, below maths solve our ID generation goal, today.
       */
-      id: ((Date.now() * Math.random()) / Math.random()).toFixed(0),
-      name: token.name,
-      decimals: token.decimals,
-      logo: token.logo,
-      symbol: token.symbol,
-      rawBalance: rawBalanceAsBigInt,
-      contract: token.contractAddress,
+      id: "1",
+      name: "token.name",
+      decimals: 1,
+      logo: "token.logo",
+      symbol: "token.symbol",
+      //rawBalance: rawBalanceAsBigInt,
+      rawBalance: 0n,
+      contract: "token.contractAddress",
     };
   });
 };
