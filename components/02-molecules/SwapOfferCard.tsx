@@ -23,9 +23,9 @@ export const SwapOfferCard = ({ address, tokens }: SwapOfferCardProps) => {
 
   return (
     <div className="md:p-4">
-      <div className="flex flex-col justify-content gap-4 md:w-[326px]">
+      <div className="flex flex-col justify-between h-full gap-4 md:w-[326px]">
         <UserOfferInfo address={address} />
-        <div className="max-h-[100px] overflow-scroll">
+        <div className="mb-auto max-h-[100px] overflow-auto">
           <TokensSwapList
             ownerAddress={authenticatedUserAddress}
             withAddTokenCard={false}
@@ -38,9 +38,7 @@ export const SwapOfferCard = ({ address, tokens }: SwapOfferCardProps) => {
           />
         </div>
 
-        <div>
-          <TokenCardProperties properties={{ amount: tokens?.length ?? 0 }} />
-        </div>
+        <TokenCardProperties properties={{ amount: tokens?.length ?? 0 }} />
       </div>
     </div>
   );

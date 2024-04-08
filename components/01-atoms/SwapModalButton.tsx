@@ -100,7 +100,10 @@ export function SwapModalButton({
       disabled={disabled}
     >
       {isLoading ? (
-        <LoadingIndicator />
+        <>
+          <LoadingIndicator />
+          {label}
+        </>
       ) : variant === ButtonVariant.DEFAULT ? (
         <>
           {label}

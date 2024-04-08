@@ -95,7 +95,7 @@ export const TokensList = ({
         totalCardsLength:
           withAddTokenCard && variant === ForWhom.Your
             ? tokensList.length + 1 // Removes one empty square, so there is space for addTokenSquare
-            : tokensList.length + 1, // Removes one empty square, so there is space for addTokenSquare
+            : tokensList.length, // Removes one empty square, so there is space for addTokenSquare
         mobileTotalSquares: mobileTotalCards,
         tabletTotalSquares: tabletTotalCards,
         desktopTotalSquares: desktopTotalCards,
@@ -117,19 +117,17 @@ export const TokensList = ({
     />
   ));
 
-  const addTokenSquare =
-    (withAddTokenCard && variant === ForWhom.Your) ||
-    (withAddTokenCard && variant === ForWhom.Their) ? (
-      AddTokenCardManually({ forWhom: variant })
-    ) : (
-      <></>
-    );
-  const allSquares = [...tokenCards, addTokenSquare, ...placeholders];
+  const addTokenSquare = AddTokenCardManually({ forWhom: variant });
+  const allSquares = withAddTokenCard
+    ? [...tokenCards, addTokenSquare, ...placeholders]
+    : [...tokenCards, ...placeholders];
 
   const Layout = (squares: JSX.Element[]) => {
     return (
       <div className={gridClassNames}>
-        {squares}
+        {squares.map((square, index) => {
+          return <div key={index}>{square}</div>;
+        })}
         <TokenAmountSelectionModal
           owner={selectTokenAmountOf}
           token={selectTokenAmountFor}

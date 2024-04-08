@@ -1,4 +1,5 @@
 import { SWAPLACE_SMART_CONTRACT_ADDRESS } from "../client/constants";
+import { EthereumAddress } from "../shared/types";
 import { publicClient } from "../wallet/wallet-config";
 import { encodeFunctionData } from "viem";
 
@@ -9,8 +10,8 @@ export interface SwapUserConfiguration {
 
 // TODO: Modify accept function
 export async function acceptSwap(
-  swapId: number,
-  receiver: string,
+  swapId: string,
+  receiver: EthereumAddress,
   configurations: SwapUserConfiguration,
 ) {
   const data = encodeFunctionData({
@@ -40,7 +41,7 @@ export async function acceptSwap(
         type: "function",
       },
     ],
-    args: [BigInt(swapId), receiver as `0x${string}`],
+    args: [BigInt(swapId), receiver.address],
   });
   try {
     const transactionHash = await configurations.walletClient.sendTransaction({

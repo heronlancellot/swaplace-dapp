@@ -1,22 +1,11 @@
-import { SwapContext } from "@/components/01-atoms";
-import { PonderFilter, usePonder } from "@/lib/client/hooks/usePonder";
+import { OffersContext, PonderFilter } from "@/components/01-atoms";
 import { useState, useContext, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import cc from "classcat";
 
-export enum DisplayFilterOptions {
-  ALL_OFFERS = "All Offers",
-  CREATED = "Created",
-  RECEIVED = "Received",
-  ACCEPTED = "Accepted",
-  CANCELED = "Canceled",
-  EXPIRED = "Expired",
-}
-
 export const StatusOffers = () => {
-  const { setPonderFilterStatus } = useContext(SwapContext);
   const [offerIsActive, setOfferIsActive] = useState<number>(0);
-  const { fetchNextPage, isFetchingNextPage } = usePonder();
+  const { setOffersFilter, fetchNextPage } = useContext(OffersContext);
 
   const { inView } = useInView();
 
@@ -26,42 +15,39 @@ export const StatusOffers = () => {
     }
   }, [fetchNextPage, inView]);
 
-  const handleFilterClick = (
-    filterOption: DisplayFilterOptions,
-    index: number,
-  ) => {
+  const handleFilterClick = (filterOption: PonderFilter, index: number) => {
     setOfferIsActive(index);
 
     switch (filterOption) {
-      case DisplayFilterOptions.CREATED:
-        setPonderFilterStatus(PonderFilter.CREATED);
+      case PonderFilter.CREATED:
+        setOffersFilter(PonderFilter.CREATED);
         break;
 
-      case DisplayFilterOptions.RECEIVED:
-        setPonderFilterStatus(PonderFilter.RECEIVED);
+      case PonderFilter.RECEIVED:
+        setOffersFilter(PonderFilter.RECEIVED);
         break;
 
-      case DisplayFilterOptions.ACCEPTED:
-        setPonderFilterStatus(PonderFilter.ACCEPTED);
+      case PonderFilter.ACCEPTED:
+        setOffersFilter(PonderFilter.ACCEPTED);
         break;
 
-      case DisplayFilterOptions.CANCELED:
-        setPonderFilterStatus(PonderFilter.CANCELED);
+      case PonderFilter.CANCELED:
+        setOffersFilter(PonderFilter.CANCELED);
         break;
 
-      case DisplayFilterOptions.EXPIRED:
-        setPonderFilterStatus(PonderFilter.EXPIRED);
+      case PonderFilter.EXPIRED:
+        setOffersFilter(PonderFilter.EXPIRED);
         break;
 
       default:
-        setPonderFilterStatus(PonderFilter.ALL_OFFERS);
+        setOffersFilter(PonderFilter.ALL_OFFERS);
         break;
     }
   };
 
   return (
     <>
-      {Object.keys(DisplayFilterOptions).map((key, index) => {
+      {Object.values(PonderFilter).map((filter, index) => {
         return (
           <button
             className={cc([
@@ -71,9 +57,7 @@ export const StatusOffers = () => {
                 : "dark:hover:bg-[#282B29]",
             ])}
             key={index}
-            onClick={() =>
-              handleFilterClick(key as DisplayFilterOptions, index)
-            }
+            onClick={() => handleFilterClick(filter, index)}
           >
             <div
               className={cc([
@@ -82,15 +66,11 @@ export const StatusOffers = () => {
                   : "dark:text-[#A3A9A5] dark:group-hover:text-[#F6F6F6]",
               ])}
             >
-              {DisplayFilterOptions[key as keyof typeof DisplayFilterOptions]}
+              {filter}
             </div>
           </button>
         );
       })}
-      {/* Temporary button to fetch more  */}
-      <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-        {isFetchingNextPage ? "Loading..." : "Load More"}
-      </button>
     </>
   );
 };

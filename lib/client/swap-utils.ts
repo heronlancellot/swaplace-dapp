@@ -62,10 +62,10 @@ export function getTokenInfoBeforeSwap(token: Token): TokenWithSwapInfo {
   }
 }
 
-export async function makeAsset(
+export const makeAsset = async (
   addr: string,
   amountOrId: bigint,
-): Promise<Asset> {
+): Promise<Asset> => {
   // validate if its an ethereum address
   try {
     new EthereumAddress(addr);
@@ -90,7 +90,7 @@ export async function makeAsset(
   };
 
   return asset;
-}
+};
 
 export async function fromTokensToAssets(
   tokensList: Token[],

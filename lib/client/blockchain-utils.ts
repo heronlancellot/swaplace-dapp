@@ -104,7 +104,9 @@ export const getERC721TokensFromAddress = async (
     });
 };
 
-async function getERC20OrERC721Metadata(token: Asset): Promise<Token> {
+async function getERC20OrERC721Metadata(
+  token: Asset,
+): Promise<ERC20WithTokenAmountSelection | ERC721> {
   const chainId = sepolia.id;
   const networkAPIKey = getAPIKeyForNetwork.get(chainId);
   const networkName = getNetwork.get(chainId);
@@ -128,7 +130,7 @@ async function getERC20OrERC721Metadata(token: Asset): Promise<Token> {
     const response = await alchemy.core.getTokenMetadata(token.addr);
 
     // Retrieve metadata as an erc20
-    if (!!response.decimals) {
+    if (response.decimals !== null) {
       return {
         tokenType: TokenType.ERC20,
         name: response.name ?? undefined,
@@ -136,6 +138,7 @@ async function getERC20OrERC721Metadata(token: Asset): Promise<Token> {
         symbol: response.symbol ?? undefined,
         contract: token.addr,
         rawBalance: token.amountOrId,
+        tokenAmount: token.amountOrId,
         decimals: response.decimals,
       };
     } else {
