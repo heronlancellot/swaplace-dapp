@@ -229,6 +229,8 @@ export const OffersContextProvider = ({ children }: any) => {
       await fetchSwaps({ pageParam }),
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
+    enabled:
+      offersFilter === PonderFilter.ALL_OFFERS || !!authenticatedUserAddress,
   });
 
   const [hasNextPage, setHasNextPage] = useState(false);
