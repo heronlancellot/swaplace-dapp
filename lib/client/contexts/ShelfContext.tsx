@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { Token } from "@/lib/shared/types";
 import React, { Dispatch, useEffect, useState } from "react";
 
@@ -56,19 +57,11 @@ export const ShelfContextProvider = ({ children }: any) => {
 
 export const ShelfContext = React.createContext<ShelfContext>({
   yourTokensList: [],
-  setYourTokensList: () => {
-    [];
-  },
-  setTheirTokensList: () => {
-    [];
-  },
+  setYourTokensList: () => {},
+  setTheirTokensList: () => {},
   theirTokensList: [],
   yourManuallyAddedTokensList: [],
-  setYourManuallyAddedTokensList: () => {
-    [];
-  },
+  setYourManuallyAddedTokensList: () => {},
   theirManuallyAddedTokensList: [],
-  setTheirManuallyAddedTokensList: () => {
-    [];
-  },
+  setTheirManuallyAddedTokensList: () => {},
 });
