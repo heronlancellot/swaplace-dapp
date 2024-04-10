@@ -173,8 +173,6 @@ export const retrieveDataFromTokensArray = async (
 };
 
 const parseAlchemyERC721Tokens = (tokens: OwnedNft[]): ERC721[] => {
-  console.log(tokens);
-
   return tokens.map((token) => {
     return {
       tokenType: TokenType.ERC721,
