@@ -196,12 +196,12 @@ export const ApproveTokenCard = ({
             ) : tokenApprovalStatus ===
               TokenApprovalStatus.APPROVE_IN_YOUR_WALLET ? (
               <p className="bg-[#707572] dark:bg-[#505150] p-1.5 w-fit rounded-[4px] min-h-6 items-center flex">
-                APPROVE TRANSACTION REQUEST IN YOUR WALLET
+                APPROVE TRANSACTION
               </p>
             ) : tokenApprovalStatus ===
               TokenApprovalStatus.WAITING_BLOCKCHAIN_CONFIRMATION ? (
               <p className="bg-[#707572] dark:bg-[#505150] p-1.5 w-fit rounded-[4px] min-h-6 items-center flex">
-                WAITING FOR BLOCKCHAIN CONFIRMATION
+                WAIT FOR CONFIRMATION
               </p>
             ) : TokenApprovalStatus.APPROVED ? (
               <div className="bg-[#707572] dark:bg-[#505150] p-1.5 w-fit bg-opacity-30 rounded-[4px] min-h-6 items-center flex">
