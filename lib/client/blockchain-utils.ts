@@ -154,6 +154,7 @@ async function getERC20OrERC721Metadata(
         name: metadata.name,
         contract: metadata.contract.address,
         metadata: metadata,
+        symbol: metadata.tokenUri,
       };
     }
   } catch (error) {

@@ -8,7 +8,7 @@ import {
 
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 interface TokenOfferDetailsInterface {
   swap: PopulatedSwapOfferInterface;
@@ -19,19 +19,12 @@ export const TokenOfferDetails = ({ swap }: TokenOfferDetailsInterface) => {
     useState<boolean>(false);
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  const {
-    acceptSwapOffer,
-    swapOfferToAccept: contextSwap,
-    clearSwapOfferInformation,
-  } = useContext(OffersContext);
+  const { acceptSwapOffer } = useContext(OffersContext);
 
   const acceptOffer = () => {
     acceptSwapOffer(swap);
+    setOpenConfirmationModal(true);
   };
-
-  useEffect(() => {
-    if (contextSwap) setOpenConfirmationModal(true);
-  }, [contextSwap]);
 
   const needsExpiryDate =
     swap.status !== "ACCEPTED" && swap.status !== "CANCELED";
@@ -89,16 +82,13 @@ export const TokenOfferDetails = ({ swap }: TokenOfferDetailsInterface) => {
         <ThreeDotsCardOffersOptions />
       </div>
 
-      {authenticatedUserAddress && (
-        <ConfirmSwapModal
-          open={openConfirmationModal}
-          swapModalAction={SwapModalAction.ACCEPT_SWAP}
-          onClose={() => {
-            setOpenConfirmationModal(false);
-            clearSwapOfferInformation();
-          }}
-        />
-      )}
+      <ConfirmSwapModal
+        open={openConfirmationModal}
+        swapModalAction={SwapModalAction.ACCEPT_SWAP}
+        onClose={() => {
+          setOpenConfirmationModal(false);
+        }}
+      />
     </div>
   );
 };
