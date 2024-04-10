@@ -50,6 +50,7 @@ interface OffersContextProps {
   acceptSwapOffer: (swap: PopulatedSwapOfferInterface) => void;
   approvedTokensCount: number;
   setApprovedTokensCount: Dispatch<React.SetStateAction<number>>;
+  clearSwapOfferInformation: () => void;
 }
 
 export const OffersContextProvider = ({ children }: any) => {
@@ -222,6 +223,11 @@ export const OffersContextProvider = ({ children }: any) => {
     }
   };
 
+  const clearSwapOfferInformation = () => {
+    setApprovedTokensCount(0);
+    setSwapOfferToBeAccepted(null);
+  };
+
   // Offers query
   const { data, status, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
     queryKey: ["PonderQuerySwaps", authenticatedUserAddress, offersFilter],
@@ -246,6 +252,10 @@ export const OffersContextProvider = ({ children }: any) => {
   }, [isFetchingNextPage, status]);
 
   useEffect(() => {
+    console.log(swapOfferToAccept);
+  }, [swapOfferToAccept]);
+
+  useEffect(() => {
     setOffersData({
       setOffersFilter,
       offersFilter,
@@ -258,6 +268,7 @@ export const OffersContextProvider = ({ children }: any) => {
       hasNextPage,
       approvedTokensCount,
       setApprovedTokensCount,
+      clearSwapOfferInformation,
     });
   }, [
     setOffersFilter,
@@ -270,6 +281,7 @@ export const OffersContextProvider = ({ children }: any) => {
     hasNextPage,
     approvedTokensCount,
     setApprovedTokensCount,
+    clearSwapOfferInformation,
   ]);
 
   // Exportable data
@@ -285,6 +297,7 @@ export const OffersContextProvider = ({ children }: any) => {
     hasNextPage,
     approvedTokensCount,
     setApprovedTokensCount,
+    clearSwapOfferInformation,
   });
 
   return (
@@ -306,6 +319,7 @@ export const OffersContext = React.createContext<OffersContextProps>({
   swapOfferToAccept: null,
   approvedTokensCount: 0,
   setApprovedTokensCount: () => {},
+  clearSwapOfferInformation: () => {},
 });
 
 // Interfaces

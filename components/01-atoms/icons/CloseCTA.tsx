@@ -3,7 +3,11 @@ interface CloseCTAProps {
   className?: string;
 }
 
+<<<<<<< HEAD
 export const CloseCTA = ({ onClick, className = "" }: CloseCTAProps) => {
+=======
+export const CloseCTA = ({ onClick, className }: CloseCTAProps) => {
+>>>>>>> 9e59463 (fix: fix build issues)
   return (
     <button
       onClick={onClick}

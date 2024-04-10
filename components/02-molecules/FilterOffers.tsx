@@ -5,7 +5,7 @@ export const FilterOffers = () => {
     <div className="flex">
       <div className="w-[342px] xl:h-[656px] gap-6 flex flex-col">
         <div className="dark:title-h2-medium-dark title-h2-medium ">
-          <h2>Your offers</h2>
+          <h2>Offers</h2>
         </div>
         <div>
           <StatusOffers />

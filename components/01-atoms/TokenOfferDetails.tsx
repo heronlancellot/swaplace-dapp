@@ -19,8 +19,11 @@ export const TokenOfferDetails = ({ swap }: TokenOfferDetailsInterface) => {
     useState<boolean>(false);
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  const { acceptSwapOffer, swapOfferToAccept: contextSwap } =
-    useContext(OffersContext);
+  const {
+    acceptSwapOffer,
+    swapOfferToAccept: contextSwap,
+    clearSwapOfferInformation,
+  } = useContext(OffersContext);
 
   const acceptOffer = () => {
     acceptSwapOffer(swap);
@@ -30,23 +33,27 @@ export const TokenOfferDetails = ({ swap }: TokenOfferDetailsInterface) => {
     if (contextSwap) setOpenConfirmationModal(true);
   }, [contextSwap]);
 
-  const swapExpiryDate = new Date(Number(swap.expiryDate) * 1000);
+  const needsExpiryDate =
+    swap.status !== "ACCEPTED" && swap.status !== "CANCELED";
 
-  let isDateValid = true;
+  let formattedSwapExpiryDate = null;
+  if (needsExpiryDate) {
+    const swapExpiryDate = new Date(Number(swap.expiryDate) * 1000);
 
-  // Check if the date is valid
-  if (isNaN(swapExpiryDate.getTime())) {
-    isDateValid = false;
+    let isDateValid = true;
+
+    // Check if the date is valid
+    if (isNaN(swapExpiryDate.getTime())) {
+      isDateValid = false;
+    }
+
+    const day = swapExpiryDate.getDate(); // Day of the month
+    const month = swapExpiryDate.toLocaleString("default", { month: "short" }); // Month abbreviation
+    const year = swapExpiryDate.getFullYear(); // Year
+
+    // Format the date string
+    formattedSwapExpiryDate = isDateValid ? `${day} ${month}, ${year}` : null;
   }
-
-  const day = swapExpiryDate.getDate(); // Day of the month
-  const month = swapExpiryDate.toLocaleString("default", { month: "short" }); // Month abbreviation
-  const year = swapExpiryDate.getFullYear(); // Year
-
-  // Format the date string
-  const formattedSwapExpiryDate = isDateValid
-    ? `${day} ${month}, ${year}`
-    : null;
 
   // TODO: Include status, owner and expiryDate
   return (
@@ -54,10 +61,12 @@ export const TokenOfferDetails = ({ swap }: TokenOfferDetailsInterface) => {
       <div>
         <ul className="flex p-small dark:!text-[#A3A9A5] items-center gap-2">
           {/* {displayStatus && <OfferTag status={displayStatus} />} */}
-          <li className="flex items-center gap-2">
-            <div className=" w-1 h-1 bg-neutral-600 rounded-full shadow-inner" />
-            Expires on {formattedSwapExpiryDate}
-          </li>
+          {needsExpiryDate && (
+            <li className="flex items-center gap-2">
+              <div className=" w-1 h-1 bg-neutral-600 rounded-full shadow-inner" />
+              Expires on {formattedSwapExpiryDate}
+            </li>
+          )}
           <li className="flex items-center gap-2">
             <div className="w-1 h-1 bg-neutral-600 rounded-full shadow-inner" />
             Created by {swap.ask.address?.getEllipsedAddress()}
@@ -84,7 +93,10 @@ export const TokenOfferDetails = ({ swap }: TokenOfferDetailsInterface) => {
         <ConfirmSwapModal
           open={openConfirmationModal}
           swapModalAction={SwapModalAction.ACCEPT_SWAP}
-          onClose={() => setOpenConfirmationModal(false)}
+          onClose={() => {
+            setOpenConfirmationModal(false);
+            clearSwapOfferInformation();
+          }}
         />
       )}
     </div>
