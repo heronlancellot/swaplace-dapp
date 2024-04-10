@@ -139,7 +139,7 @@ export const SwappingIcons = () => {
                 >
                   <div className="flex items-center justify-center w-full">
                     <IconComponent
-                      className="w-5 h-5 "
+                      className="w-8 h-8 mx-2"
                       fill={cc([theme == "dark" ? "#DDF23D" : "#4F4F4F"])}
                     />
                   </div>
