@@ -10,7 +10,7 @@ export const OfferSection = () => {
           <div className="flex flex-col">
             <FilterOffers />
           </div>
-          <div className="flex xl:flex-col w-full items-center h-full overflow-auto">
+          <div className="flex xl:flex-col w-full items-center h-full overflow-auto no-scrollbar">
             <SwapOffers />
           </div>
         </div>

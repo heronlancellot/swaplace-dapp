@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { SwapOfferCard } from "@/components/02-molecules";
+import {
+  SwapOfferCard,
+  SwapOffersDisplayVariant,
+  SwapOffersLayout,
+} from "@/components/02-molecules";
 import {
   OffersContext,
   PopulatedSwapOfferInterface,
@@ -69,15 +73,16 @@ export const SwapOffers = () => {
   };
 
   return isLoading || isLoadingOffersQuery ? (
-    <TokensOfferSkeleton />
-  ) : tokensList.length === 0 ? (
-    <div className="flex flex-col justify-center border border-[#353836] shadow-add-manually-card dark:bg-[#282B29] rounded-lg w-[716px] h-full">
-      <div className="flex">
-        <h1 className="w-full h-full text-center">
-          You don&apos;t have any swaps in that category
-        </h1>
+    <div className="flex gap-5 flex-col">
+      <div>
+        <TokensOfferSkeleton />
+      </div>
+      <div>
+        <TokensOfferSkeleton />
       </div>
     </div>
+  ) : tokensList.length === 0 ? (
+    <SwapOffersLayout variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED} />
   ) : (
     <div className="flex flex-col gap-5 no-scrollbar">
       {tokensList.map((swap, index) => {
