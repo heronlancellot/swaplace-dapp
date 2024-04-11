@@ -45,7 +45,7 @@ export const TokenOfferDetails = ({ swap }: TokenOfferDetailsInterface) => {
     const year = swapExpiryDate.getFullYear(); // Year
 
     // Format the date string
-    formattedSwapExpiryDate = isDateValid ? `${day} ${month}, ${year}` : null;
+    formattedSwapExpiryDate = isDateValid ? `${day} ${month} ${year}` : null;
   }
 
   // TODO: Include status, owner and expiryDate

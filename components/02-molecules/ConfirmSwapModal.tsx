@@ -242,7 +242,7 @@ export const ConfirmSwapModal = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.ACCEPT_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap expireTime={"3 weeks"} />
+            <OfferExpiryConfirmSwap />
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
@@ -278,7 +278,7 @@ export const ConfirmSwapModal = ({
         }
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap expireTime={"3 weeks"} />
+            <OfferExpiryConfirmSwap />
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
@@ -300,7 +300,7 @@ export const ConfirmSwapModal = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.SUCCESSFUL_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap expireTime={"3 weeks"} />
+            <OfferExpiryConfirmSwap />
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
