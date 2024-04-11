@@ -1,8 +1,9 @@
 import { ForWhom } from "@/components/03-organisms";
 import { SwapContext, SwapModalLayout } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import { TokenType } from "@/lib/shared/types";
+import { ERC20, ERC721, Token, TokenType } from "@/lib/shared/types";
 import { verifyTokenOwnership } from "@/lib/service/verifyTokenOwnership";
+import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
 import { isAddress } from "viem";
@@ -52,10 +53,130 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
   const [tokenType, setTokenType] = useState<TokenType>(TokenType.ERC20);
   const [contractAddress, setContractAddress] = useState<string>("");
   const [tokenId, setTokenId] = useState<string>("");
-
   const { chain } = useNetwork();
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { validatedAddressToSwap } = useContext(SwapContext);
+  const {
+    yourTokensList,
+    setYourManuallyAddedTokensList,
+    theirTokensList,
+    setTheirManuallyAddedTokensList,
+  } = useContext(ShelfContext);
+
+  interface TokenManually {
+    tokenType: TokenType;
+    tokenName: string;
+    contractAddress: `0x${string}`;
+    tokenId: string;
+    balance?: bigint;
+  }
+
+  const verifyTokenAlreadyInTokenList = async (token: Token) => {
+    const filteringYourToken = yourTokensList.some(
+      (t) =>
+        t.contract &&
+        token.contract &&
+        t.contract.toUpperCase() === token.contract.toUpperCase(),
+    );
+    const filteringTheirToken = theirTokensList.some(
+      (t) =>
+        t.contract &&
+        token.contract &&
+        t.contract.toUpperCase() === token.contract.toUpperCase(),
+    );
+    if (forWhom === ForWhom.Your) {
+      if (token.tokenType === TokenType.ERC20) {
+        return filteringYourToken;
+      } else if (token.tokenType === TokenType.ERC721) {
+        return yourTokensList.some(
+          (t) => filteringYourToken && t.id === token.id,
+        );
+      }
+    } else if (forWhom === ForWhom.Their) {
+      if (token.tokenType === TokenType.ERC20) {
+        return filteringTheirToken;
+      } else if (token.tokenType === TokenType.ERC721) {
+        return theirTokensList.some(
+          (t) => filteringTheirToken && t.id === token.id,
+        );
+      }
+    }
+  };
+
+  const addTokenToTokensList = (token: TokenManually) => {
+    if (forWhom === ForWhom.Your) {
+      if (token.tokenType === TokenType.ERC20 && token.balance) {
+        const tokenERC20: ERC20 = {
+          name: token.tokenName,
+          contract: token.contractAddress,
+          rawBalance: token.balance,
+          tokenType: token.tokenType,
+        };
+
+        verifyTokenAlreadyInTokenList(tokenERC20).then((tokenAlreadyInList) => {
+          if (tokenAlreadyInList) {
+            toast.error("Token ERC20 already in Token List");
+          } else {
+            setYourManuallyAddedTokensList([tokenERC20]);
+            toast.success("Token ERC20 added in Token List");
+          }
+        });
+      } else if (token.tokenType === TokenType.ERC721) {
+        const tokenERC721: ERC721 = {
+          name: token.tokenName,
+          contract: token.contractAddress,
+          id: token.tokenId,
+          tokenType: token.tokenType,
+        };
+        verifyTokenAlreadyInTokenList(tokenERC721).then(
+          (tokenAlreadyInList) => {
+            if (tokenAlreadyInList) {
+              toast.error("Token ERC721 already in Token List");
+            } else {
+              setYourManuallyAddedTokensList([tokenERC721]);
+              toast.success("Token ERC721 added in Token List");
+            }
+          },
+        );
+      }
+    } else if (forWhom === ForWhom.Their) {
+      if (token.tokenType === TokenType.ERC20 && token.balance) {
+        const tokenERC20: ERC20 = {
+          name: token.tokenName,
+          contract: token.contractAddress,
+          rawBalance: token.balance,
+          tokenType: token.tokenType,
+        };
+
+        verifyTokenAlreadyInTokenList(tokenERC20).then((tokenAlreadyInList) => {
+          if (tokenAlreadyInList) {
+            toast.error("Token ERC20 already in Token List");
+          } else {
+            setTheirManuallyAddedTokensList([tokenERC20]);
+            toast.success("Token ERC20 added in Token List");
+          }
+        });
+      } else if (token.tokenType === TokenType.ERC721) {
+        const tokenERC721: ERC721 = {
+          name: token.tokenName,
+          contract: token.contractAddress,
+          id: token.tokenId,
+          tokenType: token.tokenType,
+        };
+
+        verifyTokenAlreadyInTokenList(tokenERC721).then(
+          (tokenAlreadyInList) => {
+            if (tokenAlreadyInList) {
+              toast.error("Token ERC721 already in Token List");
+            } else {
+              setYourManuallyAddedTokensList([tokenERC721]);
+              toast.success("Token ERC721 added in Token List");
+            }
+          },
+        );
+      }
+    }
+  };
 
   const addTokenCard = async () => {
     const address =
@@ -87,17 +208,23 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       tokenType: tokenType,
     })
       .then((verification) => {
-        if (verification && verification.isOwner) {
-          // TODO: implement logic to be done to add token card
-        } else {
+        if (!verification.isOwner) {
           toast.error(
             `The token does not belong to the address: ${address.getEllipsedAddress()}`,
           );
+          throw new Error("The token does not belong to the address");
+        } else if (verification && verification.isOwner) {
+          addTokenToTokensList({
+            tokenName: verification.name,
+            contractAddress: contractAddress,
+            tokenId: tokenId,
+            tokenType: tokenType,
+            balance: verification.erc20Balance ?? 0n,
+          });
         }
       })
       .catch((error) => {
         console.error(error);
-        toast.error("Transaction failed");
       });
   };
 

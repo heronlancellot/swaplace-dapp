@@ -10,6 +10,7 @@ import {
   SwapContextProvider,
   OffersContextProvider,
 } from "@/components/01-atoms";
+import { ShelfContextProvider } from "@/lib/client/contexts/ShelfContext";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import { WagmiConfig } from "wagmi";
@@ -37,36 +38,38 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <WagmiConfig config={wagmiConfig}>
         <SwapContextProvider>
-          <SessionProvider session={session}>
-            <OffersContextProvider>
-              <RainbowKitSiweNextAuthProvider
-                getSiweMessageOptions={getSiweMessageOptions}
-              >
-                <RainbowKitProvider
-                  theme={{
-                    lightMode: lightTheme({
-                      accentColor: "black",
-                      borderRadius: "small",
-                      overlayBlur: "small",
-                    }),
-                    darkMode: darkTheme({
-                      accentColor: "#888888",
-                      borderRadius: "small",
-                      overlayBlur: "small",
-                    }),
-                  }}
-                  chains={chains}
+          <ShelfContextProvider>
+            <SessionProvider session={session}>
+              <OffersContextProvider>
+                <RainbowKitSiweNextAuthProvider
+                  getSiweMessageOptions={getSiweMessageOptions}
                 >
-                  <Toaster />
-                  <ThemeProvider enableSystem={true} attribute="class">
-                    <main className={cc([onest.className])}>
-                      <Component {...pageProps} />
-                    </main>
-                  </ThemeProvider>
-                </RainbowKitProvider>
-              </RainbowKitSiweNextAuthProvider>
-            </OffersContextProvider>
-          </SessionProvider>
+                  <RainbowKitProvider
+                    theme={{
+                      lightMode: lightTheme({
+                        accentColor: "black",
+                        borderRadius: "small",
+                        overlayBlur: "small",
+                      }),
+                      darkMode: darkTheme({
+                        accentColor: "#888888",
+                        borderRadius: "small",
+                        overlayBlur: "small",
+                      }),
+                    }}
+                    chains={chains}
+                  >
+                    <Toaster />
+                    <ThemeProvider enableSystem={true} attribute="class">
+                      <main className={cc([onest.className])}>
+                        <Component {...pageProps} />
+                      </main>
+                    </ThemeProvider>
+                  </RainbowKitProvider>
+                </RainbowKitSiweNextAuthProvider>
+              </OffersContextProvider>
+            </SessionProvider>
+          </ShelfContextProvider>
         </SwapContextProvider>
       </WagmiConfig>
     </QueryClientProvider>

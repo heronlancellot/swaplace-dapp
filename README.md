@@ -7,6 +7,14 @@ This repository contains the core frontend for the Swaplace Protocol; The lighte
 ATTENTION: After forking the repository, you must change the branch into the `develop` branch to get the latest version.  
 WARNING: `main` branch is not stable at the moment.
 
+The recommended node version is [v18.16.0](https://nodejs.org/download/release/v18.16.0/)
+
+To make sure that NodeJS is installed correctly, open the integrated terminal and run the following command:
+
+```
+node -v
+```
+
 You should install the dependencies using legacy mode and then run the development server.
 
 ```bash

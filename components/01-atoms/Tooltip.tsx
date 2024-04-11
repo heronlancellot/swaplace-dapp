@@ -24,7 +24,7 @@ interface TooltipProps {
 export const Tooltip = ({ position, content, children }: TooltipProps) =>
   content !== null ? (
     <div className="relative group">
-      <div>{children}</div>
+      <div className="flex">{children}</div>
       <div className="pointer-events-none">
         <span
           className={cc([

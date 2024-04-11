@@ -235,9 +235,9 @@ const parseAlchemyERC20Tokens = (tokens: OwnedToken[]): ERC20[] => {
       tokenType: TokenType.ERC20,
       /*
         This ID is only used for TokenCard selection, in the Ui of the dApp.
-        We want it to be as randomic and unique as possible besides being 
+        We want it to be as randomic and unique as possible besides being
         yet, mathematically possible to have same IDs on two different
-        tokens. Possible, but very unlikely to generate non-unique 
+        tokens. Possible, but very unlikely to generate non-unique
         IDs, below maths solve our ID generation goal, today.
       */
       id: ((Date.now() * Math.random()) / Math.random()).toFixed(0),
