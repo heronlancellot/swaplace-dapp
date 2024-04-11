@@ -1,6 +1,6 @@
 export const ALL_OFFERS_QUERY = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
-           databases(
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
+          swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
              where: { OR: [{owner: $inputAddress}, {allowed: $allowed}] },
@@ -27,8 +27,8 @@ export const ALL_OFFERS_QUERY = `
        `;
 
 export const CREATED_OFFERS_QUERY = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_gt: BigInt) {
-           databases(
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_gt: BigInt) {
+          swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
              where: { owner: $inputAddress, status: CREATED, expiry_gt: $expiry_gt },
@@ -55,8 +55,8 @@ export const CREATED_OFFERS_QUERY = `
        `;
 
 export const RECEIVED_OFFERS_QUERY = `
-         query databases($orderBy: String!, $orderDirection: String!, $after: String, $allowed: String, $expiry_gt: BigInt) {
-           databases(
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $after: String, $allowed: String, $expiry_gt: BigInt) {
+          swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
              where: { allowed: $allowed, status_not: ACCEPTED, expiry_gt: $expiry_gt },
@@ -83,8 +83,8 @@ export const RECEIVED_OFFERS_QUERY = `
        `;
 
 export const ACCEPTED_OFFERS_QUERY = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
-           databases(
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
+          swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
              where: { AND: [ {status: ACCEPTED}, {OR: [ {owner: $inputAddress},{allowed: $allowed}]}]},
@@ -111,8 +111,8 @@ export const ACCEPTED_OFFERS_QUERY = `
        `;
 
 export const CANCELED_OFFERS_QUERY = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
-           databases(
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
+          swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
              where: { AND: [ {status: CANCELED}, {OR: [ {owner: $inputAddress}, {allowed: $allowed}]}]},
@@ -139,8 +139,8 @@ export const CANCELED_OFFERS_QUERY = `
        `;
 
 export const EXPIRED_OFFERS_QUERY = `
-         query databases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_lt: BigInt) {
-           databases(
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_lt: BigInt) {
+          swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
              where: {

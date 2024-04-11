@@ -170,9 +170,9 @@ export const OffersContextProvider = ({ children }: any) => {
       );
 
       if (response.data && response.data.data) {
-        const items = response.data.data.databases
+        const items = response.data.data.swapDatabases
           .items as RawSwapOfferInterface[];
-        const pageInfo = response.data.data.databases.pageInfo as PageInfo;
+        const pageInfo = response.data.data.swapDatabases.pageInfo as PageInfo;
 
         const processedItems: RawSwapOfferInterface[] = items.map(
           (obj: any) => {
@@ -244,10 +244,6 @@ export const OffersContextProvider = ({ children }: any) => {
   useEffect(() => {
     setIsLoadingOffersQuery(status === "pending" || isFetchingNextPage);
   }, [isFetchingNextPage, status]);
-
-  useEffect(() => {
-    setApprovedTokensCount(0);
-  }, [swapOfferToAccept]);
 
   useEffect(() => {
     setOffersData({
