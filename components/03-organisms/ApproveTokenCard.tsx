@@ -56,6 +56,7 @@ export const ApproveTokenCard = ({
     }
 
     if (!chainId) {
+      toast.error("You must connect your wallet.");
       throw new Error("User is not connected to any network");
     }
 
