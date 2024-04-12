@@ -17,6 +17,9 @@ export const ProgressStatus = ({ swapModalAction }: ProgressStatusProps) => {
 
   const [tokensList, setTokensList] = useState<Token[]>([]);
   const [approvedTokensCount, setApprovedTokensCount] = useState(0);
+
+  console.log("tokens list to approve");
+
   useEffect(() => {
     switch (swapModalAction) {
       case SwapModalAction.CREATE_SWAP:
@@ -40,11 +43,7 @@ export const ProgressStatus = ({ swapModalAction }: ProgressStatusProps) => {
   return (
     <div className="w-max flex flex-grow gap-2 justify-center items-center">
       <p className="flex w-fit mr-auto md:mr-4">
-        {/* TODO: align this logic so this condition is not needed */}
-        {approvedTokensCount > tokensList.length
-          ? tokensList.length
-          : approvedTokensCount}
-        {" / " + tokensList.length}
+        {`${approvedTokensCount} / ${tokensList.length}`}
       </p>
       <div className="hidden md:block w-[80%] max-w-[200px] mr-auto">
         <ProgressBar

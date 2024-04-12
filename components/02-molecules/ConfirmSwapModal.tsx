@@ -22,7 +22,7 @@ import { SWAPLACE_SMART_CONTRACT_ADDRESS } from "@/lib/client/constants";
 import { publicClient } from "@/lib/wallet/wallet-config";
 import { SwapModalSteps } from "@/lib/client/ui-utils";
 import { SwaplaceAbi } from "@/lib/client/abi";
-import { EthereumAddress } from "@/lib/shared/types";
+import { EthereumAddress, Token } from "@/lib/shared/types";
 import { acceptSwap } from "@/lib/service/acceptSwap";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
 import { useContext, useEffect, useState } from "react";
@@ -58,6 +58,7 @@ export const ConfirmSwapModal = ({
   const { theme } = useTheme();
 
   const [approvedTokensCount, setApprovedTokensCount] = useState<number>(0);
+  const [tokensList, setTokensList] = useState<Token[]>([]);
 
   const {
     swapOfferToAccept,
@@ -68,10 +69,12 @@ export const ConfirmSwapModal = ({
     switch (swapModalAction) {
       case SwapModalAction.CREATE_SWAP:
         setApprovedTokensCount(createSwapApprovedTokensCount);
+        setTokensList(authenticatedUserTokensList);
         break;
       case SwapModalAction.ACCEPT_SWAP:
         if (!swapOfferToAccept) return;
         setApprovedTokensCount(acceptSwapApprovedTokensCount);
+        setTokensList(swapOfferToAccept.bid.tokens);
         break;
     }
   }, [
@@ -200,21 +203,10 @@ export const ConfirmSwapModal = ({
   };
 
   const validateTokensAreApproved = () => {
-    switch (swapModalAction) {
-      case SwapModalAction.CREATE_SWAP:
-        if (createSwapApprovedTokensCount) {
-          updateSwapStep(ButtonClickPossibilities.NEXT_STEP);
-        } else {
-          toast.error("You must approve the Tokens to Swap.");
-        }
-        break;
-      case SwapModalAction.ACCEPT_SWAP:
-        if (acceptSwapApprovedTokensCount) {
-          updateSwapStep(ButtonClickPossibilities.NEXT_STEP);
-        } else {
-          toast.error("You must approve the Tokens to Swap.");
-        }
-        break;
+    if (approvedTokensCount === tokensList.length) {
+      updateSwapStep(ButtonClickPossibilities.NEXT_STEP);
+    } else {
+      toast.error("You must approve the Tokens to Swap.");
     }
   };
 
