@@ -114,7 +114,6 @@ export const ApproveTokenCard = ({
   const askForTokenApproval = async (
     token: Token,
   ): Promise<TransactionReceipt | undefined> => {
-    console.log("askForTokenApproval");
     let chainId: number | undefined = undefined;
 
     if (typeof chain?.id != "undefined") {
