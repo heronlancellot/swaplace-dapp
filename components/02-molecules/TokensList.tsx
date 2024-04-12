@@ -92,10 +92,9 @@ export const TokensList = ({
 
   const placeholders = withPlaceholders
     ? TokenCardsPlaceholder({
-        totalCardsLength:
-          withAddTokenCard && variant === ForWhom.Your
-            ? tokensList.length + 1 // Removes one empty square, so there is space for addTokenSquare
-            : tokensList.length, // Removes one empty square, so there is space for addTokenSquare
+        totalCardsLength: withAddTokenCard
+          ? tokensList.length + 1 // Removes one empty square, so there is space for addTokenSquare
+          : tokensList.length, // Removes one empty square, so there is space for addTokenSquare
         mobileTotalSquares: mobileTotalCards,
         tabletTotalSquares: tabletTotalCards,
         desktopTotalSquares: desktopTotalCards,
