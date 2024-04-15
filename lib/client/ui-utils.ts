@@ -19,9 +19,9 @@ export interface ExpireOption {
 
 export enum SwapModalSteps {
   APPROVE_TOKENS,
-  CREATE_SWAP,
-  CREATING_SWAP,
-  CREATED_SWAP,
+  ACCEPT_SWAP,
+  WAIT_BLOCKCHAIN_INTERACTION,
+  SUCCESSFUL_SWAP,
 }
 
 export const ExpireDate: ExpireOption[] = [

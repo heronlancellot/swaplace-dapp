@@ -1,4 +1,4 @@
-import { ShareIcon, ThreeDotsIcon, XMarkIcon } from "@/components/01-atoms";
+import { ShareIcon, ThreeDotsIcon } from "@/components/01-atoms";
 import { useState } from "react";
 import cc from "classcat";
 
@@ -40,13 +40,14 @@ export const ThreeDotsCardOffersOptions = () => {
               >
                 <ShareIcon /> <p>Share</p>
               </button>
-              <button
+              {/* TODO: Implement cancel swap logic */}
+              {/* <button
                 type="button"
                 className=" flex items-center gap-3 w-full px-4 py-2 text-sm dark:p-small-dark-variant-grey rounded-lg dark:hover:bg-[#353836] hover:bg-[#e4e4e4] hover:text-gray-900"
                 role="menuitem"
               >
                 <XMarkIcon /> <p>Cancel</p>
-              </button>
+              </button> */}
             </div>
           </div>
         )}

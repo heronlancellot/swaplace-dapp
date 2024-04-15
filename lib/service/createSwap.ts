@@ -12,17 +12,6 @@ export async function createSwap(
   swap: Swap,
   configurations: SwapUserConfiguration,
 ) {
-  // const SwaplaceContract = getContract({
-  //   address: SWAPLACE_SMART_CONTRACT_ADDRESS[chain] as `0x${string}`,
-  //   abi: SwaplaceAbi,
-  //   publicClient: publicClientViem,
-  // });
-  // const config = await packData(
-  //   SwaplaceContract,
-  //   validatedAddressToSwap as `0x${string}`,
-  //   expireDate,
-  // );
-
   const data = encodeFunctionData({
     abi: [
       {

@@ -6,7 +6,10 @@ import {
   getSiweMessageOptions,
   wagmiConfig,
 } from "../lib/wallet/wallet-config";
-import { SwapContextProvider } from "@/components/01-atoms";
+import {
+  SwapContextProvider,
+  OffersContextProvider,
+} from "@/components/01-atoms";
 import { ShelfContextProvider } from "@/lib/client/contexts/ShelfContext";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
@@ -37,10 +40,10 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <SwapContextProvider>
           <ShelfContextProvider>
             <SessionProvider session={session}>
-              <RainbowKitSiweNextAuthProvider
-                getSiweMessageOptions={getSiweMessageOptions}
-              >
-                <WagmiConfig config={wagmiConfig}>
+              <OffersContextProvider>
+                <RainbowKitSiweNextAuthProvider
+                  getSiweMessageOptions={getSiweMessageOptions}
+                >
                   <RainbowKitProvider
                     theme={{
                       lightMode: lightTheme({
@@ -63,8 +66,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                       </main>
                     </ThemeProvider>
                   </RainbowKitProvider>
-                </WagmiConfig>
-              </RainbowKitSiweNextAuthProvider>
+                </RainbowKitSiweNextAuthProvider>
+              </OffersContextProvider>
             </SessionProvider>
           </ShelfContextProvider>
         </SwapContextProvider>

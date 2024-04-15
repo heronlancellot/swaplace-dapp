@@ -17,3 +17,4 @@ export * from "./TokenCard";
 export * from "./TokensList";
 export * from "./UserInfo";
 export * from "./UserOfferInfo";
+export * from "./SwapOfferCard";

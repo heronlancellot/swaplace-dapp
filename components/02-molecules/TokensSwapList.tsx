@@ -46,7 +46,7 @@ export const TokensSwapList = ({
   withSelectionValidation = true,
   displayERC20TokensAmount = false,
   tokenCardStyleType = TokenCardStyleType.NORMAL,
-  gridClassNames = "w-full grid grid-cols-3 md:grid-cols-6  lg:grid-cols-4 gap-3",
+  gridClassNames = "w-full grid grid-cols-3 md:grid-cols-6 lg:grid-cols-4 gap-1.5",
 }: TokensListProps) => {
   /* Filter TokenList so that TokenCard receives the filtered array and does not display tokens with a zero balance on the screen */
   tokensList = tokensList.filter(

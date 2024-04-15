@@ -14,13 +14,13 @@ export const WarningScreenSizeNotSupported = () => {
           <ErrorIcon />
         </div>
         <div className="flex flex-col text-center items-center">
-          <p className="dark:p-medium-bold-2-dark p-medium-bold-2-dark-variant-black ">
+          <div className="dark:p-medium-bold-2-dark p-medium-bold-2-dark-variant-black ">
             {isTablet ? (
               <p>Oh no, tablet isn&apos;t available yet!</p>
             ) : isMobile ? (
               <p>Oh no, mobile isn&apos;t available yet!</p>
             ) : null}
-          </p>
+          </div>
           <p className="p-small dark:!text-[#A3A9A5] !text-[#212322] ">
             Please try our desktop version to get a better experience
           </p>

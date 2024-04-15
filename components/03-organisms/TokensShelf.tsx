@@ -45,7 +45,7 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
   );
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  const { validatedAddressToSwap, inputAddress, destinyChain } =
+  const { validatedAddressToSwap, inputAddress, destinyChain, clearSwapData } =
     useContext(SwapContext);
 
   const address =
@@ -131,6 +131,10 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
       }
     }
   };
+
+  useEffect(() => {
+    clearSwapData();
+  }, []);
 
   useEffect(() => {
     conditionallyCleanTokensList(

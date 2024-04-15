@@ -20,11 +20,12 @@ import toast from "react-hot-toast";
 import { type TransactionReceipt } from "viem";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
 import cc from "classcat";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface ApproveTokenCardProps {
   token: Token;
   setTokenWasApprovedForSwap: (token: Token) => void;
+  isPrevioslyApproved?: boolean;
 }
 
 enum TokenApprovalStatus {
@@ -37,13 +38,16 @@ enum TokenApprovalStatus {
 export const ApproveTokenCard = ({
   token,
   setTokenWasApprovedForSwap,
+  isPrevioslyApproved = false,
 }: ApproveTokenCardProps) => {
   const { chain } = useNetwork();
   const { data: walletClient } = useWalletClient();
 
-  const [isApproved, setIsApproved] = useState(false);
+  const [isApproved, setIsApproved] = useState(isPrevioslyApproved);
   const [tokenApprovalStatus, setTokenApprovalStatus] = useState(
-    TokenApprovalStatus.CLICK_TO_APPROVE,
+    isPrevioslyApproved
+      ? TokenApprovalStatus.APPROVED
+      : TokenApprovalStatus.CLICK_TO_APPROVE,
   );
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
@@ -56,6 +60,7 @@ export const ApproveTokenCard = ({
     }
 
     if (!chainId) {
+      toast.error("You must connect your wallet.");
       throw new Error("User is not connected to any network");
     }
 
@@ -70,45 +75,13 @@ export const ApproveTokenCard = ({
     return approved;
   };
 
-  const handleTokenApproval = async () => {
-    let chainId: number | undefined = undefined;
-
-    if (typeof chain?.id != "undefined") {
-      chainId = chain?.id;
-    }
-
+  useEffect(() => {
+    const chainId = chain?.id;
     if (!chainId) {
-      throw new Error("User is not connected to any network");
+      console.error("User is not connected to any network");
+      return;
     }
-
-    const approved = await checkForTokenApproval(token);
-
-    if (approved) {
-      toast.success(`${getTokenName(token)} was approved for swap`);
-    } else {
-      setTokenApprovalStatus(TokenApprovalStatus.APPROVE_IN_YOUR_WALLET);
-      await askForTokenApproval(token).then((isApproved) => {
-        if (typeof isApproved !== "undefined") {
-          setIsApproved(true);
-        }
-      });
-    }
-  };
-
-  useEffect(() => {
-    checkForTokenApproval(token);
-  }, []);
-
-  useEffect(() => {
-    checkForTokenApproval(token);
-  }, [chain, token, authenticatedUserAddress]);
-
-  useEffect(() => {
-    if (isApproved) {
-      setTokenWasApprovedForSwap(token);
-      setTokenApprovalStatus(TokenApprovalStatus.APPROVED);
-    }
-  }, [isApproved]);
+  }, [chain?.id]);
 
   const askForTokenApproval = async (
     token: Token,
@@ -160,6 +133,16 @@ export const ApproveTokenCard = ({
     }
   };
 
+  const handleTokenApproval = useCallback(async () => {
+    const approved = await checkForTokenApproval(token);
+    if (approved) {
+      toast.success(`${getTokenName(token)} was approved for swap`);
+    } else {
+      setTokenApprovalStatus(TokenApprovalStatus.APPROVE_IN_YOUR_WALLET);
+      await askForTokenApproval(token);
+    }
+  }, [token, checkForTokenApproval, askForTokenApproval]);
+
   if (!authenticatedUserAddress) return null;
 
   return (
@@ -170,7 +153,9 @@ export const ApproveTokenCard = ({
           ? "bg-[#DDF23D] p-medium dark:p-medium rounded-xl disabled cursor-auto pointer-events-none"
           : "dark:bg-[#363836] bg-[#e0e0e0] p-medium dark:p-medium-dark dark:hover:p-medium dark:hover:text-[#212322] dark:hover:bg-[#DDF23D] hover:bg-[#DDF23D] transition rounded-xl border border-[#353836]",
       ])}
-      onClick={() => handleTokenApproval()}
+      onClick={() => {
+        handleTokenApproval();
+      }}
       role="button"
     >
       <div className="flex gap-4 w-[75%]">

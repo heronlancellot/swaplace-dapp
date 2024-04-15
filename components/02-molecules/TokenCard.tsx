@@ -97,7 +97,7 @@ export const TokenCard = ({
 
   const [tokenDisplayableData, setDisplayableData] = useState({
     id: "",
-    image: "",
+    symbol: "",
   });
 
   useEffect(() => {
@@ -106,9 +106,9 @@ export const TokenCard = ({
     switch (tokenData.tokenType) {
       case TokenType.ERC20:
         if ((tokenData as ERC20).symbol) {
-          displayableData.image = (tokenData as ERC20).symbol as string;
+          displayableData.symbol = (tokenData as ERC20).symbol as string;
         } else {
-          displayableData.image = "";
+          displayableData.symbol = "";
         }
 
         if ((tokenData as ERC20).id) {
@@ -116,10 +116,10 @@ export const TokenCard = ({
         }
       case TokenType.ERC721:
         if ((tokenData as ERC721).metadata?.image) {
-          displayableData.image = (tokenData as ERC721).metadata
+          displayableData.symbol = (tokenData as ERC721).metadata
             ?.image as string;
         } else {
-          displayableData.image = "";
+          displayableData.symbol = "";
         }
         if ((tokenData as ERC721).id) {
           displayableData.id = (tokenData as ERC721).id as string;
@@ -239,12 +239,12 @@ export const TokenCard = ({
     );
   };
 
-  return tokenDisplayableData.image && !couldntLoadNftImage ? (
+  return tokenDisplayableData.symbol && !couldntLoadNftImage ? (
     <>
       {ButtonLayout(
         <img
           onError={handleImageLoadError}
-          src={tokenDisplayableData.image}
+          src={tokenDisplayableData.symbol}
           alt={getTokenName(tokenData)}
           className="dark:text-[#707572] text-[#707572] text-center static z-10 w-full h-full overflow-y-auto rounded-xl"
         />,
