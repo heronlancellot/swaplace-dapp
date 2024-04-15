@@ -1,4 +1,3 @@
-import { ConfirmSwapModal, SwapModalAction } from "../02-molecules";
 import {
   DoneIcon,
   OffersContext,
@@ -7,6 +6,7 @@ import {
 } from "@/components/01-atoms";
 
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
+import { ConfirmSwapModal, SwapModalAction } from "@/components/02-molecules";
 
 import React, { useContext, useState } from "react";
 
