@@ -18,8 +18,6 @@ export const ProgressStatus = ({ swapModalAction }: ProgressStatusProps) => {
   const [tokensList, setTokensList] = useState<Token[]>([]);
   const [approvedTokensCount, setApprovedTokensCount] = useState(0);
 
-  console.log("tokens list to approve");
-
   useEffect(() => {
     switch (swapModalAction) {
       case SwapModalAction.CREATE_SWAP:
