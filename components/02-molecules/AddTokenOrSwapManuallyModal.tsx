@@ -4,6 +4,9 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { ERC20, ERC721, Token, TokenType } from "@/lib/shared/types";
 import { verifyTokenOwnership } from "@/lib/service/verifyTokenOwnership";
 import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
+import { getSwap } from "@/lib/service/getSwap";
+import { Swap } from "@/lib/client/swap-utils";
+import { ADDRESS_ZERO } from "@/lib/client/constants";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
 import { isAddress } from "viem";
@@ -28,16 +31,75 @@ interface AddManuallyProps {
 }
 
 const SwapBody = () => {
+  const [swapId, setSwapId] = useState<bigint>(0n);
+  const { chain } = useNetwork();
+  let swapBelongsToAuthUser: boolean;
+
+  const { authenticatedUserAddress } = useAuthenticatedUser();
+
+  if (!authenticatedUserAddress?.address) {
+    return null;
+  }
+
+  const verifySwapBelongsToAuthUser = async (swap: Swap): Promise<boolean> => {
+    if (swap.owner === ADDRESS_ZERO) {
+      toast.error("Swap ID doesnt exist. Please verify the ID");
+    } else if (swap.owner !== ADDRESS_ZERO) {
+      toast.success("Searching Swap");
+      if (swap.owner === authenticatedUserAddress.address) {
+        swapBelongsToAuthUser = true;
+      } else {
+        swapBelongsToAuthUser = false;
+      }
+    }
+    return swapBelongsToAuthUser;
+  };
+
+  interface getSwapUserConfiguration {
+    chain: number;
+  }
+
+  let chainId: number | undefined = undefined;
+
+  if (typeof chain?.id != "undefined") {
+    chainId = chain?.id;
+  }
+
+  if (!chainId) {
+    throw new Error("User is not connected to any network");
+  }
+  const addSwapId = async () => {
+    const configurations: getSwapUserConfiguration = {
+      chain: chainId,
+    };
+
+    await getSwap(swapId, configurations).then(async (swap: any) => {
+      await verifySwapBelongsToAuthUser(swap).then(
+        (swapBelongsToAuthUser: boolean) => {
+          console.log("adicione na lista de SwapOffers", swapBelongsToAuthUser);
+        },
+      );
+    });
+
+    return <></>;
+  };
+
   return (
     <div className="flex flex-col gap-6 ">
       <div className="flex flex-col gap-2">
         <div className="dark:p-small-dark p-small-variant-black">Swap ID</div>
         <div>
-          <input className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]" />
+          <input
+            className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]"
+            onChange={(e) => setSwapId(BigInt(e.target.value))}
+          />
         </div>
       </div>
       <div className="flex h-[36px]">
-        <button className="bg-[#DDF23D] hover:bg-[#aabe13] w-full dark:shadow-add-manually-button py-2 px-4 rounded-[10px] p-medium-bold-variant-black">
+        <button
+          className="bg-[#DDF23D] hover:bg-[#aabe13] w-full dark:shadow-add-manually-button py-2 px-4 rounded-[10px] p-medium-bold-variant-black"
+          onClick={addSwapId}
+        >
           Add Swap
         </button>
       </div>
