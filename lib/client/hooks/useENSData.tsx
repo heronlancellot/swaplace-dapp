@@ -30,7 +30,6 @@ export const useEnsData = ({ ensAddress }: Props) => {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
           if (data && data.ens_primary) {
             setPrimaryName(data.ens_primary);
             setAvatarQueryStatus(ENSAvatarQueryStatus.SUCCESS);
