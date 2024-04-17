@@ -36,17 +36,26 @@ const SwapBody = () => {
   let swapBelongsToAuthUser: boolean;
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
+  // const {  } = useContext(OffersContext);
 
   if (!authenticatedUserAddress?.address) {
     return null;
   }
 
   const verifySwapBelongsToAuthUser = async (swap: Swap): Promise<boolean> => {
+    // console.log("swap", swap);
+    // console.log(
+    //   "authenticatedUserAddress.address",
+    //   authenticatedUserAddress.address,
+    // );
     if (swap.owner === ADDRESS_ZERO) {
       toast.error("Swap ID doesnt exist. Please verify the ID");
     } else if (swap.owner !== ADDRESS_ZERO) {
       toast.success("Searching Swap");
-      if (swap.owner === authenticatedUserAddress.address) {
+      if (
+        swap.owner.toUpperCase() ===
+        authenticatedUserAddress.address.toUpperCase()
+      ) {
         swapBelongsToAuthUser = true;
       } else {
         swapBelongsToAuthUser = false;
@@ -76,7 +85,12 @@ const SwapBody = () => {
     await getSwap(swapId, configurations).then(async (swap: any) => {
       await verifySwapBelongsToAuthUser(swap).then(
         (swapBelongsToAuthUser: boolean) => {
-          console.log("adicione na lista de SwapOffers", swapBelongsToAuthUser);
+          if (swapBelongsToAuthUser) {
+            // console.log(
+            //   "adicione na lista de SwapOffers",
+            //   swapBelongsToAuthUser,
+            // );
+          }
         },
       );
     });
