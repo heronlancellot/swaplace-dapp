@@ -318,6 +318,8 @@ interface RawSwapOfferInterface {
   expiry: bigint;
   bid: Asset[];
   ask: Asset[];
+  recipient: bigint;
+  value: bigint;
 }
 export interface FormattedSwapOfferInterface {
   id: string;
