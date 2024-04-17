@@ -118,6 +118,8 @@ export const ApproveTokenCard = ({
       if (transactionReceipt.success) {
         toast.success(`'${getTokenName(token)}' swap was approved`);
         setTokenWasApprovedForSwap(token);
+        setTokenApprovalStatus(TokenApprovalStatus.APPROVED);
+        setIsApproved(true);
 
         // Below alias is always valid since whenever a tx is successful, a receipt is returned
         return transactionReceipt.receipt as TransactionReceipt;

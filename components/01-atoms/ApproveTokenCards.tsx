@@ -124,7 +124,18 @@ export const ApproveTokenCards = ({
     });
 
     setPrevioslytApprovedList(newApprovedList);
-    updateCreateSwapApprovedTokensCount(count);
+
+    switch (swapModalAction) {
+      case SwapModalAction.CREATE_SWAP:
+        updateCreateSwapApprovedTokensCount(count);
+        break;
+      case SwapModalAction.ACCEPT_SWAP:
+        updateAcceptSwapApprovedTokensCount(count);
+        break;
+      default:
+        break;
+    }
+
     setIsLoading(false);
   };
 
