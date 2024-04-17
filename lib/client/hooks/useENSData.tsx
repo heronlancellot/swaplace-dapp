@@ -1,7 +1,5 @@
 import { EthereumAddress } from "@/lib/shared/types";
-import { createPublicClient, http } from "viem";
 import { useEffect, useState } from "react";
-import { mainnet } from "viem/chains";
 
 export enum ENSAvatarQueryStatus {
   LOADING,
@@ -22,28 +20,20 @@ export const useEnsData = ({ ensAddress }: Props) => {
 
   useEffect(() => {
     if (ensAddress) {
-      const mainnetRPCUrl = process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_HTTP;
-
-      if (!mainnetRPCUrl)
-        throw new Error(
-          "No RPC URL was defined for mainnet, cannot get ENS name without it.",
-        );
-
-      const mainnetClient = createPublicClient({
-        chain: mainnet,
-        transport: http(),
-      });
-
       setAvatarQueryStatus(ENSAvatarQueryStatus.LOADING);
 
-      mainnetClient
-        .getEnsName({
-          address: ensAddress.address as `0x${string}`,
+      fetch(`/api/ens?address=${ensAddress}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
         })
-        .then((name) => {
-          if (name) {
+        .then((data) => {
+          console.log(data);
+          if (data && data.ens_primary) {
+            setPrimaryName(data.ens_primary);
             setAvatarQueryStatus(ENSAvatarQueryStatus.SUCCESS);
-            setPrimaryName(name);
           } else {
             setAvatarQueryStatus(ENSAvatarQueryStatus.ERROR);
             setPrimaryName(null);
