@@ -13,12 +13,13 @@ interface EmptyLayoutOffersProps {
   icon: React.ReactNode;
   title: React.ReactNode;
   description: React.ReactNode;
-  button: React.ReactNode;
+  button?: React.ReactNode;
 }
 
 export enum SwapOffersDisplayVariant {
   ERROR = "error",
   NO_SWAPS_CREATED = "swapless",
+  NO_USER_AUTHENTICATED = "unauthenticated",
 }
 
 interface SwapOffersLayoutProps {
@@ -86,6 +87,18 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
     );
   };
 
+  const SwapOffersLayoutErrorNoAuthenticatedUser = () => {
+    return (
+      <>
+        <EmptyLayoutOffers
+          icon={<ErrorIcon fill={cc([{ black: theme === "light" }])} />}
+          title={<>No wallet connected</>}
+          description={<>Connect a wallet to see your swap offers</>}
+        />
+      </>
+    );
+  };
+
   const SwapOffersLayoutNoSwapsCreated = () => {
     return (
       <>
@@ -120,6 +133,9 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
     },
     [SwapOffersDisplayVariant.NO_SWAPS_CREATED]: {
       body: <SwapOffersLayoutNoSwapsCreated />,
+    },
+    [SwapOffersDisplayVariant.NO_USER_AUTHENTICATED]: {
+      body: <SwapOffersLayoutErrorNoAuthenticatedUser />,
     },
   };
 
