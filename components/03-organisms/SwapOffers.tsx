@@ -75,7 +75,9 @@ export const SwapOffers = () => {
   };
 
   // TO DO: Create a Timer to loading this for a while
-  return isLoading || isLoadingOffersQuery ? (
+  return !authenticatedUserAddress ? (
+    <SwapOffersLayout variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED} />
+  ) : isLoading || isLoadingOffersQuery ? (
     <div className="flex gap-5 flex-col">
       <div>
         <TokensOfferSkeleton />

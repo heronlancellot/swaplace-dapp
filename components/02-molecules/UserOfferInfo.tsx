@@ -1,4 +1,5 @@
 import { ENSAvatar, ENSAvatarSize } from "@/components/01-atoms";
+import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { useEnsData } from "@/lib/client/hooks/useENSData";
 import { EthereumAddress } from "@/lib/shared/types";
 
@@ -32,7 +33,9 @@ export const UserOfferInfo = ({
           {primaryName ? (
             <p>{primaryName} gets</p>
           ) : (
-            <p>{displayAddress} gets</p>
+            <p>
+              {displayAddress === ADDRESS_ZERO ? "They" : displayAddress} gets
+            </p>
           )}
         </div>
       </div>

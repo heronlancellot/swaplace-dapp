@@ -58,6 +58,10 @@ const SwapBody = () => {
   }
 
   const verifySwapBelongsToAuthUser = async (swap: Swap): Promise<boolean> => {
+    const bidingAddressAndExpiryData = await decodeConfig({
+      config: BigInt(swap.config),
+    });
+
     if (swap.owner === ADDRESS_ZERO) {
       toast.error("Swap ID doesnt exist. Please verify the ID");
     } else if (swap.owner !== ADDRESS_ZERO) {
@@ -66,6 +70,8 @@ const SwapBody = () => {
         swap.owner.toUpperCase() ===
         authenticatedUserAddress.address.toUpperCase()
       ) {
+        swapBelongsToAuthUser = true;
+      } else if (bidingAddressAndExpiryData.allowed === ADDRESS_ZERO) {
         swapBelongsToAuthUser = true;
       } else {
         swapBelongsToAuthUser = false;
@@ -117,6 +123,13 @@ const SwapBody = () => {
         tokens: bidedTokensWithData,
       },
     };
+
+    // const tokensListResponse = tokensList.filter((token) => {
+    //   token === formattedTokens;
+    // });
+
+    // console.log("tokensListResponse", tokensListResponse);
+
     setTokensList([...tokensList, formattedTokens]);
 
     return swapArray;
