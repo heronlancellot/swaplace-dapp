@@ -10,7 +10,10 @@ export const avalanche = {
     public: { http: ["https://sepolia-rpc.kakarot.org"] },
   },
   blockExplorers: {
-    default: { name: "Etherscan", url: "https://etherscan.io" }, //What is the explorer?
+    default: {
+      name: "KakarotSepoliaScan",
+      url: "https://sepolia-explorer.kakarot.org",
+    },
   },
   contracts: {
     multicall3: {
