@@ -13,7 +13,6 @@ import { ProgressStatus } from "@/components/02-molecules";
 import { SwapUserConfiguration, createSwap } from "@/lib/service/createSwap";
 import {
   ButtonClickPossibilities,
-  packingData,
   toastBlockchainTxError,
 } from "@/lib/client/blockchain-utils";
 import { CreateTokenOffer } from "@/components/03-organisms";
@@ -49,6 +48,8 @@ export const ConfirmSwapModal = ({
     approvedTokensCount: createSwapApprovedTokensCount,
     validatedAddressToSwap,
     currentSwapModalStep,
+    etherRecipient,
+    etherValue,
     updateSwapStep,
     clearSwapData,
   } = useContext(SwapContext);
@@ -168,15 +169,16 @@ export const ConfirmSwapModal = ({
               abi: SwaplaceAbi,
             });
 
-            const packedData = await packingData(
-              SwaplaceContract,
-              validatedAddressToSwap,
-              timeDate,
-            );
+            const encodeConfig =
+              (BigInt(validatedAddressToSwap.address.toString()) <<
+                BigInt(96)) |
+              (BigInt(timeDate) << BigInt(64)) |
+              (BigInt(etherRecipient) << BigInt(56)) |
+              BigInt(etherValue);
 
             const swapConfig = await getSwapConfig(
               new EthereumAddress(userWalletClient.account.address),
-              packedData,
+              encodeConfig,
               timeDate,
               authenticatedUserAssets,
               searchedUserAssets,
