@@ -2,8 +2,8 @@ import { Chain } from "@wagmi/core";
 
 export const avalanche = {
   id: 1_802_203_764,
-  name: "Kakarot",
-  network: "kakarot",
+  name: "Kakarot Sepolia",
+  network: "kakarot_sepolia",
   nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 }, //Ether kakarot Sepolia? Ether Kakarot? What's the currency?
   rpcUrls: {
     default: { http: ["https://sepolia-rpc.kakarot.org"] },

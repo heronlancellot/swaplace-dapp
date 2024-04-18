@@ -1,6 +1,7 @@
 import { ChainInfo } from "../constants";
 import { useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
+import { InjectedConnector } from "@wagmi/core";
 
 export const useSupportedNetworks = () => {
   const [isNetworkSupported, setIsNetworkSupported] = useState(true);
@@ -8,6 +9,8 @@ export const useSupportedNetworks = () => {
   const { chain } = useNetwork();
 
   useEffect(() => {
+    const test = new InjectedConnector();
+    test.getProvider().then((res) => console.log("res", res));
     if (
       chain &&
       supportedNetworksId.includes(chain.id) &&

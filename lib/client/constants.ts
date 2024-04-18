@@ -14,7 +14,7 @@ export enum SupportedNetworks {
   HARDHAT = "HARDHAT",
   ETHEREUM = "ETHEREUM",
   SEPOLIA = "SEPOLIA",
-  KAKAROT = "KAKAROT",
+  KAKAROT_SEPOLIA = "KAKAROT_SEPOLIA",
   POLYGON = "POLYGON",
   MUMBAI = "MUMBAI",
   OPTIMISM = "OPTIMISM",
@@ -48,7 +48,7 @@ export const ChainInfo: Record<SupportedNetworks, ChainProps> = {
     id: 11155111,
     name: "Sepolia",
   },
-  [SupportedNetworks.KAKAROT]: {
+  [SupportedNetworks.KAKAROT_SEPOLIA]: {
     id: 1802203764,
     name: "Kakarot",
   },
@@ -109,14 +109,14 @@ export const ChainInfo: Record<SupportedNetworks, ChainProps> = {
 export const getNetwork: Map<number, Network> = new Map([
   [ChainInfo.SEPOLIA.id, Network.ETH_SEPOLIA],
   [ChainInfo.MUMBAI.id, Network.MATIC_MUMBAI],
-  [ChainInfo.KAKAROT.id, Network.ETH_KAKAROT],
+  [ChainInfo.KAKAROT_SEPOLIA.id, Network.ETH_KAKAROT],
 ]);
 
 export const getRpcHttpUrlForNetwork: Map<number, string> = new Map([
   [ChainInfo.HARDHAT.id, "http://127.0.0.1:8545/"],
   [ChainInfo.ETHEREUM.id, process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_HTTP ?? ""],
   [ChainInfo.SEPOLIA.id, process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA_HTTP ?? ""],
-  [ChainInfo.KAKAROT.id, process.env.NEXT_PUBLIC_KAKAROT_HTTP ?? ""],
+  [ChainInfo.KAKAROT_SEPOLIA.id, process.env.NEXT_PUBLIC_KAKAROT_HTTP ?? ""],
   [ChainInfo.POLYGON.id, process.env.NEXT_PUBLIC_ALCHEMY_POLYGON_HTTP ?? ""],
   [ChainInfo.MUMBAI.id, process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_HTTP ?? ""],
   [ChainInfo.OPTIMISM.id, process.env.NEXT_PUBLIC_ALCHEMY_OPTIMISM_HTTP ?? ""],
@@ -171,7 +171,7 @@ export const SWAPLACE_SMART_CONTRACT_ADDRESS = {
   [ChainInfo.HARDHAT.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.ETHEREUM.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.SEPOLIA.id]: "0xFA682bcE8b1dff8D948aAE9f0fBade82D28E1842",
-  [ChainInfo.KAKAROT.id]: "0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", //Placeholder value untill the smart contract is deployed on the network
+  [ChainInfo.KAKAROT_SEPOLIA.id]: "0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", //Placeholder value untill the smart contract is deployed on the network
   [ChainInfo.POLYGON.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.MUMBAI.id]: "0xcB003ed4Df4679D15b8863BB8F7609855A6a380d",
   [ChainInfo.OPTIMISM.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
