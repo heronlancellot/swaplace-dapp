@@ -156,10 +156,10 @@ export const ConfirmSwapModal = ({
               searchedUserTokensList,
             );
 
-            const encodeConfigData = await encodeConfig(
-              validatedAddressToSwap.address,
-              timeDate,
-            );
+            const encodeConfigData = await encodeConfig({
+              allowed: validatedAddressToSwap.address,
+              expiry: timeDate,
+            });
 
             const swapConfig = await getSwapConfig(
               new EthereumAddress(userWalletClient.account.address),

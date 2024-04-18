@@ -106,9 +106,9 @@ const SwapBody = () => {
       swapArray.biding,
     );
 
-    const bidingAddressAndExpiryData = await decodeConfig(
-      BigInt(swapArray.config),
-    );
+    const bidingAddressAndExpiryData = await decodeConfig({
+      config: BigInt(swapArray.config),
+    });
 
     console.log("bidingAddressAndExpiryData,", bidingAddressAndExpiryData);
     const formattedTokens: PopulatedSwapOfferInterface = {

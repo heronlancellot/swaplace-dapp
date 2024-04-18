@@ -280,14 +280,22 @@ export const toastBlockchainTxError = (e: string) => {
   }
 };
 
-export async function encodeConfig(
-  allowed: string,
-  expiry: bigint | number,
-): Promise<bigint> {
+interface encodeConfigProps {
+  allowed: string;
+  expiry: bigint | number;
+}
+export async function encodeConfig({
+  allowed,
+  expiry,
+}: encodeConfigProps): Promise<bigint> {
   return (BigInt(allowed) << BigInt(96)) | BigInt(expiry);
 }
 
-export async function decodeConfig(config: bigint): Promise<{
+interface decodeConfigProps {
+  config: bigint;
+}
+
+export async function decodeConfig({ config }: decodeConfigProps): Promise<{
   allowed: string;
   expiry: bigint | number;
 }> {
