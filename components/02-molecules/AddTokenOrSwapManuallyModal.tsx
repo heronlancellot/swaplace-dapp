@@ -58,11 +58,6 @@ const SwapBody = () => {
   }
 
   const verifySwapBelongsToAuthUser = async (swap: Swap): Promise<boolean> => {
-    // console.log("swap", swap);
-    // console.log(
-    //   "authenticatedUserAddress.address",
-    //   authenticatedUserAddress.address,
-    // );
     if (swap.owner === ADDRESS_ZERO) {
       toast.error("Swap ID doesnt exist. Please verify the ID");
     } else if (swap.owner !== ADDRESS_ZERO) {
@@ -98,7 +93,6 @@ const SwapBody = () => {
   };
 
   const addSwapToTokensList = async (swapArray: Swap) => {
-    // console.log("swap = ", swapArray);
     const askedTokensWithData = await retrieveDataFromTokensArray(
       swapArray.asking,
     );
@@ -110,7 +104,6 @@ const SwapBody = () => {
       config: BigInt(swapArray.config),
     });
 
-    console.log("bidingAddressAndExpiryData,", bidingAddressAndExpiryData);
     const formattedTokens: PopulatedSwapOfferInterface = {
       id: String(swapId),
       status: "",
@@ -124,9 +117,6 @@ const SwapBody = () => {
         tokens: bidedTokensWithData,
       },
     };
-    console.log("formattedTokens", formattedTokens);
-    console.log("askedTokensWithData", askedTokensWithData);
-    console.log("bidedTokensWithData", bidedTokensWithData);
     setTokensList([...tokensList, formattedTokens]);
 
     return swapArray;
@@ -136,10 +126,6 @@ const SwapBody = () => {
       await verifySwapBelongsToAuthUser(swap).then(
         (swapBelongsToAuthUser: boolean) => {
           if (swapBelongsToAuthUser) {
-            console.log(
-              "adicione na lista de SwapOffers",
-              swapBelongsToAuthUser,
-            );
             addSwapToTokensList(swap);
           }
         },
