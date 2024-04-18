@@ -18,7 +18,7 @@ export const NoSwapsIcon = (props: SVGProps<SVGSVGElement>) => {
             stroke="#DDF23D"
             stroke-width="3"
             stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinejoin="round"
           />
           <path
             id="Vector_2"
@@ -26,7 +26,7 @@ export const NoSwapsIcon = (props: SVGProps<SVGSVGElement>) => {
             stroke="#DDF23D"
             stroke-width="3"
             stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinejoin="round"
           />
           <path
             id="Vector_3"
@@ -34,7 +34,7 @@ export const NoSwapsIcon = (props: SVGProps<SVGSVGElement>) => {
             stroke="#DDF23D"
             stroke-width="3"
             stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinejoin="round"
           />
           <path
             id="Vector_4"
@@ -42,7 +42,7 @@ export const NoSwapsIcon = (props: SVGProps<SVGSVGElement>) => {
             stroke="#DDF23D"
             stroke-width="3"
             stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinejoin="round"
           />
           <path
             id="Vector_5"
@@ -50,7 +50,7 @@ export const NoSwapsIcon = (props: SVGProps<SVGSVGElement>) => {
             stroke="#DDF23D"
             stroke-width="3"
             stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinejoin="round"
           />
           <path
             id="Vector_6"
@@ -58,7 +58,7 @@ export const NoSwapsIcon = (props: SVGProps<SVGSVGElement>) => {
             stroke="#DDF23D"
             stroke-width="3"
             stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinejoin="round"
           />
         </g>
         <g id="Group 47">

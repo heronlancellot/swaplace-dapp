@@ -6,9 +6,8 @@ import {
   SwappingShelfID,
   TokensShelfTab,
 } from "@/components/01-atoms/";
-import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useContext, useEffect, useState } from "react";
-import { useNetwork } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import cc from "classcat";
 
 /**
@@ -20,7 +19,7 @@ import cc from "classcat";
  */
 export const SwappingShelfs = () => {
   const { chain } = useNetwork();
-  const { authenticatedUserAddress } = useAuthenticatedUser();
+  const { address, isConnected } = useAccount();
   const [activeSwappingShelfID, setActiveSwappingShelfID] =
     useState<SwappingShelfID>(SwappingShelfID.THEIR_ITEMS);
 
@@ -34,7 +33,7 @@ export const SwappingShelfs = () => {
     setAuthenticatedUserTokensList([]);
     setSearchedUserTokensList([]);
     setInputAddress("");
-  }, [chain, authenticatedUserAddress]);
+  }, [chain, address, isConnected]);
 
   return (
     <div className="w-full h-full dark:bg-[#212322] dark:border-[#353836] border border-[#D6D5D5] rounded-2xl dark:shadow-swap-station shadow-swap-station-light">

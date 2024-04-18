@@ -168,12 +168,10 @@ export const OffersContextProvider = ({ children }: any) => {
         { query, variables },
         { headers },
       );
-
       if (response.data && response.data.data) {
         const items = response.data.data.swapDatabases
           .items as RawSwapOfferInterface[];
         const pageInfo = response.data.data.swapDatabases.pageInfo as PageInfo;
-
         const processedItems: RawSwapOfferInterface[] = items.map(
           (obj: any) => {
             return {
@@ -183,7 +181,6 @@ export const OffersContextProvider = ({ children }: any) => {
             };
           },
         );
-
         const itemsArrayAsSwapOffers: FormattedSwapOfferInterface[] =
           processedItems.map((item) => {
             return {
@@ -202,12 +199,10 @@ export const OffersContextProvider = ({ children }: any) => {
               },
             };
           });
-
         setOffersQueries({
           ...offersQueries,
           [offersFilter]: itemsArrayAsSwapOffers,
         });
-
         return {
           swapOffers: itemsArrayAsSwapOffers,
           pageInfo,
@@ -229,8 +224,7 @@ export const OffersContextProvider = ({ children }: any) => {
       await fetchSwaps({ pageParam }),
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
-    enabled:
-      offersFilter === PonderFilter.ALL_OFFERS || !!authenticatedUserAddress,
+    enabled: !!authenticatedUserAddress,
   });
 
   const [hasNextPage, setHasNextPage] = useState(false);
@@ -242,7 +236,8 @@ export const OffersContextProvider = ({ children }: any) => {
 
   // Effects
   useEffect(() => {
-    setIsLoadingOffersQuery(status === "pending" || isFetchingNextPage);
+    !!authenticatedUserAddress &&
+      setIsLoadingOffersQuery(status === "pending" || isFetchingNextPage);
   }, [isFetchingNextPage, status]);
 
   useEffect(() => {
