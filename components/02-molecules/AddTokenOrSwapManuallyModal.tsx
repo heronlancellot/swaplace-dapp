@@ -17,8 +17,10 @@ import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
 import { getSwap } from "@/lib/service/getSwap";
 import { Swap } from "@/lib/client/swap-utils";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
-import { retrieveDataFromTokensArray } from "@/lib/client/blockchain-utils";
-import { decodeConfig } from "@/lib/service/parseData";
+import {
+  decodeConfig,
+  retrieveDataFromTokensArray,
+} from "@/lib/client/blockchain-utils";
 import { PopulatedSwapOfferInterface } from "@/lib/client/offers-utils";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
@@ -108,7 +110,7 @@ const SwapBody = () => {
       BigInt(swapArray.config),
     );
 
-    // console.log("bidingAddressAndExpiryData,", bidingAddressAndExpiryData);
+    console.log("bidingAddressAndExpiryData,", bidingAddressAndExpiryData);
     const formattedTokens: PopulatedSwapOfferInterface = {
       id: String(swapId),
       status: "",
@@ -122,9 +124,9 @@ const SwapBody = () => {
         tokens: bidedTokensWithData,
       },
     };
-    // console.log("formattedTokens", formattedTokens);
-    // console.log("askedTokensWithData", askedTokensWithData);
-    // console.log("bidedTokensWithData", bidedTokensWithData);
+    console.log("formattedTokens", formattedTokens);
+    console.log("askedTokensWithData", askedTokensWithData);
+    console.log("bidedTokensWithData", bidedTokensWithData);
     setTokensList([...tokensList, formattedTokens]);
 
     return swapArray;
