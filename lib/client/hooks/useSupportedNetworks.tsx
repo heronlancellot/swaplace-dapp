@@ -11,7 +11,8 @@ export const useSupportedNetworks = () => {
     if (
       chain &&
       supportedNetworksId.includes(chain.id) &&
-      chain.id === 11155111 // Hardcoded for now to accept only Sepolia for now, until we accept others chains afther alpha
+      (chain.id === 11155111 || // Hardcoded for now to accept only Sepolia for now, until we accept others chains afther alpha
+        chain.id === 1802203764)
     ) {
       setIsNetworkSupported(true);
     } else {
