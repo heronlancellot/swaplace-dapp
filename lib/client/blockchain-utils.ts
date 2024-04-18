@@ -257,12 +257,19 @@ export interface TokenApprovalData {
   amountOrId: bigint;
 }
 
-export async function packingData(
+export async function encodingConfig(
   Contract: any,
   allowed: EthereumAddress,
   expiration: bigint,
+  recipient: bigint,
+  value: bigint,
 ): Promise<number> {
-  const config = await Contract.read.packData([allowed.address, expiration]);
+  const config = await Contract.read.encodeConfig([
+    allowed.address,
+    expiration,
+    recipient,
+    value,
+  ]);
   return config;
 }
 
