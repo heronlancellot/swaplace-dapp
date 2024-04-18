@@ -19,7 +19,8 @@ export const UserOfferInfo = ({
   const { primaryName } = useEnsData({
     ensAddress: address,
   });
-  const displayAddress = address?.getEllipsedAddress();
+  const displayAddress =
+    address?.address === ADDRESS_ZERO ? "They" : address?.getEllipsedAddress();
 
   return variant == UserOfferVariant.DEFAULT ? (
     <div>
@@ -30,13 +31,7 @@ export const UserOfferInfo = ({
           )}
         </div>
         <div className="flex ">
-          {primaryName ? (
-            <p>{primaryName} gets</p>
-          ) : (
-            <p>
-              {displayAddress === ADDRESS_ZERO ? "They" : displayAddress} gets
-            </p>
-          )}
+          {primaryName ? <p>{primaryName} get</p> : <p>{displayAddress} get</p>}
         </div>
       </div>
     </div>
@@ -54,9 +49,9 @@ export const UserOfferInfo = ({
           </div>
           <div className="flex ">
             {primaryName ? (
-              <p>{primaryName} gets</p>
+              <p>{primaryName} get</p>
             ) : (
-              <p>{displayAddress} gets</p>
+              <p>{displayAddress} get</p>
             )}
           </div>
         </div>
