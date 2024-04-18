@@ -9,8 +9,6 @@ export const useSupportedNetworks = () => {
   const { chain } = useNetwork();
 
   useEffect(() => {
-    const test = new InjectedConnector();
-    test.getProvider().then((res) => console.log("res", res));
     if (
       chain &&
       supportedNetworksId.includes(chain.id) &&
