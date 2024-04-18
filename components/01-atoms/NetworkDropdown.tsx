@@ -27,7 +27,7 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
     if (!isNetworkSupported) {
       setNetworkText("default");
     } else {
-      setNetworkText(SupportedNetworks.SEPOLIA);
+      setNetworkText(SupportedNetworks.KAKAROTSEPOLIA);
     }
   }, [authenticatedUserAddress, isNetworkSupported, chain]);
 
@@ -35,12 +35,28 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
     setIsOpen(!isOpen);
   };
 
-  const handleDropdownItemClick = (networkName: NetworkVariants) => {
-    if (networkName === SupportedNetworks.SEPOLIA) {
-      switchNetwork && switchNetwork(sepolia.id);
-      isSuccess && setNetworkText(networkName);
+  const handleDropdownItemClick = async (networkName: NetworkVariants) => {
+    try {
+      let networkId;
+      if (networkName === SupportedNetworks.SEPOLIA) {
+        networkId = sepolia.id; // Ensure this is the correct ID for SEPOLIA
+      } else if (networkName === SupportedNetworks.KAKAROTSEPOLIA) {
+        networkId = 1802203764; // Ensure this is the correct ID for KAKAROT_SEPOLIA
+      }
+
+      if (networkId) {
+        await switchNetwork?.(networkId);
+        if (isSuccess) {
+          setNetworkText(networkName);
+        }
+      } else {
+        console.error("Unsupported network selected:", networkName);
+      }
+    } catch (error) {
+      console.error("Network switch failed:", error);
+    } finally {
+      setIsOpen(false);
     }
-    setIsOpen(false);
   };
 
   interface NetworkProps {
@@ -65,6 +81,7 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
       ),
       name: SupportedNetworks.SEPOLIA,
     },
+
     // [SupportedNetworks.OPTIMISM]: {
     //   icon: (
     //     <NetworkIcon
