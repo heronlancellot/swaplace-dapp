@@ -171,7 +171,7 @@ export const SWAPLACE_SMART_CONTRACT_ADDRESS = {
   [ChainInfo.HARDHAT.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.ETHEREUM.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.SEPOLIA.id]: "0xFA682bcE8b1dff8D948aAE9f0fBade82D28E1842",
-  [ChainInfo.KAKAROT_SEPOLIA.id]: "0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", //Placeholder value untill the smart contract is deployed on the network
+  [ChainInfo.KAKAROT_SEPOLIA.id]: "0x11FA19B071faB6E119dBefFfaa23eFb79F14f4A2", //Placeholder value untill the smart contract is deployed on the network
   [ChainInfo.POLYGON.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.MUMBAI.id]: "0xcB003ed4Df4679D15b8863BB8F7609855A6a380d",
   [ChainInfo.OPTIMISM.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
