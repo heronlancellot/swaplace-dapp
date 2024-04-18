@@ -9,7 +9,7 @@ export interface Asset {
 
 export interface Swap {
   owner: string;
-  config: number;
+  config: bigint;
   biding: Asset[];
   asking: Asset[];
 }
@@ -117,7 +117,7 @@ export async function fromTokensToAssets(
 
 export async function getSwapConfig(
   owner: EthereumAddress,
-  packedData: number,
+  encodeConfig: bigint,
   expiry: bigint,
   biding: Asset[],
   asking: Asset[],
@@ -142,7 +142,7 @@ export async function getSwapConfig(
 
   const swap: Swap = {
     owner: owner.address,
-    config: packedData,
+    config: encodeConfig,
     biding: biding,
     asking: asking,
   };
