@@ -58,6 +58,7 @@ interface OffersContextProps {
   setApprovedTokensCount: Dispatch<React.SetStateAction<number>>;
   setTokensList: Dispatch<React.SetStateAction<PopulatedSwapOfferInterface[]>>;
   tokensList: PopulatedSwapOfferInterface[];
+  isError: boolean;
 }
 
 const DEFAULT_ERC20_TOKEN: Token = {
@@ -253,15 +254,16 @@ export const OffersContextProvider = ({ children }: any) => {
   };
 
   // Offers query
-  const { data, status, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["PonderQuerySwaps", authenticatedUserAddress, offersFilter],
-    queryFn: async ({ pageParam }: { pageParam: string | null }) =>
-      await fetchSwaps({ pageParam }),
-    initialPageParam: null,
-    getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
-    enabled:
-      offersFilter === PonderFilter.ALL_OFFERS || !!authenticatedUserAddress,
-  });
+  const { data, status, isFetchingNextPage, fetchNextPage, isError } =
+    useInfiniteQuery({
+      queryKey: ["PonderQuerySwaps", authenticatedUserAddress, offersFilter],
+      queryFn: async ({ pageParam }: { pageParam: string | null }) =>
+        await fetchSwaps({ pageParam }),
+      initialPageParam: null,
+      getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
+      enabled:
+        offersFilter === PonderFilter.ALL_OFFERS || !!authenticatedUserAddress,
+    });
 
   const [hasNextPage, setHasNextPage] = useState(false);
   useEffect(() => {
@@ -290,6 +292,7 @@ export const OffersContextProvider = ({ children }: any) => {
       setApprovedTokensCount,
       setTokensList,
       tokensList,
+      isError,
     });
   }, [
     setOffersFilter,
@@ -320,6 +323,7 @@ export const OffersContextProvider = ({ children }: any) => {
     setApprovedTokensCount,
     setTokensList,
     tokensList,
+    isError,
   });
 
   return (
@@ -343,4 +347,5 @@ export const OffersContext = React.createContext<OffersContextProps>({
   setApprovedTokensCount: () => {},
   setTokensList: () => {},
   tokensList: [DEFAULT_SWAP_OFFER],
+  isError: false,
 });
