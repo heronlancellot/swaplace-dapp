@@ -24,10 +24,11 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
   const { chain } = useNetwork();
 
   useEffect(() => {
-    if (!isNetworkSupported) {
+    console.log("network value:", isNetworkSupported);
+    if (!isNetworkSupported || !authenticatedUserAddress) {
       setNetworkText("default");
     } else {
-      setNetworkText(SupportedNetworks.KAKAROTSEPOLIA);
+      setNetworkText(SupportedNetworks.KAKAROT);
     }
   }, [authenticatedUserAddress, isNetworkSupported, chain]);
 
@@ -38,10 +39,10 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
   const handleDropdownItemClick = async (networkName: NetworkVariants) => {
     try {
       let networkId;
-      if (networkName === SupportedNetworks.SEPOLIA) {
-        networkId = sepolia.id; // Ensure this is the correct ID for SEPOLIA
-      } else if (networkName === SupportedNetworks.KAKAROTSEPOLIA) {
-        networkId = 1802203764; // Ensure this is the correct ID for KAKAROT_SEPOLIA
+      if (networkName === SupportedNetworks.KAKAROT) {
+        networkId = 1802203764;
+      } else if (networkName === SupportedNetworks.SEPOLIA) {
+        networkId = sepolia.id;
       }
 
       if (networkId) {
@@ -72,6 +73,15 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
    * Each entry consists of a network icon component and its associated name.
    */
   const NetworkInfo: Partial<Record<NetworkVariants, NetworkProps>> = {
+    [SupportedNetworks.KAKAROT]: {
+      icon: (
+        <NetworkIcon
+          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          variant={SupportedNetworks.KAKAROT}
+        />
+      ),
+      name: SupportedNetworks.KAKAROT,
+    },
     [SupportedNetworks.SEPOLIA]: {
       icon: (
         <NetworkIcon

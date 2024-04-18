@@ -32,7 +32,7 @@ export const NetworkIcon = ({ variant = "default" }: NetworkIconProps) => {
     [SupportedNetworks.ARBITRUMSEPOLIA]: <ChainArbitrumSepoliaIcon />,
     [SupportedNetworks.BASEGOERLI]: <ChainBaseGoerliIcon />,
     [SupportedNetworks.SEPOLIA]: <ChainEthereumSepoliaIcon />,
-    [SupportedNetworks.KAKAROTSEPOLIA]: <ChainKakarotSepoliaIcon />,
+    [SupportedNetworks.KAKAROT]: <ChainKakarotSepoliaIcon />,
     [SupportedNetworks.FUJI]: <ChainFujiIcon />,
     [SupportedNetworks.BNB]: <ChainBnbIcon />,
     [SupportedNetworks.OPTIMISM]: <ChainOptimismIcon />,
