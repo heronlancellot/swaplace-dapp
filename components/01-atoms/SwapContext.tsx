@@ -44,10 +44,18 @@ interface SwapContextProps {
   timeDate: bigint;
   setTimeDate: Dispatch<React.SetStateAction<bigint>>;
 
+  etherRecipient: bigint;
+  setEtherRecipient: (etherRecipient: bigint) => void;
+
+  etherValue: bigint;
+  setEtherValue: (etherValue: bigint) => void;
+
   clearSwapData: () => void;
 }
 
 export const SwapContextProvider = ({ children }: any) => {
+  const [etherRecipient, setEtherRecipient] = useState<bigint>(BigInt(0));
+  const [etherValue, setEtherValue] = useState<bigint>(BigInt(0));
   const [inputAddress, setInputAddress] = useState("");
   const [validatedAddressToSwap, setValidatedAddressToSwap] =
     useState<EthereumAddress | null>(null);
@@ -188,6 +196,10 @@ export const SwapContextProvider = ({ children }: any) => {
       updateSwapStep,
       currentSwapModalStep,
       clearSwapData,
+      setEtherRecipient,
+      etherRecipient,
+      setEtherValue,
+      etherValue,
     });
   }, [
     inputAddress,
@@ -221,6 +233,10 @@ export const SwapContextProvider = ({ children }: any) => {
     updateSwapStep,
     currentSwapModalStep,
     clearSwapData,
+    setEtherRecipient,
+    etherRecipient,
+    setEtherValue,
+    etherValue,
   });
 
   // This is a temporary measure while we don't turn the dApp into a SPA
@@ -257,4 +273,8 @@ export const SwapContext = React.createContext<SwapContextProps>({
   currentSwapModalStep: SwapModalSteps.APPROVE_TOKENS,
   updateSwapStep: (buttonClickAction: ButtonClickPossibilities) => {},
   clearSwapData: () => {},
+  etherRecipient: BigInt(0),
+  setEtherRecipient: () => {},
+  etherValue: BigInt(0),
+  setEtherValue: () => {},
 });
