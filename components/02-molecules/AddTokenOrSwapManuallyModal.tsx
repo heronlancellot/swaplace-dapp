@@ -34,9 +34,9 @@ const SwapBody = () => {
   const [swapId, setSwapId] = useState<bigint>(0n);
   const { chain } = useNetwork();
   let swapBelongsToAuthUser: boolean;
+  // const { setTokensList } = useContext(OffersContext);
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  // const {  } = useContext(OffersContext);
 
   if (!authenticatedUserAddress?.address) {
     return null;
@@ -77,6 +77,13 @@ const SwapBody = () => {
   if (!chainId) {
     throw new Error("User is not connected to any network");
   }
+
+  const addSwapToTokensList = (swap: any) => {
+    console.log("swap = ", swap);
+    // setTokensList();
+
+    return swap;
+  };
   const addSwapId = async () => {
     const configurations: getSwapUserConfiguration = {
       chain: chainId,
@@ -86,10 +93,11 @@ const SwapBody = () => {
       await verifySwapBelongsToAuthUser(swap).then(
         (swapBelongsToAuthUser: boolean) => {
           if (swapBelongsToAuthUser) {
-            // console.log(
-            //   "adicione na lista de SwapOffers",
-            //   swapBelongsToAuthUser,
-            // );
+            console.log(
+              "adicione na lista de SwapOffers",
+              swapBelongsToAuthUser,
+            );
+            addSwapToTokensList(swap);
           }
         },
       );

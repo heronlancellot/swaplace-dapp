@@ -5,16 +5,14 @@ import {
   SwapOffersDisplayVariant,
   SwapOffersLayout,
 } from "@/components/02-molecules";
-import {
-  OffersContext,
-  PopulatedSwapOfferInterface,
-} from "@/components/01-atoms/OffersContext";
+import { OffersContext } from "@/components/01-atoms/OffersContext";
 import {
   TokenOfferDetails,
   SwapIcon,
   TokensOfferSkeleton,
 } from "@/components/01-atoms";
 import { retrieveDataFromTokensArray } from "@/lib/client/blockchain-utils";
+import { PopulatedSwapOfferInterface } from "@/lib/client/offers-utils";
 import cc from "classcat";
 import { useContext, useEffect, useState } from "react";
 
@@ -35,10 +33,9 @@ export const SwapOffers = () => {
   } = useContext(OffersContext);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [tokensList, setTokensList] = useState<PopulatedSwapOfferInterface[]>(
-    [],
-  );
+  const { tokensList, setTokensList } = useContext(OffersContext);
 
+  console.log("tokensList", tokensList);
   useEffect(() => {
     offersQueries && processSwaps();
   }, [offersQueries]);
