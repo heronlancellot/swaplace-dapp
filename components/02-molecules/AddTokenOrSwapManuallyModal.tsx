@@ -1,12 +1,25 @@
 import { ForWhom } from "@/components/03-organisms";
-import { SwapContext, SwapModalLayout } from "@/components/01-atoms";
+import {
+  OffersContext,
+  SwapContext,
+  SwapModalLayout,
+} from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import { ERC20, ERC721, Token, TokenType } from "@/lib/shared/types";
+import {
+  ERC20,
+  ERC721,
+  EthereumAddress,
+  Token,
+  TokenType,
+} from "@/lib/shared/types";
 import { verifyTokenOwnership } from "@/lib/service/verifyTokenOwnership";
 import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
 import { getSwap } from "@/lib/service/getSwap";
 import { Swap } from "@/lib/client/swap-utils";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
+import { retrieveDataFromTokensArray } from "@/lib/client/blockchain-utils";
+import { parseData } from "@/lib/service/parseData";
+import { PopulatedSwapOfferInterface } from "@/lib/client/offers-utils";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
 import { isAddress } from "viem";
@@ -34,7 +47,7 @@ const SwapBody = () => {
   const [swapId, setSwapId] = useState<bigint>(0n);
   const { chain } = useNetwork();
   let swapBelongsToAuthUser: boolean;
-  // const { setTokensList } = useContext(OffersContext);
+  const { setTokensList, tokensList } = useContext(OffersContext);
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
 
@@ -78,17 +91,46 @@ const SwapBody = () => {
     throw new Error("User is not connected to any network");
   }
 
-  const addSwapToTokensList = (swap: any) => {
-    console.log("swap = ", swap);
-    // setTokensList();
+  const configurations: getSwapUserConfiguration = {
+    chain: chainId,
+  };
 
-    return swap;
+  const addSwapToTokensList = async (swapArray: Swap) => {
+    // console.log("swap = ", swapArray);
+    const askedTokensWithData = await retrieveDataFromTokensArray(
+      swapArray.asking,
+    );
+    const bidedTokensWithData = await retrieveDataFromTokensArray(
+      swapArray.biding,
+    );
+
+    const bidingAddressAndExpiryData = await parseData(
+      BigInt(swapArray.config),
+      configurations,
+    );
+
+    // console.log("bidingAddressAndExpiryData,", bidingAddressAndExpiryData);
+    const formattedTokens: PopulatedSwapOfferInterface = {
+      id: String(swapId),
+      status: "",
+      expiryDate: bidingAddressAndExpiryData.expiryDate,
+      ask: {
+        address: new EthereumAddress(swapArray.owner),
+        tokens: askedTokensWithData,
+      },
+      bid: {
+        address: bidingAddressAndExpiryData.bidingAddress,
+        tokens: bidedTokensWithData,
+      },
+    };
+    // console.log("formattedTokens", formattedTokens);
+    // console.log("askedTokensWithData", askedTokensWithData);
+    // console.log("bidedTokensWithData", bidedTokensWithData);
+    setTokensList([...tokensList, formattedTokens]);
+
+    return swapArray;
   };
   const addSwapId = async () => {
-    const configurations: getSwapUserConfiguration = {
-      chain: chainId,
-    };
-
     await getSwap(swapId, configurations).then(async (swap: any) => {
       await verifySwapBelongsToAuthUser(swap).then(
         (swapBelongsToAuthUser: boolean) => {
