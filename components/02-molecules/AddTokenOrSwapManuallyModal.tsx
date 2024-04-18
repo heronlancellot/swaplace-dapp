@@ -18,7 +18,7 @@ import { getSwap } from "@/lib/service/getSwap";
 import { Swap } from "@/lib/client/swap-utils";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { retrieveDataFromTokensArray } from "@/lib/client/blockchain-utils";
-import { parseData } from "@/lib/service/parseData";
+import { decodeConfig } from "@/lib/service/parseData";
 import { PopulatedSwapOfferInterface } from "@/lib/client/offers-utils";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
@@ -104,22 +104,21 @@ const SwapBody = () => {
       swapArray.biding,
     );
 
-    const bidingAddressAndExpiryData = await parseData(
+    const bidingAddressAndExpiryData = await decodeConfig(
       BigInt(swapArray.config),
-      configurations,
     );
 
     // console.log("bidingAddressAndExpiryData,", bidingAddressAndExpiryData);
     const formattedTokens: PopulatedSwapOfferInterface = {
       id: String(swapId),
       status: "",
-      expiryDate: bidingAddressAndExpiryData.expiryDate,
+      expiryDate: BigInt(bidingAddressAndExpiryData.expiry),
       ask: {
         address: new EthereumAddress(swapArray.owner),
         tokens: askedTokensWithData,
       },
       bid: {
-        address: bidingAddressAndExpiryData.bidingAddress,
+        address: new EthereumAddress(bidingAddressAndExpiryData.allowed),
         tokens: bidedTokensWithData,
       },
     };

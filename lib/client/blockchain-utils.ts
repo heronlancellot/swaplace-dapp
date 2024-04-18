@@ -279,3 +279,20 @@ export const toastBlockchainTxError = (e: string) => {
     toast.error("Transaction failed. Please contact our team.");
   }
 };
+
+export async function encodeConfig(
+  allowed: string,
+  expiry: bigint | number,
+): Promise<bigint> {
+  return (BigInt(allowed) << BigInt(96)) | BigInt(expiry);
+}
+
+export async function decodeConfig(config: bigint): Promise<{
+  allowed: string;
+  expiry: bigint | number;
+}> {
+  return {
+    allowed: `0x${(config >> BigInt(96)).toString(16).padStart(40, "0")}`,
+    expiry: config & ((BigInt(1) << BigInt(96)) - BigInt(1)),
+  };
+}
