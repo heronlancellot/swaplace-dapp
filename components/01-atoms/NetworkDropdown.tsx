@@ -24,7 +24,6 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
   const { chain } = useNetwork();
 
   useEffect(() => {
-    console.log("network value:", isNetworkSupported);
     if (!isNetworkSupported || !authenticatedUserAddress) {
       setNetworkText("default");
     } else {
