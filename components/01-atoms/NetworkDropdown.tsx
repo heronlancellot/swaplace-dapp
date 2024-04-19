@@ -24,12 +24,11 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
   const { chain } = useNetwork();
 
   useEffect(() => {
-    console.log("network value:", isNetworkSupported);
     if (!isNetworkSupported || !authenticatedUserAddress) {
       setNetworkText("default");
     } else {
-      if (ChainInfo[SupportedNetworks.KAKAROT].id === chain?.id) {
-        setNetworkText(SupportedNetworks.KAKAROT);
+      if (ChainInfo[SupportedNetworks.KAKAROT_SEPOLIA].id === chain?.id) {
+        setNetworkText(SupportedNetworks.KAKAROT_SEPOLIA);
       } else if (ChainInfo[SupportedNetworks.SEPOLIA].id === chain?.id) {
         setNetworkText(SupportedNetworks.SEPOLIA);
       } else {
@@ -45,7 +44,7 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
   const handleDropdownItemClick = async (networkName: NetworkVariants) => {
     try {
       let networkId;
-      if (networkName === SupportedNetworks.KAKAROT) {
+      if (networkName === SupportedNetworks.KAKAROT_SEPOLIA) {
         networkId = 1802203764;
         await window.ethereum
           .request({
@@ -108,14 +107,14 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
    * Each entry consists of a network icon component and its associated name.
    */
   const NetworkInfo: Partial<Record<NetworkVariants, NetworkProps>> = {
-    [SupportedNetworks.KAKAROT]: {
+    [SupportedNetworks.KAKAROT_SEPOLIA]: {
       icon: (
         <NetworkIcon
           props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-          variant={SupportedNetworks.KAKAROT}
+          variant={SupportedNetworks.KAKAROT_SEPOLIA}
         />
       ),
-      name: SupportedNetworks.KAKAROT,
+      name: SupportedNetworks.KAKAROT_SEPOLIA,
     },
     [SupportedNetworks.SEPOLIA]: {
       icon: (

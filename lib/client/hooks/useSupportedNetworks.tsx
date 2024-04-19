@@ -1,6 +1,7 @@
 import { ChainInfo } from "../constants";
 import { useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
+import { InjectedConnector } from "@wagmi/core";
 
 export const useSupportedNetworks = () => {
   const [isNetworkSupported, setIsNetworkSupported] = useState(true);
