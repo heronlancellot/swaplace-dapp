@@ -257,9 +257,10 @@ export const OffersContextProvider = ({ children }: any) => {
       queryFn: async ({ pageParam }: { pageParam: string | null }) =>
         await fetchSwaps({ pageParam }),
       initialPageParam: null,
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
       getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
-      enabled:
-        offersFilter === PonderFilter.ALL_OFFERS || !!authenticatedUserAddress,
+      enabled: !!authenticatedUserAddress,
     });
 
   const [hasNextPage, setHasNextPage] = useState(false);
