@@ -4,7 +4,7 @@ import {
   NetworkIcon,
   NetworkVariants,
 } from "@/components/01-atoms";
-import { SupportedNetworks } from "@/lib/client/constants";
+import { ChainInfo, SupportedNetworks } from "@/lib/client/constants";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useSupportedNetworks } from "@/lib/client/hooks/useSupportedNetworks";
 import { capitalizeFirstLetterPrhases } from "@/lib/client/utils";
@@ -18,7 +18,7 @@ interface NetworkDropdownProps {
 export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [networkText, setNetworkText] = useState<NetworkVariants>("default");
-  const { switchNetwork, isSuccess } = useSwitchNetwork();
+  const { switchNetwork } = useSwitchNetwork();
   const { isNetworkSupported } = useSupportedNetworks();
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { chain } = useNetwork();
@@ -28,7 +28,13 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
     if (!isNetworkSupported || !authenticatedUserAddress) {
       setNetworkText("default");
     } else {
-      setNetworkText(SupportedNetworks.KAKAROT);
+      if (ChainInfo[SupportedNetworks.KAKAROT].id === chain?.id) {
+        setNetworkText(SupportedNetworks.KAKAROT);
+      } else if (ChainInfo[SupportedNetworks.SEPOLIA].id === chain?.id) {
+        setNetworkText(SupportedNetworks.SEPOLIA);
+      } else {
+        setNetworkText("default");
+      }
     }
   }, [authenticatedUserAddress, isNetworkSupported, chain]);
 
@@ -41,15 +47,44 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
       let networkId;
       if (networkName === SupportedNetworks.KAKAROT) {
         networkId = 1802203764;
+        await window.ethereum
+          .request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: "0x6B6B7274", // Replace <chain_id> with the hexadecimal chain ID of the network
+                chainName: "Kakarot", // Replace with the name of the network
+                rpcUrls: [
+                  "https://sepolia-rpc.kakarot.org", // Replace <rpc_url> with the RPC URL of the network
+                ],
+                iconUrls: [
+                  "https://ipfs.io/ipfs/QmSg36ytguM4b5cjCAnSjPKDBCetDmq9yiPS5GeK19BejA/",
+                ],
+                nativeCurrency: {
+                  name: "Kakarot", // Name of the native currency (e.g., Ether)
+                  symbol: "KKT", // Symbol of the currency (e.g., ETH)
+                  decimals: 18,
+                },
+                blockExplorerUrls: [
+                  "https://etherscan.io", // Replace <explorer_url> with the URL of a block explorer for the network
+                ],
+              },
+            ],
+          })
+          .then(() => {
+            console.log("Network added successfully");
+            // setNetworkText(SupportedNetworks.KAKAROT);
+          })
+          .catch((error: any) => {
+            console.error("Error adding network:", error);
+          });
       } else if (networkName === SupportedNetworks.SEPOLIA) {
+        // setNetworkText(SupportedNetworks.SEPOLIA);
         networkId = sepolia.id;
       }
 
       if (networkId) {
         await switchNetwork?.(networkId);
-        if (isSuccess) {
-          setNetworkText(networkName);
-        }
       } else {
         console.error("Unsupported network selected:", networkName);
       }
@@ -193,14 +228,14 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
         </div>
         {isOpen && (
           <div className="max-w-[280px]">
-            <div className="absolute z-10 top-12 left-0 w-full bg-white dark:bg-[#212322] border dark:border-[#505150] hover:dark:bg-[#353836] rounded-xl dark:shadow-swap-connection-dropwdown">
+            <div className="absolute z-10 top-12 left-0 w-full bg-white dark:bg-[#212322] overflow-hidden border dark:border-[#505150] rounded-xl dark:shadow-swap-connection-dropwdown">
               {Object.values(NetworkInfo).map((network, index) => (
                 <div
                   key={index}
                   onClick={() =>
                     handleDropdownItemClick(network.name as NetworkVariants)
                   }
-                  className="gap-2 flex px-4 py-2 p-small-variant-black-2 dark:p-small-dark-variant-grey items-center"
+                  className="gap-2 flex px-4 py-2 p-small-variant-black-2 dark:p-small-dark-variant-grey items-center hover:dark:bg-[#353836] transition-colors duration-200"
                 >
                   <NetworkIcon variant={network.name as NetworkVariants} />
                   {capitalizeFirstLetterPrhases(network.name)}
