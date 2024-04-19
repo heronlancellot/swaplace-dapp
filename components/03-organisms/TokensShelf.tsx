@@ -96,6 +96,10 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
   };
 
   useEffect(() => {
+    setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
+  }, [chain]);
+
+  useEffect(() => {
     if (variant === ForWhom.Your && yourTokensList.length === 0) {
       if (!!authenticatedUserAddress && isNetworkSupported) getUserTokens();
     }
