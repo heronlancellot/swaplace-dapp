@@ -2,20 +2,11 @@ import { SwaplaceAbi } from "../client/abi";
 import { SWAPLACE_SMART_CONTRACT_ADDRESS } from "../client/constants";
 import { publicClient } from "../wallet/wallet-config";
 
-interface getSwapUserConfiguration {
-  chain: number;
-}
-
-export async function getSwap(
-  swapId: bigint,
-  configurations: getSwapUserConfiguration,
-) {
+export async function getSwap(swapId: bigint, chainId: number) {
   const swapDataById = await publicClient({
-    chainId: configurations.chain,
+    chainId: chainId,
   }).readContract({
-    address: SWAPLACE_SMART_CONTRACT_ADDRESS[
-      configurations.chain
-    ] as `0x${string}`,
+    address: SWAPLACE_SMART_CONTRACT_ADDRESS[chainId] as `0x${string}`,
     abi: SwaplaceAbi,
     functionName: "getSwap",
     args: [swapId],
