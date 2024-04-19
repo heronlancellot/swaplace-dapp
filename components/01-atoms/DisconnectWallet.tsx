@@ -14,13 +14,12 @@ export const DisconnectWallet = () => {
   const { toggleSidebar } = useSidebar();
   const { authenticatedUserAddress } = useAuthenticatedUser();
 
-  const { validateAddressToSwap, setInputAddress } = useContext(SwapContext);
+  const { setInputAddress } = useContext(SwapContext);
   const { setTokensList } = useContext(OffersContext);
 
   const handleClick = () => {
     setTokensList([]);
     setInputAddress("");
-    validateAddressToSwap(authenticatedUserAddress, null);
     toggleSidebar();
     disconnect();
   };
