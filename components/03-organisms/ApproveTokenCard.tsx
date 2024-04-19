@@ -15,7 +15,7 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { isTokenSwapApproved } from "@/lib/service/verifyTokensSwapApproval";
 import { IApproveTokenSwap } from "@/lib/client/swap-utils";
 import { getTokenContractAddress, getTokenName } from "@/lib/client/ui-utils";
-import { Token } from "@/lib/shared/types";
+import { ERC20WithTokenAmountSelection, Token } from "@/lib/shared/types";
 import toast from "react-hot-toast";
 import { type TransactionReceipt } from "viem";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
@@ -152,7 +152,7 @@ export const ApproveTokenCard = ({
   return (
     <div
       className={cc([
-        "flex p-4 items-center gap-4 max-h-[68px]",
+        "flex px-4 py-2 items-center gap-4",
         isApproved
           ? "bg-[#DDF23D] p-medium dark:p-medium rounded-xl disabled cursor-auto pointer-events-none"
           : "dark:bg-[#363836] bg-[#e0e0e0] p-medium dark:p-medium-dark dark:hover:p-medium dark:hover:text-[#212322] dark:hover:bg-[#DDF23D] hover:bg-[#DDF23D] transition rounded-xl border border-[#353836]",
@@ -162,7 +162,7 @@ export const ApproveTokenCard = ({
       }}
       role="button"
     >
-      <div className="flex gap-4 w-[75%]">
+      <div className="flex gap-4 w-[75%] items-center">
         <div>
           <TokenCard
             displayERC20TokensAmount={true}
@@ -175,7 +175,12 @@ export const ApproveTokenCard = ({
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex">
-            <p>{getTokenName(token)}</p>
+            <p>
+              {(
+                token as ERC20WithTokenAmountSelection
+              ).tokenAmount?.toString() ?? token.id}{" "}
+              - {getTokenName(token)}
+            </p>
           </div>
           <div className="flex p-semibold-dark">
             {tokenApprovalStatus === TokenApprovalStatus.CLICK_TO_APPROVE ? (
