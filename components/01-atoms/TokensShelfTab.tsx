@@ -1,11 +1,7 @@
-import { useState, useContext } from "react";
-import { SwapContext } from "@/components/01-atoms";
+import { useContext } from "react";
+import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
 
 import cc from "classcat";
-
-interface ITab {
-  setActiveSwappingShelfID: (_: SwappingShelfID) => void;
-}
 
 interface TokensShelfTab {
   id: number;
@@ -28,8 +24,8 @@ export const swappingTabs: Array<TokensShelfTab> = [
   },
 ];
 
-export const TokensShelfTab = ({ setActiveSwappingShelfID }: ITab) => {
-  const { isActiveTab, setActiveTab } = useContext(SwapContext);
+export const TokensShelfTab = () => {
+  const { isActiveTab, setActiveTab } = useContext(ShelfContext);
 
   return (
     <div className="w-full font-light flex-auto flex items-center justify-between overflow-hidden">
@@ -45,7 +41,6 @@ export const TokensShelfTab = ({ setActiveSwappingShelfID }: ITab) => {
             ])}
             role="tab"
             onClick={() => {
-              setActiveSwappingShelfID(tab.id);
               setActiveTab(tab.id);
             }}
           >

@@ -47,8 +47,7 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
   );
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  const { validatedAddressToSwap, inputAddress, destinyChain, clearSwapData } =
-    useContext(SwapContext);
+  const { validatedAddressToSwap, destinyChain } = useContext(SwapContext);
 
   const address =
     variant === ForWhom.Their
@@ -96,18 +95,6 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
     }
   };
 
-  const conditionallyCleanTokensList = (condition: boolean) => {
-    if (condition) {
-      if (variant === ForWhom.Their) {
-        setTheirTokensList([]);
-        setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
-      } else {
-        setYourTokensList([]);
-        setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
-      }
-    }
-  };
-
   useEffect(() => {
     if (variant === ForWhom.Your && yourTokensList.length === 0) {
       if (!!authenticatedUserAddress && isNetworkSupported) getUserTokens();
@@ -129,6 +116,18 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
   useEffect(() => {
     setYourTokensList([...yourTokensList, ...yourManuallyAddedTokensList]);
   }, [yourManuallyAddedTokensList]);
+
+  // const conditionallyResetQueryStatus = (condition: boolean) => {
+  //   if (condition) {
+  //     if (variant === ForWhom.Their) {
+  //       setTheirTokensList([]);
+  //       setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
+  //     } else {
+  //       setYourTokensList([]);
+  //       setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
+  //     }
+  //   }
+  // };
 
   // useEffect(() => {
   //   conditionallyCleanTokensList(
@@ -212,8 +211,7 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
             </div>
           </div>
         </div>
-      ) : tokensQueryStatus == TokensQueryStatus.NO_RESULTS ||
-        allTokensList.length === 0 ? (
+      ) : tokensQueryStatus == TokensQueryStatus.NO_RESULTS ? (
         <div className="flex justify-center w-full h-full bg-[#f8f8f8] dark:bg-[#212322] p-4">
           <div className="flex items-center">
             <p className="dark:text-[#F6F6F6] font-onest font-medium text-[16px] leading-[20px]">
@@ -221,7 +219,8 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
             </p>
           </div>
         </div>
-      ) : tokensQueryStatus == TokensQueryStatus.LOADING ? (
+      ) : tokensQueryStatus == TokensQueryStatus.LOADING &&
+        allTokensList.length === 0 ? (
         <div className="flex justify-center w-full h-full bg-[#f8f8f8] dark:bg-[#212322] p-4">
           <div className="flex items-center">
             <p className="dark:text-[#F6F6F6] font-onest font-medium text-[16px] leading-[20px]">
