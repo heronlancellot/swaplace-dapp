@@ -1,4 +1,5 @@
 import { ENSAvatar, ENSAvatarSize } from "@/components/01-atoms";
+import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { useEnsData } from "@/lib/client/hooks/useENSData";
 import { EthereumAddress } from "@/lib/shared/types";
 
@@ -18,7 +19,10 @@ export const UserOfferInfo = ({
   const { primaryName } = useEnsData({
     ensAddress: address,
   });
-  const displayAddress = address?.getEllipsedAddress();
+  const displayAddress =
+    address?.address === ADDRESS_ZERO
+      ? "Acceptor"
+      : address?.getEllipsedAddress();
 
   return variant == UserOfferVariant.DEFAULT ? (
     <div>
@@ -29,11 +33,7 @@ export const UserOfferInfo = ({
           )}
         </div>
         <div className="flex ">
-          {primaryName ? (
-            <p>{primaryName} gets</p>
-          ) : (
-            <p>{displayAddress} gets</p>
-          )}
+          {primaryName ? <p>{primaryName}</p> : <p>{displayAddress}</p>}
         </div>
       </div>
     </div>
@@ -50,11 +50,7 @@ export const UserOfferInfo = ({
             )}
           </div>
           <div className="flex ">
-            {primaryName ? (
-              <p>{primaryName} gets</p>
-            ) : (
-              <p>{displayAddress} gets</p>
-            )}
+            {primaryName ? <p>{primaryName}</p> : <p>{displayAddress}</p>}
           </div>
         </div>
         {/* TODO > Include logic to calculate tokens value */}

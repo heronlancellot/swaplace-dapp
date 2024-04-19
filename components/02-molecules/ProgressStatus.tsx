@@ -26,7 +26,7 @@ export const ProgressStatus = ({ swapModalAction }: ProgressStatusProps) => {
         break;
       case SwapModalAction.ACCEPT_SWAP:
         if (!swapOfferToAccept) return;
-        setTokensList(swapOfferToAccept.bid.tokens);
+        setTokensList(swapOfferToAccept.ask.tokens);
         setApprovedTokensCount(acceptOfferTokensApproved);
         break;
     }

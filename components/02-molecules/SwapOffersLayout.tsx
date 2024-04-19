@@ -13,12 +13,13 @@ interface EmptyLayoutOffersProps {
   icon: React.ReactNode;
   title: React.ReactNode;
   description: React.ReactNode;
-  button: React.ReactNode;
+  button?: React.ReactNode;
 }
 
 export enum SwapOffersDisplayVariant {
   ERROR = "error",
   NO_SWAPS_CREATED = "swapless",
+  NO_USER_AUTHENTICATED = "unauthenticated",
 }
 
 interface SwapOffersLayoutProps {
@@ -41,7 +42,7 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
     button,
   }: EmptyLayoutOffersProps) => {
     return (
-      <div className="md:w-[676px] md:h-[656px] w-[95%] h-full py-10 px-5 border border-[#353836] dark:bg-[#212322] bg-[#F6F6F6] rounded-lg flex flex-col justify-center items-center gap-5">
+      <div className="md:w-[676px] md:h-[656px] w-[95%] h-full py-10 px-5 dark:bg-[#212322] bg-[#F6F6F6] border rounded-2xl dark:border-[#353836] border-[#D6D5D5] flex flex-col justify-center items-center gap-5 dark:shadow-swap-station shadow-swap-station-light">
         <div className="flex ">{icon}</div>
         <div className="flex flex-col text-center items-center">
           <p className="dark:p-medium-bold-2-dark p-medium-bold-2-dark-variant-black ">
@@ -66,7 +67,7 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
           button={
             <>
               <button
-                className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px]"
+                className="p-medium-bold-variant-black bg-[#DDF23D] border border-[#DDF23D] rounded-[10px] py-2 px-4 h-[38px]"
                 onClick={() => setToggleManually(!toggleManually)}
               >
                 Add swap manually
@@ -86,6 +87,18 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
     );
   };
 
+  const SwapOffersLayoutErrorNoAuthenticatedUser = () => {
+    return (
+      <>
+        <EmptyLayoutOffers
+          icon={<ErrorIcon fill={cc([{ black: theme === "light" }])} />}
+          title={<>No wallet connected</>}
+          description={<>Connect a wallet to see your swap offers</>}
+        />
+      </>
+    );
+  };
+
   const SwapOffersLayoutNoSwapsCreated = () => {
     return (
       <>
@@ -100,7 +113,7 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
           }
           button={
             <button
-              className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px]"
+              className="p-medium-bold-variant-black bg-[#DDF23D] border border-[#DDF23D] rounded-[10px] py-2 px-4 h-[38px]"
               onClick={() => router.push("/")}
             >
               Start swapping
@@ -120,6 +133,9 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
     },
     [SwapOffersDisplayVariant.NO_SWAPS_CREATED]: {
       body: <SwapOffersLayoutNoSwapsCreated />,
+    },
+    [SwapOffersDisplayVariant.NO_USER_AUTHENTICATED]: {
+      body: <SwapOffersLayoutErrorNoAuthenticatedUser />,
     },
   };
 

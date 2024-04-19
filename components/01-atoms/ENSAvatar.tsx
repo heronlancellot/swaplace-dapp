@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { LoadingIndicator } from "@/components/01-atoms";
+import { LoadingIndicator, PersonIcon } from "@/components/01-atoms";
 import {
   ENSAvatarQueryStatus,
   useEnsData,
@@ -67,25 +67,14 @@ export const ENSAvatar = ({
             "flex justify-center items-center",
           ])}
         >
-          <LoadingIndicator />
+          <LoadingIndicator colors="dark:border-[#f6f6f6] border-[#212322]" />
         </div>
       ) : avatarQueryStatus === ENSAvatarQueryStatus.ERROR ||
         failedLoadingImage ? (
         <div className={ENSAvatarClassName[size]}>
-          <BoringAvatar
-            variant="marble"
-            data-atropos-offset="2"
-            name={primaryName || avatarENSAddress.toString()}
-            square={true}
-            colors={[
-              "#353836",
-              "#212322",
-              "#DDF23D",
-              "#A3A9A5",
-              "#05332B",
-              "#F6F6F1",
-            ]}
-          />
+          <div className="bg-[#E4E4E4] dark:bg-[#353836] p-[5px] rounded-md">
+            <PersonIcon className="text-[#A3A9A5] dark:text-[#707572]" />
+          </div>
         </div>
       ) : imageSrc ? (
         <img
