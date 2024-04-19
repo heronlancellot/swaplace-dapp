@@ -46,37 +46,41 @@ export const SwapOffers = () => {
   }, [offersQueries]);
 
   const processSwaps = async () => {
-    setIsLoading(true);
+    try {
+      setIsLoading(true);
+      const formattedTokensPromises = offersQueries[offersFilter].map(
+        async (swap) => {
+          const askedTokensWithData = await retrieveDataFromTokensArray(
+            swap.ask.tokens,
+          );
+          const bidedTokensWithData = await retrieveDataFromTokensArray(
+            swap.bid.tokens,
+          );
+          return {
+            ...swap,
+            ask: { address: swap.ask.address, tokens: askedTokensWithData },
+            bid: {
+              address: swap.bid.address,
+              tokens: bidedTokensWithData,
+            },
+          };
+        },
+      );
 
-    const formattedTokensPromises = offersQueries[offersFilter].map(
-      async (swap) => {
-        const askedTokensWithData = await retrieveDataFromTokensArray(
-          swap.ask.tokens,
-        );
-        const bidedTokensWithData = await retrieveDataFromTokensArray(
-          swap.bid.tokens,
-        );
-        return {
-          ...swap,
-          ask: { address: swap.ask.address, tokens: askedTokensWithData },
-          bid: {
-            address: swap.bid.address,
-            tokens: bidedTokensWithData,
-          },
-        };
-      },
-    );
-
-    // Wait for all promises to resolve
-    const formattedTokens = await Promise.all(formattedTokensPromises);
-
-    setIsLoading(false);
-    setTokensList(formattedTokens);
+      // Wait for all promises to resolve
+      const formattedTokens = await Promise.all(formattedTokensPromises);
+      setTokensList(formattedTokens);
+    } catch (error) {
+      console.error("Failed to process swaps:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // TO DO: Create a Timer to loading this for a while
   return !authenticatedUserAddress ? (
-    <SwapOffersLayout variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED} />
+    <SwapOffersLayout
+      variant={SwapOffersDisplayVariant.NO_USER_AUTHENTICATED}
+    />
   ) : isLoading || isLoadingOffersQuery ? (
     <div className="flex gap-5 flex-col">
       <div>
