@@ -45,6 +45,8 @@ export const ConfirmSwapModal = ({
     approvedTokensCount: createSwapApprovedTokensCount,
     validatedAddressToSwap,
     currentSwapModalStep,
+    etherRecipient,
+    etherValue,
     updateSwapStep,
     clearSwapData,
   } = useContext(SwapContext);
@@ -159,6 +161,8 @@ export const ConfirmSwapModal = ({
             const encodeConfigData = await encodeConfig({
               allowed: validatedAddressToSwap.address,
               expiry: timeDate,
+              etherRecipient: etherRecipient,
+              etherValue: etherRecipient,
             });
 
             const swapConfig = await getSwapConfig(
