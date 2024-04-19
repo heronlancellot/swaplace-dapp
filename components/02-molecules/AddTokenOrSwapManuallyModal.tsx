@@ -52,9 +52,19 @@ const SwapBody = () => {
   const { setTokensList, tokensList } = useContext(OffersContext);
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
-
+  console.log("authenticatedUserAddress", authenticatedUserAddress);
   if (!authenticatedUserAddress?.address) {
     return null;
+  }
+
+  let chainId: number | undefined = undefined;
+
+  if (typeof chain?.id != "undefined") {
+    chainId = chain?.id;
+  }
+
+  if (!chainId) {
+    toast.error("Wallet not connected to any chain.");
   }
 
   const verifySwapBelongsToAuthUser = async (swap: Swap): Promise<boolean> => {
@@ -78,24 +88,6 @@ const SwapBody = () => {
       }
     }
     return swapBelongsToAuthUser;
-  };
-
-  interface getSwapUserConfiguration {
-    chain: number;
-  }
-
-  let chainId: number | undefined = undefined;
-
-  if (typeof chain?.id != "undefined") {
-    chainId = chain?.id;
-  }
-
-  if (!chainId) {
-    throw new Error("User is not connected to any network");
-  }
-
-  const configurations: getSwapUserConfiguration = {
-    chain: chainId,
   };
 
   const addSwapToTokensList = async (swapArray: Swap) => {
@@ -134,8 +126,21 @@ const SwapBody = () => {
 
     return swapArray;
   };
+
   const addSwapId = async () => {
-    await getSwap(swapId, configurations).then(async (swap: any) => {
+    if (!authenticatedUserAddress?.address) {
+      toast.error("No wallet connected.");
+      return;
+    }
+    if (!swapId) {
+      toast.error("No swap Id was given to add a token card for.");
+      return;
+    }
+    if (!chain) {
+      toast.error("No chain was found.");
+      return;
+    }
+    await getSwap(swapId, chain.id).then(async (swap: any) => {
       await verifySwapBelongsToAuthUser(swap).then(
         (swapBelongsToAuthUser: boolean) => {
           if (swapBelongsToAuthUser) {
@@ -154,15 +159,15 @@ const SwapBody = () => {
         <div className="dark:p-small-dark p-small-variant-black">Swap ID</div>
         <div>
           <input
-            className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
             onChange={(e) => setSwapId(BigInt(e.target.value))}
+            className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
           />
         </div>
       </div>
       <div className="flex h-[36px]">
         <button
-          className="bg-[#DDF23D] hover:bg-[#aabe13] w-full dark:shadow-add-manually-button py-2 px-4 rounded-[10px] p-medium-bold-variant-black"
           onClick={addSwapId}
+          className="bg-[#DDF23D] hover:bg-[#aabe13] w-full dark:shadow-add-manually-button py-2 px-4 rounded-[10px] p-medium-bold-variant-black"
         >
           Add Swap
         </button>
@@ -321,7 +326,6 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       toast.error("Invalid contract address.");
       return;
     }
-
     if (!chain) {
       toast.error("No chain was found.");
       return;
