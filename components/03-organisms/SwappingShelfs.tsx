@@ -33,6 +33,15 @@ export const SwappingShelfs = () => {
   } = useContext(SwapContext);
 
   useEffect(() => {
+    setTheirTokensList([]);
+    setYourTokensList([]);
+    setValidatedAddressToSwap(null);
+    setAuthenticatedUserTokensList([]);
+    setSearchedUserTokensList([]);
+    setInputAddress("");
+  }, [chain]);
+
+  useEffect(() => {
     if (!isConnected) {
       setTheirTokensList([]);
       setYourTokensList([]);
