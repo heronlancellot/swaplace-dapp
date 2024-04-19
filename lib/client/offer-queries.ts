@@ -14,12 +14,12 @@ export const ALL_OFFERS_QUERY = `
                owner
                allowed
                expiry
+               recipient
+               value 
                bid
                ask
                blockTimestamp
                transactionHash
-               recipient
-               value 
              }
              pageInfo {
                hasNextPage
@@ -43,12 +43,12 @@ export const CREATED_OFFERS_QUERY = `
                owner
                allowed
                expiry
+               recipient
+               value
                bid
                ask
                blockTimestamp
                transactionHash
-               recipient
-               value
              }
              pageInfo {
                hasNextPage
@@ -73,12 +73,12 @@ export const RECEIVED_OFFERS_QUERY = `
                owner
                allowed
                expiry
+               recipient
+               value
                bid
                ask
                blockTimestamp
                transactionHash
-               recipient
-               value
              }
              pageInfo {
                hasNextPage
@@ -103,12 +103,12 @@ export const ACCEPTED_OFFERS_QUERY = `
                owner
                allowed
                expiry
+               recipient
+               value
                bid
                ask
                blockTimestamp
                transactionHash
-               recipient
-               value
              }
              pageInfo {
                hasNextPage
@@ -133,12 +133,12 @@ export const CANCELED_OFFERS_QUERY = `
                owner
                allowed
                expiry
+               recipient
+               value
                bid
                ask
                blockTimestamp
                transactionHash
-               recipient
-               value
              }
              pageInfo {
                hasNextPage
@@ -175,12 +175,12 @@ export const EXPIRED_OFFERS_QUERY = `
                owner
                allowed
                expiry
+               recipient
+               value
                bid
                ask
                blockTimestamp
                transactionHash
-               recipient
-               value
              }
              pageInfo {
                hasNextPage
