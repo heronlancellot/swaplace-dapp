@@ -3,6 +3,8 @@ import { Token } from "@/lib/shared/types";
 import React, { Dispatch, useEffect, useState } from "react";
 
 interface ShelfContext {
+  isActiveTab: Number;
+  setActiveTab: (tabId: Number) => void;
   yourTokensList: Token[];
   setYourTokensList: Dispatch<React.SetStateAction<Token[]>>;
   theirTokensList: Token[];
@@ -14,6 +16,7 @@ interface ShelfContext {
 }
 
 export const ShelfContextProvider = ({ children }: any) => {
+  const [isActiveTab, setActiveTab] = useState<Number>(0);
   const [yourTokensList, setYourTokensList] = useState<Token[]>([]);
   const [yourManuallyAddedTokensList, setYourManuallyAddedTokensList] =
     useState<Token[]>([]);
@@ -23,6 +26,8 @@ export const ShelfContextProvider = ({ children }: any) => {
 
   useEffect(() => {
     setShelfData({
+      setActiveTab,
+      isActiveTab,
       yourTokensList,
       setYourTokensList,
       theirTokensList,
@@ -33,6 +38,7 @@ export const ShelfContextProvider = ({ children }: any) => {
       setYourManuallyAddedTokensList,
     });
   }, [
+    isActiveTab,
     yourTokensList,
     theirTokensList,
     theirManuallyAddedTokensList,
@@ -40,6 +46,8 @@ export const ShelfContextProvider = ({ children }: any) => {
   ]);
 
   const [shelfData, setShelfData] = useState<ShelfContext>({
+    setActiveTab,
+    isActiveTab,
     yourTokensList,
     setYourTokensList,
     theirTokensList,
@@ -56,6 +64,8 @@ export const ShelfContextProvider = ({ children }: any) => {
 };
 
 export const ShelfContext = React.createContext<ShelfContext>({
+  isActiveTab: 0,
+  setActiveTab: (tabId: Number) => {},
   yourTokensList: [],
   setYourTokensList: () => {},
   setTheirTokensList: () => {},
