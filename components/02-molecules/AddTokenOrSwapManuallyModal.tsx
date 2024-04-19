@@ -312,17 +312,19 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
 
     if (!address) {
       toast.error("No valid address was given to add a token card for.");
-      throw new Error("No valid address was given to add a token card for.");
+      return;
     }
     if (!contractAddress) {
       toast.error("No contract address was given to add a token card for.");
+      return;
     } else if (isAddress(contractAddress) === false) {
       toast.error("Invalid contract address.");
       return;
     }
 
     if (!chain) {
-      throw new Error("No chain was found.");
+      toast.error("No chain was found.");
+      return;
     }
 
     await verifyTokenOwnership({
