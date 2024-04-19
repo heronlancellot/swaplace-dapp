@@ -154,7 +154,7 @@ const SwapBody = () => {
         <div className="dark:p-small-dark p-small-variant-black">Swap ID</div>
         <div>
           <input
-            className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]"
+            className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
             onChange={(e) => setSwapId(BigInt(e.target.value))}
           />
         </div>
@@ -316,7 +316,6 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     }
     if (!contractAddress) {
       toast.error("No contract address was given to add a token card for.");
-      throw new Error("No contract address was given to add a token card for.");
     } else if (isAddress(contractAddress) === false) {
       toast.error("Invalid contract address.");
       return;
@@ -329,7 +328,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     await verifyTokenOwnership({
       address: address,
       chainId: chain.id,
-      contractAddress: contractAddress,
+      contractAddress: `0x${contractAddress}`,
       tokenId: tokenId,
       tokenType: tokenType,
     })
@@ -342,7 +341,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         } else if (verification && verification.isOwner) {
           addTokenToTokensList({
             tokenName: verification.name,
-            contractAddress: contractAddress,
+            contractAddress: `0x${contractAddress}`,
             tokenId: tokenId,
             tokenType: tokenType,
             balance: verification.erc20Balance ?? 0n,
@@ -396,7 +395,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
             <div>
               <input
                 onChange={(e) => setContractAddress(e.target.value)}
-                className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]"
+                className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
               />
             </div>
           </div>
@@ -409,7 +408,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
               <div>
                 <input
                   onChange={(e) => setContractAddress(e.target.value)}
-                  className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]"
+                  className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
                 />
               </div>
             </div>
@@ -420,7 +419,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
               <div>
                 <input
                   onChange={(e) => setTokenId(e.target.value)}
-                  className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]"
+                  className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
                 />
               </div>
             </div>
