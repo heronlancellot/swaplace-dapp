@@ -1,3 +1,4 @@
+import { ChainKakarotSepoliaIcon } from "./ChainKakarotSepoliaIcon";
 import {
   ChainArbitrumSepoliaIcon,
   ChainBaseGoerliIcon,
@@ -31,6 +32,7 @@ export const NetworkIcon = ({ variant = "default" }: NetworkIconProps) => {
     [SupportedNetworks.ARBITRUMSEPOLIA]: <ChainArbitrumSepoliaIcon />,
     [SupportedNetworks.BASEGOERLI]: <ChainBaseGoerliIcon />,
     [SupportedNetworks.SEPOLIA]: <ChainEthereumSepoliaIcon />,
+    [SupportedNetworks.KAKAROT_SEPOLIA]: <ChainKakarotSepoliaIcon />,
     [SupportedNetworks.FUJI]: <ChainFujiIcon />,
     [SupportedNetworks.BNB]: <ChainBnbIcon />,
     [SupportedNetworks.OPTIMISM]: <ChainOptimismIcon />,
