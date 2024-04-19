@@ -21,6 +21,9 @@ interface SwapContextProps {
   inputAddress: string;
   setInputAddress: (address: string) => void;
 
+  isActiveTab: Number;
+  setActiveTab: (tabId: Number) => void;
+
   validatedAddressToSwap: EthereumAddress | null;
   validateAddressToSwap: (
     authedUser: EthereumAddress | null,
@@ -65,6 +68,7 @@ export const SwapContextProvider = ({ children }: any) => {
     SupportedNetworks.SEPOLIA,
   );
   const [timeDate, setTimeDate] = useState<bigint>(BigInt(1));
+  const [isActiveTab, setActiveTab] = useState<Number>(0);
 
   const [currentSwapModalStep, setCurrentSwapModalStep] =
     useState<SwapModalSteps>(SwapModalSteps.APPROVE_TOKENS);
@@ -189,6 +193,8 @@ export const SwapContextProvider = ({ children }: any) => {
       setDestinyChain,
       setTimeDate,
       timeDate,
+      setActiveTab,
+      isActiveTab,
       approvedTokensCount,
       setApprovedTokensCount,
       updateSwapStep,
@@ -204,6 +210,7 @@ export const SwapContextProvider = ({ children }: any) => {
     searchedUserTokensList,
     destinyChain,
     timeDate,
+    isActiveTab,
     approvedTokensCount,
     currentSwapModalStep,
   ]);
@@ -225,6 +232,8 @@ export const SwapContextProvider = ({ children }: any) => {
     setDestinyChain,
     setTimeDate,
     timeDate,
+    setActiveTab,
+    isActiveTab,
     approvedTokensCount,
     setApprovedTokensCount,
     updateSwapStep,
@@ -263,6 +272,8 @@ export const SwapContext = React.createContext<SwapContextProps>({
   setDestinyChain: () => {},
   timeDate: BigInt(1),
   setTimeDate: () => {},
+  isActiveTab: 0,
+  setActiveTab: (tabId: Number) => {},
   approvedTokensCount: 0,
   setApprovedTokensCount: () => {},
   currentSwapModalStep: SwapModalSteps.APPROVE_TOKENS,

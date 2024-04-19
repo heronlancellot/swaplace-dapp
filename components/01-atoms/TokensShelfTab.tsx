@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { SwapContext } from "@/components/01-atoms";
+
 import cc from "classcat";
 
 interface ITab {
@@ -27,7 +29,7 @@ export const swappingTabs: Array<TokensShelfTab> = [
 ];
 
 export const TokensShelfTab = ({ setActiveSwappingShelfID }: ITab) => {
-  const [isActiveTab, setIsActiveTab] = useState(SwappingShelfID.THEIR_ITEMS);
+  const { isActiveTab, setActiveTab } = useContext(SwapContext);
 
   return (
     <div className="w-full font-light flex-auto flex items-center justify-between overflow-hidden">
@@ -36,7 +38,7 @@ export const TokensShelfTab = ({ setActiveSwappingShelfID }: ITab) => {
           <div
             key={tab.id}
             className={cc([
-              isActiveTab == tab.id
+              isActiveTab === tab.id
                 ? "dark:p-medium-bold-dark p-medium-bold border-b border-[#AABE13] "
                 : "dark:p-medium-bold p-medium-bold opacity-50",
               "flex cursor-pointer py-4 px-5",
@@ -44,7 +46,9 @@ export const TokensShelfTab = ({ setActiveSwappingShelfID }: ITab) => {
             role="tab"
             onClick={() => {
               setActiveSwappingShelfID(tab.id);
-              setIsActiveTab(tab.id);
+              setActiveTab(tab.id);
+              console.log("isActiveTab", isActiveTab);
+              console.log("tabid", tab.id);
             }}
           >
             <div className="flex items-center justify-center contrast-50">
