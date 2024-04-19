@@ -19,9 +19,9 @@ export interface ExpireOption {
 
 export enum SwapModalSteps {
   APPROVE_TOKENS,
-  CREATE_SWAP,
-  CREATING_SWAP,
-  CREATED_SWAP,
+  ACCEPT_SWAP,
+  WAIT_BLOCKCHAIN_INTERACTION,
+  SUCCESSFUL_SWAP,
 }
 
 export const ExpireDate: ExpireOption[] = [
@@ -73,7 +73,7 @@ export const getTokenName = (
 export const getTokenContractAddress = (token: Token): EthereumAddress => {
   if (!token) throw new Error("Token not defined");
 
-  let address: EthereumAddress | undefined = !token.contract
+  const address: EthereumAddress | undefined = !token.contract
     ? (token as ERC721).contractMetadata?.address
     : typeof token.contract === "string"
     ? new EthereumAddress(token.contract)

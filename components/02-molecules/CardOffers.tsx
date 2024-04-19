@@ -1,12 +1,17 @@
 import { CreateTokenOfferVariant, ForWhom } from "@/components/03-organisms";
 import {
+  SwapModalAction,
   TokenCardActionType,
   TokenCardStyleType,
   TokensList,
   UserOfferInfo,
   UserOfferVariant,
 } from "@/components/02-molecules";
-import { SwapContext, TokenCardProperties } from "@/components/01-atoms";
+import {
+  OffersContext,
+  SwapContext,
+  TokenCardProperties,
+} from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { EthereumAddress, Token } from "@/lib/shared/types";
 import { useContext } from "react";
@@ -14,6 +19,7 @@ import { useContext } from "react";
 interface CardOffersProps {
   address: EthereumAddress | null;
   variant?: CreateTokenOfferVariant;
+  swapModalAction: SwapModalAction;
 }
 
 interface CardOfferSConfig {
@@ -22,18 +28,27 @@ interface CardOfferSConfig {
 
 export const CardOffers = ({
   address,
+  swapModalAction,
   variant = CreateTokenOfferVariant.HORIZONTAL,
 }: CardOffersProps) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { authenticatedUserTokensList, searchedUserTokensList } =
     useContext(SwapContext);
 
+  const { swapOfferToAccept } = useContext(OffersContext);
+
   const tokenShelfVariant = authenticatedUserAddress?.equals(address)
     ? ForWhom.Your
     : ForWhom.Their;
   const tokensOfferFor: Record<ForWhom, Token[]> = {
-    [ForWhom.Your]: searchedUserTokensList,
-    [ForWhom.Their]: authenticatedUserTokensList,
+    [ForWhom.Your]:
+      swapModalAction === SwapModalAction.CREATE_SWAP
+        ? searchedUserTokensList
+        : swapOfferToAccept?.bid.tokens ?? [],
+    [ForWhom.Their]:
+      swapModalAction === SwapModalAction.CREATE_SWAP
+        ? authenticatedUserTokensList
+        : swapOfferToAccept?.ask.tokens ?? [],
   };
 
   const HorizontalVariant = (address: EthereumAddress | null) => {

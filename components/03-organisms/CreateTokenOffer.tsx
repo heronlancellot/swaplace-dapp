@@ -1,5 +1,11 @@
-import { CardOffers } from "@/components/02-molecules";
-import { SwapIcon, SwapContext, SwapIconVariant } from "@/components/01-atoms";
+import { CardOffers, SwapModalAction } from "@/components/02-molecules";
+import {
+  SwapIcon,
+  SwapContext,
+  SwapIconVariant,
+  OffersContext,
+  PopulatedSwapOfferInterface,
+} from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import cc from "classcat";
 import { useContext } from "react";
@@ -10,6 +16,7 @@ export enum CreateTokenOfferVariant {
 }
 
 interface CreateTokenOfferProps {
+  swapModalAction: SwapModalAction;
   variant?: CreateTokenOfferVariant;
 }
 
@@ -18,10 +25,12 @@ interface CreateTokenOfferConfig {
 }
 
 export const CreateTokenOffer = ({
+  swapModalAction,
   variant = CreateTokenOfferVariant.VERTICAL,
 }: CreateTokenOfferProps) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { validatedAddressToSwap } = useContext(SwapContext);
+  const { swapOfferToAccept } = useContext(OffersContext);
 
   /**
    * The horizonalVariant from TokenOffers get the data from Ponder
@@ -30,15 +39,43 @@ export const CreateTokenOffer = ({
    * @returns
    */
 
+  if (
+    swapModalAction === SwapModalAction.CREATE_SWAP &&
+    (!authenticatedUserAddress || !validatedAddressToSwap)
+  ) {
+    return null;
+  } else if (
+    swapModalAction === SwapModalAction.ACCEPT_SWAP &&
+    !swapOfferToAccept
+  ) {
+    return null;
+  }
+
   const HorizontalVariant = () => {
     return (
       <div className="flex flex-col border border-[#353836] dark:shadow-add-manually-card dark:bg-[#282B29] rounded-lg ">
         <div className="flex flex-row border-b dark:border-[#353836] relative">
           <div className={cc(["border-r dark:border-[#353836]"])}>
-            <CardOffers address={authenticatedUserAddress} />
+            <CardOffers
+              swapModalAction={swapModalAction}
+              address={
+                swapModalAction === SwapModalAction.CREATE_SWAP
+                  ? authenticatedUserAddress
+                  : (swapOfferToAccept as PopulatedSwapOfferInterface).ask
+                      .address
+              }
+            />
           </div>
           <div>
-            <CardOffers address={validatedAddressToSwap} />
+            <CardOffers
+              swapModalAction={swapModalAction}
+              address={
+                swapModalAction === SwapModalAction.CREATE_SWAP
+                  ? validatedAddressToSwap
+                  : (swapOfferToAccept as PopulatedSwapOfferInterface).bid
+                      .address
+              }
+            />
           </div>
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-[#707572] bg-[#212322] rounded-[100px] w-[24px] h-[24px] items-center flex justify-center">
             <SwapIcon />
@@ -55,7 +92,13 @@ export const CreateTokenOffer = ({
         <div className="flex flex-col relative gap-2 flex-grow">
           <div className="p-4 relative flex flex-grow border border-[#353836] rounded-lg dark:bg-[#282B29]">
             <CardOffers
-              address={authenticatedUserAddress}
+              swapModalAction={swapModalAction}
+              address={
+                swapModalAction === SwapModalAction.CREATE_SWAP
+                  ? authenticatedUserAddress
+                  : (swapOfferToAccept as PopulatedSwapOfferInterface).ask
+                      .address
+              }
               variant={CreateTokenOfferVariant.VERTICAL}
             />
           </div>
@@ -68,7 +111,13 @@ export const CreateTokenOffer = ({
 
           <div className="p-4 flex flex-grow border border-[#353836] rounded-lg dark:bg-[#282B29]">
             <CardOffers
-              address={validatedAddressToSwap}
+              swapModalAction={swapModalAction}
+              address={
+                swapModalAction === SwapModalAction.CREATE_SWAP
+                  ? validatedAddressToSwap
+                  : (swapOfferToAccept as PopulatedSwapOfferInterface).bid
+                      .address
+              }
               variant={CreateTokenOfferVariant.VERTICAL}
             />
           </div>

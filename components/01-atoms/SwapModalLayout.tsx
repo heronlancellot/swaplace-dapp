@@ -40,7 +40,7 @@ export const SwapModalLayout = ({
         <div
           role="button"
           onClick={toggleCloseButton.onClose}
-          className="z-40 fixed inset-0 bg-black/30 backdrop-blur-sm"
+          className="z-40 fixed inset-0 bg-black/5 backdrop-blur-sm"
         />
       </Transition>
       <Dialog open={toggleCloseButton.open} onClose={toggleCloseButton.onClose}>

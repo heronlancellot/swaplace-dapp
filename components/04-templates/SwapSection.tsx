@@ -15,7 +15,7 @@ export const SwapSection = () => {
             <SwapConnection />
             <SwappingShelfs />
           </div>
-          <div className="flex xl:w-[478px] ">
+          <div className="flex xl:w-[478px] lg:w-full ">
             <SwapStation />
           </div>
         </div>

@@ -12,17 +12,6 @@ export async function createSwap(
   swap: Swap,
   configurations: SwapUserConfiguration,
 ) {
-  // const SwaplaceContract = getContract({
-  //   address: SWAPLACE_SMART_CONTRACT_ADDRESS[chain] as `0x${string}`,
-  //   abi: SwaplaceAbi,
-  //   publicClient: publicClientViem,
-  // });
-  // const config = await packData(
-  //   SwaplaceContract,
-  //   validatedAddressToSwap as `0x${string}`,
-  //   expireDate,
-  // );
-
   const data = encodeFunctionData({
     abi: [
       {
@@ -101,11 +90,22 @@ export async function createSwap(
     ],
   });
   try {
+    const gasLimit = await publicClient({
+      chainId: configurations.chain,
+    }).estimateGas({
+      account: swap.owner as `0x${string}`,
+      data: data,
+      to: SWAPLACE_SMART_CONTRACT_ADDRESS[
+        configurations.chain
+      ] as `0x${string}`,
+    });
+
     const transactionHash = await configurations.walletClient.sendTransaction({
       data: data,
       to: SWAPLACE_SMART_CONTRACT_ADDRESS[
         configurations.chain
       ] as `0x${string}`,
+      gasLimit: gasLimit,
     });
 
     const transactionReceipt = await publicClient({

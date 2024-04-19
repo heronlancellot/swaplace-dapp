@@ -1,12 +1,30 @@
-import { ForWhom } from "../03-organisms";
-import { publicClient } from "@/lib/wallet/wallet-config";
-import { SwapContext, SwapModalLayout } from "@/components/01-atoms";
+import { ForWhom } from "@/components/03-organisms";
+import {
+  OffersContext,
+  SwapContext,
+  SwapModalLayout,
+} from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import { MockERC20Abi, MockERC721Abi } from "@/lib/client/abi";
-import { TokenType } from "@/lib/shared/types";
+import {
+  ERC20,
+  ERC721,
+  EthereumAddress,
+  Token,
+  TokenType,
+} from "@/lib/shared/types";
+import { verifyTokenOwnership } from "@/lib/service/verifyTokenOwnership";
+import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
+import { getSwap } from "@/lib/service/getSwap";
+import { Swap } from "@/lib/client/swap-utils";
+import { ADDRESS_ZERO } from "@/lib/client/constants";
+import {
+  decodeConfig,
+  retrieveDataFromTokensArray,
+} from "@/lib/client/blockchain-utils";
+import { PopulatedSwapOfferInterface } from "@/lib/client/offers-utils";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
-import { getContract, isAddress } from "viem";
+import { isAddress } from "viem";
 import { useNetwork } from "wagmi";
 import toast from "react-hot-toast";
 
@@ -28,16 +46,129 @@ interface AddManuallyProps {
 }
 
 const SwapBody = () => {
+  const [swapId, setSwapId] = useState<bigint>(0n);
+  const { chain } = useNetwork();
+  let swapBelongsToAuthUser: boolean;
+  const { setTokensList, tokensList } = useContext(OffersContext);
+
+  const { authenticatedUserAddress } = useAuthenticatedUser();
+  console.log("authenticatedUserAddress", authenticatedUserAddress);
+  if (!authenticatedUserAddress?.address) {
+    return null;
+  }
+
+  let chainId: number | undefined = undefined;
+
+  if (typeof chain?.id != "undefined") {
+    chainId = chain?.id;
+  }
+
+  if (!chainId) {
+    toast.error("Wallet not connected to any chain.");
+  }
+
+  const verifySwapBelongsToAuthUser = async (swap: Swap): Promise<boolean> => {
+    const bidingAddressAndExpiryData = await decodeConfig({
+      config: BigInt(swap.config),
+    });
+
+    if (swap.owner === ADDRESS_ZERO) {
+      toast.error("Swap ID doesnt exist. Please verify the ID");
+    } else if (swap.owner !== ADDRESS_ZERO) {
+      toast.success("Searching Swap");
+      if (
+        swap.owner.toUpperCase() ===
+        authenticatedUserAddress.address.toUpperCase()
+      ) {
+        swapBelongsToAuthUser = true;
+      } else if (bidingAddressAndExpiryData.allowed === ADDRESS_ZERO) {
+        swapBelongsToAuthUser = true;
+      } else {
+        swapBelongsToAuthUser = false;
+      }
+    }
+    return swapBelongsToAuthUser;
+  };
+
+  const addSwapToTokensList = async (swapArray: Swap) => {
+    const askedTokensWithData = await retrieveDataFromTokensArray(
+      swapArray.asking,
+    );
+    const bidedTokensWithData = await retrieveDataFromTokensArray(
+      swapArray.biding,
+    );
+
+    const bidingAddressAndExpiryData = await decodeConfig({
+      config: BigInt(swapArray.config),
+    });
+
+    const formattedTokens: PopulatedSwapOfferInterface = {
+      id: String(swapId),
+      status: "",
+      expiryDate: BigInt(bidingAddressAndExpiryData.expiry),
+      ask: {
+        address: new EthereumAddress(swapArray.owner),
+        tokens: askedTokensWithData,
+      },
+      bid: {
+        address: new EthereumAddress(bidingAddressAndExpiryData.allowed),
+        tokens: bidedTokensWithData,
+      },
+    };
+
+    // const tokensListResponse = tokensList.filter((token) => {
+    //   token === formattedTokens;
+    // });
+
+    // console.log("tokensListResponse", tokensListResponse);
+
+    setTokensList([...tokensList, formattedTokens]);
+
+    return swapArray;
+  };
+
+  const addSwapId = async () => {
+    if (!authenticatedUserAddress?.address) {
+      toast.error("No wallet connected.");
+      return;
+    }
+    if (!swapId) {
+      toast.error("No swap Id was given to add a token card for.");
+      return;
+    }
+    if (!chain) {
+      toast.error("No chain was found.");
+      return;
+    }
+    await getSwap(swapId, chain.id).then(async (swap: any) => {
+      await verifySwapBelongsToAuthUser(swap).then(
+        (swapBelongsToAuthUser: boolean) => {
+          if (swapBelongsToAuthUser) {
+            addSwapToTokensList(swap);
+          }
+        },
+      );
+    });
+
+    return <></>;
+  };
+
   return (
     <div className="flex flex-col gap-6 ">
       <div className="flex flex-col gap-2">
         <div className="dark:p-small-dark p-small-variant-black">Swap ID</div>
         <div>
-          <input className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]" />
+          <input
+            onChange={(e) => setSwapId(BigInt(e.target.value))}
+            className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
+          />
         </div>
       </div>
       <div className="flex h-[36px]">
-        <button className="bg-[#DDF23D] hover:bg-[#aabe13] w-full dark:shadow-add-manually-button py-2 px-4 rounded-[10px] p-medium-bold-variant-black">
+        <button
+          onClick={addSwapId}
+          className="bg-[#DDF23D] hover:bg-[#aabe13] w-full dark:shadow-add-manually-button py-2 px-4 rounded-[10px] p-medium-bold-variant-black"
+        >
           Add Swap
         </button>
       </div>
@@ -52,42 +183,180 @@ interface TokenBodyProps {
 const TokenBody = ({ forWhom }: TokenBodyProps) => {
   const [tokenType, setTokenType] = useState<TokenType>(TokenType.ERC20);
   const [contractAddress, setContractAddress] = useState<string>("");
-
+  const [tokenId, setTokenId] = useState<string>("");
   const { chain } = useNetwork();
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { validatedAddressToSwap } = useContext(SwapContext);
+  const {
+    yourTokensList,
+    setYourManuallyAddedTokensList,
+    theirTokensList,
+    setTheirManuallyAddedTokensList,
+  } = useContext(ShelfContext);
 
-  const addTokenCard = () => {
+  interface TokenManually {
+    tokenType: TokenType;
+    tokenName: string;
+    contractAddress: `0x${string}`;
+    tokenId: string;
+    balance?: bigint;
+  }
+
+  const verifyTokenAlreadyInTokenList = async (token: Token) => {
+    const filteringYourToken = yourTokensList.some(
+      (t) =>
+        t.contract &&
+        token.contract &&
+        t.contract.toUpperCase() === token.contract.toUpperCase(),
+    );
+    const filteringTheirToken = theirTokensList.some(
+      (t) =>
+        t.contract &&
+        token.contract &&
+        t.contract.toUpperCase() === token.contract.toUpperCase(),
+    );
+    if (forWhom === ForWhom.Your) {
+      if (token.tokenType === TokenType.ERC20) {
+        return filteringYourToken;
+      } else if (token.tokenType === TokenType.ERC721) {
+        return yourTokensList.some(
+          (t) => filteringYourToken && t.id === token.id,
+        );
+      }
+    } else if (forWhom === ForWhom.Their) {
+      if (token.tokenType === TokenType.ERC20) {
+        return filteringTheirToken;
+      } else if (token.tokenType === TokenType.ERC721) {
+        return theirTokensList.some(
+          (t) => filteringTheirToken && t.id === token.id,
+        );
+      }
+    }
+  };
+
+  const addTokenToTokensList = (token: TokenManually) => {
+    if (forWhom === ForWhom.Your) {
+      if (token.tokenType === TokenType.ERC20 && token.balance) {
+        const tokenERC20: ERC20 = {
+          name: token.tokenName,
+          contract: token.contractAddress,
+          rawBalance: token.balance,
+          tokenType: token.tokenType,
+        };
+
+        verifyTokenAlreadyInTokenList(tokenERC20).then((tokenAlreadyInList) => {
+          if (tokenAlreadyInList) {
+            toast.error("Token ERC20 already in Token List");
+          } else {
+            setYourManuallyAddedTokensList([tokenERC20]);
+            toast.success("Token ERC20 added in Token List");
+          }
+        });
+      } else if (token.tokenType === TokenType.ERC721) {
+        const tokenERC721: ERC721 = {
+          name: token.tokenName,
+          contract: token.contractAddress,
+          id: token.tokenId,
+          tokenType: token.tokenType,
+        };
+        verifyTokenAlreadyInTokenList(tokenERC721).then(
+          (tokenAlreadyInList) => {
+            if (tokenAlreadyInList) {
+              toast.error("Token ERC721 already in Token List");
+            } else {
+              setYourManuallyAddedTokensList([tokenERC721]);
+              toast.success("Token ERC721 added in Token List");
+            }
+          },
+        );
+      }
+    } else if (forWhom === ForWhom.Their) {
+      if (token.tokenType === TokenType.ERC20 && token.balance) {
+        const tokenERC20: ERC20 = {
+          name: token.tokenName,
+          contract: token.contractAddress,
+          rawBalance: token.balance,
+          tokenType: token.tokenType,
+        };
+
+        verifyTokenAlreadyInTokenList(tokenERC20).then((tokenAlreadyInList) => {
+          if (tokenAlreadyInList) {
+            toast.error("Token ERC20 already in Token List");
+          } else {
+            setTheirManuallyAddedTokensList([tokenERC20]);
+            toast.success("Token ERC20 added in Token List");
+          }
+        });
+      } else if (token.tokenType === TokenType.ERC721) {
+        const tokenERC721: ERC721 = {
+          name: token.tokenName,
+          contract: token.contractAddress,
+          id: token.tokenId,
+          tokenType: token.tokenType,
+        };
+
+        verifyTokenAlreadyInTokenList(tokenERC721).then(
+          (tokenAlreadyInList) => {
+            if (tokenAlreadyInList) {
+              toast.error("Token ERC721 already in Token List");
+            } else {
+              setYourManuallyAddedTokensList([tokenERC721]);
+              toast.success("Token ERC721 added in Token List");
+            }
+          },
+        );
+      }
+    }
+  };
+
+  const addTokenCard = async () => {
     const address =
       forWhom === ForWhom.Your
         ? authenticatedUserAddress
         : validatedAddressToSwap;
 
     if (!address) {
-      throw new Error("No valid address was given to add a token card for.");
+      toast.error("No valid address was given to add a token card for.");
+      return;
     }
-
     if (!contractAddress) {
-      throw new Error("No contract address was given to add a token card for.");
+      toast.error("No contract address was given to add a token card for.");
+      return;
     } else if (isAddress(contractAddress) === false) {
       toast.error("Invalid contract address.");
       return;
     }
-
     if (!chain) {
-      throw new Error("No chain was found.");
+      toast.error("No chain was found.");
+      return;
     }
 
-    const abi = tokenType === TokenType.ERC20 ? MockERC20Abi : MockERC721Abi;
-
-    const newTokenContract = getContract({
-      address: contractAddress,
-      publicClient: publicClient({ chainId: chain.id }),
-      abi,
-    });
-
-    // TODO: verify token ownership
-    console.log(newTokenContract);
+    await verifyTokenOwnership({
+      address: address,
+      chainId: chain.id,
+      contractAddress: `0x${contractAddress}`,
+      tokenId: tokenId,
+      tokenType: tokenType,
+    })
+      .then((verification) => {
+        if (!verification.isOwner) {
+          toast.error(
+            `The token does not belong to the address: ${address.getEllipsedAddress()}`,
+          );
+          throw new Error("The token does not belong to the address");
+        } else if (verification && verification.isOwner) {
+          addTokenToTokensList({
+            tokenName: verification.name,
+            contractAddress: `0x${contractAddress}`,
+            tokenId: tokenId,
+            tokenType: tokenType,
+            balance: verification.erc20Balance ?? 0n,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -130,7 +399,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
               Contract address
             </div>
             <div>
-              <input className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]" />
+              <input
+                onChange={(e) => setContractAddress(e.target.value)}
+                className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
+              />
             </div>
           </div>
         ) : (
@@ -142,7 +414,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
               <div>
                 <input
                   onChange={(e) => setContractAddress(e.target.value)}
-                  className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]"
+                  className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
                 />
               </div>
             </div>
@@ -151,7 +423,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
                 Token ID
               </div>
               <div>
-                <input className="w-full p-3 dark:bg-[#282a29] border border-[#353836] rounded-lg h-[44px]" />
+                <input
+                  onChange={(e) => setTokenId(e.target.value)}
+                  className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
+                />
               </div>
             </div>
           </div>

@@ -104,7 +104,9 @@ export const getERC721TokensFromAddress = async (
     });
 };
 
-async function getERC20OrERC721Metadata(token: Asset): Promise<Token> {
+async function getERC20OrERC721Metadata(
+  token: Asset,
+): Promise<ERC20WithTokenAmountSelection | ERC721> {
   const chainId = sepolia.id;
   const networkAPIKey = getAPIKeyForNetwork.get(chainId);
   const networkName = getNetwork.get(chainId);
@@ -128,14 +130,15 @@ async function getERC20OrERC721Metadata(token: Asset): Promise<Token> {
     const response = await alchemy.core.getTokenMetadata(token.addr);
 
     // Retrieve metadata as an erc20
-    if (!!response.decimals) {
+    if (response.decimals !== null) {
       return {
         tokenType: TokenType.ERC20,
         name: response.name ?? undefined,
         logo: response.logo ?? undefined,
         symbol: response.symbol ?? undefined,
         contract: token.addr,
-        rawBalance: Number(token.amountOrId),
+        rawBalance: token.amountOrId,
+        tokenAmount: token.amountOrId,
         decimals: response.decimals,
       };
     } else {
@@ -151,6 +154,7 @@ async function getERC20OrERC721Metadata(token: Asset): Promise<Token> {
         name: metadata.name,
         contract: metadata.contract.address,
         metadata: metadata,
+        symbol: metadata.tokenUri,
       };
     }
   } catch (error) {
@@ -231,9 +235,9 @@ const parseAlchemyERC20Tokens = (tokens: OwnedToken[]): ERC20[] => {
       tokenType: TokenType.ERC20,
       /*
         This ID is only used for TokenCard selection, in the Ui of the dApp.
-        We want it to be as randomic and unique as possible besides being 
+        We want it to be as randomic and unique as possible besides being
         yet, mathematically possible to have same IDs on two different
-        tokens. Possible, but very unlikely to generate non-unique 
+        tokens. Possible, but very unlikely to generate non-unique
         IDs, below maths solve our ID generation goal, today.
       */
       id: ((Date.now() * Math.random()) / Math.random()).toFixed(0),
@@ -275,3 +279,28 @@ export const toastBlockchainTxError = (e: string) => {
     toast.error("Transaction failed. Please contact our team.");
   }
 };
+
+interface encodeConfigProps {
+  allowed: string;
+  expiry: bigint | number;
+}
+export async function encodeConfig({
+  allowed,
+  expiry,
+}: encodeConfigProps): Promise<bigint> {
+  return (BigInt(allowed) << BigInt(96)) | BigInt(expiry);
+}
+
+interface decodeConfigProps {
+  config: bigint;
+}
+
+export async function decodeConfig({ config }: decodeConfigProps): Promise<{
+  allowed: string;
+  expiry: bigint | number;
+}> {
+  return {
+    allowed: `0x${(config >> BigInt(96)).toString(16).padStart(40, "0")}`,
+    expiry: config & ((BigInt(1) << BigInt(96)) - BigInt(1)),
+  };
+}

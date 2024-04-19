@@ -6,7 +6,6 @@ import { SwapModalSteps } from "@/lib/client/ui-utils";
 import { ADDRESS_ZERO, SupportedNetworks } from "@/lib/client/constants";
 import { EthereumAddress, Token } from "@/lib/shared/types";
 import { ButtonClickPossibilities } from "@/lib/client/blockchain-utils";
-import { PonderFilter } from "@/lib/client/hooks/usePonder";
 import React, { Dispatch, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
@@ -17,8 +16,14 @@ interface SwapContextProps {
   setDestinyChain: Dispatch<React.SetStateAction<SupportedNetworks>>;
 
   // Searched user related
+  lastWalletConnected: string;
+  setLastWalletConnected: (address: string) => void;
   inputAddress: string;
   setInputAddress: (address: string) => void;
+
+  setValidatedAddressToSwap: Dispatch<
+    React.SetStateAction<EthereumAddress | null>
+  >;
   validatedAddressToSwap: EthereumAddress | null;
   validateAddressToSwap: (
     authedUser: EthereumAddress | null,
@@ -46,13 +51,10 @@ interface SwapContextProps {
   setTimeDate: Dispatch<React.SetStateAction<bigint>>;
 
   clearSwapData: () => void;
-
-  // Ponder Filter Status
-  setPonderFilterStatus: Dispatch<React.SetStateAction<PonderFilter>>;
-  ponderFilterStatus: PonderFilter;
 }
 
 export const SwapContextProvider = ({ children }: any) => {
+  const [lastWalletConnected, setLastWalletConnected] = useState("");
   const [inputAddress, setInputAddress] = useState("");
   const [validatedAddressToSwap, setValidatedAddressToSwap] =
     useState<EthereumAddress | null>(null);
@@ -71,18 +73,18 @@ export const SwapContextProvider = ({ children }: any) => {
     useState<SwapModalSteps>(SwapModalSteps.APPROVE_TOKENS);
   const [approvedTokensCount, setApprovedTokensCount] = useState(0);
 
-  const [ponderFilterStatus, setPonderFilterStatus] = useState<PonderFilter>(
-    PonderFilter.ALL_OFFERS,
-  );
-
   const router = useRouter();
 
   const validateAddressToSwap = (
     _authedUser: EthereumAddress | null,
     _inputEnsAddress: string | null | undefined,
+    shouldToast = true,
   ) => {
     if (!inputAddress && !_inputEnsAddress) {
-      toast.error("Your wallet was disconnected successfully");
+      shouldToast &&
+        toast.error(
+          "Please enter a valid address or some registered ENS domain",
+        );
       setUserJustValidatedInput(true);
       return;
     }
@@ -105,24 +107,25 @@ export const SwapContextProvider = ({ children }: any) => {
       const inputEthAddress = new EthereumAddress(searchedAddress);
 
       if (inputEthAddress.equals(_authedUser)) {
-        toast.error("You cannot swap with yourself");
+        shouldToast && toast.error("You cannot swap with yourself");
         setValidatedAddressToSwap(null);
         setUserJustValidatedInput(true);
         return;
       } else if (searchedAddress === ADDRESS_ZERO) {
-        toast.error("You cannot swap with an invalid address");
+        shouldToast && toast.error("You cannot swap with an invalid address");
         setValidatedAddressToSwap(null);
         setUserJustValidatedInput(true);
         return;
       }
 
       setValidatedAddressToSwap(inputEthAddress);
-      toast.success("Searching Address");
+      shouldToast && toast.success("Searching Address");
     } else {
       setValidatedAddressToSwap(null);
-      toast.error(
-        "Your input is not a valid address and neither some registered ENS domain",
-      );
+      shouldToast &&
+        toast.error(
+          "Your input is not a valid address and neither some registered ENS domain",
+        );
     }
     setUserJustValidatedInput(true);
   };
@@ -131,24 +134,24 @@ export const SwapContextProvider = ({ children }: any) => {
     switch (currentSwapModalStep) {
       case SwapModalSteps.APPROVE_TOKENS:
         if (buttonClicked === ButtonClickPossibilities.NEXT_STEP) {
-          setCurrentSwapModalStep(SwapModalSteps.CREATE_SWAP);
+          setCurrentSwapModalStep(SwapModalSteps.ACCEPT_SWAP);
         }
         break;
-      case SwapModalSteps.CREATE_SWAP:
+      case SwapModalSteps.ACCEPT_SWAP:
         if (buttonClicked === ButtonClickPossibilities.PREVIOUS_STEP) {
           setCurrentSwapModalStep(SwapModalSteps.APPROVE_TOKENS);
         } else if (buttonClicked === ButtonClickPossibilities.NEXT_STEP) {
-          setCurrentSwapModalStep(SwapModalSteps.CREATING_SWAP);
+          setCurrentSwapModalStep(SwapModalSteps.WAIT_BLOCKCHAIN_INTERACTION);
         }
         break;
-      case SwapModalSteps.CREATING_SWAP:
+      case SwapModalSteps.WAIT_BLOCKCHAIN_INTERACTION:
         if (buttonClicked === ButtonClickPossibilities.NEXT_STEP) {
-          setCurrentSwapModalStep(SwapModalSteps.CREATED_SWAP);
+          setCurrentSwapModalStep(SwapModalSteps.SUCCESSFUL_SWAP);
         } else if (buttonClicked === ButtonClickPossibilities.PREVIOUS_STEP) {
-          setCurrentSwapModalStep(SwapModalSteps.CREATE_SWAP);
+          setCurrentSwapModalStep(SwapModalSteps.ACCEPT_SWAP);
         }
         break;
-      case SwapModalSteps.CREATED_SWAP:
+      case SwapModalSteps.SUCCESSFUL_SWAP:
         if (buttonClicked === ButtonClickPossibilities.PREVIOUS_STEP) {
           setCurrentSwapModalStep(SwapModalSteps.APPROVE_TOKENS);
         }
@@ -162,21 +165,24 @@ export const SwapContextProvider = ({ children }: any) => {
     setCurrentSwapModalStep(SwapModalSteps.APPROVE_TOKENS);
   };
 
-  useEffect(() => {
-    setSearchedUserTokensList([]);
-    setUserJustValidatedInput(false);
-  }, [inputAddress]);
+  // useEffect(() => {
+  //   setSearchedUserTokensList([]);
+  //   setUserJustValidatedInput(false);
+  // }, [inputAddress]);
 
-  useEffect(() => {
-    setSearchedUserTokensList([]);
-  }, [destinyChain]);
+  // useEffect(() => {
+  //   setSearchedUserTokensList([]);
+  // }, [destinyChain]);
 
   useEffect(() => {
     setSwapData({
+      lastWalletConnected,
+      setLastWalletConnected,
       inputAddress,
       setInputAddress,
       validatedAddressToSwap,
       validateAddressToSwap,
+      setValidatedAddressToSwap,
       setUserJustValidatedInput,
       userJustValidatedInput,
       setAuthenticatedUserTokensList,
@@ -192,10 +198,9 @@ export const SwapContextProvider = ({ children }: any) => {
       updateSwapStep,
       currentSwapModalStep,
       clearSwapData,
-      setPonderFilterStatus,
-      ponderFilterStatus,
     });
   }, [
+    lastWalletConnected,
     inputAddress,
     validatedAddressToSwap,
     userJustValidatedInput,
@@ -205,12 +210,14 @@ export const SwapContextProvider = ({ children }: any) => {
     timeDate,
     approvedTokensCount,
     currentSwapModalStep,
-    ponderFilterStatus,
   ]);
 
   const [swapData, setSwapData] = useState<SwapContextProps>({
+    lastWalletConnected,
+    setLastWalletConnected,
     inputAddress,
     setInputAddress,
+    setValidatedAddressToSwap,
     validatedAddressToSwap,
     validateAddressToSwap,
     setUserJustValidatedInput,
@@ -228,8 +235,6 @@ export const SwapContextProvider = ({ children }: any) => {
     updateSwapStep,
     currentSwapModalStep,
     clearSwapData,
-    setPonderFilterStatus,
-    ponderFilterStatus,
   });
 
   // This is a temporary measure while we don't turn the dApp into a SPA
@@ -244,8 +249,11 @@ export const SwapContextProvider = ({ children }: any) => {
 };
 
 export const SwapContext = React.createContext<SwapContextProps>({
+  lastWalletConnected: "",
+  setLastWalletConnected: (address: string) => {},
   inputAddress: "",
   validatedAddressToSwap: null,
+  setValidatedAddressToSwap: () => {},
   validateAddressToSwap: (
     _authedUser: EthereumAddress | null,
     _inputEnsAddress: string | null | undefined,
@@ -266,6 +274,4 @@ export const SwapContext = React.createContext<SwapContextProps>({
   currentSwapModalStep: SwapModalSteps.APPROVE_TOKENS,
   updateSwapStep: (buttonClickAction: ButtonClickPossibilities) => {},
   clearSwapData: () => {},
-  setPonderFilterStatus: () => {},
-  ponderFilterStatus: PonderFilter.ALL_OFFERS,
 });

@@ -1,9 +1,7 @@
-import { useState } from "react";
-import cc from "classcat";
+import { useContext } from "react";
+import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
 
-interface ITab {
-  setActiveSwappingShelfID: (_: SwappingShelfID) => void;
-}
+import cc from "classcat";
 
 interface TokensShelfTab {
   id: number;
@@ -26,8 +24,8 @@ export const swappingTabs: Array<TokensShelfTab> = [
   },
 ];
 
-export const TokensShelfTab = ({ setActiveSwappingShelfID }: ITab) => {
-  const [isActiveTab, setIsActiveTab] = useState(SwappingShelfID.THEIR_ITEMS);
+export const TokensShelfTab = () => {
+  const { isActiveTab, setActiveTab } = useContext(ShelfContext);
 
   return (
     <div className="w-full font-light flex-auto flex items-center justify-between overflow-hidden">
@@ -36,15 +34,14 @@ export const TokensShelfTab = ({ setActiveSwappingShelfID }: ITab) => {
           <div
             key={tab.id}
             className={cc([
-              isActiveTab == tab.id
+              isActiveTab === tab.id
                 ? "dark:p-medium-bold-dark p-medium-bold border-b border-[#AABE13] "
                 : "dark:p-medium-bold p-medium-bold opacity-50",
               "flex cursor-pointer py-4 px-5",
             ])}
             role="tab"
             onClick={() => {
-              setActiveSwappingShelfID(tab.id);
-              setIsActiveTab(tab.id);
+              setActiveTab(tab.id);
             }}
           >
             <div className="flex items-center justify-center contrast-50">

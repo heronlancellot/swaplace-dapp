@@ -61,9 +61,9 @@ export const OfferSummary = ({ variant }: IOfferSummary) => {
                 {variant === ForWhom.Your && validatedAddressToSwap
                   ? `${
                       searchedENSName
-                        ? searchedENSName + " gets"
+                        ? searchedENSName
                         : validatedAddressToSwap
-                        ? validatedAddressToSwap.getEllipsedAddress() + " gets"
+                        ? validatedAddressToSwap.getEllipsedAddress()
                         : "Use the search bar"
                     }`
                   : variant === ForWhom.Your && !validatedAddressToSwap
@@ -71,10 +71,9 @@ export const OfferSummary = ({ variant }: IOfferSummary) => {
                   : variant === ForWhom.Their && authenticatedUserAddress
                   ? `${
                       authenticatedUserENSName
-                        ? authenticatedUserENSName + " gets"
+                        ? authenticatedUserENSName
                         : authenticatedUserAddress
-                        ? authenticatedUserAddress.getEllipsedAddress() +
-                          " gets"
+                        ? authenticatedUserAddress.getEllipsedAddress()
                         : "Connect your wallet"
                     }`
                   : "You get"}

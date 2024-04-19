@@ -9,7 +9,7 @@ export interface Asset {
 
 export interface Swap {
   owner: string;
-  config: number;
+  config: bigint;
   biding: Asset[];
   asking: Asset[];
 }
@@ -62,10 +62,10 @@ export function getTokenInfoBeforeSwap(token: Token): TokenWithSwapInfo {
   }
 }
 
-export async function makeAsset(
+export const makeAsset = async (
   addr: string,
   amountOrId: bigint,
-): Promise<Asset> {
+): Promise<Asset> => {
   // validate if its an ethereum address
   try {
     new EthereumAddress(addr);
@@ -90,7 +90,7 @@ export async function makeAsset(
   };
 
   return asset;
-}
+};
 
 export async function fromTokensToAssets(
   tokensList: Token[],
@@ -117,7 +117,7 @@ export async function fromTokensToAssets(
 
 export async function getSwapConfig(
   owner: EthereumAddress,
-  packedData: number,
+  encodeConfigData: bigint,
   expiry: bigint,
   biding: Asset[],
   asking: Asset[],
@@ -142,7 +142,7 @@ export async function getSwapConfig(
 
   const swap: Swap = {
     owner: owner.address,
-    config: packedData,
+    config: encodeConfigData,
     biding: biding,
     asking: asking,
   };
