@@ -101,7 +101,7 @@ export function SwapModalButton({
     >
       {isLoading ? (
         <>
-          <LoadingIndicator />
+          <LoadingIndicator colors="dark:border-[#212322] border-[#212322]" />
           {label}
         </>
       ) : variant === ButtonVariant.DEFAULT ? (
