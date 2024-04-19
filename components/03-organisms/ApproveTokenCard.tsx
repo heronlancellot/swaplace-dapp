@@ -178,7 +178,7 @@ export const ApproveTokenCard = ({
             <p>
               {(
                 token as ERC20WithTokenAmountSelection
-              ).tokenAmount?.toString() ?? token.id}{" "}
+              ).tokenAmount?.toString() ?? `[#` + token.id + `]`}{" "}
               - {getTokenName(token)}
             </p>
           </div>
