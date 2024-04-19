@@ -120,6 +120,8 @@ export const ApproveTokenCard = ({
         setIsApproved(true);
         setTokenApprovalStatus(TokenApprovalStatus.APPROVED);
         setTokenWasApprovedForSwap(token);
+        setTokenApprovalStatus(TokenApprovalStatus.APPROVED);
+        setIsApproved(true);
 
         // Below alias is always valid since whenever a tx is successful, a receipt is returned
         return transactionReceipt.receipt as TransactionReceipt;
