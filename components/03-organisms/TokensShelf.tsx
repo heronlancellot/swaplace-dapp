@@ -41,7 +41,7 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
     theirManuallyAddedTokensList,
   } = useContext(ShelfContext);
   const [tokensQueryStatus, setTokensQueryStatus] = useState<TokensQueryStatus>(
-    theirTokensList.length > 0
+    theirTokensList.length > 0 || yourTokensList.length > 0
       ? TokensQueryStatus.WITH_RESULTS
       : TokensQueryStatus.EMPTY_QUERY,
   );
@@ -96,22 +96,30 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
     }
   };
 
-  // will only reload if network isNetworkSupported changes
-  useEffect(() => {
-    if (variant === ForWhom.Your) {
-      !!authenticatedUserAddress && isNetworkSupported && getUserTokens();
+  const conditionallyCleanTokensList = (condition: boolean) => {
+    if (condition) {
+      if (variant === ForWhom.Their) {
+        setTheirTokensList([]);
+        setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
+      } else {
+        setYourTokensList([]);
+        setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
+      }
     }
-  }, [address, isNetworkSupported, authenticatedUserAddress]);
+  };
 
   useEffect(() => {
-    if (variant === ForWhom.Their) {
-      validatedAddressToSwap &&
-        destinyChain &&
-        !!authenticatedUserAddress &&
-        isNetworkSupported &&
+    if (variant === ForWhom.Your && yourTokensList.length === 0) {
+      if (!!authenticatedUserAddress && isNetworkSupported) getUserTokens();
+    }
+  }, [authenticatedUserAddress, isNetworkSupported]);
+
+  useEffect(() => {
+    if (variant === ForWhom.Their && theirTokensList.length === 0) {
+      if (!!validatedAddressToSwap && isNetworkSupported && !!destinyChain)
         getUserTokens();
     }
-  }, [validatedAddressToSwap, destinyChain]);
+  }, [validatedAddressToSwap, isNetworkSupported, destinyChain]);
 
   /// Add Manually Token to TokensList & update Shelf
   useEffect(() => {
@@ -122,75 +130,59 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
     setYourTokensList([...yourTokensList, ...yourManuallyAddedTokensList]);
   }, [yourManuallyAddedTokensList]);
 
-  const conditionallyCleanTokensList = (condition: boolean) => {
-    if (condition) {
-      if (variant === ForWhom.Their) {
-        setTheirTokensList([]);
-        // setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
-      } else {
-        setYourTokensList([]);
-        // setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
-      }
-    }
-  };
+  // useEffect(() => {
+  //   conditionallyCleanTokensList(
+  //     !!authenticatedUserAddress &&
+  //       !!address &&
+  //       authenticatedUserAddress.equals(address) &&
+  //       variant === ForWhom.Their,
+  //   );
+  //   console.log("resetou ao trocar a variante?");
+  // }, [variant]);
 
-  useEffect(() => {
-    clearSwapData();
-  }, []);
+  // useEffect(() => {
+  //   conditionallyCleanTokensList(
+  //     !!authenticatedUserAddress &&
+  //       !!address &&
+  //       authenticatedUserAddress.equals(address),
+  //   );
+  //   console.log("resetou trocar chain de destino");
+  // }, [destinyChain]);
 
-  useEffect(() => {
-    conditionallyCleanTokensList(
-      !authenticatedUserAddress && variant === ForWhom.Your,
-    );
-  }, [authenticatedUserAddress]);
+  // useEffect(() => {
+  //   conditionallyCleanTokensList(
+  //     !authenticatedUserAddress?.equals(address) && variant === ForWhom.Their,
+  //   );
+  //   console.log("resetou trocar chain dnvo");
+  // }, [chain]);
 
-  useEffect(() => {
-    conditionallyCleanTokensList(
-      !!authenticatedUserAddress &&
-        !!address &&
-        authenticatedUserAddress.equals(address) &&
-        variant === ForWhom.Their,
-    );
-  }, [variant]);
+  // useEffect(() => {
+  //   conditionallyCleanTokensList(
+  //     !authenticatedUserAddress?.equals(address) &&
+  //       !validatedAddressToSwap?.equals(authenticatedUserAddress) &&
+  //       variant === ForWhom.Their,
+  //   );
+  // }, [inputAddress]);
 
-  useEffect(() => {
-    conditionallyCleanTokensList(
-      !!authenticatedUserAddress &&
-        !!address &&
-        authenticatedUserAddress.equals(address),
-    );
-  }, [destinyChain]);
+  // useEffect(() => {
+  //   conditionallyCleanTokensList(
+  //     !validatedAddressToSwap && variant === ForWhom.Their,
+  //   );
+  //   console.log("resetou quando trocou validated address to swap");
+  // }, [validatedAddressToSwap]);
 
-  useEffect(() => {
-    conditionallyCleanTokensList(
-      !authenticatedUserAddress?.equals(address) && variant === ForWhom.Their,
-    );
-  }, [chain]);
-
-  useEffect(() => {
-    conditionallyCleanTokensList(
-      !authenticatedUserAddress?.equals(address) &&
-        !validatedAddressToSwap?.equals(authenticatedUserAddress) &&
-        variant === ForWhom.Their,
-    );
-  }, [inputAddress]);
-
-  useEffect(() => {
-    conditionallyCleanTokensList(
-      !validatedAddressToSwap && variant === ForWhom.Their,
-    );
-  }, [validatedAddressToSwap]);
-
-  useEffect(() => {
-    conditionallyCleanTokensList(!isNetworkSupported);
-  }, [isNetworkSupported]);
+  // useEffect(() => {
+  //   conditionallyCleanTokensList(!isNetworkSupported);
+  //   console.log("resetou mais uma vez com troca de rede supported");
+  // }, [isNetworkSupported]);
 
   const allTokensList =
     variant === ForWhom.Their ? theirTokensList : yourTokensList;
 
   return (
     <div className="w-full flex rounded-t-none overflow-y-auto lg:max-w-[600px] h-[356px] no-scrollbar">
-      {tokensQueryStatus == TokensQueryStatus.WITH_RESULTS && allTokensList ? (
+      {tokensQueryStatus == TokensQueryStatus.WITH_RESULTS &&
+      allTokensList.length > 0 ? (
         <div className="flex h-full w-full justify-center items-center no-scrollbar ">
           <TokensList
             ownerAddress={address}
@@ -220,7 +212,8 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
             </div>
           </div>
         </div>
-      ) : tokensQueryStatus == TokensQueryStatus.NO_RESULTS ? (
+      ) : tokensQueryStatus == TokensQueryStatus.NO_RESULTS ||
+        allTokensList.length === 0 ? (
         <div className="flex justify-center w-full h-full bg-[#f8f8f8] dark:bg-[#212322] p-4">
           <div className="flex items-center">
             <p className="dark:text-[#F6F6F6] font-onest font-medium text-[16px] leading-[20px]">

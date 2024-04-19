@@ -161,9 +161,9 @@ export const SwapContextProvider = ({ children }: any) => {
   };
 
   const clearSwapData = () => {
-    // setAuthenticatedUserTokensList([]);
-    // setSearchedUserTokensList([]);
-    // setCurrentSwapModalStep(SwapModalSteps.APPROVE_TOKENS);
+    setAuthenticatedUserTokensList([]);
+    setSearchedUserTokensList([]);
+    setCurrentSwapModalStep(SwapModalSteps.APPROVE_TOKENS);
   };
 
   // useEffect(() => {

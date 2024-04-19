@@ -23,6 +23,7 @@ export const SwappingShelfs = () => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const [activeSwappingShelfID, setActiveSwappingShelfID] =
     useState<SwappingShelfID>(SwappingShelfID.THEIR_ITEMS);
+  const { isActiveTab, setActiveTab } = useContext(SwapContext);
 
   const {
     setAuthenticatedUserTokensList,
@@ -51,10 +52,10 @@ export const SwappingShelfs = () => {
         </div>
       </div>
       <div className="p-5">
-        <div className={cc([activeSwappingShelfID ? "hidden" : "block"])}>
+        <div className={cc([isActiveTab ? "hidden" : "block"])}>
           <TokensShelf variant={ForWhom.Their} />
         </div>
-        <div className={cc([activeSwappingShelfID ? "block" : "hidden"])}>
+        <div className={cc([isActiveTab ? "block" : "hidden"])}>
           <TokensShelf variant={ForWhom.Your} />
         </div>
       </div>
