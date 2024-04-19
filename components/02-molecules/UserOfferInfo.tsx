@@ -21,7 +21,7 @@ export const UserOfferInfo = ({
   });
   const displayAddress =
     address?.address === ADDRESS_ZERO
-      ? "Accepter"
+      ? "Acceptor"
       : address?.getEllipsedAddress();
 
   return variant == UserOfferVariant.DEFAULT ? (
@@ -33,7 +33,7 @@ export const UserOfferInfo = ({
           )}
         </div>
         <div className="flex ">
-          {primaryName ? <p>{primaryName}</p> : <p>{displayAddress} get</p>}
+          {primaryName ? <p>{primaryName}</p> : <p>{displayAddress}</p>}
         </div>
       </div>
     </div>
@@ -50,7 +50,7 @@ export const UserOfferInfo = ({
             )}
           </div>
           <div className="flex ">
-            {primaryName ? <p>{primaryName} get</p> : <p>{displayAddress}</p>}
+            {primaryName ? <p>{primaryName}</p> : <p>{displayAddress}</p>}
           </div>
         </div>
         {/* TODO > Include logic to calculate tokens value */}
