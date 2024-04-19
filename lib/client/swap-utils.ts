@@ -117,7 +117,7 @@ export async function fromTokensToAssets(
 
 export async function getSwapConfig(
   owner: EthereumAddress,
-  encodeConfig: bigint,
+  encodeConfigData: bigint,
   expiry: bigint,
   biding: Asset[],
   asking: Asset[],
@@ -142,7 +142,7 @@ export async function getSwapConfig(
 
   const swap: Swap = {
     owner: owner.address,
-    config: encodeConfig,
+    config: encodeConfigData,
     biding: biding,
     asking: asking,
   };

@@ -11,10 +11,16 @@ import {
   EXPIRED_OFFERS_QUERY,
   RECEIVED_OFFERS_QUERY,
 } from "@/lib/client/offer-queries";
-import { Asset } from "@/lib/client/swap-utils";
-import { EthereumAddress, Token } from "@/lib/shared/types";
+import { EthereumAddress, Token, TokenType } from "@/lib/shared/types";
 import { cleanJsonString } from "@/lib/client/utils";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
+import {
+  FormattedSwapOfferInterface,
+  PopulatedSwapOfferInterface,
+  PageParam,
+  RawSwapOfferInterface,
+  PageInfo,
+} from "@/lib/client/offers-utils";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { Dispatch, useEffect, useState } from "react";
 import axios from "axios";
@@ -50,7 +56,29 @@ interface OffersContextProps {
   acceptSwapOffer: (swap: PopulatedSwapOfferInterface) => void;
   approvedTokensCount: number;
   setApprovedTokensCount: Dispatch<React.SetStateAction<number>>;
+  setTokensList: Dispatch<React.SetStateAction<PopulatedSwapOfferInterface[]>>;
+  tokensList: PopulatedSwapOfferInterface[];
+  isError: boolean;
 }
+
+const DEFAULT_ERC20_TOKEN: Token = {
+  tokenType: TokenType.ERC20,
+  rawBalance: 0n,
+};
+
+const DEFAULT_SWAP_OFFER: PopulatedSwapOfferInterface = {
+  ask: {
+    address: new EthereumAddress(ADDRESS_ZERO),
+    tokens: [DEFAULT_ERC20_TOKEN],
+  },
+  bid: {
+    address: new EthereumAddress(ADDRESS_ZERO),
+    tokens: [DEFAULT_ERC20_TOKEN],
+  },
+  expiryDate: 0n,
+  id: "0",
+  status: PonderFilter.ALL_OFFERS,
+};
 
 export const OffersContextProvider = ({ children }: any) => {
   // States and constants
@@ -66,6 +94,9 @@ export const OffersContextProvider = ({ children }: any) => {
   const [offersFilter, setOffersFilter] = useState<PonderFilter>(
     PonderFilter.ALL_OFFERS,
   );
+  const [tokensList, setTokensList] = useState<PopulatedSwapOfferInterface[]>([
+    DEFAULT_SWAP_OFFER,
+  ]);
 
   const [isLoadingOffersQuery, setIsLoadingOffersQuery] = useState(false);
 
@@ -223,15 +254,16 @@ export const OffersContextProvider = ({ children }: any) => {
   };
 
   // Offers query
-  const { data, status, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["PonderQuerySwaps", authenticatedUserAddress, offersFilter],
-    queryFn: async ({ pageParam }: { pageParam: string | null }) =>
-      await fetchSwaps({ pageParam }),
-    initialPageParam: null,
-    getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
-    enabled:
-      offersFilter === PonderFilter.ALL_OFFERS || !!authenticatedUserAddress,
-  });
+  const { data, status, isFetchingNextPage, fetchNextPage, isError } =
+    useInfiniteQuery({
+      queryKey: ["PonderQuerySwaps", authenticatedUserAddress, offersFilter],
+      queryFn: async ({ pageParam }: { pageParam: string | null }) =>
+        await fetchSwaps({ pageParam }),
+      initialPageParam: null,
+      getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
+      enabled:
+        offersFilter === PonderFilter.ALL_OFFERS || !!authenticatedUserAddress,
+    });
 
   const [hasNextPage, setHasNextPage] = useState(false);
   useEffect(() => {
@@ -258,6 +290,9 @@ export const OffersContextProvider = ({ children }: any) => {
       hasNextPage,
       approvedTokensCount,
       setApprovedTokensCount,
+      setTokensList,
+      tokensList,
+      isError,
     });
   }, [
     setOffersFilter,
@@ -270,6 +305,7 @@ export const OffersContextProvider = ({ children }: any) => {
     hasNextPage,
     approvedTokensCount,
     setApprovedTokensCount,
+    tokensList,
   ]);
 
   // Exportable data
@@ -285,6 +321,9 @@ export const OffersContextProvider = ({ children }: any) => {
     hasNextPage,
     approvedTokensCount,
     setApprovedTokensCount,
+    setTokensList,
+    tokensList,
+    isError,
   });
 
   return (
@@ -306,55 +345,7 @@ export const OffersContext = React.createContext<OffersContextProps>({
   swapOfferToAccept: null,
   approvedTokensCount: 0,
   setApprovedTokensCount: () => {},
+  setTokensList: () => {},
+  tokensList: [DEFAULT_SWAP_OFFER],
+  isError: false,
 });
-
-// Interfaces
-interface RawSwapOfferInterface {
-  // RawSwapOfferInterface represents the object interface of a Swap Offer coming from Ponder
-  swapId: string;
-  status: string;
-  owner: string;
-  allowed: string;
-  expiry: bigint;
-  bid: Asset[];
-  ask: Asset[];
-  recipient: bigint;
-  value: bigint;
-}
-export interface FormattedSwapOfferInterface {
-  id: string;
-  status: string;
-  expiryDate: bigint;
-  bid: {
-    address: EthereumAddress;
-    tokens: Asset[];
-  };
-  ask: {
-    address: EthereumAddress;
-    tokens: Asset[];
-  };
-}
-
-export interface PopulatedSwapOfferInterface {
-  id: string;
-  status: string;
-  expiryDate: bigint;
-  bid: {
-    address: EthereumAddress;
-    tokens: Token[];
-  };
-  ask: {
-    address: EthereumAddress;
-    tokens: Token[];
-  };
-}
-
-interface PageInfo {
-  // PageInfo is used by useInfiniteQuery for pagination
-  hasNextPage: boolean;
-  endCursor: string | null;
-}
-
-interface PageParam {
-  pageParam: string | null;
-}

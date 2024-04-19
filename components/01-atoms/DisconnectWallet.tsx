@@ -1,4 +1,4 @@
-import { PowerIcon, SwapContext } from "@/components/01-atoms";
+import { OffersContext, PowerIcon, SwapContext } from "@/components/01-atoms";
 import { useSidebar } from "@/lib/client/contexts/SidebarContext.tsx";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useDisconnect } from "wagmi";
@@ -14,11 +14,12 @@ export const DisconnectWallet = () => {
   const { toggleSidebar } = useSidebar();
   const { authenticatedUserAddress } = useAuthenticatedUser();
 
-  const { validateAddressToSwap, setInputAddress } = useContext(SwapContext);
+  const { setInputAddress } = useContext(SwapContext);
+  const { setTokensList } = useContext(OffersContext);
 
   const handleClick = () => {
+    setTokensList([]);
     setInputAddress("");
-    validateAddressToSwap(authenticatedUserAddress, null);
     toggleSidebar();
     disconnect();
   };

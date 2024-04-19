@@ -13,21 +13,18 @@ import { ProgressStatus } from "@/components/02-molecules";
 import { SwapUserConfiguration, createSwap } from "@/lib/service/createSwap";
 import {
   ButtonClickPossibilities,
+  encodeConfig,
   toastBlockchainTxError,
 } from "@/lib/client/blockchain-utils";
 import { CreateTokenOffer } from "@/components/03-organisms";
 import { fromTokensToAssets, getSwapConfig } from "@/lib/client/swap-utils";
-import { SWAPLACE_SMART_CONTRACT_ADDRESS } from "@/lib/client/constants";
-import { publicClient } from "@/lib/wallet/wallet-config";
 import { SwapModalSteps } from "@/lib/client/ui-utils";
-import { SwaplaceAbi } from "@/lib/client/abi";
 import { EthereumAddress, Token } from "@/lib/shared/types";
 import { acceptSwap } from "@/lib/service/acceptSwap";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
 import { useContext, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import toast from "react-hot-toast";
-import { getContract } from "viem";
 
 interface ConfirmSwapApprovalModalProps {
   open: boolean;
@@ -161,24 +158,16 @@ export const ConfirmSwapModal = ({
               searchedUserTokensList,
             );
 
-            const SwaplaceContract = getContract({
-              address: SWAPLACE_SMART_CONTRACT_ADDRESS[
-                chainId
-              ] as `0x${string}`,
-              publicClient: publicClient({ chainId: chain.id }),
-              abi: SwaplaceAbi,
+            const encodeConfigData = await encodeConfig({
+              allowed: validatedAddressToSwap.address,
+              expiry: timeDate,
+              etherRecipient: etherRecipient,
+              etherValue: etherRecipient,
             });
-
-            const encodeConfig =
-              (BigInt(validatedAddressToSwap.address.toString()) <<
-                BigInt(96)) |
-              (BigInt(timeDate) << BigInt(64)) |
-              (BigInt(etherRecipient) << BigInt(56)) |
-              BigInt(etherValue);
 
             const swapConfig = await getSwapConfig(
               new EthereumAddress(userWalletClient.account.address),
-              encodeConfig,
+              encodeConfigData,
               timeDate,
               authenticatedUserAssets,
               searchedUserAssets,

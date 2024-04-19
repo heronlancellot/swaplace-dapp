@@ -41,7 +41,7 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
     button,
   }: EmptyLayoutOffersProps) => {
     return (
-      <div className="md:w-[676px] md:h-[656px] w-[95%] h-full py-10 px-5 border border-[#353836] dark:bg-[#212322] bg-[#F6F6F6] rounded-lg flex flex-col justify-center items-center gap-5">
+      <div className="md:w-[676px] md:h-[656px] w-[95%] h-full py-10 px-5 dark:bg-[#212322] bg-[#F6F6F6] border rounded-2xl dark:border-[#353836] border-[#D6D5D5] flex flex-col justify-center items-center gap-5 dark:shadow-swap-station shadow-swap-station-light">
         <div className="flex ">{icon}</div>
         <div className="flex flex-col text-center items-center">
           <p className="dark:p-medium-bold-2-dark p-medium-bold-2-dark-variant-black ">
@@ -66,7 +66,7 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
           button={
             <>
               <button
-                className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px]"
+                className="p-medium-bold-variant-black bg-[#DDF23D] border border-[#DDF23D] rounded-[10px] py-2 px-4 h-[38px]"
                 onClick={() => setToggleManually(!toggleManually)}
               >
                 Add swap manually
@@ -100,7 +100,7 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
           }
           button={
             <button
-              className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px]"
+              className="p-medium-bold-variant-black bg-[#DDF23D] border border-[#DDF23D] rounded-[10px] py-2 px-4 h-[38px]"
               onClick={() => router.push("/")}
             >
               Start swapping
