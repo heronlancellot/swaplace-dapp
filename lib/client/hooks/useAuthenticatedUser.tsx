@@ -2,13 +2,11 @@
 import { ADDRESS_ZERO } from "../constants";
 import { EthereumAddress } from "../../shared/types";
 import { signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAccount, useDisconnect, useEnsName } from "wagmi";
+import { SwapContext } from "@/components/01-atoms";
 
 interface AuthenticatedUserHook {
-  loadingEnsName: boolean;
-  loadingAuthenticatedUser: boolean;
-  authenticatedUserEnsName: string | null;
   authenticatedUserAddress: EthereumAddress | null;
   disconnectUser: () => void;
 }
@@ -22,15 +20,8 @@ export const useAuthenticatedUser = (): AuthenticatedUserHook => {
   const [loadingAuthenticatedUser, setLoadingAuthenticatedUser] =
     useState(true);
 
-  const {
-    data: ensName,
-    isLoading: loadingEnsName,
-    isError: errorLoadingEnsName,
-  } = useEnsName({
-    address: authenticatedAccountAddress
-      ? (authenticatedAccountAddress.address as `0x${string}`)
-      : (ADDRESS_ZERO as `0x${string}`),
-  });
+  const { lastWalletConnected, setLastWalletConnected } =
+    useContext(SwapContext);
 
   /*
     We always need to make sure not only the information
@@ -43,17 +34,27 @@ export const useAuthenticatedUser = (): AuthenticatedUserHook => {
   */
 
   useEffect(() => {
-    const accountAuthenticated =
-      isConnected &&
-      !!nextAuthUser &&
-      nextAuthUser.user.id == address?.toLowerCase();
+    if (!isConnected) {
+      setAuthenticatedAccountAddress(null);
+    }
+  }, [isConnected]);
 
-    setAuthenticatedAccountAddress(
-      accountAuthenticated && address
-        ? new EthereumAddress(address.toLowerCase())
-        : null,
-    );
-    setLoadingAuthenticatedUser(false);
+  useEffect(() => {
+    if (
+      authenticatedAccountAddress?.address.toLowerCase() !==
+      lastWalletConnected.toLowerCase()
+    ) {
+      const accountAuthenticated =
+        !!nextAuthUser && nextAuthUser.user.id == address?.toLowerCase();
+
+      setAuthenticatedAccountAddress(
+        accountAuthenticated && address
+          ? new EthereumAddress(address.toLowerCase())
+          : null,
+      );
+      setLastWalletConnected(address ? address.toLowerCase() : "");
+      setLoadingAuthenticatedUser(false);
+    }
   }, [nextAuthUser, isConnected, address]);
 
   const disconnectUser = () => {
@@ -73,10 +74,6 @@ export const useAuthenticatedUser = (): AuthenticatedUserHook => {
   }, []);
 
   return {
-    loadingEnsName: (loadingEnsName || !ensName) && !errorLoadingEnsName,
-    loadingAuthenticatedUser,
-    authenticatedUserEnsName:
-      loadingEnsName || errorLoadingEnsName || !ensName ? null : ensName,
     authenticatedUserAddress: authenticatedAccountAddress,
     disconnectUser,
   };

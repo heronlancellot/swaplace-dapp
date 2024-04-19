@@ -257,12 +257,19 @@ export interface TokenApprovalData {
   amountOrId: bigint;
 }
 
-export async function packingData(
+export async function encodingConfig(
   Contract: any,
   allowed: EthereumAddress,
   expiration: bigint,
+  recipient: bigint,
+  value: bigint,
 ): Promise<number> {
-  const config = await Contract.read.packData([allowed.address, expiration]);
+  const config = await Contract.read.encodeConfig([
+    allowed.address,
+    expiration,
+    recipient,
+    value,
+  ]);
   return config;
 }
 
@@ -279,3 +286,42 @@ export const toastBlockchainTxError = (e: string) => {
     toast.error("Transaction failed. Please contact our team.");
   }
 };
+
+interface encodeConfigProps {
+  allowed: string;
+  expiry: bigint | number;
+  etherRecipient: bigint;
+  etherValue: bigint;
+}
+export async function encodeConfig({
+  allowed,
+  expiry,
+  etherRecipient,
+  etherValue,
+}: encodeConfigProps): Promise<bigint> {
+  return (
+    (BigInt(allowed) << BigInt(96)) |
+    (BigInt(expiry) << BigInt(64)) |
+    (BigInt(etherRecipient) << BigInt(56)) |
+    BigInt(etherValue)
+  );
+}
+
+interface decodeConfigProps {
+  config: bigint;
+}
+
+export async function decodeConfig({ config }: decodeConfigProps): Promise<{
+  allowed: string;
+  expiry: bigint | number;
+  etherRecipient: bigint;
+  etherValue: bigint;
+}> {
+  return {
+    allowed: `0x${(config >> BigInt(96)).toString(16).padStart(40, "0")}`,
+    expiry: config & ((BigInt(1) << BigInt(96)) - BigInt(1)),
+    etherRecipient:
+      (config >> BigInt(56)) & ((BigInt(1) << BigInt(8)) - BigInt(1)),
+    etherValue: config & ((BigInt(1) << BigInt(56)) - BigInt(1)),
+  };
+}

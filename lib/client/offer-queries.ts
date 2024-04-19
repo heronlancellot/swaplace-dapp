@@ -1,3 +1,4 @@
+//Recipient and value added to each query
 export const ALL_OFFERS_QUERY = `
          query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
           swapDatabases(
@@ -17,6 +18,8 @@ export const ALL_OFFERS_QUERY = `
                ask
                blockTimestamp
                transactionHash
+               recipient
+               value 
              }
              pageInfo {
                hasNextPage
@@ -25,7 +28,6 @@ export const ALL_OFFERS_QUERY = `
            }
          }
        `;
-
 export const CREATED_OFFERS_QUERY = `
          query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_gt: BigInt) {
           swapDatabases(
@@ -45,6 +47,8 @@ export const CREATED_OFFERS_QUERY = `
                ask
                blockTimestamp
                transactionHash
+               recipient
+               value
              }
              pageInfo {
                hasNextPage
@@ -73,6 +77,8 @@ export const RECEIVED_OFFERS_QUERY = `
                ask
                blockTimestamp
                transactionHash
+               recipient
+               value
              }
              pageInfo {
                hasNextPage
@@ -101,6 +107,8 @@ export const ACCEPTED_OFFERS_QUERY = `
                ask
                blockTimestamp
                transactionHash
+               recipient
+               value
              }
              pageInfo {
                hasNextPage
@@ -129,6 +137,8 @@ export const CANCELED_OFFERS_QUERY = `
                ask
                blockTimestamp
                transactionHash
+               recipient
+               value
              }
              pageInfo {
                hasNextPage
@@ -169,6 +179,8 @@ export const EXPIRED_OFFERS_QUERY = `
                ask
                blockTimestamp
                transactionHash
+               recipient
+               value
              }
              pageInfo {
                hasNextPage
