@@ -41,7 +41,9 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
     theirManuallyAddedTokensList,
   } = useContext(ShelfContext);
   const [tokensQueryStatus, setTokensQueryStatus] = useState<TokensQueryStatus>(
-    TokensQueryStatus.EMPTY_QUERY,
+    theirTokensList.length > 0
+      ? TokensQueryStatus.WITH_RESULTS
+      : TokensQueryStatus.EMPTY_QUERY,
   );
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
@@ -124,10 +126,10 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
     if (condition) {
       if (variant === ForWhom.Their) {
         setTheirTokensList([]);
-        setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
+        // setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
       } else {
         setYourTokensList([]);
-        setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
+        // setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
       }
     }
   };
