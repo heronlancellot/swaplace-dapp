@@ -47,8 +47,6 @@ export const TokensShelfTab = ({ setActiveSwappingShelfID }: ITab) => {
             onClick={() => {
               setActiveSwappingShelfID(tab.id);
               setActiveTab(tab.id);
-              console.log("isActiveTab", isActiveTab);
-              console.log("tabid", tab.id);
             }}
           >
             <div className="flex items-center justify-center contrast-50">
