@@ -67,7 +67,8 @@ export const ENSAvatar = ({
             "flex justify-center items-center",
           ])}
         >
-          <LoadingIndicator />
+          {/* We expect this loading of ENS to be white only when the background is greyish~dark. But it's not working */}
+          <LoadingIndicator className="dark:border-white" />
         </div>
       ) : avatarQueryStatus === ENSAvatarQueryStatus.ERROR ||
         failedLoadingImage ? (
