@@ -66,7 +66,7 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
           button={
             <>
               <button
-                className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px]"
+                className="p-medium-bold-variant-black bg-[#DDF23D] border border-[#DDF23D] rounded-[10px] py-2 px-4 h-[38px]"
                 onClick={() => setToggleManually(!toggleManually)}
               >
                 Add swap manually
