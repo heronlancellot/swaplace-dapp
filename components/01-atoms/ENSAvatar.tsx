@@ -72,8 +72,11 @@ export const ENSAvatar = ({
       ) : avatarQueryStatus === ENSAvatarQueryStatus.ERROR ||
         failedLoadingImage ? (
         <div className={ENSAvatarClassName[size]}>
-          <div className="bg-[#E4E4E4] dark:bg-[#353836] p-[5px] rounded-md">
-            <PersonIcon className="text-[#A3A9A5] dark:text-[#707572]" />
+          <div className="w-full flex justify-center items-center h-10 w-10 rounded-[10px] bg-[#DDF23D]">
+            <PersonIcon
+              size="20"
+              className="text-[#a3a9a5] dark:text-[#181A19]"
+            />
           </div>
         </div>
       ) : imageSrc ? (

@@ -136,7 +136,7 @@ const SwapOffer = ({ swap }: SwapOfferProps) => {
           <SwapOfferCard tokens={swap.ask.tokens} address={swap.ask.address} />
         </div>
         <SwapOfferCard tokens={swap.bid.tokens} address={swap.bid.address} />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-[#70757230] bg-[#f6f6f6] rounded-[100px] w-[24px] h-[24px] items-center flex justify-center">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-[#70757230] bg-[#f6f6f6] dark:bg-[#212322] rounded-[100px] w-[24px] h-[24px] items-center flex justify-center">
           <SwapIcon />
         </div>
       </div>
