@@ -75,7 +75,7 @@ export const TokenSizeClassNames = {
 
 export const TokenSwapCard = ({
   tokenData,
-  displayERC20TokensAmount = false,
+  displayERC20TokensAmount = true,
   styleType = TokenCardStyleType.NORMAL,
 }: TokenCardProps) => {
   const [couldntLoadNftImage, setCouldntLoadNftImage] = useState(false);
@@ -91,7 +91,7 @@ export const TokenSwapCard = ({
     switch (tokenData.tokenType) {
       case TokenType.ERC20:
         if ((tokenData as ERC20).symbol) {
-          displayableData.image = (tokenData as ERC20).symbol as string;
+          displayableData.image = (tokenData as ERC20).logo as string;
         } else {
           displayableData.image = "";
         }
@@ -140,7 +140,7 @@ export const TokenSwapCard = ({
       {ButtonLayout(
         <div className="p-2 dark:text-[#707572] text-[#707572] flex justify-center items-center w-full h-full text-[10px] font-medium oveflow-y-scroll break-all">
           {getTokenName(tokenData, {
-            withAmountPrefix: tokenData.tokenType === TokenType.ERC20,
+            withAmountPrefix: true,
             displayTokenAmount: displayERC20TokensAmount,
           })}
         </div>,

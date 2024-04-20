@@ -175,12 +175,7 @@ export const ApproveTokenCard = ({
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex">
-            <p>
-              {(
-                token as ERC20WithTokenAmountSelection
-              ).tokenAmount?.toString() ?? `[#` + token.id + `]`}{" "}
-              - {getTokenName(token)}
-            </p>
+            <p>{getTokenName(token)}</p>
           </div>
           <div className="flex p-semibold-dark">
             {tokenApprovalStatus === TokenApprovalStatus.CLICK_TO_APPROVE ? (

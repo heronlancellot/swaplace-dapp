@@ -34,8 +34,8 @@ export const ExpireDate: ExpireOption[] = [
 export const getTokenName = (
   token: Token,
   prefix = {
-    withAmountPrefix: false,
-    displayTokenAmount: false,
+    withAmountPrefix: true,
+    displayTokenAmount: true,
   },
 ): string => {
   if (token.tokenType === TokenType.ERC20) {
@@ -44,24 +44,26 @@ export const getTokenName = (
         (token as ERC20WithTokenAmountSelection).tokenAmount
         ? (token as ERC20WithTokenAmountSelection).tokenAmount.toLocaleString(
             "en-US",
-          ) + " - "
-        : (token as ERC20).rawBalance.toLocaleString("en-US") + " - "
+          )
+        : (token as ERC20).rawBalance.toLocaleString("en-US")
       : "";
 
-    return token.name
-      ? erc20balancePrefix + token.name
-      : erc20balancePrefix + token.tokenType;
+    return token.symbol
+      ? erc20balancePrefix + " $" + token.symbol
+      : erc20balancePrefix + " " + token.tokenType;
   } else if (token.tokenType === TokenType.ERC721) {
-    const metadataName = (token as ERC721).metadata?.name;
-    const tokenName = (token as ERC721).name;
+    const metadataSymbol =
+      (token as ERC721).metadata?.symbol ?? (token as ERC721).symbol;
+    const tokenName =
+      (token as ERC721).metadata?.name ?? (token as ERC721).name;
 
-    return metadataName
-      ? metadataName
+    return metadataSymbol
+      ? `[#${token.id}]` + ` $${metadataSymbol}`
       : tokenName
-      ? `${token.name} - ${token.tokenType}`
-      : `${token.tokenType}`;
+      ? `[#${token.id}] ${token.name}`
+      : `[#${token.id}] ${token.tokenType}`;
   } else {
-    return `${token.tokenType} - Token Name Not Found`;
+    return "Metadata not found";
   }
 };
 

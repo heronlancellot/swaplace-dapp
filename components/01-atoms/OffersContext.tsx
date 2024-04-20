@@ -15,8 +15,8 @@ import { EthereumAddress, Token, TokenType } from "@/lib/shared/types";
 import { cleanJsonString } from "@/lib/client/utils";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 import {
-  FormattedSwapOfferInterface,
-  PopulatedSwapOfferInterface,
+  FormattedSwapOfferAssets,
+  PopulatedSwapOfferCard,
   PageParam,
   RawSwapOfferInterface,
   PageInfo,
@@ -26,6 +26,7 @@ import React, { Dispatch, useEffect, useState } from "react";
 import axios from "axios";
 import { isAddress } from "viem";
 import { useAccount } from "wagmi";
+import toast from "react-hot-toast";
 
 export enum PonderFilter {
   ALL_OFFERS = "All Offers",
@@ -48,17 +49,17 @@ const DEFAULT_OFFERS_DATA = {
 interface OffersContextProps {
   setOffersFilter: Dispatch<React.SetStateAction<PonderFilter>>;
   offersFilter: PonderFilter;
-  offersQueries: Record<PonderFilter, Array<FormattedSwapOfferInterface>>;
+  offersQueries: Record<PonderFilter, Array<FormattedSwapOfferAssets>>;
   fetchNextPage: () => void;
   isFetchingNextPage: boolean;
   hasNextPage: boolean;
   isLoadingOffersQuery: boolean;
-  swapOfferToAccept: PopulatedSwapOfferInterface | null;
-  acceptSwapOffer: (swap: PopulatedSwapOfferInterface) => void;
+  swapOfferToAccept: PopulatedSwapOfferCard | null;
+  acceptSwapOffer: (swap: PopulatedSwapOfferCard) => void;
   approvedTokensCount: number;
   setApprovedTokensCount: Dispatch<React.SetStateAction<number>>;
-  setTokensList: Dispatch<React.SetStateAction<PopulatedSwapOfferInterface[]>>;
-  tokensList: PopulatedSwapOfferInterface[];
+  setTokensList: Dispatch<React.SetStateAction<PopulatedSwapOfferCard[]>>;
+  tokensList: PopulatedSwapOfferCard[];
   isError: boolean;
 }
 
@@ -67,35 +68,35 @@ const DEFAULT_ERC20_TOKEN: Token = {
   rawBalance: 0n,
 };
 
-const DEFAULT_SWAP_OFFER: PopulatedSwapOfferInterface = {
-  ask: {
-    address: new EthereumAddress(ADDRESS_ZERO),
-    tokens: [DEFAULT_ERC20_TOKEN],
-  },
-  bid: {
-    address: new EthereumAddress(ADDRESS_ZERO),
-    tokens: [DEFAULT_ERC20_TOKEN],
-  },
-  expiryDate: 0n,
+const DEFAULT_SWAP_OFFER: PopulatedSwapOfferCard = {
   id: "0",
   status: PonderFilter.ALL_OFFERS,
+  expiryDate: 0n,
+  bidderTokens: {
+    address: new EthereumAddress(ADDRESS_ZERO),
+    tokens: [DEFAULT_ERC20_TOKEN],
+  },
+  askerTokens: {
+    address: new EthereumAddress(ADDRESS_ZERO),
+    tokens: [DEFAULT_ERC20_TOKEN],
+  },
 };
 
 export const OffersContextProvider = ({ children }: any) => {
   // States and constants
   const [swapOfferToAccept, setSwapOfferToBeAccepted] =
-    useState<PopulatedSwapOfferInterface | null>(null);
+    useState<PopulatedSwapOfferCard | null>(null);
   const [approvedTokensCount, setApprovedTokensCount] = useState(0);
 
   const [offersQueries, setOffersQueries] =
-    useState<Record<PonderFilter, Array<FormattedSwapOfferInterface>>>(
+    useState<Record<PonderFilter, Array<FormattedSwapOfferAssets>>>(
       DEFAULT_OFFERS_DATA,
     );
 
   const [offersFilter, setOffersFilter] = useState<PonderFilter>(
     PonderFilter.ALL_OFFERS,
   );
-  const [tokensList, setTokensList] = useState<PopulatedSwapOfferInterface[]>([
+  const [tokensList, setTokensList] = useState<PopulatedSwapOfferCard[]>([
     DEFAULT_SWAP_OFFER,
   ]);
 
@@ -109,7 +110,7 @@ export const OffersContextProvider = ({ children }: any) => {
   const currentUnixTimeSeconds = Math.floor(new Date().getTime() / 1000);
 
   // Functions
-  const acceptSwapOffer = async (swap: PopulatedSwapOfferInterface) => {
+  const acceptSwapOffer = async (swap: PopulatedSwapOfferCard) => {
     setSwapOfferToBeAccepted(swap);
   };
 
@@ -214,19 +215,19 @@ export const OffersContextProvider = ({ children }: any) => {
             };
           },
         );
-        const itemsArrayAsSwapOffers: FormattedSwapOfferInterface[] =
+        const itemsArrayAsSwapOffers: FormattedSwapOfferAssets[] =
           processedItems.map((item) => {
             return {
               id: item.swapId,
               status: item.status,
               expiryDate: item.expiry,
-              bid: {
+              bidderAssets: {
                 address: isAddress(item.allowed)
                   ? new EthereumAddress(item.allowed)
                   : new EthereumAddress(ADDRESS_ZERO),
                 tokens: item.bid,
               },
-              ask: {
+              askerAssets: {
                 address: new EthereumAddress(item.owner),
                 tokens: item.ask,
               },
@@ -245,8 +246,10 @@ export const OffersContextProvider = ({ children }: any) => {
         throw new Error("Unexpected response structure");
       }
     } catch (error) {
-      console.error("Error fetching swaps:", error);
-      throw error;
+      toast.error(
+        "Failed to fetch swaps from Subgraph. Please contact the team",
+      );
+      throw new Error("Failed to fetch swaps from Subgraph");
     }
   };
 

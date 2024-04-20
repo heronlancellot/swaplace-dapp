@@ -9,6 +9,8 @@ export interface ERC721 {
   tokenType: TokenType;
   id?: string;
   name?: string;
+  symbol?: string;
+  uri?: string;
   contract?: string;
   metadata?: Record<string, any>;
   contractMetadata?: Record<string, any>;
