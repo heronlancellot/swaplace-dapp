@@ -45,6 +45,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                   getSiweMessageOptions={getSiweMessageOptions}
                 >
                   <RainbowKitProvider
+                    locale="en-US"
                     theme={{
                       lightMode: lightTheme({
                         accentColor: "black",
