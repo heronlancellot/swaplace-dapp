@@ -7,7 +7,6 @@ import { ADDRESS_ZERO, SupportedNetworks } from "@/lib/client/constants";
 import { EthereumAddress, Token } from "@/lib/shared/types";
 import { ButtonClickPossibilities } from "@/lib/client/blockchain-utils";
 import React, { Dispatch, useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 
 interface SwapContextProps {
@@ -29,10 +28,6 @@ interface SwapContextProps {
     React.SetStateAction<EthereumAddress | null>
   >;
   validatedAddressToSwap: EthereumAddress | null;
-  validateAddressToSwap: (
-    authedUser: EthereumAddress | null,
-    inputEnsAddress: string | null | undefined,
-  ) => void;
   searchedUserTokensList: Token[];
   setSearchedUserTokensList: Dispatch<React.SetStateAction<Token[]>>;
   /* 
@@ -88,61 +83,6 @@ export const SwapContextProvider = ({ children }: any) => {
 
   const router = useRouter();
 
-  const validateAddressToSwap = (
-    _authedUser: EthereumAddress | null,
-    _inputEnsAddress: string | null | undefined,
-    shouldToast = true,
-  ) => {
-    if (!inputAddress && !_inputEnsAddress) {
-      shouldToast &&
-        toast.error(
-          "Please enter a valid address or some registered ENS domain",
-        );
-      setUserJustValidatedInput(true);
-      return;
-    }
-
-    let searchedAddress = inputAddress;
-
-    if (_inputEnsAddress !== ADDRESS_ZERO && searchedAddress) {
-      searchedAddress = _inputEnsAddress ?? "";
-    }
-
-    let inputIsValidAddress = false;
-    try {
-      new EthereumAddress(searchedAddress);
-      inputIsValidAddress = true;
-    } catch (e) {
-      console.error(e);
-    }
-
-    if (inputIsValidAddress) {
-      const inputEthAddress = new EthereumAddress(searchedAddress);
-
-      if (inputEthAddress.equals(_authedUser)) {
-        shouldToast && toast.error("You cannot swap with yourself");
-        setValidatedAddressToSwap(null);
-        setUserJustValidatedInput(true);
-        return;
-      } else if (searchedAddress === ADDRESS_ZERO) {
-        shouldToast && toast.error("You cannot swap with an invalid address");
-        setValidatedAddressToSwap(null);
-        setUserJustValidatedInput(true);
-        return;
-      }
-
-      setValidatedAddressToSwap(inputEthAddress);
-      shouldToast && toast.success("Searching Address");
-    } else {
-      setValidatedAddressToSwap(null);
-      shouldToast &&
-        toast.error(
-          "Your input is not a valid address and neither some registered ENS domain",
-        );
-    }
-    setUserJustValidatedInput(true);
-  };
-
   const updateSwapStep = (buttonClicked: ButtonClickPossibilities) => {
     switch (currentSwapModalStep) {
       case SwapModalSteps.APPROVE_TOKENS:
@@ -196,7 +136,6 @@ export const SwapContextProvider = ({ children }: any) => {
       inputAddress,
       setInputAddress,
       validatedAddressToSwap,
-      validateAddressToSwap,
       setValidatedAddressToSwap,
       setUserJustValidatedInput,
       userJustValidatedInput,
@@ -241,7 +180,6 @@ export const SwapContextProvider = ({ children }: any) => {
     setInputAddress,
     setValidatedAddressToSwap,
     validatedAddressToSwap,
-    validateAddressToSwap,
     setUserJustValidatedInput,
     userJustValidatedInput,
     setAuthenticatedUserTokensList,
@@ -282,10 +220,6 @@ export const SwapContext = React.createContext<SwapContextProps>({
   inputAddress: "",
   validatedAddressToSwap: null,
   setValidatedAddressToSwap: () => {},
-  validateAddressToSwap: (
-    _authedUser: EthereumAddress | null,
-    _inputEnsAddress: string | null | undefined,
-  ) => {},
   setInputAddress: (address: string) => {},
   setUserJustValidatedInput: () => {},
   userJustValidatedInput: false,
