@@ -52,7 +52,7 @@ const SwapBody = () => {
   const { setTokensList, tokensList } = useContext(OffersContext);
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  console.log("authenticatedUserAddress", authenticatedUserAddress);
+
   if (!authenticatedUserAddress?.address) {
     return null;
   }
