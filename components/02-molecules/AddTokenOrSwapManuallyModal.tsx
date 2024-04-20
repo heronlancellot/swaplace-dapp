@@ -90,16 +90,12 @@ const SwapBody = () => {
     return swapBelongsToAuthUser;
   };
 
-  const addSwapToTokensList = async (swapArray: Swap) => {
-    const askedTokensWithData = await retrieveDataFromTokensArray(
-      swapArray.asking,
-    );
-    const bidedTokensWithData = await retrieveDataFromTokensArray(
-      swapArray.biding,
-    );
+  const addSwapToTokensList = async (swap: Swap) => {
+    const askedTokensWithData = await retrieveDataFromTokensArray(swap.asking);
+    const bidedTokensWithData = await retrieveDataFromTokensArray(swap.biding);
 
     const bidingAddressAndExpiryData = await decodeConfig({
-      config: BigInt(swapArray.config),
+      config: BigInt(swap.config),
     });
 
     const formattedTokens: PopulatedSwapOfferInterface = {
@@ -107,7 +103,7 @@ const SwapBody = () => {
       status: "",
       expiryDate: BigInt(bidingAddressAndExpiryData.expiry),
       ask: {
-        address: new EthereumAddress(swapArray.owner),
+        address: new EthereumAddress(swap.owner),
         tokens: askedTokensWithData,
       },
       bid: {
@@ -116,15 +112,17 @@ const SwapBody = () => {
       },
     };
 
-    // const tokensListResponse = tokensList.filter((token) => {
-    //   token === formattedTokens;
-    // });
+    const isSwapDuplicated = tokensList.some(
+      (token) => BigInt(token.id) === BigInt(swapId),
+    );
 
-    // console.log("tokensListResponse", tokensListResponse);
+    isSwapDuplicated
+      ? toast.error(
+          "This swap is already in the list. Please choose another one.",
+        )
+      : setTokensList([...tokensList, formattedTokens]);
 
-    setTokensList([...tokensList, formattedTokens]);
-
-    return swapArray;
+    return swap;
   };
 
   const addSwapId = async () => {
