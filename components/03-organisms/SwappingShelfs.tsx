@@ -29,7 +29,9 @@ export const SwappingShelfs = () => {
     setAuthenticatedUserTokensList,
     setSearchedUserTokensList,
     setInputAddress,
+    saveimageSrc,
     setValidatedAddressToSwap,
+    lastWalletConnected,
   } = useContext(SwapContext);
 
   useEffect(() => {
@@ -42,6 +44,10 @@ export const SwappingShelfs = () => {
       setInputAddress("");
     }
   }, [isConnected]);
+
+  useEffect(() => {
+    saveimageSrc(null);
+  }, [lastWalletConnected]);
 
   return (
     <div className="w-full h-full dark:bg-[#212322] dark:border-[#353836] border border-[#D6D5D5] rounded-2xl dark:shadow-swap-station shadow-swap-station-light">
