@@ -1,7 +1,6 @@
 import {
   DoneIcon,
   OffersContext,
-  PopulatedSwapOfferInterface,
   ThreeDotsCardOffersOptions,
 } from "@/components/01-atoms";
 
@@ -9,9 +8,10 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { ConfirmSwapModal, SwapModalAction } from "@/components/02-molecules";
 
 import React, { useContext, useState } from "react";
+import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 
 interface TokenOfferDetailsInterface {
-  swap: PopulatedSwapOfferInterface;
+  swap: PopulatedSwapOfferCard;
 }
 
 export const TokenOfferDetails = ({ swap }: TokenOfferDetailsInterface) => {
@@ -62,12 +62,12 @@ export const TokenOfferDetails = ({ swap }: TokenOfferDetailsInterface) => {
           )}
           <li className="flex items-center gap-2">
             <div className="w-1 h-1 bg-neutral-600 rounded-full shadow-inner" />
-            Created by {swap.ask.address?.getEllipsedAddress()}
+            Created by {swap.askerTokens.address?.getEllipsedAddress()}
           </li>
         </ul>
       </div>
       <div className="flex gap-2 justify-center items-center ">
-        {authenticatedUserAddress?.equals(swap.bid.address) && (
+        {authenticatedUserAddress?.equals(swap.bidderTokens.address) && (
           <div>
             <button
               onClick={acceptOffer}

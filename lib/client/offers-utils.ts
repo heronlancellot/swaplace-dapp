@@ -13,29 +13,29 @@ export interface RawSwapOfferInterface {
   recipient: bigint;
   value: bigint;
 }
-export interface FormattedSwapOfferInterface {
+export interface FormattedSwapOfferAssets {
   id: string;
   status: string;
   expiryDate: bigint;
-  bid: {
+  bidderAssets: {
     address: EthereumAddress;
     tokens: Asset[];
   };
-  ask: {
+  askerAssets: {
     address: EthereumAddress;
     tokens: Asset[];
   };
 }
 
-export interface PopulatedSwapOfferInterface {
+export interface PopulatedSwapOfferCard {
   id: string;
   status: string;
   expiryDate: bigint;
-  bid: {
+  bidderTokens: {
     address: EthereumAddress;
     tokens: Token[];
   };
-  ask: {
+  askerTokens: {
     address: EthereumAddress;
     tokens: Token[];
   };

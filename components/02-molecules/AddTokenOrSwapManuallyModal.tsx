@@ -21,7 +21,7 @@ import {
   decodeConfig,
   retrieveDataFromTokensArray,
 } from "@/lib/client/blockchain-utils";
-import { PopulatedSwapOfferInterface } from "@/lib/client/offers-utils";
+import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
 import { isAddress } from "viem";
@@ -98,17 +98,17 @@ const SwapBody = () => {
       config: BigInt(swap.config),
     });
 
-    const formattedTokens: PopulatedSwapOfferInterface = {
-      id: String(swapId),
+    const formattedTokens: PopulatedSwapOfferCard = {
       status: "",
+      id: String(swapId),
       expiryDate: BigInt(bidingAddressAndExpiryData.expiry),
-      ask: {
-        address: new EthereumAddress(swap.owner),
-        tokens: askedTokensWithData,
-      },
-      bid: {
+      bidderTokens: {
         address: new EthereumAddress(bidingAddressAndExpiryData.allowed),
         tokens: bidedTokensWithData,
+      },
+      askerTokens: {
+        address: new EthereumAddress(swap.owner),
+        tokens: askedTokensWithData,
       },
     };
 
