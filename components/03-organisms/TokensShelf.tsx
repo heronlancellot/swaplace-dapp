@@ -112,8 +112,9 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
 
   useEffect(() => {
     if (variant === ForWhom.Their && theirTokensList.length === 0) {
-      if (!!validatedAddressToSwap && isNetworkSupported && !!destinyChain)
+      if (!!validatedAddressToSwap && isNetworkSupported && !!destinyChain) {
         getUserTokens();
+      }
     }
   }, [
     theirTokensList,

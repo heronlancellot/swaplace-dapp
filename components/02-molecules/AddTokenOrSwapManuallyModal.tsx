@@ -21,7 +21,7 @@ import {
   decodeConfig,
   retrieveDataFromTokensArray,
 } from "@/lib/client/blockchain-utils";
-import { PopulatedSwapOfferInterface } from "@/lib/client/offers-utils";
+import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
 import { isAddress } from "viem";
@@ -90,41 +90,40 @@ const SwapBody = () => {
     return swapBelongsToAuthUser;
   };
 
-  const addSwapToTokensList = async (swapArray: Swap) => {
-    const askedTokensWithData = await retrieveDataFromTokensArray(
-      swapArray.asking,
-    );
-    const bidedTokensWithData = await retrieveDataFromTokensArray(
-      swapArray.biding,
-    );
+  const addSwapToTokensList = async (swap: Swap) => {
+    const askedTokensWithData = await retrieveDataFromTokensArray(swap.asking);
+    const bidedTokensWithData = await retrieveDataFromTokensArray(swap.biding);
 
     const bidingAddressAndExpiryData = await decodeConfig({
-      config: BigInt(swapArray.config),
+      config: BigInt(swap.config),
     });
 
-    const formattedTokens: PopulatedSwapOfferInterface = {
-      id: String(swapId),
+    const formattedTokens: PopulatedSwapOfferCard = {
       status: "",
+      id: String(swapId),
       expiryDate: BigInt(bidingAddressAndExpiryData.expiry),
-      ask: {
-        address: new EthereumAddress(swapArray.owner),
-        tokens: askedTokensWithData,
-      },
-      bid: {
+      bidderTokens: {
         address: new EthereumAddress(bidingAddressAndExpiryData.allowed),
         tokens: bidedTokensWithData,
       },
+      askerTokens: {
+        address: new EthereumAddress(swap.owner),
+        tokens: askedTokensWithData,
+      },
     };
 
-    // const tokensListResponse = tokensList.filter((token) => {
-    //   token === formattedTokens;
-    // });
+    const isSwapDuplicated = tokensList.some(
+      (token) => BigInt(token.id) === BigInt(swapId),
+    );
 
-    // console.log("tokensListResponse", tokensListResponse);
+    isSwapDuplicated
+      ? toast.error(
+          "This swap is already in the list. Please choose another one.",
+        )
+      : (setTokensList([...tokensList, formattedTokens]),
+        toast.success("Swap added successfully!"));
 
-    setTokensList([...tokensList, formattedTokens]);
-
-    return swapArray;
+    return swap;
   };
 
   const addSwapId = async () => {
@@ -149,8 +148,6 @@ const SwapBody = () => {
         },
       );
     });
-
-    return <></>;
   };
 
   return (

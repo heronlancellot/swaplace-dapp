@@ -4,7 +4,7 @@ import {
   SwapContext,
   SwapIconVariant,
   OffersContext,
-  PopulatedSwapOfferInterface,
+  PopulatedSwapOfferCard,
 } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import cc from "classcat";
@@ -61,8 +61,7 @@ export const CreateTokenOffer = ({
               address={
                 swapModalAction === SwapModalAction.CREATE_SWAP
                   ? authenticatedUserAddress
-                  : (swapOfferToAccept as PopulatedSwapOfferInterface).ask
-                      .address
+                  : (swapOfferToAccept as PopulatedSwapOfferCard).ask.address
               }
             />
           </div>
@@ -72,8 +71,7 @@ export const CreateTokenOffer = ({
               address={
                 swapModalAction === SwapModalAction.CREATE_SWAP
                   ? validatedAddressToSwap
-                  : (swapOfferToAccept as PopulatedSwapOfferInterface).bid
-                      .address
+                  : (swapOfferToAccept as PopulatedSwapOfferCard).bid.address
               }
             />
           </div>
@@ -96,8 +94,7 @@ export const CreateTokenOffer = ({
               address={
                 swapModalAction === SwapModalAction.CREATE_SWAP
                   ? authenticatedUserAddress
-                  : (swapOfferToAccept as PopulatedSwapOfferInterface).ask
-                      .address
+                  : (swapOfferToAccept as PopulatedSwapOfferCard).ask.address
               }
               variant={CreateTokenOfferVariant.VERTICAL}
             />
@@ -115,8 +112,7 @@ export const CreateTokenOffer = ({
               address={
                 swapModalAction === SwapModalAction.CREATE_SWAP
                   ? validatedAddressToSwap
-                  : (swapOfferToAccept as PopulatedSwapOfferInterface).bid
-                      .address
+                  : (swapOfferToAccept as PopulatedSwapOfferCard).bid.address
               }
               variant={CreateTokenOfferVariant.VERTICAL}
             />

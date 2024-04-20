@@ -15,7 +15,10 @@ import {
   TokensOfferSkeleton,
 } from "@/components/01-atoms";
 import { retrieveDataFromTokensArray } from "@/lib/client/blockchain-utils";
-import { PopulatedSwapOfferInterface } from "@/lib/client/offers-utils";
+import {
+  FormattedSwapOfferAssets,
+  PopulatedSwapOfferCard,
+} from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import cc from "classcat";
 import { useContext, useEffect, useState } from "react";
@@ -46,29 +49,37 @@ export const SwapOffers = () => {
   }, [offersQueries]);
 
   const processSwaps = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      const formattedTokensPromises = offersQueries[offersFilter].map(
-        async (swap) => {
-          const askedTokensWithData = await retrieveDataFromTokensArray(
-            swap.ask.tokens,
-          );
-          const bidedTokensWithData = await retrieveDataFromTokensArray(
-            swap.bid.tokens,
-          );
-          return {
-            ...swap,
-            ask: { address: swap.ask.address, tokens: askedTokensWithData },
-            bid: {
-              address: swap.bid.address,
-              tokens: bidedTokensWithData,
-            },
-          };
-        },
-      );
+      const formattedTokensPromises: Promise<PopulatedSwapOfferCard>[] =
+        offersQueries[offersFilter].map(
+          async (swap: FormattedSwapOfferAssets) => {
+            const bidedTokensWithData = await retrieveDataFromTokensArray(
+              swap.bidderAssets.tokens,
+            );
+            const askedTokensWithData = await retrieveDataFromTokensArray(
+              swap.askerAssets.tokens,
+            );
+            return {
+              id: swap.id,
+              status: swap.status,
+              expiryDate: swap.expiryDate,
+              bidderTokens: {
+                address: swap.bidderAssets.address,
+                tokens: bidedTokensWithData,
+              },
+              askerTokens: {
+                address: swap.askerAssets.address,
+                tokens: askedTokensWithData,
+              },
+            };
+          },
+        );
 
       // Wait for all promises to resolve
-      const formattedTokens = await Promise.all(formattedTokensPromises);
+      const formattedTokens: PopulatedSwapOfferCard[] = await Promise.all(
+        formattedTokensPromises,
+      );
       setTokensList(formattedTokens);
     } catch (error) {
       console.error("Failed to process swaps:", error);
@@ -125,7 +136,7 @@ export const SwapOffers = () => {
 };
 
 interface SwapOfferProps {
-  swap: PopulatedSwapOfferInterface;
+  swap: PopulatedSwapOfferCard;
 }
 
 const SwapOffer = ({ swap }: SwapOfferProps) => {
@@ -133,9 +144,15 @@ const SwapOffer = ({ swap }: SwapOfferProps) => {
     <div className="flex flex-col no-scrollbar border border-solid border-[#D6D5D5] dark:border-[#353836] dark:shadow-swap-station shadow-swap-station-light dark:bg-[#212322] font-onest rounded-lg ">
       <div className="flex flex-row border-b mb-auto dark:border-[#353836] relative">
         <div className={cc(["border-r dark:border-[#353836]"])}>
-          <SwapOfferCard tokens={swap.ask.tokens} address={swap.ask.address} />
+          <SwapOfferCard
+            tokens={swap.askerTokens.tokens}
+            address={swap.askerTokens.address}
+          />
         </div>
-        <SwapOfferCard tokens={swap.bid.tokens} address={swap.bid.address} />
+        <SwapOfferCard
+          tokens={swap.bidderTokens.tokens}
+          address={swap.bidderTokens.address}
+        />
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-[#70757230] bg-[#f6f6f6] dark:bg-[#212322] rounded-[100px] w-[24px] h-[24px] items-center flex justify-center">
           <SwapIcon />
         </div>
