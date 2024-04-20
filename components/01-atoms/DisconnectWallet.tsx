@@ -12,11 +12,10 @@ export const DisconnectWallet = () => {
   const currentTheme = theme === "system" ? systemTheme : theme;
   const isDark = currentTheme === "dark";
   const { toggleSidebar } = useSidebar();
-  const { setInputAddress, saveimageSrc } = useContext(SwapContext);
+  const { setInputAddress } = useContext(SwapContext);
   const { setTokensList } = useContext(OffersContext);
 
   const handleClick = () => {
-    saveimageSrc(null);
     setTokensList([]);
     setInputAddress("");
     toggleSidebar();
