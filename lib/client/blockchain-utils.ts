@@ -128,7 +128,6 @@ async function getERC20OrERC721Metadata(
 
   try {
     const response = await alchemy.core.getTokenMetadata(token.addr);
-
     // Retrieve metadata as an erc20
     if (response.decimals !== null) {
       return {
@@ -151,10 +150,11 @@ async function getERC20OrERC721Metadata(
       return {
         tokenType: TokenType.ERC721,
         id: token.amountOrId.toString(),
-        name: metadata.name,
+        name: metadata.contract.name ?? undefined,
+        symbol: metadata.contract.name ?? undefined,
+        uri: metadata.image.originalUrl ?? undefined,
         contract: metadata.contract.address,
         metadata: metadata,
-        symbol: metadata.tokenUri,
       };
     }
   } catch (error) {
