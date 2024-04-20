@@ -148,8 +148,6 @@ const SwapBody = () => {
         },
       );
     });
-
-    return <></>;
   };
 
   return (
