@@ -8,8 +8,9 @@ import { ChainInfo, SupportedNetworks } from "@/lib/client/constants";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useSupportedNetworks } from "@/lib/client/hooks/useSupportedNetworks";
 import { capitalizeFirstLetterPrhases } from "@/lib/client/utils";
-import React, { useEffect, useState } from "react";
 import { useSwitchNetwork, sepolia, useNetwork } from "wagmi";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import cc from "classcat";
 
 interface NetworkDropdownProps {
@@ -71,7 +72,7 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
             ],
           })
           .then(() => {
-            console.log("Network added successfully");
+            toast.success("Network added successfully");
             // setNetworkText(SupportedNetworks.KAKAROT);
           })
           .catch((error: any) => {
