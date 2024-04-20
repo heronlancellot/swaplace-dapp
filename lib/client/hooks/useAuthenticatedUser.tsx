@@ -34,10 +34,13 @@ export const useAuthenticatedUser = (): AuthenticatedUserHook => {
   */
 
   useEffect(() => {
-    if (!isConnected) {
+    if (
+      !isConnected ||
+      address?.toLowerCase() !== lastWalletConnected.toLowerCase()
+    ) {
       setAuthenticatedAccountAddress(null);
     }
-  }, [isConnected]);
+  }, [isConnected, address]);
 
   useEffect(() => {
     if (

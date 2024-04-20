@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { SwapModalSteps } from "@/lib/client/ui-utils";
-import { ADDRESS_ZERO, SupportedNetworks } from "@/lib/client/constants";
+import { SupportedNetworks } from "@/lib/client/constants";
 import { EthereumAddress, Token } from "@/lib/shared/types";
 import { ButtonClickPossibilities } from "@/lib/client/blockchain-utils";
 import React, { Dispatch, useEffect, useState } from "react";
@@ -13,9 +13,6 @@ interface SwapContextProps {
   // Application universal need
   destinyChain: SupportedNetworks;
   setDestinyChain: Dispatch<React.SetStateAction<SupportedNetworks>>;
-
-  savedimageSrc: string | null;
-  saveimageSrc: Dispatch<React.SetStateAction<string | null>>;
 
   lastWalletConnected: string;
   setLastWalletConnected: (address: string) => void;
@@ -59,7 +56,6 @@ interface SwapContextProps {
 }
 
 export const SwapContextProvider = ({ children }: any) => {
-  const [savedimageSrc, saveimageSrc] = useState<string | null>(null);
   const [etherRecipient, setEtherRecipient] = useState<bigint>(BigInt(0));
   const [etherValue, setEtherValue] = useState<bigint>(BigInt(0));
   const [lastWalletConnected, setLastWalletConnected] = useState("");
@@ -129,8 +125,6 @@ export const SwapContextProvider = ({ children }: any) => {
 
   useEffect(() => {
     setSwapData({
-      savedimageSrc,
-      saveimageSrc,
       lastWalletConnected,
       setLastWalletConnected,
       inputAddress,
@@ -158,7 +152,6 @@ export const SwapContextProvider = ({ children }: any) => {
       etherValue,
     });
   }, [
-    savedimageSrc,
     lastWalletConnected,
     inputAddress,
     validatedAddressToSwap,
@@ -172,8 +165,6 @@ export const SwapContextProvider = ({ children }: any) => {
   ]);
 
   const [swapData, setSwapData] = useState<SwapContextProps>({
-    savedimageSrc,
-    saveimageSrc,
     lastWalletConnected,
     setLastWalletConnected,
     inputAddress,
@@ -213,8 +204,6 @@ export const SwapContextProvider = ({ children }: any) => {
 };
 
 export const SwapContext = React.createContext<SwapContextProps>({
-  savedimageSrc: null,
-  saveimageSrc: () => {},
   lastWalletConnected: "",
   setLastWalletConnected: (address: string) => {},
   inputAddress: "",
