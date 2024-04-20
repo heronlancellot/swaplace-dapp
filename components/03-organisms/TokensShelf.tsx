@@ -95,19 +95,6 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
     }
   };
 
-  useEffect(() => {
-    if (variant === ForWhom.Yours && yourTokensList.length === 0) {
-      if (!!authenticatedUserAddress && isNetworkSupported) getUserTokens();
-    }
-  }, [authenticatedUserAddress, isNetworkSupported]);
-
-  useEffect(() => {
-    if (variant === ForWhom.Their && theirTokensList.length === 0) {
-      if (!!validatedAddressToSwap && isNetworkSupported && !!destinyChain)
-        getUserTokens();
-    }
-  }, [validatedAddressToSwap, isNetworkSupported, destinyChain]);
-
   /// Add Manually Token to TokensList & update Shelf
   useEffect(() => {
     setTheirTokensList([...theirTokensList, ...theirManuallyAddedTokensList]);
@@ -117,17 +104,39 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
     setYourTokensList([...yourTokensList, ...yourManuallyAddedTokensList]);
   }, [yourManuallyAddedTokensList]);
 
-  // const conditionallyResetQueryStatus = (condition: boolean) => {
-  //   if (condition) {
-  //     if (variant === ForWhom.Their) {
-  //       setTheirTokensList([]);
-  //       setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
-  //     } else {
-  //       setYourTokensList([]);
-  //       setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
-  //     }
-  //   }
-  // };
+  useEffect(() => {
+    if (variant === ForWhom.Yours && yourTokensList.length === 0) {
+      if (!!authenticatedUserAddress && isNetworkSupported) getUserTokens();
+    }
+  }, [yourTokensList, authenticatedUserAddress, isNetworkSupported]);
+
+  useEffect(() => {
+    if (variant === ForWhom.Their && theirTokensList.length === 0) {
+      if (!!validatedAddressToSwap && isNetworkSupported && !!destinyChain)
+        getUserTokens();
+    }
+  }, [
+    theirTokensList,
+    validatedAddressToSwap,
+    isNetworkSupported,
+    destinyChain,
+  ]);
+
+  useEffect(() => {
+    conditionallyCleanTokensList(variant === ForWhom.Their);
+  }, [validatedAddressToSwap]);
+
+  const conditionallyCleanTokensList = (condition: boolean) => {
+    if (condition) {
+      if (variant === ForWhom.Their) {
+        setTheirTokensList([]);
+        setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
+      } else {
+        setYourTokensList([]);
+        setTokensQueryStatus(TokensQueryStatus.EMPTY_QUERY);
+      }
+    }
+  };
 
   // useEffect(() => {
   //   conditionallyCleanTokensList(
@@ -162,13 +171,6 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
   //       variant === ForWhom.Their,
   //   );
   // }, [inputAddress]);
-
-  // useEffect(() => {
-  //   conditionallyCleanTokensList(
-  //     !validatedAddressToSwap && variant === ForWhom.Their,
-  //   );
-  //   console.log("resetou quando trocou validated address to swap");
-  // }, [validatedAddressToSwap]);
 
   // useEffect(() => {
   //   conditionallyCleanTokensList(!isNetworkSupported);
