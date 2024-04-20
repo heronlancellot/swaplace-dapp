@@ -5,7 +5,6 @@ import {
   useEnsData,
 } from "@/lib/client/hooks/useENSData";
 import { EthereumAddress } from "@/lib/shared/types";
-import BoringAvatar from "boring-avatars";
 import cc from "classcat";
 import { useEffect, useState } from "react";
 
@@ -72,10 +71,23 @@ export const ENSAvatar = ({
       ) : avatarQueryStatus === ENSAvatarQueryStatus.ERROR ||
         failedLoadingImage ? (
         <div className={ENSAvatarClassName[size]}>
-          <div className="w-full flex justify-center items-center h-10 w-10 rounded-[10px] bg-[#DDF23D]">
+          <div
+            className={cc([
+              ENSAvatarClassName[size] === "ens-avatar-small"
+                ? "bg-[#E4E4E4] dark:bg-[#353836] p-[5px] rounded-md"
+                : "w-full flex justify-center items-center h-10 w-10 rounded-[10px] bg-[#DDF23D]",
+              "",
+            ])}
+          >
             <PersonIcon
-              size="20"
-              className="text-[#a3a9a5] dark:text-[#181A19]"
+              size={`${
+                ENSAvatarClassName[size] === "ens-avatar-small" ? 14 : 20
+              }`}
+              className={cc([
+                ENSAvatarClassName[size] === "ens-avatar-small"
+                  ? "text-[#A3A9A5] dark:text-[#707572]"
+                  : "text-[#a3a9a5] dark:text-[#181A19]",
+              ])}
             />
           </div>
         </div>
