@@ -20,7 +20,7 @@ export const DisconnectWallet = () => {
     setInputAddress("");
     toggleSidebar();
     disconnect();
-    toast.error("Your wallet was disconnected successfully");
+    toast.success("Your wallet was disconnected successfully");
   };
 
   return (
