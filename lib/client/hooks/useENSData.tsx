@@ -20,7 +20,6 @@ export const useEnsData = ({ ensAddress }: Props) => {
 
   useEffect(() => {
     if (ensAddress) {
-      console.log("Esta entrando como loading?", ensAddress);
       setAvatarQueryStatus(ENSAvatarQueryStatus.LOADING);
 
       fetch(`/api/ens?address=${ensAddress}`)
