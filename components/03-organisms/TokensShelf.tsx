@@ -127,6 +127,10 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
     conditionallyCleanTokensList(variant === ForWhom.Their);
   }, [validatedAddressToSwap]);
 
+  useEffect(() => {
+    conditionallyCleanTokensList(variant === ForWhom.Yours);
+  }, [authenticatedUserAddress]);
+
   const conditionallyCleanTokensList = (condition: boolean) => {
     if (condition) {
       if (variant === ForWhom.Their) {
