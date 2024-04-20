@@ -130,7 +130,7 @@ export const ConfirmSwapModal = ({
 
     try {
       if (!approvedTokensCount) {
-        toast.error("You must approve the Tokens to Swap.");
+        toast.error("You must approve the Tokens to Swap");
         updateSwapStep(ButtonClickPossibilities.PREVIOUS_STEP);
       }
 
@@ -197,7 +197,7 @@ export const ConfirmSwapModal = ({
     if (approvedTokensCount === tokensList.length) {
       updateSwapStep(ButtonClickPossibilities.NEXT_STEP);
     } else {
-      toast.error("You must approve the Tokens to Swap.");
+      toast.error("You must approve the Tokens to Swap");
     }
   };
 

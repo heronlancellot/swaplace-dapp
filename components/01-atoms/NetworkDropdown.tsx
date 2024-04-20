@@ -72,7 +72,7 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
             ],
           })
           .then(() => {
-            toast.success("Network added successfully");
+            toast.success("Network added successfully!");
             // setNetworkText(SupportedNetworks.KAKAROT);
           })
           .catch((error: any) => {

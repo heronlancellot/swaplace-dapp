@@ -56,7 +56,7 @@ export async function verifyTokenOwnership({
       // The array [] should not be used.
       // This is a turn around for the current viem version: "^1.19.11"
       const hasDecimals = await contract.read.decimals([]).catch((error) => {
-        toast.error("This contract is not an ERC20 contract.");
+        toast.error("This contract is not an ERC20 contract");
         console.error(error);
         throw error;
       });

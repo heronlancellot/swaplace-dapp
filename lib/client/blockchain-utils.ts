@@ -283,7 +283,7 @@ export const toastBlockchainTxError = (e: string) => {
   if (e.includes("rejected")) {
     toast.error("Transaction rejected");
   } else {
-    toast.error("Transaction failed. Please contact our team.");
+    toast.error("Transaction failed. Please contact our team");
   }
 };
 

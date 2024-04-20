@@ -207,7 +207,7 @@ export const TokenCard = ({
       }
     } else if (onClickAction === TokenCardActionType.SHOW_NFT_DETAILS) {
       navigator.clipboard.writeText(JSON.stringify(tokenData));
-      toast.success("NFT data copied to your clipboard");
+      toast.success("NFT data copied to your clipboard!");
     }
   };
 

@@ -64,7 +64,7 @@ const SwapBody = () => {
   }
 
   if (!chainId) {
-    toast.error("Wallet not connected to any chain.");
+    toast.error("Wallet not connected to any chain");
   }
 
   const verifySwapBelongsToAuthUser = async (swap: Swap): Promise<boolean> => {
@@ -73,9 +73,9 @@ const SwapBody = () => {
     });
 
     if (swap.owner === ADDRESS_ZERO) {
-      toast.error("Swap ID doesnt exist. Please verify the ID");
+      toast.error("Swap ID doesn't exist. Please check the given ID");
     } else if (swap.owner !== ADDRESS_ZERO) {
-      toast.success("Searching Swap");
+      toast.success("Searching for swap...");
       if (
         swap.owner.toUpperCase() ===
         authenticatedUserAddress.address.toUpperCase()
@@ -129,15 +129,15 @@ const SwapBody = () => {
 
   const addSwapId = async () => {
     if (!authenticatedUserAddress?.address) {
-      toast.error("No wallet connected.");
+      toast.error("No wallet connected");
       return;
     }
     if (!swapId) {
-      toast.error("No swap Id was given to add a token card for.");
+      toast.error("No swap ID provided to be added");
       return;
     }
     if (!chain) {
-      toast.error("No chain was found.");
+      toast.error("Wallet not connected to any chain");
       return;
     }
     await getSwap(swapId, chain.id).then(async (swap: any) => {
@@ -246,10 +246,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
 
         verifyTokenAlreadyInTokenList(tokenERC20).then((tokenAlreadyInList) => {
           if (tokenAlreadyInList) {
-            toast.error("Token ERC20 already in Token List");
+            toast.error("Token ERC20 already in the Token List");
           } else {
             setYourManuallyAddedTokensList([tokenERC20]);
-            toast.success("Token ERC20 added in Token List");
+            toast.success("Token ERC20 added in the Token List");
           }
         });
       } else if (token.tokenType === TokenType.ERC721) {
@@ -262,10 +262,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         verifyTokenAlreadyInTokenList(tokenERC721).then(
           (tokenAlreadyInList) => {
             if (tokenAlreadyInList) {
-              toast.error("Token ERC721 already in Token List");
+              toast.error("Token ERC721 already in the Token List");
             } else {
               setYourManuallyAddedTokensList([tokenERC721]);
-              toast.success("Token ERC721 added in Token List");
+              toast.success("Token ERC721 added in the Token List");
             }
           },
         );
@@ -281,7 +281,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
 
         verifyTokenAlreadyInTokenList(tokenERC20).then((tokenAlreadyInList) => {
           if (tokenAlreadyInList) {
-            toast.error("Token ERC20 already in Token List");
+            toast.error("Token ERC20 already in the Token List");
           } else {
             setTheirManuallyAddedTokensList([tokenERC20]);
             toast.success("Token ERC20 added in Token List");
@@ -298,7 +298,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         verifyTokenAlreadyInTokenList(tokenERC721).then(
           (tokenAlreadyInList) => {
             if (tokenAlreadyInList) {
-              toast.error("Token ERC721 already in Token List");
+              toast.error("Token ERC721 already in the Token List");
             } else {
               setYourManuallyAddedTokensList([tokenERC721]);
               toast.success("Token ERC721 added in Token List");
@@ -316,18 +316,18 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         : validatedAddressToSwap;
 
     if (!address) {
-      toast.error("No valid address was given to add a token card for.");
+      toast.error("No valid address provided");
       return;
     }
     if (!contractAddress) {
-      toast.error("No contract address was given to add a token card for.");
+      toast.error("No contract address provided");
       return;
     } else if (isAddress(contractAddress) === false) {
-      toast.error("Invalid contract address.");
+      toast.error("Invalid contract address");
       return;
     }
     if (!chain) {
-      toast.error("No chain was found.");
+      toast.error("Wallet not connected to any chain");
       return;
     }
 
@@ -341,9 +341,8 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       .then((verification) => {
         if (!verification.isOwner) {
           toast.error(
-            `The token does not belong to the address: ${address.getEllipsedAddress()}`,
+            `This token doesn't belong to the address: ${address.getEllipsedAddress()}`,
           );
-          throw new Error("The token does not belong to the address");
         } else if (verification && verification.isOwner) {
           addTokenToTokensList({
             tokenName: verification.name,

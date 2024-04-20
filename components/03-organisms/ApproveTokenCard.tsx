@@ -60,8 +60,8 @@ export const ApproveTokenCard = ({
     }
 
     if (!chainId) {
-      toast.error("You must connect your wallet.");
-      throw new Error("User is not connected to any network");
+      toast.error("Wallet not connected to any chain");
+      return;
     }
 
     const approved = await isTokenSwapApproved({
@@ -116,7 +116,7 @@ export const ApproveTokenCard = ({
       const transactionReceipt = await approveSwap(swapData);
 
       if (transactionReceipt.success) {
-        toast.success(`'${getTokenName(token)}' swap was approved`);
+        toast.success(`'${getTokenName(token)}' has been approved!`);
         setIsApproved(true);
         setTokenApprovalStatus(TokenApprovalStatus.APPROVED);
         setTokenWasApprovedForSwap(token);
@@ -140,7 +140,7 @@ export const ApproveTokenCard = ({
   const handleTokenApproval = useCallback(async () => {
     const approved = await checkForTokenApproval(token);
     if (approved) {
-      toast.success(`${getTokenName(token)} was approved for swap`);
+      toast.success(`${getTokenName(token)} was already approved for swapping`);
     } else {
       setTokenApprovalStatus(TokenApprovalStatus.APPROVE_IN_YOUR_WALLET);
       await askForTokenApproval(token);
