@@ -25,6 +25,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { Dispatch, useEffect, useState } from "react";
 import axios from "axios";
 import { isAddress } from "viem";
+import { useAccount } from "wagmi";
 
 export enum PonderFilter {
   ALL_OFFERS = "All Offers",
@@ -101,6 +102,7 @@ export const OffersContextProvider = ({ children }: any) => {
   const [isLoadingOffersQuery, setIsLoadingOffersQuery] = useState(false);
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
+  const { address, isConnected } = useAccount();
 
   const userAddress = authenticatedUserAddress?.address;
 
@@ -199,12 +201,10 @@ export const OffersContextProvider = ({ children }: any) => {
         { query, variables },
         { headers },
       );
-
       if (response.data && response.data.data) {
         const items = response.data.data.swapDatabases
           .items as RawSwapOfferInterface[];
         const pageInfo = response.data.data.swapDatabases.pageInfo as PageInfo;
-
         const processedItems: RawSwapOfferInterface[] = items.map(
           (obj: any) => {
             return {
@@ -214,7 +214,6 @@ export const OffersContextProvider = ({ children }: any) => {
             };
           },
         );
-
         const itemsArrayAsSwapOffers: FormattedSwapOfferInterface[] =
           processedItems.map((item) => {
             return {
@@ -233,12 +232,10 @@ export const OffersContextProvider = ({ children }: any) => {
               },
             };
           });
-
         setOffersQueries({
           ...offersQueries,
           [offersFilter]: itemsArrayAsSwapOffers,
         });
-
         return {
           swapOffers: itemsArrayAsSwapOffers,
           pageInfo,
@@ -260,12 +257,14 @@ export const OffersContextProvider = ({ children }: any) => {
       queryFn: async ({ pageParam }: { pageParam: string | null }) =>
         await fetchSwaps({ pageParam }),
       initialPageParam: null,
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
       getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
-      enabled:
-        offersFilter === PonderFilter.ALL_OFFERS || !!authenticatedUserAddress,
+      enabled: !!authenticatedUserAddress,
     });
 
   const [hasNextPage, setHasNextPage] = useState(false);
+
   useEffect(() => {
     if (data) {
       setHasNextPage(data.pages[data.pages.length - 1].pageInfo.hasNextPage);
@@ -274,7 +273,8 @@ export const OffersContextProvider = ({ children }: any) => {
 
   // Effects
   useEffect(() => {
-    setIsLoadingOffersQuery(status === "pending" || isFetchingNextPage);
+    !!authenticatedUserAddress &&
+      setIsLoadingOffersQuery(status === "pending" || isFetchingNextPage);
   }, [isFetchingNextPage, status]);
 
   useEffect(() => {

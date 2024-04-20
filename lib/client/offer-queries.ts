@@ -1,3 +1,4 @@
+//Recipient and value added to each query
 export const ALL_OFFERS_QUERY = `
          query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
           swapDatabases(
@@ -13,6 +14,8 @@ export const ALL_OFFERS_QUERY = `
                owner
                allowed
                expiry
+               recipient
+               value 
                bid
                ask
                blockTimestamp
@@ -25,7 +28,6 @@ export const ALL_OFFERS_QUERY = `
            }
          }
        `;
-
 export const CREATED_OFFERS_QUERY = `
          query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_gt: BigInt) {
           swapDatabases(
@@ -41,6 +43,8 @@ export const CREATED_OFFERS_QUERY = `
                owner
                allowed
                expiry
+               recipient
+               value
                bid
                ask
                blockTimestamp
@@ -69,6 +73,8 @@ export const RECEIVED_OFFERS_QUERY = `
                owner
                allowed
                expiry
+               recipient
+               value
                bid
                ask
                blockTimestamp
@@ -97,6 +103,8 @@ export const ACCEPTED_OFFERS_QUERY = `
                owner
                allowed
                expiry
+               recipient
+               value
                bid
                ask
                blockTimestamp
@@ -125,6 +133,8 @@ export const CANCELED_OFFERS_QUERY = `
                owner
                allowed
                expiry
+               recipient
+               value
                bid
                ask
                blockTimestamp
@@ -165,6 +175,8 @@ export const EXPIRED_OFFERS_QUERY = `
                owner
                allowed
                expiry
+               recipient
+               value
                bid
                ask
                blockTimestamp

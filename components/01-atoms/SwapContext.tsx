@@ -7,7 +7,6 @@ import { ADDRESS_ZERO, SupportedNetworks } from "@/lib/client/constants";
 import { EthereumAddress, Token } from "@/lib/shared/types";
 import { ButtonClickPossibilities } from "@/lib/client/blockchain-utils";
 import React, { Dispatch, useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 
 interface SwapContextProps {
@@ -15,9 +14,13 @@ interface SwapContextProps {
   destinyChain: SupportedNetworks;
   setDestinyChain: Dispatch<React.SetStateAction<SupportedNetworks>>;
 
-  // Searched user related
+  savedimageSrc: string | null;
+  saveimageSrc: Dispatch<React.SetStateAction<string | null>>;
+
   lastWalletConnected: string;
   setLastWalletConnected: (address: string) => void;
+
+  // Searched user related
   inputAddress: string;
   setInputAddress: (address: string) => void;
 
@@ -25,10 +28,6 @@ interface SwapContextProps {
     React.SetStateAction<EthereumAddress | null>
   >;
   validatedAddressToSwap: EthereumAddress | null;
-  validateAddressToSwap: (
-    authedUser: EthereumAddress | null,
-    inputEnsAddress: string | null | undefined,
-  ) => void;
   searchedUserTokensList: Token[];
   setSearchedUserTokensList: Dispatch<React.SetStateAction<Token[]>>;
   /* 
@@ -50,10 +49,19 @@ interface SwapContextProps {
   timeDate: bigint;
   setTimeDate: Dispatch<React.SetStateAction<bigint>>;
 
+  etherRecipient: bigint;
+  setEtherRecipient: (etherRecipient: bigint) => void;
+
+  etherValue: bigint;
+  setEtherValue: (etherValue: bigint) => void;
+
   clearSwapData: () => void;
 }
 
 export const SwapContextProvider = ({ children }: any) => {
+  const [savedimageSrc, saveimageSrc] = useState<string | null>(null);
+  const [etherRecipient, setEtherRecipient] = useState<bigint>(BigInt(0));
+  const [etherValue, setEtherValue] = useState<bigint>(BigInt(0));
   const [lastWalletConnected, setLastWalletConnected] = useState("");
   const [inputAddress, setInputAddress] = useState("");
   const [validatedAddressToSwap, setValidatedAddressToSwap] =
@@ -74,61 +82,6 @@ export const SwapContextProvider = ({ children }: any) => {
   const [approvedTokensCount, setApprovedTokensCount] = useState(0);
 
   const router = useRouter();
-
-  const validateAddressToSwap = (
-    _authedUser: EthereumAddress | null,
-    _inputEnsAddress: string | null | undefined,
-    shouldToast = true,
-  ) => {
-    if (!inputAddress && !_inputEnsAddress) {
-      shouldToast &&
-        toast.error(
-          "Please enter a valid address or some registered ENS domain",
-        );
-      setUserJustValidatedInput(true);
-      return;
-    }
-
-    let searchedAddress = inputAddress;
-
-    if (_inputEnsAddress !== ADDRESS_ZERO && searchedAddress) {
-      searchedAddress = _inputEnsAddress ?? "";
-    }
-
-    let inputIsValidAddress = false;
-    try {
-      new EthereumAddress(searchedAddress);
-      inputIsValidAddress = true;
-    } catch (e) {
-      console.error(e);
-    }
-
-    if (inputIsValidAddress) {
-      const inputEthAddress = new EthereumAddress(searchedAddress);
-
-      if (inputEthAddress.equals(_authedUser)) {
-        shouldToast && toast.error("You cannot swap with yourself");
-        setValidatedAddressToSwap(null);
-        setUserJustValidatedInput(true);
-        return;
-      } else if (searchedAddress === ADDRESS_ZERO) {
-        shouldToast && toast.error("You cannot swap with an invalid address");
-        setValidatedAddressToSwap(null);
-        setUserJustValidatedInput(true);
-        return;
-      }
-
-      setValidatedAddressToSwap(inputEthAddress);
-      shouldToast && toast.success("Searching Address");
-    } else {
-      setValidatedAddressToSwap(null);
-      shouldToast &&
-        toast.error(
-          "Your input is not a valid address and neither some registered ENS domain",
-        );
-    }
-    setUserJustValidatedInput(true);
-  };
 
   const updateSwapStep = (buttonClicked: ButtonClickPossibilities) => {
     switch (currentSwapModalStep) {
@@ -176,12 +129,13 @@ export const SwapContextProvider = ({ children }: any) => {
 
   useEffect(() => {
     setSwapData({
+      savedimageSrc,
+      saveimageSrc,
       lastWalletConnected,
       setLastWalletConnected,
       inputAddress,
       setInputAddress,
       validatedAddressToSwap,
-      validateAddressToSwap,
       setValidatedAddressToSwap,
       setUserJustValidatedInput,
       userJustValidatedInput,
@@ -198,8 +152,13 @@ export const SwapContextProvider = ({ children }: any) => {
       updateSwapStep,
       currentSwapModalStep,
       clearSwapData,
+      setEtherRecipient,
+      etherRecipient,
+      setEtherValue,
+      etherValue,
     });
   }, [
+    savedimageSrc,
     lastWalletConnected,
     inputAddress,
     validatedAddressToSwap,
@@ -213,13 +172,14 @@ export const SwapContextProvider = ({ children }: any) => {
   ]);
 
   const [swapData, setSwapData] = useState<SwapContextProps>({
+    savedimageSrc,
+    saveimageSrc,
     lastWalletConnected,
     setLastWalletConnected,
     inputAddress,
     setInputAddress,
     setValidatedAddressToSwap,
     validatedAddressToSwap,
-    validateAddressToSwap,
     setUserJustValidatedInput,
     userJustValidatedInput,
     setAuthenticatedUserTokensList,
@@ -235,6 +195,10 @@ export const SwapContextProvider = ({ children }: any) => {
     updateSwapStep,
     currentSwapModalStep,
     clearSwapData,
+    setEtherRecipient,
+    etherRecipient,
+    setEtherValue,
+    etherValue,
   });
 
   // This is a temporary measure while we don't turn the dApp into a SPA
@@ -249,15 +213,13 @@ export const SwapContextProvider = ({ children }: any) => {
 };
 
 export const SwapContext = React.createContext<SwapContextProps>({
+  savedimageSrc: null,
+  saveimageSrc: () => {},
   lastWalletConnected: "",
   setLastWalletConnected: (address: string) => {},
   inputAddress: "",
   validatedAddressToSwap: null,
   setValidatedAddressToSwap: () => {},
-  validateAddressToSwap: (
-    _authedUser: EthereumAddress | null,
-    _inputEnsAddress: string | null | undefined,
-  ) => {},
   setInputAddress: (address: string) => {},
   setUserJustValidatedInput: () => {},
   userJustValidatedInput: false,
@@ -274,4 +236,8 @@ export const SwapContext = React.createContext<SwapContextProps>({
   currentSwapModalStep: SwapModalSteps.APPROVE_TOKENS,
   updateSwapStep: (buttonClickAction: ButtonClickPossibilities) => {},
   clearSwapData: () => {},
+  etherRecipient: BigInt(0),
+  setEtherRecipient: () => {},
+  etherValue: BigInt(0),
+  setEtherValue: () => {},
 });

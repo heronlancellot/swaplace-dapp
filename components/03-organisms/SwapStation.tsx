@@ -54,9 +54,9 @@ export const SwapStation = () => {
       //  As well if isn't valid, select a valid address to swap tokens
       if (!validatedAddressToSwap) {
         if (!inputAddress) {
-          toast.error("Search for an address to create a swap offer");
+          toast.error("Search for an address to create a Swap offer");
         } else {
-          toast.error("You must select a valid address to swap tokens");
+          toast.error("You must select a valid address to Swap tokens");
         }
         return;
       }
@@ -65,20 +65,20 @@ export const SwapStation = () => {
         !authenticatedUserTokensList.length &&
         !searchedUserTokensList.length
       ) {
-        toast.error("You must select the tokens you want to swap");
+        toast.error("You must select the tokens you want to Swap");
         return;
       }
 
       if (!authenticatedUserTokensList.length) {
         toast.error(
-          "You must select at least one token from your items to swap",
+          "You must select at least one token from your inventory to create a Swap",
         );
         return;
       }
 
       if (!searchedUserTokensList.length) {
         toast.error(
-          "You must select at least one token from their items to swap",
+          "You must select at least one token from their inventory to Swap",
         );
         return;
       }
@@ -98,7 +98,7 @@ export const SwapStation = () => {
         </div>
         <div className="flex flex-col gap-2 relative">
           <OfferSummary variant={ForWhom.Their} />
-          <OfferSummary variant={ForWhom.Your} />
+          <OfferSummary variant={ForWhom.Yours} />
 
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border dark:border-[#353836]  border-[#E4E4E4] dark:bg-[#212322] bg-[#F6F6F6] rounded-[100px] w-[36px] h-[36px] items-center flex justify-center">
             <SwapIcon

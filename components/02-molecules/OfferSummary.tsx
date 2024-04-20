@@ -23,7 +23,7 @@ export const OfferSummary = ({ variant }: IOfferSummary) => {
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const tokensList =
-    variant === ForWhom.Your
+    variant === ForWhom.Yours
       ? authenticatedUserTokensList
       : searchedUserTokensList;
 
@@ -40,7 +40,7 @@ export const OfferSummary = ({ variant }: IOfferSummary) => {
         <div className="flex justify-between items-center h-9 gap-2">
           <div className="flex space-x-2 items-center">
             <div className="flex items-center">
-              {variant === ForWhom.Your && validatedAddressToSwap ? (
+              {variant === ForWhom.Yours && validatedAddressToSwap ? (
                 <ENSAvatar
                   avatarENSAddress={validatedAddressToSwap}
                   size={ENSAvatarSize.SMALL}
@@ -52,13 +52,16 @@ export const OfferSummary = ({ variant }: IOfferSummary) => {
                 />
               ) : (
                 <div className="bg-[#E4E4E4] dark:bg-[#353836] p-[5px] rounded-md">
-                  <PersonIcon className="text-[#A3A9A5] dark:text-[#707572]" />
+                  <PersonIcon
+                    size="14"
+                    className="text-[#A3A9A5] dark:text-[#707572]"
+                  />
                 </div>
               )}
             </div>
             <div className="items-center">
               <p className="p-small-variant-black-3 dark:p-small-variant-light-2 contrast-50">
-                {variant === ForWhom.Your && validatedAddressToSwap
+                {variant === ForWhom.Yours && validatedAddressToSwap
                   ? `${
                       searchedENSName
                         ? searchedENSName
@@ -66,7 +69,7 @@ export const OfferSummary = ({ variant }: IOfferSummary) => {
                         ? validatedAddressToSwap.getEllipsedAddress()
                         : "Use the search bar"
                     }`
-                  : variant === ForWhom.Your && !validatedAddressToSwap
+                  : variant === ForWhom.Yours && !validatedAddressToSwap
                   ? "They get"
                   : variant === ForWhom.Their && authenticatedUserAddress
                   ? `${
@@ -81,7 +84,7 @@ export const OfferSummary = ({ variant }: IOfferSummary) => {
             </div>
           </div>
           {(variant === ForWhom.Their && !validatedAddressToSwap) ||
-          (variant === ForWhom.Your && !authenticatedUserAddress) ? null : (
+          (variant === ForWhom.Yours && !authenticatedUserAddress) ? null : (
             <div className="contrast-50">
               {tokensList.length} item
               {tokensList.length !== 1 ? "s" : ""}
@@ -89,7 +92,7 @@ export const OfferSummary = ({ variant }: IOfferSummary) => {
           )}
         </div>
         <div className="w-full h-full max-h-[156px] rounded overflow-x-hidden overflow-y-auto no-scrollbar">
-          {variant === ForWhom.Your && authenticatedUserAddress ? (
+          {variant === ForWhom.Yours && authenticatedUserAddress ? (
             <TokensList
               withAddTokenCard={false}
               displayERC20TokensAmount={true}

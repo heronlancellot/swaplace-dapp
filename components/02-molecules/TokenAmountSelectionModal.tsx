@@ -62,13 +62,13 @@ export const TokenAmountSelectionModal = ({
     }
 
     if (!tokenAmount) {
-      toast.error("No Token amount was set.", {
+      toast.error("No Token amount was provided", {
         id: "no-token-amount",
       });
 
       originalTokensList = originalTokensList.filter((tk) => tk !== token);
     } else if (tokenAmount > userBalance) {
-      toast.error("The Token amount informed exceeds user's token balance.", {
+      toast.error("The Token amount informed exceeds user's token balance", {
         id: "out-of-bounds-token-amount",
       });
 
@@ -120,7 +120,7 @@ export const TokenAmountSelectionModal = ({
 
                     setTokenAmount(inputAsBigInt);
                   } catch {
-                    toast.error("Invalid Token amount set");
+                    toast.error("Invalid Token amount provided");
 
                     setTokenAmount(0n);
                   }

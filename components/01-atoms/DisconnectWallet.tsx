@@ -1,10 +1,10 @@
 import { OffersContext, PowerIcon, SwapContext } from "@/components/01-atoms";
 import { useSidebar } from "@/lib/client/contexts/SidebarContext.tsx";
-import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useDisconnect } from "wagmi";
 import cc from "classcat";
 import { useTheme } from "next-themes";
 import { useContext } from "react";
+import toast from "react-hot-toast";
 
 export const DisconnectWallet = () => {
   const { disconnect } = useDisconnect();
@@ -12,16 +12,16 @@ export const DisconnectWallet = () => {
   const currentTheme = theme === "system" ? systemTheme : theme;
   const isDark = currentTheme === "dark";
   const { toggleSidebar } = useSidebar();
-  const { authenticatedUserAddress } = useAuthenticatedUser();
-
-  const { setInputAddress } = useContext(SwapContext);
+  const { setInputAddress, saveimageSrc } = useContext(SwapContext);
   const { setTokensList } = useContext(OffersContext);
 
   const handleClick = () => {
+    saveimageSrc(null);
     setTokensList([]);
     setInputAddress("");
     toggleSidebar();
     disconnect();
+    toast.success("Your wallet has disconnected!");
   };
 
   return (

@@ -45,6 +45,8 @@ export const ConfirmSwapModal = ({
     approvedTokensCount: createSwapApprovedTokensCount,
     validatedAddressToSwap,
     currentSwapModalStep,
+    etherRecipient,
+    etherValue,
     updateSwapStep,
     clearSwapData,
   } = useContext(SwapContext);
@@ -70,7 +72,7 @@ export const ConfirmSwapModal = ({
       case SwapModalAction.ACCEPT_SWAP:
         if (!swapOfferToAccept) return;
         setApprovedTokensCount(acceptSwapApprovedTokensCount);
-        setTokensList(swapOfferToAccept.bid.tokens);
+        setTokensList(swapOfferToAccept.ask.tokens);
         break;
     }
   }, [
@@ -128,7 +130,7 @@ export const ConfirmSwapModal = ({
 
     try {
       if (!approvedTokensCount) {
-        toast.error("You must approve the Tokens to Swap.");
+        toast.error("You must approve the Tokens to Swap");
         updateSwapStep(ButtonClickPossibilities.PREVIOUS_STEP);
       }
 
@@ -159,6 +161,8 @@ export const ConfirmSwapModal = ({
             const encodeConfigData = await encodeConfig({
               allowed: validatedAddressToSwap.address,
               expiry: timeDate,
+              etherRecipient: etherRecipient,
+              etherValue: etherRecipient,
             });
 
             const swapConfig = await getSwapConfig(
@@ -193,7 +197,7 @@ export const ConfirmSwapModal = ({
     if (approvedTokensCount === tokensList.length) {
       updateSwapStep(ButtonClickPossibilities.NEXT_STEP);
     } else {
-      toast.error("You must approve the Tokens to Swap.");
+      toast.error("You must approve the Tokens to Swap");
     }
   };
 

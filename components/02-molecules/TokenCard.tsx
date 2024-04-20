@@ -207,7 +207,7 @@ export const TokenCard = ({
       }
     } else if (onClickAction === TokenCardActionType.SHOW_NFT_DETAILS) {
       navigator.clipboard.writeText(JSON.stringify(tokenData));
-      toast.success("NFT data copied to your clipboard");
+      toast.success("NFT data copied to your clipboard!");
     }
   };
 
@@ -253,7 +253,7 @@ export const TokenCard = ({
   ) : (
     <>
       {ButtonLayout(
-        <div className="p-2 dark:text-[#707572] text-[#707572] flex justify-center items-center w-full h-full text-[10px] font-medium oveflow-y-scroll break-all">
+        <div className="p-2 dark:text-[#707572] overflow-hidden text-[#707572] flex justify-center items-center w-full h-full text-[10px] font-medium oveflow-y-scroll break-all">
           {getTokenName(tokenData, {
             withAmountPrefix: tokenData.tokenType === TokenType.ERC20,
             displayTokenAmount: displayERC20TokensAmount,
