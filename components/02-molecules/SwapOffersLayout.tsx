@@ -74,7 +74,7 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
               </button>
               <AddTokenOrSwapManuallyModal
                 open={toggleManually}
-                forWhom={ForWhom.Your}
+                forWhom={ForWhom.Yours}
                 onClose={() => {
                   setToggleManually(false);
                 }}

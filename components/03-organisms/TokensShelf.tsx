@@ -14,7 +14,7 @@ import { useNetwork } from "wagmi";
 /* eslint-disable react-hooks/exhaustive-deps */
 
 export enum ForWhom {
-  Your,
+  Yours,
   Their,
 }
 
@@ -96,7 +96,7 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
   };
 
   useEffect(() => {
-    if (variant === ForWhom.Your && yourTokensList.length === 0) {
+    if (variant === ForWhom.Yours && yourTokensList.length === 0) {
       if (!!authenticatedUserAddress && isNetworkSupported) getUserTokens();
     }
   }, [authenticatedUserAddress, isNetworkSupported]);

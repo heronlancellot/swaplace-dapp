@@ -58,7 +58,7 @@ export const SwappingShelfs = () => {
           <TokensShelf variant={ForWhom.Their} />
         </div>
         <div className={cc([isActiveTab ? "block" : "hidden"])}>
-          <TokensShelf variant={ForWhom.Your} />
+          <TokensShelf variant={ForWhom.Yours} />
         </div>
       </div>
     </div>

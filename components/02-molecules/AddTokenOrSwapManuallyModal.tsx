@@ -215,7 +215,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         token.contract &&
         t.contract.toUpperCase() === token.contract.toUpperCase(),
     );
-    if (forWhom === ForWhom.Your) {
+    if (forWhom === ForWhom.Yours) {
       if (token.tokenType === TokenType.ERC20) {
         return filteringYourToken;
       } else if (token.tokenType === TokenType.ERC721) {
@@ -235,7 +235,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
   };
 
   const addTokenToTokensList = (token: TokenManually) => {
-    if (forWhom === ForWhom.Your) {
+    if (forWhom === ForWhom.Yours) {
       if (token.tokenType === TokenType.ERC20 && token.balance) {
         const tokenERC20: ERC20 = {
           name: token.tokenName,
@@ -311,7 +311,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
 
   const addTokenCard = async () => {
     const address =
-      forWhom === ForWhom.Your
+      forWhom === ForWhom.Yours
         ? authenticatedUserAddress
         : validatedAddressToSwap;
 

@@ -38,10 +38,10 @@ export const CardOffers = ({
   const { swapOfferToAccept } = useContext(OffersContext);
 
   const tokenShelfVariant = authenticatedUserAddress?.equals(address)
-    ? ForWhom.Your
+    ? ForWhom.Yours
     : ForWhom.Their;
   const tokensOfferFor: Record<ForWhom, Token[]> = {
-    [ForWhom.Your]:
+    [ForWhom.Yours]:
       swapModalAction === SwapModalAction.CREATE_SWAP
         ? searchedUserTokensList
         : swapOfferToAccept?.bid.tokens ?? [],

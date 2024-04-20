@@ -18,7 +18,7 @@ export const SwapOfferCard = ({ address, tokens }: SwapOfferCardProps) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
 
   const tokenShelfVariant = authenticatedUserAddress?.equals(address)
-    ? ForWhom.Your
+    ? ForWhom.Yours
     : ForWhom.Their;
 
   return (
