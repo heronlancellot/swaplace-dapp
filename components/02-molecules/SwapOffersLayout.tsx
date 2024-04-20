@@ -4,22 +4,20 @@ import {
   AddTokenOrSwapManuallyModalVariant,
 } from "@/components/02-molecules";
 import { ErrorIcon, NoSwapsIcon } from "@/components/01-atoms";
-import { useTheme } from "next-themes";
 import React, { useState } from "react";
-import cc from "classcat";
 import { useRouter } from "next/router";
 
 interface EmptyLayoutOffersProps {
   icon: React.ReactNode;
-  title: React.ReactNode;
-  description: React.ReactNode;
+  title: string;
+  description: string;
   button?: React.ReactNode;
 }
 
 export enum SwapOffersDisplayVariant {
-  ERROR = "error",
-  NO_SWAPS_CREATED = "swapless",
-  NO_USER_AUTHENTICATED = "unauthenticated",
+  ERROR,
+  NO_SWAPS_CREATED,
+  NO_USER_AUTHENTICATED,
 }
 
 interface SwapOffersLayoutProps {
@@ -31,7 +29,6 @@ interface SwapOffersConfig {
 }
 
 export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
-  const { theme } = useTheme();
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const router = useRouter();
 
@@ -59,68 +56,59 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
 
   const SwapOffersLayoutError = () => {
     return (
-      <>
-        <EmptyLayoutOffers
-          icon={<ErrorIcon fill={cc([{ black: theme === "light" }])} />}
-          title={<> Sorry, we couldn&apos;t load your swaps</>}
-          description={<> Please try again later or add your swaps manually</>}
-          button={
-            <>
-              <button
-                className="p-medium-bold-variant-black bg-[#DDF23D] border border-[#DDF23D] rounded-[10px] py-2 px-4 h-[38px]"
-                onClick={() => setToggleManually(!toggleManually)}
-              >
-                Add swap manually
-              </button>
-              <AddTokenOrSwapManuallyModal
-                open={toggleManually}
-                forWhom={ForWhom.Yours}
-                onClose={() => {
-                  setToggleManually(false);
-                }}
-                variant={AddTokenOrSwapManuallyModalVariant.SWAP}
-              />
-            </>
-          }
-        />
-      </>
+      <EmptyLayoutOffers
+        icon={<ErrorIcon />}
+        title={"Sorry, we couldn't load your swaps"}
+        description={"Please try again later or add your swaps manually"}
+        button={
+          <>
+            <button
+              className="p-medium-bold-variant-black bg-[#DDF23D] border border-[#DDF23D] rounded-[10px] py-2 px-4 h-[38px]"
+              onClick={() => setToggleManually(!toggleManually)}
+            >
+              Add swap manually
+            </button>
+            <AddTokenOrSwapManuallyModal
+              open={toggleManually}
+              forWhom={ForWhom.Yours}
+              onClose={() => {
+                setToggleManually(false);
+              }}
+              variant={AddTokenOrSwapManuallyModalVariant.SWAP}
+            />
+          </>
+        }
+      />
     );
   };
 
   const SwapOffersLayoutErrorNoAuthenticatedUser = () => {
     return (
-      <>
-        <EmptyLayoutOffers
-          icon={<ErrorIcon fill={cc([{ black: theme === "light" }])} />}
-          title={<>No wallet connected</>}
-          description={<>Connect a wallet to see your swap offers</>}
-        />
-      </>
+      <EmptyLayoutOffers
+        icon={<ErrorIcon />}
+        title={"No wallet connected"}
+        description={"Connect a wallet to see your swap offers"}
+      />
     );
   };
 
   const SwapOffersLayoutNoSwapsCreated = () => {
     return (
-      <>
-        <EmptyLayoutOffers
-          icon={<NoSwapsIcon fill={cc([{ black: theme === "light" }])} />}
-          title={<> No swaps here. Let&apos;s fill it up!</>}
-          description={
-            <div className="flex w-[293px]">
-              You haven&apos;t made or received any proposals. Time to jump in
-              and start trading.
-            </div>
-          }
-          button={
-            <button
-              className="p-medium-bold-variant-black bg-[#DDF23D] border border-[#DDF23D] rounded-[10px] py-2 px-4 h-[38px]"
-              onClick={() => router.push("/")}
-            >
-              Start swapping
-            </button>
-          }
-        />
-      </>
+      <EmptyLayoutOffers
+        icon={<NoSwapsIcon className="dark:text-[#DDF23D] " />}
+        title={"No swaps here. Let's fill it up!"}
+        description={
+          "You haven't made or received any proposals. Time to jump in and start trading."
+        }
+        button={
+          <button
+            className="p-medium-bold-variant-black bg-[#DDF23D] border border-[#DDF23D] rounded-[10px] py-2 px-4 h-[38px]"
+            onClick={() => router.push("/")}
+          >
+            Start swapping
+          </button>
+        }
+      />
     );
   };
 
@@ -139,5 +127,5 @@ export const SwapOffersLayout = ({ variant }: SwapOffersLayoutProps) => {
     },
   };
 
-  return <>{SwapOffersConfigLayout[variant].body}</>;
+  return SwapOffersConfigLayout[variant].body;
 };
