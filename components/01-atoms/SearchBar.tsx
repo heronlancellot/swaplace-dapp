@@ -101,6 +101,8 @@ export const SearchBar = () => {
     } else if (inputAddress.length > 2) {
       toast.error("You must connect your wallet to search for an address");
       setUserJustValidatedInput(true);
+    } else if (inputAddress.length === 0) {
+      setValidatedAddressToSwap(null);
     }
   };
 
