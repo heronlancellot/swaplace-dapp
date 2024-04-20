@@ -120,7 +120,8 @@ const SwapBody = () => {
       ? toast.error(
           "This swap is already in the list. Please choose another one.",
         )
-      : setTokensList([...tokensList, formattedTokens]);
+      : (setTokensList([...tokensList, formattedTokens]),
+        toast.success("Swap added successfully!"));
 
     return swap;
   };
