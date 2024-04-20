@@ -313,7 +313,7 @@ interface decodeConfigProps {
 
 export async function decodeConfig({ config }: decodeConfigProps): Promise<{
   allowed: string;
-  expiry: bigint | number;
+  expiry: bigint;
   etherRecipient: bigint;
   etherValue: bigint;
 }> {
