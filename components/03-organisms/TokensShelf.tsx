@@ -124,12 +124,12 @@ export const TokensShelf = ({ variant }: TokensShelfProps) => {
   ]);
 
   useEffect(() => {
-    conditionallyCleanTokensList(variant === ForWhom.Their);
+    conditionallyCleanTokensList(!!validatedAddressToSwap);
   }, [validatedAddressToSwap]);
 
-  useEffect(() => {
-    conditionallyCleanTokensList(variant === ForWhom.Yours);
-  }, [authenticatedUserAddress]);
+  // useEffect(() => {
+  //   conditionallyCleanTokensList(variant === ForWhom.Yours);
+  // }, [authenticatedUserAddress]);
 
   const conditionallyCleanTokensList = (condition: boolean) => {
     if (condition) {

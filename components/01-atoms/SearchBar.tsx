@@ -2,13 +2,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-named-as-default-member */
 import { MagnifyingGlassIcon, SwapContext } from "@/components/01-atoms";
-import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useContext, useEffect } from "react";
 import { ENS } from "web3-eth-ens";
 import cc from "classcat";
 import Web3 from "web3";
 import toast from "react-hot-toast";
-import { getAddress } from "viem";
 import { EthereumAddress } from "@/lib/shared/types";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 
@@ -24,14 +22,12 @@ export const SearchBar = () => {
   const ens = new ENS(undefined, provider);
 
   const {
-    inputAddress,
     lastWalletConnected,
+    inputAddress,
     setInputAddress,
     setValidatedAddressToSwap,
     setUserJustValidatedInput,
   } = useContext(SwapContext);
-
-  const { authenticatedUserAddress } = useAuthenticatedUser();
 
   useEffect(() => {
     const requestDelay = setTimeout(() => {
@@ -45,6 +41,7 @@ export const SearchBar = () => {
     if (searchedENSAddress === ADDRESS_ZERO) {
       toast.error("Non-existent Ethereum Address");
       setUserJustValidatedInput(true);
+      setValidatedAddressToSwap(null);
       return;
     }
 
@@ -59,6 +56,7 @@ export const SearchBar = () => {
         }`,
       );
       setUserJustValidatedInput(true);
+      setValidatedAddressToSwap(null);
       return;
     }
 
@@ -95,13 +93,16 @@ export const SearchBar = () => {
         );
       } catch (error) {
         toast.error("Invalid Ethereum Address");
+        setValidatedAddressToSwap(null);
       } finally {
         setUserJustValidatedInput(true);
       }
     } else if (inputAddress.length > 2) {
       toast.error("You must connect your wallet to search for an address");
       setUserJustValidatedInput(true);
+      setValidatedAddressToSwap(null);
     } else if (inputAddress.length === 0) {
+      setUserJustValidatedInput(true);
       setValidatedAddressToSwap(null);
     }
   };
