@@ -57,10 +57,7 @@ export const TheHeader = () => {
         <div className="flex xl:flex-col gap-[16px]">
           <div className="flex justify-center">
             {isDark ? (
-              <Tooltip
-                position={window.innerWidth > 1440 ? "right" : "bottom"}
-                content={"Light Mode"}
-              >
+              <Tooltip position={"right"} content={"Light Mode"}>
                 <button
                   className="cursor-pointer bg-black-500 hover:bg-[#353836] transition-colors duration-200 rounded-[10px] group"
                   onClick={() => {
@@ -71,10 +68,7 @@ export const TheHeader = () => {
                 </button>
               </Tooltip>
             ) : (
-              <Tooltip
-                position={window.innerWidth > 1440 ? "right" : "bottom"}
-                content={"Dark Mode"}
-              >
+              <Tooltip position={"right"} content={"Dark Mode"}>
                 <button
                   className="bg-black-500 outline-none hover:bg-[#E4E4E4] transition-colors duration-200 rounded-[10px]"
                   onClick={() => {
@@ -89,10 +83,7 @@ export const TheHeader = () => {
           <div className="h-10 w-10">
             <>
               {!!authenticatedUserAddress ? (
-                <Tooltip
-                  position={window.innerWidth > 1440 ? "right" : "bottom"}
-                  content={"Your wallet"}
-                >
+                <Tooltip position={"right"} content={"Your wallet"}>
                   <button
                     onClick={() => toggleSidebar()}
                     className="rounded-[10px] flex items-center justify-center"
@@ -101,10 +92,7 @@ export const TheHeader = () => {
                   </button>
                 </Tooltip>
               ) : (
-                <Tooltip
-                  position={window.innerWidth > 1440 ? "right" : "bottom"}
-                  content={"Connect a Wallet"}
-                >
+                <Tooltip position={"right"} content={"Connect a Wallet"}>
                   <ConnectWallet
                     customStyle="w-full flex justify-center items-center h-10 w-10 rounded-[10px] bg-[#DDF23D]"
                     walletIcon={true}
