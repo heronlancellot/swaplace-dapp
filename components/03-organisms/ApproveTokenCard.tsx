@@ -116,7 +116,7 @@ export const ApproveTokenCard = ({
       const transactionReceipt = await approveSwap(swapData);
 
       if (transactionReceipt.success) {
-        toast.success(`'${getTokenName(token)}' has been approved!`);
+        toast.success(`${getTokenName(token)} has been approved!`);
         setIsApproved(true);
         setTokenApprovalStatus(TokenApprovalStatus.APPROVED);
         setTokenWasApprovedForSwap(token);
