@@ -21,8 +21,6 @@ export const ConnectWallet = ({ customStyle, walletIcon }: IConnectWallet) => {
         authenticationStatus,
         mounted,
       }) => {
-        // Note: If your app doesn't use authentication, you
-        // can remove all 'authenticationStatus' checks
         const ready = mounted && authenticationStatus !== "loading";
         const connected =
           ready &&
@@ -54,7 +52,7 @@ export const ConnectWallet = ({ customStyle, walletIcon }: IConnectWallet) => {
                 );
               }
 
-              if (router.pathname === "/") return null;
+              // if (router.pathname === "/") return null;
 
               // if (chain.unsupported) {
               //   return (
