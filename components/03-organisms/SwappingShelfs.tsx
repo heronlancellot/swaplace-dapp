@@ -7,10 +7,11 @@ import {
 } from "@/components/01-atoms/";
 import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAccount, useNetwork } from "wagmi";
 import cc from "classcat";
 import { TokensQueryStatus } from "@/lib/client/constants";
+import { ChainFormatters } from "viem";
 
 /**
  * SwappingShelfs Component
@@ -33,17 +34,25 @@ export const SwappingShelfs = () => {
     lastWalletConnected,
   } = useContext(SwapContext);
 
+  const [lastChain, setLastChain] = useState<number | undefined>(chain?.id);
+
   useEffect(() => {
-    setTheirTokensList([]);
-    setYourTokensList([]);
-    setValidatedAddressToSwap(null);
-    setAuthenticatedUserTokensList([]);
-    setSearchedUserTokensList([]);
-    setInputAddress("");
+    if (chain && chain.id !== lastChain) {
+      setTheirTokensList([]);
+      setYourTokensList([]);
+      setValidatedAddressToSwap(null);
+      setAuthenticatedUserTokensList([]);
+      setSearchedUserTokensList([]);
+      setInputAddress("");
+      setLastChain(chain.id);
+    }
   }, [chain]);
 
   useEffect(() => {
-    if (!isConnected || address !== lastWalletConnected) {
+    if (
+      !isConnected ||
+      (address && address?.toLowerCase() !== lastWalletConnected.toLowerCase())
+    ) {
       setTheirTokensList([]);
       setYourTokensList([]);
       setValidatedAddressToSwap(null);
