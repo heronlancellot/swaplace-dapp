@@ -8,7 +8,7 @@ import {
 import { TokenCardStyleType, TokensList } from "@/components/02-molecules";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useEnsData } from "@/lib/client/hooks/useENSData";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 interface IOfferSummary {
   variant: ForWhom;
