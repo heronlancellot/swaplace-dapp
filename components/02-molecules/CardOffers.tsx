@@ -44,11 +44,11 @@ export const CardOffers = ({
     [ForWhom.Yours]:
       swapModalAction === SwapModalAction.CREATE_SWAP
         ? searchedUserTokensList
-        : swapOfferToAccept?.bid.tokens ?? [],
+        : swapOfferToAccept?.bidderTokens.tokens ?? [],
     [ForWhom.Their]:
       swapModalAction === SwapModalAction.CREATE_SWAP
         ? authenticatedUserTokensList
-        : swapOfferToAccept?.ask.tokens ?? [],
+        : swapOfferToAccept?.askerTokens.tokens ?? [],
   };
 
   const HorizontalVariant = (address: EthereumAddress | null) => {
