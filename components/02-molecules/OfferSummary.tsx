@@ -10,11 +10,7 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useEnsData } from "@/lib/client/hooks/useENSData";
 import { useContext } from "react";
 
-interface IOfferSummary {
-  variant: ForWhom;
-}
-
-export const OfferSummary = ({ variant }: IOfferSummary) => {
+export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
   const {
     validatedAddressToSwap,
     authenticatedUserTokensList,

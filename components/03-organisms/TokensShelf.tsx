@@ -18,10 +18,6 @@ export enum ForWhom {
   Their,
 }
 
-interface TokensShelfProps {
-  variant: ForWhom;
-}
-
 /**
  *
  * The Shelf component display the tokens of a given address.
@@ -29,7 +25,7 @@ interface TokensShelfProps {
  *
  * @returns Tokens Shelf based in status of given address
  */
-export const TokensShelf = ({ variant }: TokensShelfProps) => {
+export const TokensShelf = ({ variant }: { variant: ForWhom }) => {
   const { chain } = useNetwork();
   const { isNetworkSupported } = useSupportedNetworks();
   const {
