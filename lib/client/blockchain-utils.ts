@@ -325,3 +325,12 @@ export async function decodeConfig({ config }: decodeConfigProps): Promise<{
     etherValue: config & ((BigInt(1) << BigInt(56)) - BigInt(1)),
   };
 }
+
+export const normalizeENSName = (name: string) => {
+  const regAddress = /^0x[a-fA-F0-9]{40}$/;
+  return name.toLowerCase().endsWith(".eth")
+    ? name.toLowerCase()
+    : regAddress.test(name)
+    ? name
+    : `${name.toLowerCase()}.eth`;
+};
