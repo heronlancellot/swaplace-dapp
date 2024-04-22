@@ -27,7 +27,7 @@ export const ENSAvatar = ({
   avatarENSAddress,
   size = ENSAvatarSize.MEDIUM,
 }: ENSAvatarProps) => {
-  const { avatarQueryStatus, avatarSrc, primaryName } = useEnsData({
+  const { avatarQueryStatus, avatarSrc } = useEnsData({
     ensAddress: avatarENSAddress,
   });
 
@@ -75,7 +75,7 @@ export const ENSAvatar = ({
             className={cc([
               ENSAvatarClassName[size] === "ens-avatar-small"
                 ? "bg-[#E4E4E4] dark:bg-[#353836] p-[5px] rounded-md"
-                : "w-full flex justify-center items-center h-10 w-10 rounded-[10px] bg-[#DDF23D]",
+                : "w-full flex justify-center items-center h-10 rounded-[10px] bg-[#DDF23D]",
               "",
             ])}
           >

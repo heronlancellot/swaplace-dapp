@@ -15,7 +15,7 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { isTokenSwapApproved } from "@/lib/service/verifyTokensSwapApproval";
 import { IApproveTokenSwap } from "@/lib/client/swap-utils";
 import { getTokenContractAddress, getTokenName } from "@/lib/client/ui-utils";
-import { ERC20WithTokenAmountSelection, Token } from "@/lib/shared/types";
+import { Token } from "@/lib/shared/types";
 import toast from "react-hot-toast";
 import { type TransactionReceipt } from "viem";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";

@@ -2,13 +2,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-named-as-default-member */
 import { MagnifyingGlassIcon, SwapContext } from "@/components/01-atoms";
+import { EthereumAddress } from "@/lib/shared/types";
+import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { useContext, useEffect } from "react";
 import { ENS } from "web3-eth-ens";
 import cc from "classcat";
 import Web3 from "web3";
 import toast from "react-hot-toast";
-import { EthereumAddress } from "@/lib/shared/types";
-import { ADDRESS_ZERO } from "@/lib/client/constants";
 
 export const SearchBar = () => {
   if (!process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_HTTP) {

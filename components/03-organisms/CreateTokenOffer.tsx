@@ -6,9 +6,9 @@ import {
   OffersContext,
 } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
+import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import cc from "classcat";
 import { useContext } from "react";
-import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 
 export enum CreateTokenOfferVariant {
   HORIZONTAL = "horizontal",

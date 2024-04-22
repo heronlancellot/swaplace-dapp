@@ -1,11 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ADDRESS_ZERO } from "../constants";
 import { EthereumAddress } from "../../shared/types";
-import { signOut, useSession } from "next-auth/react";
-import { use, useContext, useEffect, useState } from "react";
-import { useAccount, useDisconnect, useEnsName } from "wagmi";
 import { SwapContext } from "@/components/01-atoms";
-import { useEnsData } from "./useENSData";
+import { signOut, useSession } from "next-auth/react";
+import { useContext, useEffect, useState } from "react";
+import { useAccount, useDisconnect } from "wagmi";
 
 interface AuthenticatedUserHook {
   authenticatedUserAddress: EthereumAddress | null;
@@ -23,8 +21,6 @@ export const useAuthenticatedUser = (): AuthenticatedUserHook => {
     : null;
   const [authenticatedAccountAddress, setAuthenticatedAccountAddress] =
     useState<EthereumAddress | null>(_lastWalletConnected);
-  const [loadingAuthenticatedUser, setLoadingAuthenticatedUser] =
-    useState(true);
 
   /*
     We always need to make sure not only the information
@@ -57,7 +53,6 @@ export const useAuthenticatedUser = (): AuthenticatedUserHook => {
     } else if (!isConnected) {
       setAuthenticatedAccountAddress(null);
     }
-    setLoadingAuthenticatedUser(false);
   }, [nextAuthUser, isConnected, address]);
 
   const disconnectUser = () => {

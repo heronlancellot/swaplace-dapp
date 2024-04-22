@@ -10,8 +10,6 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useContext, useEffect, useState } from "react";
 import { useAccount, useNetwork } from "wagmi";
 import cc from "classcat";
-import { TokensQueryStatus } from "@/lib/client/constants";
-import { ChainFormatters } from "viem";
 
 /**
  * SwappingShelfs Component
