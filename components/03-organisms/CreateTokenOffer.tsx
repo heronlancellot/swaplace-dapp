@@ -4,9 +4,9 @@ import {
   SwapContext,
   SwapIconVariant,
   OffersContext,
-  PopulatedSwapOfferCard,
 } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
+import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import cc from "classcat";
 import { useContext } from "react";
 
@@ -61,7 +61,8 @@ export const CreateTokenOffer = ({
               address={
                 swapModalAction === SwapModalAction.CREATE_SWAP
                   ? authenticatedUserAddress
-                  : (swapOfferToAccept as PopulatedSwapOfferCard).ask.address
+                  : (swapOfferToAccept as PopulatedSwapOfferCard).askerTokens
+                      .address
               }
             />
           </div>
@@ -71,7 +72,8 @@ export const CreateTokenOffer = ({
               address={
                 swapModalAction === SwapModalAction.CREATE_SWAP
                   ? validatedAddressToSwap
-                  : (swapOfferToAccept as PopulatedSwapOfferCard).bid.address
+                  : (swapOfferToAccept as PopulatedSwapOfferCard).bidderTokens
+                      .address
               }
             />
           </div>
@@ -94,7 +96,8 @@ export const CreateTokenOffer = ({
               address={
                 swapModalAction === SwapModalAction.CREATE_SWAP
                   ? authenticatedUserAddress
-                  : (swapOfferToAccept as PopulatedSwapOfferCard).ask.address
+                  : (swapOfferToAccept as PopulatedSwapOfferCard).askerTokens
+                      .address
               }
               variant={CreateTokenOfferVariant.VERTICAL}
             />
@@ -112,7 +115,8 @@ export const CreateTokenOffer = ({
               address={
                 swapModalAction === SwapModalAction.CREATE_SWAP
                   ? validatedAddressToSwap
-                  : (swapOfferToAccept as PopulatedSwapOfferCard).bid.address
+                  : (swapOfferToAccept as PopulatedSwapOfferCard).bidderTokens
+                      .address
               }
               variant={CreateTokenOfferVariant.VERTICAL}
             />

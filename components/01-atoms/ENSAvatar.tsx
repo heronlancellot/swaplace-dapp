@@ -1,17 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-  LoadingIndicator,
-  PersonIcon,
-  SwapContext,
-} from "@/components/01-atoms";
-import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
+import { LoadingIndicator, PersonIcon } from "@/components/01-atoms";
 import {
   ENSAvatarQueryStatus,
   useEnsData,
 } from "@/lib/client/hooks/useENSData";
 import { EthereumAddress } from "@/lib/shared/types";
 import cc from "classcat";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export enum ENSAvatarSize {
   SMALL = "small",
@@ -32,12 +27,9 @@ export const ENSAvatar = ({
   avatarENSAddress,
   size = ENSAvatarSize.MEDIUM,
 }: ENSAvatarProps) => {
-  const { avatarQueryStatus, avatarSrc, primaryName } = useEnsData({
+  const { avatarQueryStatus, avatarSrc } = useEnsData({
     ensAddress: avatarENSAddress,
   });
-
-  const { savedimageSrc, saveimageSrc } = useContext(SwapContext);
-  const { authenticatedUserAddress } = useAuthenticatedUser();
 
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [failedLoadingImage, setFailedLoadingImage] = useState<boolean>(false);
@@ -49,51 +41,25 @@ export const ENSAvatar = ({
             if (response.ok) {
               setImageSrc(avatarSrc);
               setFailedLoadingImage(false);
-              if (
-                avatarENSAddress.address === authenticatedUserAddress?.address
-              ) {
-                saveimageSrc(avatarSrc);
-              }
             } else {
               setImageSrc(null);
               setFailedLoadingImage(true);
-              if (
-                avatarENSAddress.address === authenticatedUserAddress?.address
-              ) {
-                saveimageSrc(null);
-              }
             }
           })
           .catch(() => {
             setImageSrc(null);
             setFailedLoadingImage(true);
-            if (
-              avatarENSAddress.address === authenticatedUserAddress?.address
-            ) {
-              saveimageSrc(null);
-            }
           });
       } else {
         setImageSrc(null);
         setFailedLoadingImage(true);
-        if (avatarENSAddress.address === authenticatedUserAddress?.address) {
-          saveimageSrc(null);
-        }
       }
     }
   }, [avatarQueryStatus]);
 
   return (
     <div>
-      {avatarENSAddress.address === authenticatedUserAddress?.address &&
-      savedimageSrc ? (
-        <img
-          src={savedimageSrc}
-          className={ENSAvatarClassName[size]}
-          alt={`ENS Avatar for ${avatarENSAddress}`}
-        />
-      ) : avatarQueryStatus === ENSAvatarQueryStatus.LOADING &&
-        !savedimageSrc ? (
+      {avatarQueryStatus === ENSAvatarQueryStatus.LOADING ? (
         <div
           className={cc([
             ENSAvatarClassName[size],
@@ -109,7 +75,7 @@ export const ENSAvatar = ({
             className={cc([
               ENSAvatarClassName[size] === "ens-avatar-small"
                 ? "bg-[#E4E4E4] dark:bg-[#353836] p-[5px] rounded-md"
-                : "w-full flex justify-center items-center h-10 w-10 rounded-[10px] bg-[#DDF23D]",
+                : "w-full flex justify-center items-center h-10 rounded-[10px] bg-[#DDF23D]",
               "",
             ])}
           >

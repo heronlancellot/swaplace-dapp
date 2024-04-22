@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ADDRESS_ZERO } from "../constants";
 import { EthereumAddress } from "../../shared/types";
+import { SwapContext } from "@/components/01-atoms";
 import { signOut, useSession } from "next-auth/react";
 import { useContext, useEffect, useState } from "react";
-import { useAccount, useDisconnect, useEnsName } from "wagmi";
-import { SwapContext } from "@/components/01-atoms";
+import { useAccount, useDisconnect } from "wagmi";
 
 interface AuthenticatedUserHook {
   authenticatedUserAddress: EthereumAddress | null;
@@ -15,13 +14,13 @@ export const useAuthenticatedUser = (): AuthenticatedUserHook => {
   const { disconnect } = useDisconnect();
   const { data: nextAuthUser } = useSession();
   const { address, isConnected } = useAccount();
-  const [authenticatedAccountAddress, setAuthenticatedAccountAddress] =
-    useState<EthereumAddress | null>(null);
-  const [loadingAuthenticatedUser, setLoadingAuthenticatedUser] =
-    useState(true);
-
   const { lastWalletConnected, setLastWalletConnected } =
     useContext(SwapContext);
+  const _lastWalletConnected = lastWalletConnected
+    ? new EthereumAddress(lastWalletConnected)
+    : null;
+  const [authenticatedAccountAddress, setAuthenticatedAccountAddress] =
+    useState<EthereumAddress | null>(_lastWalletConnected);
 
   /*
     We always need to make sure not only the information
@@ -34,26 +33,25 @@ export const useAuthenticatedUser = (): AuthenticatedUserHook => {
   */
 
   useEffect(() => {
-    if (!isConnected) {
-      setAuthenticatedAccountAddress(null);
-    }
-  }, [isConnected]);
-
-  useEffect(() => {
     if (
-      authenticatedAccountAddress?.address.toLowerCase() !==
-      lastWalletConnected.toLowerCase()
+      address &&
+      address.toLowerCase() !== lastWalletConnected.toLowerCase()
     ) {
-      const accountAuthenticated =
-        !!nextAuthUser && nextAuthUser.user.id == address?.toLowerCase();
-
+      if (!nextAuthUser) {
+        setAuthenticatedAccountAddress(
+          new EthereumAddress(address.toLowerCase()),
+        );
+      }
+      setLastWalletConnected(address.toLowerCase());
+    } else if (
+      address &&
+      address.toLowerCase() === lastWalletConnected.toLowerCase()
+    ) {
       setAuthenticatedAccountAddress(
-        accountAuthenticated && address
-          ? new EthereumAddress(address.toLowerCase())
-          : null,
+        new EthereumAddress(address.toLowerCase()),
       );
-      setLastWalletConnected(address ? address.toLowerCase() : "");
-      setLoadingAuthenticatedUser(false);
+    } else if (!isConnected) {
+      setAuthenticatedAccountAddress(null);
     }
   }, [nextAuthUser, isConnected, address]);
 
