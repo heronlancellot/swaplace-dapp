@@ -114,10 +114,10 @@ export const SwapContextProvider = ({ children }: any) => {
     setCurrentSwapModalStep(SwapModalSteps.APPROVE_TOKENS);
   };
 
-  // useEffect(() => {
-  //   setSearchedUserTokensList([]);
-  //   setUserJustValidatedInput(false);
-  // }, [inputAddress]);
+  useEffect(() => {
+    setSearchedUserTokensList([]);
+    setAuthenticatedUserTokensList([]);
+  }, [inputAddress]);
 
   // useEffect(() => {
   //   setSearchedUserTokensList([]);
