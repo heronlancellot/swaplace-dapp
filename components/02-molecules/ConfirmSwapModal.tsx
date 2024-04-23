@@ -72,7 +72,7 @@ export const ConfirmSwapModal = ({
       case SwapModalAction.ACCEPT_SWAP:
         if (!swapOfferToAccept) return;
         setApprovedTokensCount(acceptSwapApprovedTokensCount);
-        setTokensList(swapOfferToAccept.ask.tokens);
+        setTokensList(swapOfferToAccept.askerTokens.tokens);
         break;
     }
   }, [

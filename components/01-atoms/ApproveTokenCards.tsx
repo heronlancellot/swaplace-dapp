@@ -75,7 +75,7 @@ export const ApproveTokenCards = ({
         break;
       case SwapModalAction.ACCEPT_SWAP:
         if (!swapOfferToAccept) setTokensToApprove([]);
-        else setTokensToApprove(swapOfferToAccept.ask.tokens);
+        else setTokensToApprove(swapOfferToAccept.askerTokens.tokens);
         break;
       default:
         break;
