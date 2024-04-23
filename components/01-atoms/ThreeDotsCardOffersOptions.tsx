@@ -1,17 +1,21 @@
 import { ShareIcon, ThreeDotsIcon, XMarkIcon } from "@/components/01-atoms";
-import { Swap } from "@/lib/client/swap-utils";
+import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { useState } from "react";
 import cc from "classcat";
 
-export const ThreeDotsCardOffersOptions = ({ swap }: { swap: Swap }) => {
+export const ThreeDotsCardOffersOptions = ({
+  swap,
+}: {
+  swap: PopulatedSwapOfferCard;
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleCancelSwap = (swap: Swap) => {
-    console.log("swap ", swap);
+  const handleCancelSwap = (swap: PopulatedSwapOfferCard) => {
+    console.log("swap ", swap.id);
     // CancelSwap()
   };
 

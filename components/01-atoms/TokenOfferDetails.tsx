@@ -7,14 +7,14 @@ import {
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { ConfirmSwapModal, SwapModalAction } from "@/components/02-molecules";
 
-import React, { useContext, useState } from "react";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
+import React, { useContext, useState } from "react";
 
-interface TokenOfferDetailsInterface {
+export const TokenOfferDetails = ({
+  swap,
+}: {
   swap: PopulatedSwapOfferCard;
-}
-
-export const TokenOfferDetails = ({ swap }: TokenOfferDetailsInterface) => {
+}) => {
   const [openConfirmationModal, setOpenConfirmationModal] =
     useState<boolean>(false);
 
@@ -79,7 +79,7 @@ export const TokenOfferDetails = ({ swap }: TokenOfferDetailsInterface) => {
           </div>
         )}
 
-        <ThreeDotsCardOffersOptions />
+        <ThreeDotsCardOffersOptions swap={swap} />
       </div>
 
       <ConfirmSwapModal
