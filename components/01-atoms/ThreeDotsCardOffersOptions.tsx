@@ -34,7 +34,7 @@ export const ThreeDotsCardOffersOptions = ({
       chain: chainId,
     };
 
-    cancelSwap(BigInt(swap.id), configurations);
+    cancelSwap(swap.id, configurations);
   };
 
   return (

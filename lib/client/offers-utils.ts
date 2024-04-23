@@ -28,7 +28,7 @@ export interface FormattedSwapOfferAssets {
 }
 
 export interface PopulatedSwapOfferCard {
-  id: string;
+  id: bigint;
   status: string;
   expiryDate: bigint;
   bidderTokens: {

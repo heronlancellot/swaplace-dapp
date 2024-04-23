@@ -100,7 +100,7 @@ const SwapBody = () => {
 
     const formattedTokens: PopulatedSwapOfferCard = {
       status: "",
-      id: String(swapId),
+      id: swapId,
       expiryDate: BigInt(bidingAddressAndExpiryData.expiry),
       bidderTokens: {
         address: new EthereumAddress(bidingAddressAndExpiryData.allowed),

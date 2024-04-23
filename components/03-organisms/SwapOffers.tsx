@@ -61,7 +61,7 @@ export const SwapOffers = () => {
               swap.askerAssets.tokens,
             );
             return {
-              id: swap.id,
+              id: BigInt(swap.id),
               status: swap.status,
               expiryDate: swap.expiryDate,
               bidderTokens: {
