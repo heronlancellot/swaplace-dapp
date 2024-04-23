@@ -1,7 +1,9 @@
 import { ShareIcon, ThreeDotsIcon, XMarkIcon } from "@/components/01-atoms";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
+import { SwapUserConfiguration, cancelSwap } from "@/lib/service/cancelSwap";
 import { useState } from "react";
 import cc from "classcat";
+import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
 
 export const ThreeDotsCardOffersOptions = ({
   swap,
@@ -9,14 +11,30 @@ export const ThreeDotsCardOffersOptions = ({
   swap: PopulatedSwapOfferCard;
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { chain } = useNetwork();
+  const { data: walletClient } = useWalletClient();
+
+  let chainId: number;
+  let userWalletClient: WalletClient;
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const handleCancelSwap = (swap: PopulatedSwapOfferCard) => {
-    console.log("swap ", swap.id);
-    // CancelSwap()
+    if (typeof chain?.id != "undefined" && walletClient != undefined) {
+      chainId = chain?.id;
+      userWalletClient = walletClient;
+    } else {
+      throw new Error("Chain ID is undefined");
+    }
+
+    const configurations: SwapUserConfiguration = {
+      walletClient: userWalletClient,
+      chain: chainId,
+    };
+
+    cancelSwap(BigInt(swap.id), configurations);
   };
 
   return (
@@ -34,7 +52,7 @@ export const ThreeDotsCardOffersOptions = ({
         />
       </div>
       {isOpen && (
-        <div className="origin-top-right absolute mt-6  border border-[#353836] rounded-lg shadow-lg dark:bg-[#282B29] bg-[#ffffff] ring-1 ring-black ring-opacity-5 focus:outline-none shadow-three-dots">
+        <div className="origin-top-right absolute mt-6 border border-[#353836] rounded-lg shadow-lg dark:bg-[#282B29] bg-[#ffffff] ring-1 ring-black ring-opacity-5 focus:outline-none shadow-three-dots">
           <div className="relative">
             <button
               type="button"
