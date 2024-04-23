@@ -1,6 +1,7 @@
 import { ShareIcon, ThreeDotsIcon, XMarkIcon } from "@/components/01-atoms";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { SwapUserConfiguration, cancelSwap } from "@/lib/service/cancelSwap";
+import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useState } from "react";
 import cc from "classcat";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
@@ -13,6 +14,7 @@ export const ThreeDotsCardOffersOptions = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { chain } = useNetwork();
   const { data: walletClient } = useWalletClient();
+  const { authenticatedUserAddress } = useAuthenticatedUser();
 
   let chainId: number;
   let userWalletClient: WalletClient;
@@ -61,15 +63,17 @@ export const ThreeDotsCardOffersOptions = ({
             >
               <ShareIcon /> Share
             </button>
-            <button
-              type="button"
-              className=" flex items-center gap-3 w-full px-4 py-2 text-sm dark:p-small-dark-variant-grey rounded-lg dark:hover:bg-[#353836] hover:bg-[#e4e4e4] hover:text-gray-900"
-              role="menuitem"
-              onClick={() => handleCancelSwap(swap)}
-            >
-              <XMarkIcon />
-              Cancel
-            </button>
+            {authenticatedUserAddress?.equals(swap.askerTokens.address) && (
+              <button
+                type="button"
+                className=" flex items-center gap-3 w-full px-4 py-2 text-sm dark:p-small-dark-variant-grey rounded-lg dark:hover:bg-[#353836] hover:bg-[#e4e4e4] hover:text-gray-900"
+                role="menuitem"
+                onClick={() => handleCancelSwap(swap)}
+              >
+                <XMarkIcon />
+                Cancel
+              </button>
+            )}
           </div>
         </div>
       )}
