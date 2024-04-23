@@ -1,53 +1,50 @@
-export enum TAG {
-  PENDING = "PENDING",
-  ACCEPTED = "ACCEPTED",
-  CANCELED = "CANCELED",
-  EXPIRED = "EXPIRED",
-}
+import { PonderFilter } from "./OffersContext";
 
-interface OfferTagProps {
-  status: string;
-}
-
-export const OfferTag = ({ status }: OfferTagProps) => {
-  interface TagConfig {
+export const OfferTag = ({ status }: { status: PonderFilter }) => {
+  interface PonderFilterConfig {
     body: React.ReactNode;
   }
 
-  // TODO: Test that
-  const getTagStatus = () => {
-    switch (status) {
-      case "created" || "Received":
-        return TAG.PENDING;
-      case "canceled":
-        return TAG.CANCELED;
-      case "accepted":
-        return TAG.ACCEPTED;
-      case "expired":
-        return TAG.EXPIRED;
-      default:
-        return TAG.PENDING;
-    }
-  };
-
-  const Tags: Record<TAG, TagConfig> = {
-    [TAG.ACCEPTED]: {
-      body: <div className="bg-[#10584C] p-1 rounded">{TAG.ACCEPTED}</div>,
+  const PonderTagFilters: Record<PonderFilter, PonderFilterConfig> = {
+    [PonderFilter.ACCEPTED]: {
+      body: (
+        <div className="bg-[#10584C] p-1 rounded">{PonderFilter.ACCEPTED}</div>
+      ),
     },
-    [TAG.CANCELED]: {
-      body: <div className="bg-[#D7544E] p-1 rounded">{TAG.CANCELED}</div>,
+    [PonderFilter.CANCELED]: {
+      body: (
+        <div className="bg-[#D7544E] p-1 rounded">{PonderFilter.CANCELED}</div>
+      ),
     },
-    [TAG.EXPIRED]: {
-      body: <div className="bg-[#4A4F80] p-1 rounded">{TAG.EXPIRED}</div>,
+    [PonderFilter.EXPIRED]: {
+      body: (
+        <div className="bg-[#4A4F80] p-1 rounded">{PonderFilter.EXPIRED}</div>
+      ),
     },
-    [TAG.PENDING]: {
-      body: <div className="bg-[#DE7B30] p-1 rounded">{TAG.PENDING}</div>,
+    // Todo: Check the color of received && compare if the auth user is the owner of the swap
+    [PonderFilter.RECEIVED]: {
+      body: (
+        <div className="bg-[#DE7B30] p-1 rounded">{PonderFilter.RECEIVED}</div>
+      ),
+    },
+    // Todo: Check the color of All Offers
+    [PonderFilter.ALL_OFFERS]: {
+      body: (
+        <div className="bg-[#DE7B30] p-1 rounded">
+          {PonderFilter.ALL_OFFERS}
+        </div>
+      ),
+    },
+    [PonderFilter.CREATED]: {
+      body: (
+        <div className="bg-[#DE7B30] p-1 rounded">{PonderFilter.CREATED}</div>
+      ),
     },
   };
 
   return (
     <div className="shadow-tag p-semibold-dark flex items-center">
-      {Tags[getTagStatus()].body}
+      {PonderTagFilters[status].body}
     </div>
   );
 };

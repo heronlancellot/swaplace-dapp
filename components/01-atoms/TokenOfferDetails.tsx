@@ -1,6 +1,7 @@
 import {
   DoneIcon,
   OffersContext,
+  PonderFilter,
   ThreeDotsCardOffersOptions,
 } from "@/components/01-atoms";
 
@@ -27,7 +28,8 @@ export const TokenOfferDetails = ({
   };
 
   const needsExpiryDate =
-    swap.status !== "ACCEPTED" && swap.status !== "CANCELED";
+    swap.status.toUpperCase() !== PonderFilter.ACCEPTED.toUpperCase() &&
+    swap.status.toUpperCase() !== PonderFilter.CANCELED.toUpperCase();
 
   let formattedSwapExpiryDate = null;
   if (needsExpiryDate) {
@@ -48,18 +50,22 @@ export const TokenOfferDetails = ({
     formattedSwapExpiryDate = isDateValid ? `${day} ${month} ${year}` : null;
   }
 
-  // TODO: Include status, owner and expiryDate
   return (
     <div className="flex w-full justify-between items-center py-2 px-3">
       <div>
         <ul className="flex p-small dark:!text-[#A3A9A5] items-center gap-2">
-          {/* {displayStatus && <OfferTag status={displayStatus} />} */}
+          {/* {<OfferTag status={swap.status} />} */}
           {needsExpiryDate && (
             <li className="flex items-center gap-2">
               <div className=" w-1 h-1 bg-neutral-600 rounded-full shadow-inner" />
               Expires on {formattedSwapExpiryDate}
             </li>
           )}
+          {!needsExpiryDate && swap.status === PonderFilter.CANCELED
+            ? `Swap ${PonderFilter.CANCELED}`
+            : !needsExpiryDate &&
+              swap.status === PonderFilter.ACCEPTED &&
+              `Swap ${PonderFilter.ACCEPTED}`}
           <li className="flex items-center gap-2">
             <div className="w-1 h-1 bg-neutral-600 rounded-full shadow-inner" />
             Created by {swap.askerTokens.address?.getEllipsedAddress()}
