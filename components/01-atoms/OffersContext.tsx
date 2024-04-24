@@ -69,7 +69,7 @@ const DEFAULT_ERC20_TOKEN: Token = {
 };
 
 const DEFAULT_SWAP_OFFER: PopulatedSwapOfferCard = {
-  id: "0",
+  id: 0n,
   status: PonderFilter.ALL_OFFERS,
   expiryDate: 0n,
   bidderTokens: {

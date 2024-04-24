@@ -8,7 +8,10 @@ import {
   SwapOffersDisplayVariant,
   SwapOffersLayout,
 } from "@/components/02-molecules";
-import { OffersContext } from "@/components/01-atoms/OffersContext";
+import {
+  OffersContext,
+  PonderFilter,
+} from "@/components/01-atoms/OffersContext";
 import {
   TokenOfferDetails,
   SwapIcon,
@@ -48,6 +51,23 @@ export const SwapOffers = () => {
     offersQueries && processSwaps();
   }, [offersQueries]);
 
+  const findStatus = (swap: FormattedSwapOfferAssets): PonderFilter => {
+    switch (swap.status.toUpperCase()) {
+      case PonderFilter.ACCEPTED.toUpperCase():
+        return PonderFilter.ACCEPTED;
+      case PonderFilter.ALL_OFFERS.toUpperCase():
+        return PonderFilter.ALL_OFFERS;
+      case PonderFilter.CANCELED.toUpperCase():
+        return PonderFilter.CANCELED;
+      case PonderFilter.CREATED.toUpperCase():
+        return PonderFilter.CREATED;
+      case PonderFilter.EXPIRED.toUpperCase():
+        return PonderFilter.EXPIRED;
+      default:
+        return PonderFilter.RECEIVED;
+    }
+  };
+
   const processSwaps = async () => {
     setIsLoading(true);
     try {
@@ -60,9 +80,11 @@ export const SwapOffers = () => {
             const askedTokensWithData = await retrieveDataFromTokensArray(
               swap.askerAssets.tokens,
             );
+            const swapStatus = findStatus(swap);
+
             return {
-              id: swap.id,
-              status: swap.status,
+              id: BigInt(swap.id),
+              status: swapStatus,
               expiryDate: swap.expiryDate,
               bidderTokens: {
                 address: swap.bidderAssets.address,

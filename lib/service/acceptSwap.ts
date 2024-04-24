@@ -8,9 +8,8 @@ export interface SwapUserConfiguration {
   chain: number;
 }
 
-// TODO: Modify accept function
 export async function acceptSwap(
-  swapId: string,
+  swapId: bigint,
   receiver: EthereumAddress,
   configurations: SwapUserConfiguration,
 ) {
@@ -41,7 +40,7 @@ export async function acceptSwap(
         type: "function",
       },
     ],
-    args: [BigInt(swapId), receiver.address],
+    args: [swapId, receiver.address],
   });
   try {
     const transactionHash = await configurations.walletClient.sendTransaction({

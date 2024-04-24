@@ -1,5 +1,6 @@
 import { Asset } from "./swap-utils";
 import { EthereumAddress, Token } from "../shared/types";
+import { PonderFilter } from "@/components/01-atoms";
 
 export interface RawSwapOfferInterface {
   // RawSwapOfferInterface represents the object interface of a Swap Offer coming from Ponder
@@ -14,6 +15,7 @@ export interface RawSwapOfferInterface {
   value: bigint;
 }
 export interface FormattedSwapOfferAssets {
+  // FormattedSwapOffers represents the object interface in the middle of the process to populated the swap
   id: string;
   status: string;
   expiryDate: bigint;
@@ -28,8 +30,9 @@ export interface FormattedSwapOfferAssets {
 }
 
 export interface PopulatedSwapOfferCard {
-  id: string;
-  status: string;
+  // The PopulatedSwapOfferCard represents the card with all the data needed to represent a offer
+  id: bigint;
+  status: PonderFilter;
   expiryDate: bigint;
   bidderTokens: {
     address: EthereumAddress;
@@ -50,32 +53,3 @@ export interface PageInfo {
 export interface PageParam {
   pageParam: string | null;
 }
-
-// export const processSwaps = async (array: any[]) => {
-//   // const [isLoading, setIsLoading] = useState(true);
-
-//   // setIsLoading(true);
-
-//   const formattedTokensPromises = array.map(async (swap) => {
-//     const askedTokensWithData = await retrieveDataFromTokensArray(
-//       swap.ask.tokens,
-//     );
-//     const bidedTokensWithData = await retrieveDataFromTokensArray(
-//       swap.bid.tokens,
-//     );
-//     return {
-//       ...swap,
-//       ask: { address: swap.ask.address, tokens: askedTokensWithData },
-//       bid: {
-//         address: swap.bid.address,
-//         tokens: bidedTokensWithData,
-//       },
-//     };
-//   });
-
-//   // Wait for all promises to resolve
-//   const formattedTokens = await Promise.all(formattedTokensPromises);
-//   return formattedTokens;
-//   // setIsLoading(false);
-//   // setTokensList(formattedTokens);
-// };
