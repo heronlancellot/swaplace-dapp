@@ -40,7 +40,7 @@ export const ThreeDotsCardOffersOptions = ({
   };
 
   return (
-    <div className="flex">
+    <div className="flex relative">
       <div
         className="dark:hover:bg-[#353836] hover:bg-[#e0e0e0] w-[24px] h-[24px] flex justify-center items-center p-1 rounded-[100px] "
         onClick={toggleDropdown}
@@ -54,7 +54,7 @@ export const ThreeDotsCardOffersOptions = ({
         />
       </div>
       {isOpen && (
-        <div className="origin-top-right absolute mt-6 border border-[#353836] rounded-lg shadow-lg dark:bg-[#282B29] bg-[#ffffff] ring-1 ring-black ring-opacity-5 focus:outline-none shadow-three-dots">
+        <div className="origin-top-right z-50 absolute right-0 top-1 mt-6 border border-[#353836] rounded-lg shadow-lg dark:bg-[#282B29] bg-[#ffffff] ring-1 ring-black ring-opacity-5 focus:outline-none shadow-three-dots">
           <div className="relative">
             <button
               type="button"
