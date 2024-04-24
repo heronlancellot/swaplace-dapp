@@ -29,17 +29,19 @@ export interface FormattedSwapOfferAssets {
   };
 }
 
+// - The `biding` are the assets that the owner is offering.
+// - The `asking` are the assets that the owner wants in exchange.
 export interface PopulatedSwapOfferCard {
   // The PopulatedSwapOfferCard represents the card with all the data needed to represent a offer
   id: bigint;
   status: PonderFilter;
   expiryDate: bigint;
   bidderTokens: {
-    address: EthereumAddress;
+    address: EthereumAddress; // owner address
     tokens: Token[];
   };
   askerTokens: {
-    address: EthereumAddress;
+    address: EthereumAddress; // address of the asking user ( allowed )
     tokens: Token[];
   };
 }
