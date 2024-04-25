@@ -23,7 +23,7 @@ export const ApprovedSwapTokenCards = ({
 
   const { setApprovedTokensCount } = useContext(SwapContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [previoslytApprovedList, setPrevioslytApprovedList] = useState<
+  const [previouslyApprovedList, setPreviouslyApprovedList] = useState<
     boolean[]
   >([]);
 
@@ -77,7 +77,7 @@ export const ApprovedSwapTokenCards = ({
       }
     });
 
-    setPrevioslytApprovedList(newApprovedList);
+    setPreviouslyApprovedList(newApprovedList);
     setApprovedTokensCount(count);
     setIsLoading(false);
   };
@@ -98,10 +98,10 @@ export const ApprovedSwapTokenCards = ({
             <ApproveTokenCardSkeleton key={token.id} />
           ) : (
             <ApproveTokenCard
-              isPrevioslyApproved={previoslytApprovedList[index]}
+              isPrevioslyApproved={previouslyApprovedList[index]}
               setTokenWasApprovedForSwap={addNewTokenToApprovedList}
               key={
-                token.id ? token.id + previoslytApprovedList[index] : token.name
+                token.id ? token.id + previouslyApprovedList[index] : token.name
               }
               token={token}
             />
