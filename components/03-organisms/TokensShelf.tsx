@@ -215,12 +215,12 @@ export const TokensShelf = ({ variant }: { variant: ForWhom }) => {
           </div>
         </div>
       ) : tokensQueryStatus == TokensQueryStatus.NO_RESULTS ? (
-        <div className="flex justify-center w-full h-full bg-[#f8f8f8] dark:bg-[#212322] p-4">
-          <div className="flex items-center">
-            <p className="dark:text-[#F6F6F6] font-onest font-medium text-[16px] leading-[20px]">
-              Given address has no tokens associated in the given network
-            </p>
-          </div>
+        <div className="flex h-full w-full justify-center items-center no-scrollbar ">
+          <TokensList
+            ownerAddress={address}
+            tokensList={allTokensList}
+            variant={variant}
+          />
         </div>
       ) : tokensQueryStatus == TokensQueryStatus.LOADING &&
         allTokensList.length === 0 ? (
