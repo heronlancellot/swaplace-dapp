@@ -2,8 +2,8 @@ import {
   ALCHEMY_PUBLIC_RPC,
   getCurrentNetworkHttpUrl,
 } from "../client/constants";
-import { sepolia } from "@wagmi/core/chains";
 import { kakarot } from "@/lib/client/wagmi-custom-chains";
+import { sepolia } from "@wagmi/core/chains";
 import { configureChains, createConfig } from "wagmi";
 import {
   trustWallet,
