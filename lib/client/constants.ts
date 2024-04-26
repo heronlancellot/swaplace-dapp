@@ -2,6 +2,10 @@ import { Network } from "alchemy-sdk";
 
 export const ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
 
+enum NetworkKakarot {
+  ETH_KAKAROT = "eth-kakarot",
+}
+
 export enum TokensQueryStatus {
   EMPTY_QUERY = "EMPTY_QUERY",
   LOADING = "LOADING",
@@ -106,11 +110,20 @@ export const ChainInfo: Record<SupportedNetworks, ChainProps> = {
   },
 };
 
+// //Workaround to make `getNetwork` to add ETH_KAKAROT as alchemy does not support Kakarot.
+const getNetworkKakarot: Map<number, NetworkKakarot> = new Map([
+  [ChainInfo.KAKAROT_SEPOLIA.id, NetworkKakarot.ETH_KAKAROT],
+]);
+
 export const getNetwork: Map<number, Network> = new Map([
   [ChainInfo.SEPOLIA.id, Network.ETH_SEPOLIA],
   [ChainInfo.MUMBAI.id, Network.MATIC_MUMBAI],
-  [ChainInfo.KAKAROT_SEPOLIA.id, Network.ETH_KAKAROT],
 ]);
+
+// //Workaround to make `getNetwork` to add ETH_KAKAROT as alchemy does not support Kakarot.
+for (const [key, value] of getNetworkKakarot.entries()) {
+  getNetwork.set(key, value as unknown as Network);
+}
 
 export const getRpcHttpUrlForNetwork: Map<number, string> = new Map([
   [ChainInfo.HARDHAT.id, "http://127.0.0.1:8545/"],
@@ -171,7 +184,7 @@ export const SWAPLACE_SMART_CONTRACT_ADDRESS = {
   [ChainInfo.HARDHAT.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.ETHEREUM.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.SEPOLIA.id]: "0xFA682bcE8b1dff8D948aAE9f0fBade82D28E1842",
-  [ChainInfo.KAKAROT_SEPOLIA.id]: "0x11FA19B071faB6E119dBefFfaa23eFb79F14f4A2", //Placeholder value untill the smart contract is deployed on the network
+  [ChainInfo.KAKAROT_SEPOLIA.id]: "0x80f14F36Eb515C8F254108f8c344D9ef44e3c33e",
   [ChainInfo.POLYGON.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.MUMBAI.id]: "0xcB003ed4Df4679D15b8863BB8F7609855A6a380d",
   [ChainInfo.OPTIMISM.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",

@@ -1,6 +1,7 @@
 import { ForWhom } from "@/components/03-organisms";
 import {
   OffersContext,
+  PonderFilter,
   SwapContext,
   SwapModalLayout,
 } from "@/components/01-atoms";
@@ -99,7 +100,7 @@ const SwapBody = () => {
     });
 
     const formattedTokens: PopulatedSwapOfferCard = {
-      status: "",
+      status: PonderFilter.ALL_OFFERS,
       id: swapId,
       expiryDate: BigInt(bidingAddressAndExpiryData.expiry),
       bidderTokens: {
@@ -297,7 +298,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
             if (tokenAlreadyInList) {
               toast.error("Token ERC721 already in the Token List");
             } else {
-              setYourManuallyAddedTokensList([tokenERC721]);
+              setTheirManuallyAddedTokensList([tokenERC721]);
               toast.success("Token ERC721 added in Token List");
             }
           },
@@ -331,7 +332,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     await verifyTokenOwnership({
       address: address,
       chainId: chain.id,
-      contractAddress: `0x${contractAddress}`,
+      contractAddress: contractAddress,
       tokenId: tokenId,
       tokenType: tokenType,
     })
@@ -343,7 +344,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         } else if (verification && verification.isOwner) {
           addTokenToTokensList({
             tokenName: verification.name,
-            contractAddress: `0x${contractAddress}`,
+            contractAddress: contractAddress,
             tokenId: tokenId,
             tokenType: tokenType,
             balance: verification.erc20Balance ?? 0n,

@@ -3,13 +3,14 @@ import {
   ArrowIconVariant,
   NetworkIcon,
   NetworkVariants,
+  SwapContext,
 } from "@/components/01-atoms";
 import { ChainInfo, SupportedNetworks } from "@/lib/client/constants";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useSupportedNetworks } from "@/lib/client/hooks/useSupportedNetworks";
 import { capitalizeFirstLetterPrhases } from "@/lib/client/utils";
 import { useSwitchNetwork, sepolia, useNetwork } from "wagmi";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import cc from "classcat";
 
@@ -23,20 +24,23 @@ export const NetworkDropdown = ({ forAuthedUser }: NetworkDropdownProps) => {
   const { isNetworkSupported } = useSupportedNetworks();
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { chain } = useNetwork();
+  const { setDestinyChain, destinyChain } = useContext(SwapContext);
 
   useEffect(() => {
     if (!isNetworkSupported || !authenticatedUserAddress) {
       setNetworkText("default");
-    } else {
-      if (ChainInfo[SupportedNetworks.KAKAROT_SEPOLIA].id === chain?.id) {
+    } else if (chain) {
+      if (ChainInfo[SupportedNetworks.KAKAROT_SEPOLIA].id === chain.id) {
+        setDestinyChain(SupportedNetworks.KAKAROT_SEPOLIA);
         setNetworkText(SupportedNetworks.KAKAROT_SEPOLIA);
-      } else if (ChainInfo[SupportedNetworks.SEPOLIA].id === chain?.id) {
+      } else if (ChainInfo[SupportedNetworks.SEPOLIA].id === chain.id) {
+        setDestinyChain(SupportedNetworks.SEPOLIA);
         setNetworkText(SupportedNetworks.SEPOLIA);
       } else {
         setNetworkText("default");
       }
     }
-  }, [authenticatedUserAddress, isNetworkSupported, chain]);
+  }, [authenticatedUserAddress, isNetworkSupported, chain, destinyChain]);
 
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen);

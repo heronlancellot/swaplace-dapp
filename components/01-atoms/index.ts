@@ -12,8 +12,6 @@ export * from "./OfferTag";
 export * from "./ProgressBar";
 export * from "./SearchBar";
 export * from "./SearchItemsShelf";
-export * from "./SelectAuthedUserChain"; // Remove ?
-export * from "./SelectDestinyChain"; // Remove ?
 export * from "./StatusOffers";
 export * from "./SwapContext";
 export * from "./SwapExpireTime";

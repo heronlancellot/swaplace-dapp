@@ -2,6 +2,7 @@ import {
   ALCHEMY_PUBLIC_RPC,
   getCurrentNetworkHttpUrl,
 } from "../client/constants";
+import { kakarot } from "@/lib/client/wagmi-custom-chains";
 import { sepolia } from "@wagmi/core/chains";
 import { configureChains, createConfig } from "wagmi";
 import {
@@ -15,7 +16,7 @@ import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 export const { chains, webSocketPublicClient, publicClient } = configureChains(
-  [sepolia],
+  [sepolia, kakarot],
   [
     jsonRpcProvider({
       rpc: (chain) => ({
@@ -27,7 +28,7 @@ export const { chains, webSocketPublicClient, publicClient } = configureChains(
 
 const connectorArgs = {
   appName: "Swaplace dApp",
-  chains: [sepolia],
+  chains: [sepolia, kakarot],
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ?? "",
 };
 
