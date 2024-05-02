@@ -254,7 +254,7 @@ export const OffersContextProvider = ({ children }: any) => {
   };
 
   // Offers query
-  const { data, status, isFetchingNextPage, fetchNextPage, isError } =
+  const { data, status, isFetchingNextPage, fetchNextPage, isError, refetch } =
     useInfiniteQuery({
       queryKey: ["PonderQuerySwaps", authenticatedUserAddress, offersFilter],
       queryFn: async ({ pageParam }: { pageParam: string | null }) =>
@@ -265,6 +265,10 @@ export const OffersContextProvider = ({ children }: any) => {
       getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
       enabled: !!authenticatedUserAddress,
     });
+
+  useEffect(() => {
+    refetch();
+  }, [offersFilter, refetch]);
 
   const [hasNextPage, setHasNextPage] = useState(false);
 
