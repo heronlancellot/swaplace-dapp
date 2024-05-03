@@ -1,13 +1,12 @@
 import {
   DoneIcon,
+  OfferTag,
   OffersContext,
   PonderFilter,
   ThreeDotsCardOffersOptions,
 } from "@/components/01-atoms";
-
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { ConfirmSwapModal, SwapModalAction } from "@/components/02-molecules";
-
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import React, { useContext, useState } from "react";
 
@@ -54,18 +53,13 @@ export const TokenOfferDetails = ({
     <div className="flex w-full justify-between items-center py-2 px-3">
       <div>
         <ul className="flex p-small dark:!text-[#A3A9A5] items-center gap-2">
-          {/* {<OfferTag status={swap.status} />} */}
+          <OfferTag status={swap.status} />
           {needsExpiryDate && (
             <li className="flex items-center gap-2">
               <div className=" w-1 h-1 bg-neutral-600 rounded-full shadow-inner" />
               Expires on {formattedSwapExpiryDate}
             </li>
           )}
-          {!needsExpiryDate && swap.status === PonderFilter.CANCELED
-            ? `Swap ${PonderFilter.CANCELED}`
-            : !needsExpiryDate &&
-              swap.status === PonderFilter.ACCEPTED &&
-              `Swap ${PonderFilter.ACCEPTED}`}
           <li className="flex items-center gap-2">
             <div className="w-1 h-1 bg-neutral-600 rounded-full shadow-inner" />
             Created by {swap.askerTokens.address?.getEllipsedAddress()}
