@@ -67,17 +67,18 @@ export const TokenOfferDetails = ({
         </ul>
       </div>
       <div className="flex gap-2 justify-center items-center ">
-        {authenticatedUserAddress?.equals(swap.bidderTokens.address) && (
-          <div>
-            <button
-              onClick={acceptOffer}
-              className="disabled:pointer-events-none rounded-lg w-full h-[28px] shadow-tag bg-[#d8f035] py-1 px-3 items-center flex justify-center gap-2"
-            >
-              <DoneIcon className="text-[#181A19]" />
-              <p className="p-medium-bold-variant-black">Accept</p>
-            </button>
-          </div>
-        )}
+        {authenticatedUserAddress?.equals(swap.bidderTokens.address) &&
+          swap.status !== PonderFilter.ACCEPTED && (
+            <div>
+              <button
+                onClick={acceptOffer}
+                className="disabled:pointer-events-none rounded-lg w-full h-[28px] shadow-tag bg-[#d8f035] py-1 px-3 items-center flex justify-center gap-2"
+              >
+                <DoneIcon className="text-[#181A19]" />
+                <p className="p-medium-bold-variant-black">Accept</p>
+              </button>
+            </div>
+          )}
 
         <ThreeDotsCardOffersOptions swap={swap} />
       </div>
