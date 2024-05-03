@@ -42,5 +42,5 @@ export const NetworkIcon = ({ variant = "default" }: NetworkIconProps) => {
     ),
   };
 
-  return NetworkIcons[variant] || <></>;
+  return NetworkIcons[variant];
 };

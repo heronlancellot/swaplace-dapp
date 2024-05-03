@@ -1,7 +1,7 @@
 import { Network } from "alchemy-sdk";
 
 export const ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
-
+export const SWAPLACE_WEBSITE = "https://swaplace.xyz/";
 enum NetworkKakarot {
   ETH_KAKAROT = "eth-kakarot",
 }
@@ -108,6 +108,21 @@ export const ChainInfo: Record<SupportedNetworks, ChainProps> = {
     id: 421614,
     name: "Arbitrum Sepolia",
   },
+};
+// Kakarot CHAIN DATA RPC
+export const KAKAROT_CHAIN_DATA = {
+  chainId: "0x6B6B7274",
+  chainName: "Kakarot",
+  rpcUrls: ["https://sepolia-rpc.kakarot.org"],
+  iconUrls: [
+    "https://ipfs.io/ipfs/QmSg36ytguM4b5cjCAnSjPKDBCetDmq9yiPS5GeK19BejA/",
+  ],
+  nativeCurrency: {
+    name: "Kakarot",
+    symbol: "KKT",
+    decimals: 18,
+  },
+  blockExplorerUrls: ["https://etherscan.io"],
 };
 
 // //Workaround to make `getNetwork` to add ETH_KAKAROT as alchemy does not support Kakarot.
