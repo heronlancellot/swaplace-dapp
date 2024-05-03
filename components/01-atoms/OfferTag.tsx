@@ -5,39 +5,42 @@ export const OfferTag = ({ status }: { status: PonderFilter }) => {
     body: React.ReactNode;
   }
 
+  enum SwapStatus {
+    ACCEPTED = "ACCEPTED",
+    CANCELED = "CANCELED",
+    EXPIRED = "EXPIRED",
+    PENDING = "PENDING",
+  }
+
   const PonderTagFilters: Record<PonderFilter, PonderFilterConfig> = {
     [PonderFilter.ACCEPTED]: {
       body: (
-        <div className="bg-[#10584C] p-1 rounded">{PonderFilter.ACCEPTED}</div>
+        <div className="bg-[#10584C] p-1 rounded">{SwapStatus.ACCEPTED}</div>
       ),
     },
     [PonderFilter.CANCELED]: {
       body: (
-        <div className="bg-[#D7544E] p-1 rounded">{PonderFilter.CANCELED}</div>
+        <div className="bg-[#D7544E] p-1 rounded">{SwapStatus.CANCELED}</div>
       ),
     },
     [PonderFilter.EXPIRED]: {
       body: (
-        <div className="bg-[#4A4F80] p-1 rounded">{PonderFilter.EXPIRED}</div>
+        <div className="bg-[#4A4F80] p-1 rounded">{SwapStatus.EXPIRED}</div>
       ),
     },
-    // Todo: Check the color of received && compare if the auth user is the owner of the swap
     [PonderFilter.RECEIVED]: {
       body: (
-        <div className="bg-[#DE7B30] p-1 rounded">{PonderFilter.RECEIVED}</div>
+        <div className="bg-[#DE7B30] p-1 rounded">{SwapStatus.PENDING}</div>
       ),
     },
-    // Todo: Check the color of All Offers
     [PonderFilter.ALL_OFFERS]: {
       body: (
-        <div className="bg-[#DE7B30] p-1 rounded">
-          {PonderFilter.ALL_OFFERS}
-        </div>
+        <div className="bg-[#DE7B30] p-1 rounded">{SwapStatus.PENDING}</div>
       ),
     },
     [PonderFilter.CREATED]: {
       body: (
-        <div className="bg-[#DE7B30] p-1 rounded">{PonderFilter.CREATED}</div>
+        <div className="bg-[#DE7B30] p-1 rounded">{SwapStatus.PENDING}</div>
       ),
     },
   };

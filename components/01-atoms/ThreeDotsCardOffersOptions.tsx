@@ -1,4 +1,9 @@
-import { ShareIcon, ThreeDotsIcon, XMarkIcon } from "@/components/01-atoms";
+import {
+  PonderFilter,
+  ShareIcon,
+  ThreeDotsIcon,
+  XMarkIcon,
+} from "@/components/01-atoms";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { SwapUserConfiguration, cancelSwap } from "@/lib/service/cancelSwap";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
@@ -63,17 +68,18 @@ export const ThreeDotsCardOffersOptions = ({
             >
               <ShareIcon /> Share
             </button>
-            {authenticatedUserAddress?.equals(swap.askerTokens.address) && (
-              <button
-                type="button"
-                className=" flex items-center gap-3 w-full px-4 py-2 text-sm dark:p-small-dark-variant-grey rounded-lg dark:hover:bg-[#353836] hover:bg-[#e4e4e4] hover:text-gray-900"
-                role="menuitem"
-                onClick={() => handleCancelSwap(swap)}
-              >
-                <XMarkIcon />
-                Cancel
-              </button>
-            )}
+            {authenticatedUserAddress?.equals(swap.askerTokens.address) &&
+              swap.status !== PonderFilter.CANCELED && (
+                <button
+                  type="button"
+                  className=" flex items-center gap-3 w-full px-4 py-2 text-sm dark:p-small-dark-variant-grey rounded-lg dark:hover:bg-[#353836] hover:bg-[#e4e4e4] hover:text-gray-900"
+                  role="menuitem"
+                  onClick={() => handleCancelSwap(swap)}
+                >
+                  <XMarkIcon />
+                  Cancel
+                </button>
+              )}
           </div>
         </div>
       )}
