@@ -1,5 +1,6 @@
 import {
-  ChatIcon,
+  LeaderboardIcon,
+  MarketplaceIcon,
   NotificationsIcon,
   OffersIcon,
   SwappingIcon,
@@ -24,6 +25,8 @@ export enum SwappingIconsID {
   "OFFERS",
   "CHAT",
   "NOTIFICATIONS",
+  "MARKETPLACE",
+  "LEADERBOARD",
 }
 
 const findInitialActiveTab = (
@@ -52,12 +55,26 @@ export const SwappingIcons = () => {
       icon: OffersIcon,
     },
     {
-      id: SwappingIconsID.CHAT,
-      name: "Chat",
-      href: "/",
-      icon: ChatIcon,
+      id: SwappingIconsID.MARKETPLACE,
+      name: "Marketplace",
+      href: "/marketplace",
+      icon: MarketplaceIcon,
       disabled: true,
     },
+    {
+      id: SwappingIconsID.LEADERBOARD,
+      name: "Leaderboard",
+      href: "/leaderboard",
+      icon: LeaderboardIcon,
+      disabled: true,
+    },
+    // {
+    //   id: SwappingIconsID.CHAT,
+    //   name: "Chat",
+    //   href: "/",
+    //   icon: ChatIcon,
+    //   disabled: true,
+    // },
     {
       id: SwappingIconsID.NOTIFICATIONS,
       name: "Notifications",
@@ -78,77 +95,71 @@ export const SwappingIcons = () => {
     router.push(e.href);
   };
 
-  return (
-    <>
-      {swappingTabs.map((swappingTab) => {
-        const IconComponent = swappingTab.icon;
-        const isSelected = activeTab == swappingTab.id;
-        const isDisabled = swappingTab.disabled;
+  return swappingTabs.map((swappingTab) => {
+    const IconComponent = swappingTab.icon;
+    const isSelected = activeTab == swappingTab.id;
+    const isDisabled = swappingTab.disabled;
 
-        return (
-          <div key={swappingTab.id}>
-            {isWideScreen ? (
-              <Tooltip position={"right"} content={swappingTab.name}>
-                <div
-                  key={swappingTab.id}
+    return (
+      <div key={swappingTab.id}>
+        {isWideScreen ? (
+          <Tooltip position={"right"} content={swappingTab.name}>
+            <div
+              key={swappingTab.id}
+              className={cc([
+                isSelected
+                  ? "dark:p-medium-bold-dark p-medium-bold border-l dark:border-[#DDF23D] border-[#AABE13] hover:dark:bg-[#333534]"
+                  : "dark:p-medium-bold p-medium-bold",
+                `flex-1 md:p-4 cursor-pointer ${
+                  !isDisabled && "hover:dark:bg-[#343635] hover:bg-[#eff3cf]"
+                } group`,
+                isDisabled && "disabled hover:cursor-not-allowed hover:none",
+              ])}
+              onClick={() => {
+                !isDisabled && handleClick(swappingTab);
+              }}
+            >
+              <div className="flex items-center justify-center w-full">
+                <IconComponent
                   className={cc([
-                    isSelected
-                      ? "dark:p-medium-bold-dark p-medium-bold border-l dark:border-[#DDF23D] border-[#AABE13] hover:dark:bg-[#333534]"
-                      : "dark:p-medium-bold p-medium-bold",
-                    `flex-1 md:p-4 cursor-pointer ${
-                      !isDisabled &&
-                      "hover:dark:bg-[#343635] hover:bg-[#eff3cf]"
-                    } group`,
-                    isDisabled &&
-                      "disabled hover:cursor-not-allowed hover:none",
+                    "w-5 h-5",
+                    theme === "dark"
+                      ? isSelected
+                        ? "text-[#DDF23D]"
+                        : "text-[#747474] group-hover:text-white"
+                      : isSelected
+                      ? "text-[#AABE13]"
+                      : "text-[#c1c3c2] group-hover:text-[#4F4F4F]",
+                    isDisabled && "disabled cursor-not-allowed",
                   ])}
-                  onClick={() => {
-                    !isDisabled && handleClick(swappingTab);
-                  }}
-                >
-                  <div className="flex items-center justify-center w-full">
-                    <IconComponent
-                      className={cc([
-                        "w-5 h-5",
-                        theme === "dark"
-                          ? isSelected
-                            ? "text-[#DDF23D]"
-                            : "text-[#747474] group-hover:text-white"
-                          : isSelected
-                          ? "text-[#AABE13]"
-                          : "text-[#c1c3c2] group-hover:text-[#4F4F4F]",
-                        isDisabled && "disabled cursor-not-allowed",
-                      ])}
-                    />
-                  </div>
-                </div>
-              </Tooltip>
-            ) : (
-              <Tooltip position={"bottom"} content={swappingTab.name}>
-                <div
-                  key={swappingTab.id}
-                  className={cc([
-                    activeTab == swappingTab.id
-                      ? "dark:p-medium-bold-dark p-medium-bold border-l dark:border-[#DDF23D] border-black hover:dark:bg-[#333534]"
-                      : "dark:p-medium-bold p-medium-bold opacity-50 border-l dark:border-[#313131]",
-                    "flex-1 md:p-4 cursor-pointer hover:dark:bg-[#343635] hover:bg-[#eff3cf]",
-                  ])}
-                  onClick={() => {
-                    handleClick(swappingTab);
-                  }}
-                >
-                  <div className="flex items-center justify-center w-full">
-                    <IconComponent
-                      className="w-8 h-8 mx-2"
-                      fill={cc([theme == "dark" ? "#DDF23D" : "#4F4F4F"])}
-                    />
-                  </div>
-                </div>
-              </Tooltip>
-            )}
-          </div>
-        );
-      })}
-    </>
-  );
+                />
+              </div>
+            </div>
+          </Tooltip>
+        ) : (
+          <Tooltip position={"bottom"} content={swappingTab.name}>
+            <div
+              key={swappingTab.id}
+              className={cc([
+                activeTab == swappingTab.id
+                  ? "dark:p-medium-bold-dark p-medium-bold border-l dark:border-[#DDF23D] border-black hover:dark:bg-[#333534]"
+                  : "dark:p-medium-bold p-medium-bold opacity-50 border-l dark:border-[#313131]",
+                "flex-1 md:p-4 cursor-pointer hover:dark:bg-[#343635] hover:bg-[#eff3cf]",
+              ])}
+              onClick={() => {
+                handleClick(swappingTab);
+              }}
+            >
+              <div className="flex items-center justify-center w-full">
+                <IconComponent
+                  className="w-8 h-8 mx-2"
+                  fill={cc([theme == "dark" ? "#DDF23D" : "#4F4F4F"])}
+                />
+              </div>
+            </div>
+          </Tooltip>
+        )}
+      </div>
+    );
+  });
 };
