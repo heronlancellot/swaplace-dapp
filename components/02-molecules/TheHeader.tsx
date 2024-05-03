@@ -4,6 +4,8 @@ import {
   ConnectWallet,
   ENSAvatar,
   MoonIcon,
+  NetworkDropdown,
+  NetworkVariantPosition,
   SunIcon,
   SwaplaceIcon,
   SwappingIcons,
@@ -11,6 +13,7 @@ import {
 } from "@/components/01-atoms";
 import { useSidebar } from "@/lib/client/contexts/SidebarContext.tsx";
 import { WalletSidebarTemplate } from "@/components/03-organisms";
+import { SWAPLACE_WEBSITE } from "@/lib/client/constants";
 import React, { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -47,7 +50,7 @@ export const TheHeader = () => {
     <>
       <header className="bg-[#F6F6F6] dark:bg-[#212322] dark:border-[#353836] border-[#D6D5D5] border rounded-2xl z-40 w-full h-auto xl:w-[62px] py-4 flex xl:flex-col justify-between items-center xl:px-0 px-8  xl:pb-4 font-medium dark:shadow-swap-station shadow-swap-station-light">
         <div className="flex">
-          <Link href="https://swaplace.xyz/">
+          <Link href={SWAPLACE_WEBSITE}>
             <SwaplaceIcon className="w-10 text-[#AABE13] dark:text-[#DDF23D]" />
           </Link>
         </div>
@@ -80,6 +83,10 @@ export const TheHeader = () => {
               </Tooltip>
             )}
           </div>
+          <NetworkDropdown
+            forAuthedUser={true}
+            variant={NetworkVariantPosition.VERTICAL}
+          />
           <div className="h-10 w-10">
             <>
               {!!authenticatedUserAddress ? (
