@@ -21,10 +21,12 @@ import { retrieveDataFromTokensArray } from "@/lib/client/blockchain-utils";
 import {
   FormattedSwapOfferAssets,
   PopulatedSwapOfferCard,
+  PageData,
 } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import cc from "classcat";
 import { useContext, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 /**
  * The horizonalVariant from TokenOffers get the data from Ponder
@@ -34,21 +36,34 @@ import { useContext, useEffect, useState } from "react";
  */
 export const SwapOffers = () => {
   const {
-    // hasNextPage,
-    // fetchNextPage,
-    // isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
     isLoadingOffersQuery,
     offersFilter,
     offersQueries,
     isError,
+    data,
   } = useContext(OffersContext);
   const [isLoading, setIsLoading] = useState(true);
   const { tokensList, setTokensList } = useContext(OffersContext);
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
 
+  const { ref, inView } = useInView({
+    threshold: 0.5,
+  });
+
   useEffect(() => {
-    offersQueries && processSwaps();
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView, hasNextPage]);
+
+  useEffect(() => {
+    if (offersQueries) {
+      processSwaps();
+    }
   }, [offersQueries]);
 
   const findStatus = (swap: FormattedSwapOfferAssets): PonderFilter => {
@@ -129,14 +144,12 @@ export const SwapOffers = () => {
     <SwapOffersLayout variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED} />
   ) : (
     <div className="flex flex-col gap-5 no-scrollbar">
-      {tokensList.map((swap, index) => {
-        return <SwapOffer key={index} swap={swap} />;
-      })}
-      {/* {hasNextPage && (
-          <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-            {isFetchingNextPage ? "Loading..." : "Load More"}
-          </button>
-        )} */}
+      {data
+        ?.flatMap((page: PageData) => page.swapOffers)
+        .map((swap: any, index: any) => (
+          <SwapOffer key={index} swap={swap} />
+        ))}
+      <div ref={ref}>{isFetchingNextPage && "Loading..."}</div>
       <div className="flex justify-end mt-5">
         <button
           className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
