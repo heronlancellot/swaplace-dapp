@@ -29,7 +29,7 @@ export const SwapExpireTime = () => {
   return (
     <div className="flex">
       <input
-        type="date"
+        type="datetime-local"
         className={
           "appearance-none  dark:bg-[#353836] bg-[#E4E4E4] rounded-l-lg border dark:border-[#353836] border-[#E4E4E4] flex items-center xl:py-2 xl:px-3 p-small-variant-black-2 dark:p-small-dark-variant-grey focus:outline-none active:bg-current focus:bg-transparent px-2"
         }
