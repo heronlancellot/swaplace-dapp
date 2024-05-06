@@ -61,6 +61,7 @@ interface OffersContextProps {
   setTokensList: Dispatch<React.SetStateAction<PopulatedSwapOfferCard[]>>;
   tokensList: PopulatedSwapOfferCard[];
   isError: boolean;
+  data: any;
 }
 
 const DEFAULT_ERC20_TOKEN: Token = {
@@ -264,6 +265,26 @@ export const OffersContextProvider = ({ children }: any) => {
       staleTime: Infinity,
       getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
       enabled: !!authenticatedUserAddress,
+      select: (data) => {
+        return data.pages.map((page) => ({
+          swapOffers: page.swapOffers.map((swap) => {
+            return {
+              id: BigInt(swap.id),
+              status: offersFilter,
+              expiryDate: swap.expiryDate,
+              bidderTokens: {
+                address: swap.bidderAssets.address,
+                tokens: swap.bidderAssets.tokens,
+              },
+              askerTokens: {
+                address: swap.askerAssets.address,
+                tokens: swap.askerAssets.tokens,
+              },
+            };
+          }),
+          pageInfo: page.pageInfo,
+        }));
+      },
     });
 
   useEffect(() => {
@@ -274,7 +295,7 @@ export const OffersContextProvider = ({ children }: any) => {
 
   useEffect(() => {
     if (data) {
-      setHasNextPage(data.pages[data.pages.length - 1].pageInfo.hasNextPage);
+      setHasNextPage(data[data.length - 1].pageInfo.hasNextPage);
     }
   }, [data]);
 
@@ -300,6 +321,7 @@ export const OffersContextProvider = ({ children }: any) => {
       setTokensList,
       tokensList,
       isError,
+      data,
     });
   }, [
     setOffersFilter,
@@ -331,6 +353,7 @@ export const OffersContextProvider = ({ children }: any) => {
     setTokensList,
     tokensList,
     isError,
+    data,
   });
 
   return (
@@ -355,4 +378,5 @@ export const OffersContext = React.createContext<OffersContextProps>({
   setTokensList: () => {},
   tokensList: [DEFAULT_SWAP_OFFER],
   isError: false,
+  data: null,
 });
