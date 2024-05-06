@@ -53,3 +53,8 @@ export interface PageInfo {
 export interface PageParam {
   pageParam: string | null;
 }
+
+export interface PageData {
+  swapOffers: PopulatedSwapOfferCard[];
+  pageInfo: PageInfo;
+}
