@@ -8,7 +8,7 @@ export const SwapExpireTime = () => {
 
   const fetchData = async (dateTimestamp: number) => {
     try {
-      const dateTimestampBigInt = BigInt(dateTimestamp / 1000); // Transform the timestamp to seconds to send to contract
+      const dateTimestampBigInt = BigInt(dateTimestamp / 1000);
       setTimeDate(dateTimestampBigInt);
     } catch (error) {
       console.error("error", error);
@@ -26,12 +26,17 @@ export const SwapExpireTime = () => {
     fetchData(dateTimestamp);
   };
 
+  const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+  const inputType = isFirefox || isSafari ? "date" : "datetime-local";
+
   return (
     <div className="flex">
       <input
-        type="datetime-local"
+        type={inputType}
         className={
-          "appearance-none  dark:bg-[#353836] bg-[#E4E4E4] rounded-l-lg border dark:border-[#353836] border-[#E4E4E4] flex items-center xl:py-2 xl:px-3 p-small-variant-black-2 dark:p-small-dark-variant-grey focus:outline-none active:bg-current focus:bg-transparent px-2"
+          "appearance-none dark:bg-[#353836] bg-[#E4E4E4] rounded-l-lg border dark:border-[#353836] border-[#E4E4E4] flex items-center xl:py-2 xl:px-3 p-small-variant-black-2 dark:p-small-dark-variant-grey focus:outline-none active:bg-current focus:bg-transparent px-2"
         }
         onChange={handleDateChange}
       />
