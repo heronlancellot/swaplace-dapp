@@ -69,7 +69,7 @@ export const SwapContextProvider = ({ children }: any) => {
     [],
   );
   const [destinyChain, setDestinyChain] = useState<SupportedNetworks>(
-    SupportedNetworks.SEPOLIA,
+    SupportedNetworks.KAKAROT_SEPOLIA,
   );
   const [timeDate, setTimeDate] = useState<bigint>(BigInt(1));
 
