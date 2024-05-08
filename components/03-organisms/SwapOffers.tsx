@@ -13,19 +13,24 @@ import {
   PonderFilter,
 } from "@/components/01-atoms/OffersContext";
 import {
-  TokenOfferDetails,
   SwapIcon,
+  TokenOfferDetails,
   TokensOfferSkeleton,
 } from "@/components/01-atoms";
-import { retrieveDataFromTokensArray } from "@/lib/client/blockchain-utils";
+import {
+  decodeConfig,
+  retrieveDataFromTokensArray,
+} from "@/lib/client/blockchain-utils";
 import {
   FormattedSwapOfferAssets,
   PopulatedSwapOfferCard,
   PageData,
 } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import cc from "classcat";
+import { getSwap } from "@/lib/service/getSwap";
 import { useContext, useEffect, useState } from "react";
+import { useNetwork } from "wagmi";
+import cc from "classcat";
 import { useInView } from "react-intersection-observer";
 
 /**
@@ -49,6 +54,7 @@ export const SwapOffers = () => {
   const { tokensList, setTokensList } = useContext(OffersContext);
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
+  const { chain } = useNetwork();
 
   const { ref, inView } = useInView({
     threshold: 0.5,
@@ -65,6 +71,8 @@ export const SwapOffers = () => {
       processSwaps();
     }
   }, [offersQueries]);
+
+  if (!chain) return null;
 
   const findStatus = (swap: FormattedSwapOfferAssets): PonderFilter => {
     switch (swap.status.toUpperCase()) {
@@ -85,6 +93,7 @@ export const SwapOffers = () => {
 
   const processSwaps = async () => {
     setIsLoading(true);
+
     try {
       const formattedTokensPromises: Promise<PopulatedSwapOfferCard>[] =
         offersQueries[offersFilter].map(
@@ -96,11 +105,15 @@ export const SwapOffers = () => {
               swap.askerAssets.tokens,
             );
             const swapStatus = findStatus(swap);
+            const swapData: any = await getSwap(BigInt(swap.id), chain.id);
+            const swapExpiryData = await decodeConfig({
+              config: swapData.config,
+            });
 
             return {
               id: BigInt(swap.id),
               status: swapStatus,
-              expiryDate: swap.expiryDate,
+              expiryDate: swapExpiryData.expiry,
               bidderTokens: {
                 address: swap.bidderAssets.address,
                 tokens: bidedTokensWithData,
