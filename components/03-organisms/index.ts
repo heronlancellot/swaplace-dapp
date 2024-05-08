@@ -1,4 +1,5 @@
 export * from "./ApproveTokenCard";
+export * from "./MarketplaceSwapOffers";
 export * from "./SwapConnection";
 export * from "./SwapStation";
 export * from "./SwappingShelfs";
