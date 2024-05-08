@@ -1,7 +1,6 @@
 import { getBlockchainTimestamp, getTokenAmountOrId } from "./blockchain-utils";
 import { ERC20, EthereumAddress, Token, TokenType } from "../shared/types";
 import { type WalletClient } from "wagmi";
-import toast from "react-hot-toast";
 
 export interface Asset {
   addr: `0x${string}`;
@@ -127,7 +126,6 @@ export async function getSwapConfig(
   // check for the current `block.timestamp` because `expiry` cannot be in the past
   const timestamp = await getBlockchainTimestamp(chainId);
   if (expiry < timestamp) {
-    toast.error("Select a valid date to your swap.");
     throw new Error("InvalidExpiry");
   }
 

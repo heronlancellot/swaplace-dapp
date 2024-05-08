@@ -282,6 +282,8 @@ export const toastBlockchainTxError = (e: string) => {
   */
   if (e.includes("rejected")) {
     toast.error("Transaction rejected");
+  } else if (e.includes("InvalidExpiry")) {
+    toast.error("Select a valid date to your swap.");
   } else {
     toast.error("Transaction failed. Please contact our team");
   }

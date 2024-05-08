@@ -9,7 +9,7 @@ export const SwapExpireTime = () => {
 
   const fetchData = async (dateTimestamp: number) => {
     try {
-      const dateTimestampBigInt = BigInt(dateTimestamp / 1000);
+      const dateTimestampBigInt = BigInt(dateTimestamp / 1000); // Transform the timestamp to seconds to send to contract
       setTimeDate(dateTimestampBigInt);
     } catch (error) {
       console.error("error", error);
