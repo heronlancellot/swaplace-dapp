@@ -59,7 +59,6 @@ export const SwappingIcons = () => {
       name: "Marketplace",
       href: "/marketplace",
       icon: MarketplaceIcon,
-      disabled: true,
     },
     {
       id: SwappingIconsID.LEADERBOARD,
