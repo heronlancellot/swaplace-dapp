@@ -22,9 +22,13 @@ export const SwapExpireTime = () => {
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedDate = event.target.value;
-    const timestamp = new Date(selectedDate).getTime();
-    setDateTimestamp(timestamp);
-    fetchData(dateTimestamp);
+    const selectedUTCTimestamp = new Date(selectedDate).getTime(); // Time in UTC
+    const timezoneOffsetUtcLocalDifference =
+      new Date().getTimezoneOffset() * 60000; // Offset in milliseconds
+    const localTimestamp =
+      selectedUTCTimestamp + timezoneOffsetUtcLocalDifference; // Adds the offset to get local time
+    setDateTimestamp(localTimestamp); // Sets the UTC timestamp
+    fetchData(localTimestamp); // Sends the local timestamp to the fetchData function
   };
 
   return (
