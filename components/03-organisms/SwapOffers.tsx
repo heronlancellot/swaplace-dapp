@@ -13,18 +13,23 @@ import {
   PonderFilter,
 } from "@/components/01-atoms/OffersContext";
 import {
-  TokenOfferDetails,
   SwapIcon,
+  TokenOfferDetails,
   TokensOfferSkeleton,
 } from "@/components/01-atoms";
-import { retrieveDataFromTokensArray } from "@/lib/client/blockchain-utils";
+import {
+  decodeConfig,
+  retrieveDataFromTokensArray,
+} from "@/lib/client/blockchain-utils";
 import {
   FormattedSwapOfferAssets,
   PopulatedSwapOfferCard,
 } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import cc from "classcat";
+import { getSwap } from "@/lib/service/getSwap";
 import { useContext, useEffect, useState } from "react";
+import { useNetwork } from "wagmi";
+import cc from "classcat";
 
 /**
  * The horizonalVariant from TokenOffers get the data from Ponder
@@ -46,6 +51,9 @@ export const SwapOffers = () => {
   const { tokensList, setTokensList } = useContext(OffersContext);
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
+  const { chain } = useNetwork();
+
+  if (!chain) return null;
 
   useEffect(() => {
     offersQueries && processSwaps();
@@ -70,6 +78,7 @@ export const SwapOffers = () => {
 
   const processSwaps = async () => {
     setIsLoading(true);
+
     try {
       const formattedTokensPromises: Promise<PopulatedSwapOfferCard>[] =
         offersQueries[offersFilter].map(
@@ -81,11 +90,15 @@ export const SwapOffers = () => {
               swap.askerAssets.tokens,
             );
             const swapStatus = findStatus(swap);
+            const swapData: any = await getSwap(BigInt(swap.id), chain.id);
+            const swapExpiryData = await decodeConfig({
+              config: swapData.config,
+            });
 
             return {
               id: BigInt(swap.id),
               status: swapStatus,
-              expiryDate: swap.expiryDate,
+              expiryDate: swapExpiryData.expiry,
               bidderTokens: {
                 address: swap.bidderAssets.address,
                 tokens: bidedTokensWithData,

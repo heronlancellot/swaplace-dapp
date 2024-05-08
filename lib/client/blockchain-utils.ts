@@ -282,6 +282,8 @@ export const toastBlockchainTxError = (e: string) => {
   */
   if (e.includes("rejected")) {
     toast.error("Transaction rejected");
+  } else if (e.includes("InvalidExpiry")) {
+    toast.error("Select a valid date to your swap.");
   } else {
     toast.error("Transaction failed. Please contact our team");
   }
@@ -289,7 +291,7 @@ export const toastBlockchainTxError = (e: string) => {
 
 interface encodeConfigProps {
   allowed: string;
-  expiry: bigint | number;
+  expiry: bigint;
   etherRecipient: bigint;
   etherValue: bigint;
 }
@@ -319,7 +321,7 @@ export async function decodeConfig({ config }: decodeConfigProps): Promise<{
 }> {
   return {
     allowed: `0x${(config >> BigInt(96)).toString(16).padStart(40, "0")}`,
-    expiry: config & ((BigInt(1) << BigInt(96)) - BigInt(1)),
+    expiry: (config >> BigInt(64)) & ((BigInt(1) << BigInt(32)) - BigInt(1)),
     etherRecipient:
       (config >> BigInt(56)) & ((BigInt(1) << BigInt(8)) - BigInt(1)),
     etherValue: config & ((BigInt(1) << BigInt(56)) - BigInt(1)),
