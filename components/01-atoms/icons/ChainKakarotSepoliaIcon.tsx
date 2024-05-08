@@ -1,5 +1,4 @@
 import { SVGProps } from "react";
-//TO DO: Adjust the measures to be aligned with other icons and have a default distance with the text
 
 export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
   return (
@@ -216,13 +215,13 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
           id="Vector_42"
           d="M66.9712 125.547V62.107L83.387 80.2881V107.753L66.9712 125.547Z"
           stroke="url(#paint32_linear_1_2)"
-          stroke-width="1.54733"
+          strokeWidth="1.54733"
         />
         <path
           id="Vector_43"
           d="M119.576 61.3334L86.3717 97.6955L118.83 131.737H140.469L105.399 94.214L135.619 61.3334H119.576Z"
           stroke="url(#paint33_linear_1_2)"
-          stroke-width="1.54733"
+          strokeWidth="1.54733"
         />
         <path
           id="Vector_44"
@@ -308,8 +307,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="163.844"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#2DA69E" />
-            <stop offset="1" stop-color="#2EA1A0" />
+            <stop stopColor="#2DA69E" />
+            <stop offset="1" stopColor="#2EA1A0" />
           </linearGradient>
           <linearGradient
             id="paint1_linear_1_2"
@@ -319,8 +318,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="162.925"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5E3A56" />
-            <stop offset="1" stop-color="#5C445A" />
+            <stop stopColor="#5E3A56" />
+            <stop offset="1" stopColor="#5C445A" />
           </linearGradient>
           <linearGradient
             id="paint2_linear_1_2"
@@ -330,8 +329,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="162.925"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#404F5A" />
-            <stop offset="1" stop-color="#375861" />
+            <stop stopColor="#404F5A" />
+            <stop offset="1" stopColor="#375861" />
           </linearGradient>
           <linearGradient
             id="paint3_linear_1_2"
@@ -341,8 +340,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="163.385"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#328C8A" />
-            <stop offset="1" stop-color="#2E8C8B" />
+            <stop stopColor="#328C8A" />
+            <stop offset="1" stopColor="#2E8C8B" />
           </linearGradient>
           <linearGradient
             id="paint4_linear_1_2"
@@ -352,8 +351,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="143.642"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#336169" />
-            <stop offset="1" stop-color="#3A6774" />
+            <stop stopColor="#336169" />
+            <stop offset="1" stopColor="#3A6774" />
           </linearGradient>
           <linearGradient
             id="paint5_linear_1_2"
@@ -363,8 +362,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="172.113"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#356873" />
-            <stop offset="1" stop-color="#34B0AD" />
+            <stop stopColor="#356873" />
+            <stop offset="1" stopColor="#34B0AD" />
           </linearGradient>
           <linearGradient
             id="paint6_linear_1_2"
@@ -374,8 +373,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="174.999"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#E1555A" />
-            <stop offset="1" stop-color="#721C43" />
+            <stop stopColor="#E1555A" />
+            <stop offset="1" stopColor="#721C43" />
           </linearGradient>
           <linearGradient
             id="paint7_linear_1_2"
@@ -385,8 +384,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="186.365"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#42072A" />
-            <stop offset="1" stop-color="#520C34" />
+            <stop stopColor="#42072A" />
+            <stop offset="1" stopColor="#520C34" />
           </linearGradient>
           <linearGradient
             id="paint8_linear_1_2"
@@ -396,8 +395,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="76.4198"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#EE7543" />
-            <stop offset="1" stop-color="#CF4F5E" />
+            <stop stopColor="#EE7543" />
+            <stop offset="1" stopColor="#CF4F5E" />
           </linearGradient>
           <linearGradient
             id="paint9_linear_1_2"
@@ -407,8 +406,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="78.6204"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#CC4C4B" />
-            <stop offset="1" stop-color="#83304E" />
+            <stop stopColor="#CC4C4B" />
+            <stop offset="1" stopColor="#83304E" />
           </linearGradient>
           <linearGradient
             id="paint10_linear_1_2"
@@ -418,8 +417,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="72.157"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#F5854A" />
-            <stop offset="1" stop-color="#D66D40" />
+            <stop stopColor="#F5854A" />
+            <stop offset="1" stopColor="#D66D40" />
           </linearGradient>
           <linearGradient
             id="paint11_linear_1_2"
@@ -429,8 +428,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="122.453"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#53B9BF" />
-            <stop offset="1" stop-color="#227880" />
+            <stop stopColor="#53B9BF" />
+            <stop offset="1" stopColor="#227880" />
           </linearGradient>
           <linearGradient
             id="paint12_linear_1_2"
@@ -440,8 +439,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="122.453"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#42B1B8" />
-            <stop offset="1" stop-color="#22626A" />
+            <stop stopColor="#42B1B8" />
+            <stop offset="1" stopColor="#22626A" />
           </linearGradient>
           <linearGradient
             id="paint13_linear_1_2"
@@ -451,8 +450,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="71.7778"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#47EDDD" />
-            <stop offset="1" stop-color="#389398" />
+            <stop stopColor="#47EDDD" />
+            <stop offset="1" stopColor="#389398" />
           </linearGradient>
           <linearGradient
             id="paint14_linear_1_2"
@@ -462,8 +461,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="42.7655"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#49EDDD" />
-            <stop offset="1" stop-color="#30B8AA" />
+            <stop stopColor="#49EDDD" />
+            <stop offset="1" stopColor="#30B8AA" />
           </linearGradient>
           <radialGradient
             id="paint15_radial_1_2"
@@ -473,8 +472,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(155.169 52.4363) rotate(90) scale(1.54733 1.54733)"
           >
-            <stop stop-color="#65F9E5" />
-            <stop offset="1" stop-color="#FFF8FF" stop-opacity="0" />
+            <stop stopColor="#65F9E5" />
+            <stop offset="1" stopColor="#FFF8FF" stopOpacity="0" />
           </radialGradient>
           <radialGradient
             id="paint16_radial_1_2"
@@ -484,8 +483,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(148.206 47.7942) rotate(90) scale(1.54733 1.54733)"
           >
-            <stop stop-color="#65F9E5" />
-            <stop offset="1" stop-color="#FFF8FF" stop-opacity="0" />
+            <stop stopColor="#65F9E5" />
+            <stop offset="1" stopColor="#FFF8FF" stopOpacity="0" />
           </radialGradient>
           <radialGradient
             id="paint17_radial_1_2"
@@ -495,8 +494,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(150.914 53.5967) rotate(90) scale(0.386831 0.386826)"
           >
-            <stop stop-color="#65F9E5" />
-            <stop offset="1" stop-color="#FFF8FF" stop-opacity="0" />
+            <stop stopColor="#65F9E5" />
+            <stop offset="1" stopColor="#FFF8FF" stopOpacity="0" />
           </radialGradient>
           <radialGradient
             id="paint18_radial_1_2"
@@ -506,8 +505,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(154.782 59.786) rotate(90) scale(0.386831 0.386833)"
           >
-            <stop stop-color="#65F9E5" />
-            <stop offset="1" stop-color="#FFF8FF" stop-opacity="0" />
+            <stop stopColor="#65F9E5" />
+            <stop offset="1" stopColor="#FFF8FF" stopOpacity="0" />
           </radialGradient>
           <radialGradient
             id="paint19_radial_1_2"
@@ -517,8 +516,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(157.877 58.2387) rotate(90) scale(0.386831 0.386826)"
           >
-            <stop stop-color="#65F9E5" />
-            <stop offset="1" stop-color="#FFF8FF" stop-opacity="0" />
+            <stop stopColor="#65F9E5" />
+            <stop offset="1" stopColor="#FFF8FF" stopOpacity="0" />
           </radialGradient>
           <radialGradient
             id="paint20_radial_1_2"
@@ -528,8 +527,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(158.65 55.1441) rotate(90) scale(0.386829 0.386833)"
           >
-            <stop stop-color="#65F9E5" />
-            <stop offset="1" stop-color="#FFF8FF" stop-opacity="0" />
+            <stop stopColor="#65F9E5" />
+            <stop offset="1" stopColor="#FFF8FF" stopOpacity="0" />
           </radialGradient>
           <radialGradient
             id="paint21_radial_1_2"
@@ -539,8 +538,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(90.5677 161.523) rotate(90) scale(1.16049 1.16049)"
           >
-            <stop stop-color="#BF4353" />
-            <stop offset="1" stop-color="#FFF8FF" stop-opacity="0" />
+            <stop stopColor="#BF4353" />
+            <stop offset="1" stopColor="#FFF8FF" stopOpacity="0" />
           </radialGradient>
           <radialGradient
             id="paint22_radial_1_2"
@@ -550,8 +549,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(83.218 163.457) rotate(90) scale(0.773666 0.773663)"
           >
-            <stop stop-color="#BF4353" />
-            <stop offset="1" stop-color="#FFF8FF" stop-opacity="0" />
+            <stop stopColor="#BF4353" />
+            <stop offset="1" stopColor="#FFF8FF" stopOpacity="0" />
           </radialGradient>
           <radialGradient
             id="paint23_radial_1_2"
@@ -561,8 +560,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(85.9259 166.165) rotate(90) scale(0.386833 0.386829)"
           >
-            <stop stop-color="#BF4353" />
-            <stop offset="1" stop-color="#FFF8FF" stop-opacity="0" />
+            <stop stopColor="#BF4353" />
+            <stop offset="1" stopColor="#FFF8FF" stopOpacity="0" />
           </radialGradient>
           <radialGradient
             id="paint24_radial_1_2"
@@ -572,8 +571,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(89.7941 172.354) rotate(90) scale(0.386833 0.386829)"
           >
-            <stop stop-color="#BF4353" />
-            <stop offset="1" stop-color="#FFF8FF" stop-opacity="0" />
+            <stop stopColor="#BF4353" />
+            <stop offset="1" stopColor="#FFF8FF" stopOpacity="0" />
           </radialGradient>
           <radialGradient
             id="paint25_radial_1_2"
@@ -583,8 +582,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(92.8893 170.807) rotate(90) scale(0.386833 0.386829)"
           >
-            <stop stop-color="#BF4353" />
-            <stop offset="1" stop-color="#FFF8FF" stop-opacity="0" />
+            <stop stopColor="#BF4353" />
+            <stop offset="1" stopColor="#FFF8FF" stopOpacity="0" />
           </radialGradient>
           <radialGradient
             id="paint26_radial_1_2"
@@ -594,8 +593,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(93.6627 167.712) rotate(90) scale(0.386833 0.386829)"
           >
-            <stop stop-color="#BF4353" />
-            <stop offset="1" stop-color="#FFF8FF" stop-opacity="0" />
+            <stop stopColor="#BF4353" />
+            <stop offset="1" stopColor="#FFF8FF" stopOpacity="0" />
           </radialGradient>
           <linearGradient
             id="paint27_linear_1_2"
@@ -605,8 +604,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="48.1811"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#FF9F51" />
-            <stop offset="1" stop-color="#C5691F" />
+            <stop stopColor="#FF9F51" />
+            <stop offset="1" stopColor="#C5691F" />
           </linearGradient>
           <linearGradient
             id="paint28_linear_1_2"
@@ -616,8 +615,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="48.1655"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#CA563A" />
-            <stop offset="1" stop-color="#BD4022" />
+            <stop stopColor="#CA563A" />
+            <stop offset="1" stopColor="#BD4022" />
           </linearGradient>
           <linearGradient
             id="paint29_linear_1_2"
@@ -627,8 +626,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="48.1811"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#FE7506" />
-            <stop offset="1" stop-color="#DA6405" />
+            <stop stopColor="#FE7506" />
+            <stop offset="1" stopColor="#DA6405" />
           </linearGradient>
           <linearGradient
             id="paint30_linear_1_2"
@@ -638,8 +637,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="131.737"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#F6CE97" />
-            <stop offset="1" stop-color="#E85245" />
+            <stop stopColor="#F6CE97" />
+            <stop offset="1" stopColor="#E85245" />
           </linearGradient>
           <linearGradient
             id="paint31_linear_1_2"
@@ -649,8 +648,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="131.737"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#F6CE97" />
-            <stop offset="1" stop-color="#E85245" />
+            <stop stopColor="#F6CE97" />
+            <stop offset="1" stopColor="#E85245" />
           </linearGradient>
           <linearGradient
             id="paint32_linear_1_2"
@@ -660,8 +659,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="131.737"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#F5ECD3" />
-            <stop offset="1" stop-color="#FDB651" />
+            <stop stopColor="#F5ECD3" />
+            <stop offset="1" stopColor="#FDB651" />
           </linearGradient>
           <linearGradient
             id="paint33_linear_1_2"
@@ -671,8 +670,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="131.737"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#F5ECD3" />
-            <stop offset="1" stop-color="#FDB651" />
+            <stop stopColor="#F5ECD3" />
+            <stop offset="1" stopColor="#FDB651" />
           </linearGradient>
           <linearGradient
             id="paint34_linear_1_2"
@@ -682,8 +681,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="127.868"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#E77B32" />
-            <stop offset="1" stop-color="#DF662C" />
+            <stop stopColor="#E77B32" />
+            <stop offset="1" stopColor="#DF662C" />
           </linearGradient>
           <linearGradient
             id="paint35_linear_1_2"
@@ -693,8 +692,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="123.226"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#F39A40" />
-            <stop offset="1" stop-color="#E87739" />
+            <stop stopColor="#F39A40" />
+            <stop offset="1" stopColor="#E87739" />
           </linearGradient>
           <linearGradient
             id="paint36_linear_1_2"
@@ -704,8 +703,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="96.9219"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#EDA535" />
-            <stop offset="1" stop-color="#F2AB3C" />
+            <stop stopColor="#EDA535" />
+            <stop offset="1" stopColor="#F2AB3C" />
           </linearGradient>
           <linearGradient
             id="paint37_linear_1_2"
@@ -715,8 +714,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="65.4428"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#04C8C9" />
-            <stop offset="1" stop-color="#099CAD" />
+            <stop stopColor="#04C8C9" />
+            <stop offset="1" stopColor="#099CAD" />
           </linearGradient>
           <linearGradient
             id="paint38_linear_1_2"
@@ -726,8 +725,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="76.8066"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#D3564A" />
-            <stop offset="1" stop-color="#9B3C4D" />
+            <stop stopColor="#D3564A" />
+            <stop offset="1" stopColor="#9B3C4D" />
           </linearGradient>
           <linearGradient
             id="paint39_linear_1_2"
@@ -737,8 +736,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="89.5721"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#4E2343" />
-            <stop offset="1" stop-color="#593957" />
+            <stop stopColor="#4E2343" />
+            <stop offset="1" stopColor="#593957" />
           </linearGradient>
           <linearGradient
             id="paint40_linear_1_2"
@@ -748,8 +747,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="132.711"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#656A7A" />
-            <stop offset="1" stop-color="#6C6B7C" />
+            <stop stopColor="#656A7A" />
+            <stop offset="1" stopColor="#6C6B7C" />
           </linearGradient>
           <linearGradient
             id="paint41_linear_1_2"
@@ -759,8 +758,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="103.734"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#643658" />
-            <stop offset="1" stop-color="#654B69" />
+            <stop stopColor="#643658" />
+            <stop offset="1" stopColor="#654B69" />
           </linearGradient>
           <linearGradient
             id="paint42_linear_1_2"
@@ -770,8 +769,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="146.367"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#155E6D" />
-            <stop offset="1" stop-color="#40B5BF" />
+            <stop stopColor="#155E6D" />
+            <stop offset="1" stopColor="#40B5BF" />
           </linearGradient>
           <linearGradient
             id="paint43_linear_1_2"
@@ -781,8 +780,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="91.3114"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#C34E6F" />
-            <stop offset="1" stop-color="#BB4F75" />
+            <stop stopColor="#C34E6F" />
+            <stop offset="1" stopColor="#BB4F75" />
           </linearGradient>
           <linearGradient
             id="paint44_linear_1_2"
@@ -792,8 +791,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="165.391"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#F28A48" />
-            <stop offset="1" stop-color="#AA3754" />
+            <stop stopColor="#F28A48" />
+            <stop offset="1" stopColor="#AA3754" />
           </linearGradient>
           <linearGradient
             id="paint45_linear_1_2"
@@ -803,8 +802,8 @@ export const ChainKakarotSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
             y2="170.033"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#4E143C" />
-            <stop offset="1" stop-color="#932C53" stop-opacity="0.2" />
+            <stop stopColor="#4E143C" />
+            <stop offset="1" stopColor="#932C53" stopOpacity="0.2" />
           </linearGradient>
         </defs>
       </g>
