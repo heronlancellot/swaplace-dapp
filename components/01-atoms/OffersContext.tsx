@@ -26,7 +26,6 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { Dispatch, useEffect, useState } from "react";
 import axios from "axios";
 import { isAddress } from "viem";
-import { useAccount } from "wagmi";
 import toast from "react-hot-toast";
 
 export enum PonderFilter {
@@ -65,12 +64,12 @@ interface OffersContextProps {
   data: any;
 }
 
-const DEFAULT_ERC20_TOKEN: Token = {
+const DEFAULT_ERC20_TOKEN: Readonly<Token> = {
   tokenType: TokenType.ERC20,
   rawBalance: 0n,
 };
 
-const DEFAULT_SWAP_OFFER: PopulatedSwapOfferCard = {
+const DEFAULT_SWAP_OFFER: Readonly<PopulatedSwapOfferCard> = {
   id: 0n,
   status: PonderFilter.ALL_OFFERS,
   expiryDate: 0n,
@@ -105,7 +104,6 @@ export const OffersContextProvider = ({ children }: any) => {
   const [isLoadingOffersQuery, setIsLoadingOffersQuery] = useState(false);
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  const { address, isConnected } = useAccount();
 
   const userAddress = authenticatedUserAddress?.address;
 
@@ -117,6 +115,8 @@ export const OffersContextProvider = ({ children }: any) => {
   };
 
   const fetchSwaps = async ({ pageParam }: PageParam) => {
+    if (!userAddress) throw new Error("User address is not defined");
+
     const after = pageParam || null;
     let query = "";
     let variables = {};

@@ -162,7 +162,7 @@ export const SwapOffers = () => {
     <div className="flex flex-col gap-5 no-scrollbar">
       {data
         ?.flatMap((page: PageData) => page.swapOffers)
-        .map((swap: any, index: any) => (
+        .map((swap: PopulatedSwapOfferCard, index: number) => (
           <SwapOffer key={index} swap={swap} />
         ))}
       <div ref={ref}>{isFetchingNextPage && "Loading..."}</div>
