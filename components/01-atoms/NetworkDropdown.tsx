@@ -22,95 +22,13 @@ import { hexToNumber } from "viem";
 
 interface NetworkProps {
   icon: JSX.Element;
-  name: string;
+  name: SupportedNetworks;
 }
 
 export enum NetworkVariantPosition {
   HORIZONTAL = "HORIZONTAL",
   VERTICAL = "VERTICAL",
 }
-
-/**
- * This constant represents a collection of network icons and their corresponding names.
- * It facilitates the automatic rendering of network icons and names in a select component.
- *
- * For now only SEPOLIA & KAKAROT available
- * Each entry consists of a network icon component and its associated name.
- */
-export const NetworkInfo: Partial<Record<NetworkVariants, NetworkProps>> = {
-  [SupportedNetworks.KAKAROT_SEPOLIA]: {
-    icon: (
-      <NetworkIcon
-        props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-        variant={SupportedNetworks.KAKAROT_SEPOLIA}
-      />
-    ),
-    name: SupportedNetworks.KAKAROT_SEPOLIA,
-  },
-  [SupportedNetworks.SEPOLIA]: {
-    icon: (
-      <NetworkIcon
-        props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-        variant={SupportedNetworks.SEPOLIA}
-      />
-    ),
-    name: SupportedNetworks.SEPOLIA,
-  },
-  // [SupportedNetworks.OPTIMISM]: {
-  //   icon: (
-  //     <NetworkIcon
-  //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-  //       variant={SupportedNetworks.OPTIMISM}
-  //     />
-  //   ),
-  //   name: SupportedNetworks.OPTIMISM,
-  // },
-  // [SupportedNetworks.MUMBAI]: {
-  //   icon: (
-  //     <NetworkIcon
-  //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-  //       variant={SupportedNetworks.MUMBAI}
-  //     />
-  //   ),
-  //   name: SupportedNetworks.MUMBAI,
-  // },
-  // [SupportedNetworks.FUJI]: {
-  //   icon: (
-  //     <NetworkIcon
-  //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-  //       variant={SupportedNetworks.FUJI}
-  //     />
-  //   ),
-  //   name: SupportedNetworks.FUJI,
-  // },
-  // [SupportedNetworks.BNB]: {
-  //   icon: (
-  //     <NetworkIcon
-  //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-  //       variant={SupportedNetworks.BNB}
-  //     />
-  //   ),
-  //   name: SupportedNetworks.BNB,
-  // },
-  // [SupportedNetworks.BASEGOERLI]: {
-  //   icon: (
-  //     <NetworkIcon
-  //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-  //       variant={SupportedNetworks.BASEGOERLI}
-  //     />
-  //   ),
-  //   name: SupportedNetworks.BASEGOERLI,
-  // },
-  // [SupportedNetworks.ARBITRUMSEPOLIA]: {
-  //   icon: (
-  //     <NetworkIcon
-  //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-  //       variant={SupportedNetworks.ARBITRUMSEPOLIA}
-  //     />
-  //   ),
-  //   name: SupportedNetworks.ARBITRUMSEPOLIA,
-  // },
-};
 
 export const NetworkDropdown = ({
   forAuthedUser,
@@ -198,6 +116,88 @@ export const NetworkDropdown = ({
     } finally {
       setIsOpen(false);
     }
+  };
+
+  /**
+   * This constant represents a collection of network icons and their corresponding names.
+   * It facilitates the automatic rendering of network icons and names in a select component.
+   *
+   * For now only SEPOLIA & KAKAROT available
+   * Each entry consists of a network icon component and its associated name.
+   */
+  const NetworkInfo: Partial<Record<NetworkVariants, NetworkProps>> = {
+    [SupportedNetworks.KAKAROT_SEPOLIA]: {
+      icon: (
+        <NetworkIcon
+          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          variant={SupportedNetworks.KAKAROT_SEPOLIA}
+        />
+      ),
+      name: SupportedNetworks.KAKAROT_SEPOLIA,
+    },
+    [SupportedNetworks.SEPOLIA]: {
+      icon: (
+        <NetworkIcon
+          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          variant={SupportedNetworks.SEPOLIA}
+        />
+      ),
+      name: SupportedNetworks.SEPOLIA,
+    },
+    // [SupportedNetworks.OPTIMISM]: {
+    //   icon: (
+    //     <NetworkIcon
+    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+    //       variant={SupportedNetworks.OPTIMISM}
+    //     />
+    //   ),
+    //   name: SupportedNetworks.OPTIMISM,
+    // },
+    // [SupportedNetworks.MUMBAI]: {
+    //   icon: (
+    //     <NetworkIcon
+    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+    //       variant={SupportedNetworks.MUMBAI}
+    //     />
+    //   ),
+    //   name: SupportedNetworks.MUMBAI,
+    // },
+    // [SupportedNetworks.FUJI]: {
+    //   icon: (
+    //     <NetworkIcon
+    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+    //       variant={SupportedNetworks.FUJI}
+    //     />
+    //   ),
+    //   name: SupportedNetworks.FUJI,
+    // },
+    // [SupportedNetworks.BNB]: {
+    //   icon: (
+    //     <NetworkIcon
+    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+    //       variant={SupportedNetworks.BNB}
+    //     />
+    //   ),
+    //   name: SupportedNetworks.BNB,
+    // },
+    // [SupportedNetworks.BASEGOERLI]: {
+    //   icon: (
+    //     <NetworkIcon
+    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+    //       variant={SupportedNetworks.BASEGOERLI}
+    //     />
+    //   ),
+    //   name: SupportedNetworks.BASEGOERLI,
+    // },
+    // [SupportedNetworks.ARBITRUMSEPOLIA]: {
+    //   icon: (
+    //     <NetworkIcon
+    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+    //       variant={SupportedNetworks.ARBITRUMSEPOLIA}
+    //     />
+    //   ),
+    //   name: SupportedNetworks.ARBITRUMSEPOLIA,
+    // },
   };
 
   const NetworkDropdownVariant: Record<NetworkVariantPosition, JSX.Element> = {

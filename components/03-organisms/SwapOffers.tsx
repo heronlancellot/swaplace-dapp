@@ -53,8 +53,6 @@ export const SwapOffers = () => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { chain } = useNetwork();
 
-  if (!chain) return null;
-
   useEffect(() => {
     offersQueries && processSwaps();
   }, [offersQueries]);
@@ -78,6 +76,8 @@ export const SwapOffers = () => {
 
   const processSwaps = async () => {
     setIsLoading(true);
+
+    if (!chain) return null;
 
     try {
       const formattedTokensPromises: Promise<PopulatedSwapOfferCard>[] =
