@@ -27,20 +27,35 @@ interface NetworkIconProps {
  * It's only the icon when the user is not logged into the dApp.
  *
  **/
-export const NetworkIcon = ({ variant = "default" }: NetworkIconProps) => {
+export const NetworkIcon = ({
+  variant = "default",
+  props,
+}: NetworkIconProps) => {
   const NetworkIcons: Partial<Record<NetworkVariants, React.ReactElement>> = {
-    [SupportedNetworks.ARBITRUMSEPOLIA]: <ChainArbitrumSepoliaIcon />,
-    [SupportedNetworks.BASEGOERLI]: <ChainBaseGoerliIcon />,
-    [SupportedNetworks.SEPOLIA]: <ChainEthereumSepoliaIcon />,
-    [SupportedNetworks.KAKAROT_SEPOLIA]: <ChainKakarotSepoliaIcon />,
-    [SupportedNetworks.FUJI]: <ChainFujiIcon />,
-    [SupportedNetworks.BNB]: <ChainBnbIcon />,
-    [SupportedNetworks.OPTIMISM]: <ChainOptimismIcon />,
-    [SupportedNetworks.MUMBAI]: <ChainPolygonIcon />,
+    [SupportedNetworks.ARBITRUMSEPOLIA]: (
+      <ChainArbitrumSepoliaIcon className={props?.className} />
+    ),
+    [SupportedNetworks.BASEGOERLI]: (
+      <ChainBaseGoerliIcon className={props?.className} />
+    ),
+    [SupportedNetworks.SEPOLIA]: (
+      <ChainEthereumSepoliaIcon className={props?.className} />
+    ),
+    [SupportedNetworks.KAKAROT_SEPOLIA]: (
+      <ChainKakarotSepoliaIcon className={props?.className} />
+    ),
+    [SupportedNetworks.FUJI]: <ChainFujiIcon className={props?.className} />,
+    [SupportedNetworks.BNB]: <ChainBnbIcon className={props?.className} />,
+    [SupportedNetworks.OPTIMISM]: (
+      <ChainOptimismIcon className={props?.className} />
+    ),
+    [SupportedNetworks.MUMBAI]: (
+      <ChainPolygonIcon className={props?.className} />
+    ),
     default: (
       <ChainNetworkDefaultIcon className="dark:text-[#707572] text-[#A3A9A5]" />
     ),
   };
 
-  return NetworkIcons[variant];
+  return NetworkIcons[variant] || <></>;
 };
