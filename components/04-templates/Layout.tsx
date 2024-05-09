@@ -6,12 +6,12 @@ import { useSupportedNetworks } from "@/lib/client/hooks/useSupportedNetworks";
 import { useEffect } from "react";
 import { sepolia, useSwitchNetwork } from "wagmi";
 import toast from "react-hot-toast";
-import cc from "classcat";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const { isNetworkSupported } = useSupportedNetworks();
   const { switchNetwork } = useSwitchNetwork();
   const { authenticatedUserAddress } = useAuthenticatedUser();
+
   useEffect(() => {
     if (authenticatedUserAddress && !isNetworkSupported) {
       toast.error("Network not supported, change network and try again", {
@@ -21,9 +21,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       switchNetwork && switchNetwork(sepolia.id);
     }
   }, [authenticatedUserAddress, isNetworkSupported]);
+
   return (
     <>
-      <div className={cc(["lg:block hidden"])}>
+      <div className="lg:block hidden">
         <SidebarProvider>
           <meta
             content="initial-scale=1.0, width=device-width"

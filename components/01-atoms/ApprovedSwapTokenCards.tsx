@@ -8,13 +8,11 @@ import { isTokenSwapApproved } from "@/lib/service/verifyTokensSwapApproval";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 
-interface ApprovedSwapTokenCardsProps {
-  tokensList: Token[];
-}
-
 export const ApprovedSwapTokenCards = ({
   tokensList,
-}: ApprovedSwapTokenCardsProps) => {
+}: {
+  tokensList: Token[];
+}) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const [tokensApprovedForSwap, setTokensApprovedForSwap] = useState<Token[]>(
     [],
