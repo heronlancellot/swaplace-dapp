@@ -57,8 +57,6 @@ export const MarketplaceSwapOffers = () => {
     offersQueries && processSwaps();
   }, [offersQueries]);
 
-  if (!chain) return null;
-
   const findStatus = (swap: FormattedSwapOfferAssets): PonderFilter => {
     switch (swap.status.toUpperCase()) {
       case PonderFilter.ACCEPTED.toUpperCase():
@@ -78,6 +76,8 @@ export const MarketplaceSwapOffers = () => {
 
   const processSwaps = async () => {
     setIsLoading(true);
+
+    if (!chain) return null;
 
     try {
       const formattedTokensPromises: Promise<PopulatedSwapOfferCard>[] =
