@@ -20,6 +20,7 @@ import {
   PageParam,
   RawSwapOfferInterface,
   PageInfo,
+  InifniteQueryData,
 } from "@/lib/client/offers-utils";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { Dispatch, useEffect, useState } from "react";

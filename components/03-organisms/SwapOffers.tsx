@@ -13,8 +13,8 @@ import {
   PonderFilter,
 } from "@/components/01-atoms/OffersContext";
 import {
-  SwapIcon,
   TokenOfferDetails,
+  SwapIcon,
   TokensOfferSkeleton,
 } from "@/components/01-atoms";
 import {
@@ -27,11 +27,11 @@ import {
   PageData,
 } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import { getSwap } from "@/lib/service/getSwap";
 import { useContext, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
-import { useInView } from "react-intersection-observer";
+import { getSwap } from "@/lib/service/getSwap";
 
 /**
  * The horizonalVariant from TokenOffers get the data from Ponder
@@ -65,12 +65,25 @@ export const SwapOffers = () => {
       fetchNextPage();
     }
   }, [fetchNextPage, inView, hasNextPage]);
+  const { chain } = useNetwork();
+
+  const { ref, inView } = useInView({
+    threshold: 0.5,
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView, hasNextPage]);
 
   useEffect(() => {
     if (offersQueries) {
       processSwaps();
     }
   }, [offersQueries]);
+
+  if (!chain) return null;
 
   if (!chain) return null;
 
@@ -93,7 +106,6 @@ export const SwapOffers = () => {
 
   const processSwaps = async () => {
     setIsLoading(true);
-
     try {
       const formattedTokensPromises: Promise<PopulatedSwapOfferCard>[] =
         offersQueries[offersFilter].map(
@@ -137,6 +149,9 @@ export const SwapOffers = () => {
       setIsLoading(false);
     }
   };
+
+  console.log("data:", data);
+  console.log("tokenList:", tokensList);
 
   return !authenticatedUserAddress ? (
     <SwapOffersLayout
@@ -188,6 +203,10 @@ interface SwapOfferProps {
 }
 
 const SwapOffer = ({ swap }: SwapOfferProps) => {
+  console.log("swap.askerTokens.tokens", swap.askerTokens.tokens);
+  console.log("swap.askerTokens.address", swap.askerTokens.address);
+  console.log("swap.bidderTokens.tokens", swap.bidderTokens.tokens);
+  console.log("swap.bidderTokens.address", swap.bidderTokens.address);
   return (
     <div className="flex flex-col no-scrollbar border border-solid border-[#D6D5D5] dark:border-[#353836] dark:shadow-swap-station shadow-swap-station-light dark:bg-[#212322] font-onest rounded-lg ">
       <div className="flex flex-row border-b mb-auto dark:border-[#353836] relative">

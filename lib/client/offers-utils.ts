@@ -58,3 +58,21 @@ export interface PageData {
   swapOffers: PopulatedSwapOfferCard[];
   pageInfo: PageInfo;
 }
+export interface InifniteQueryData {
+  pages: {
+    swapOffers: {
+      id: bigint;
+      status: PonderFilter;
+      expiryDate: bigint;
+      bidderTokens: {
+        address: EthereumAddress;
+        tokens: Asset[];
+      };
+      askerTokens: {
+        address: EthereumAddress;
+        tokens: Asset[];
+      };
+    }[];
+    pageInfo: PageInfo;
+  }[];
+}
