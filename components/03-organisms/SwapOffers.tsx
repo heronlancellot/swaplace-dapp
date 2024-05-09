@@ -27,11 +27,11 @@ import {
   PageData,
 } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
+import { getSwap } from "@/lib/service/getSwap";
 import { useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
-import { getSwap } from "@/lib/service/getSwap";
 
 /**
  * The horizonalVariant from TokenOffers get the data from Ponder
@@ -65,27 +65,12 @@ export const SwapOffers = () => {
       fetchNextPage();
     }
   }, [fetchNextPage, inView, hasNextPage]);
-  const { chain } = useNetwork();
-
-  const { ref, inView } = useInView({
-    threshold: 0.5,
-  });
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [fetchNextPage, inView, hasNextPage]);
 
   useEffect(() => {
     if (offersQueries) {
       processSwaps();
     }
   }, [offersQueries]);
-
-  if (!chain) return null;
-
-  if (!chain) return null;
 
   const findStatus = (swap: FormattedSwapOfferAssets): PonderFilter => {
     switch (swap.status.toUpperCase()) {
@@ -106,6 +91,9 @@ export const SwapOffers = () => {
 
   const processSwaps = async () => {
     setIsLoading(true);
+
+    if (!chain) return null;
+
     try {
       const formattedTokensPromises: Promise<PopulatedSwapOfferCard>[] =
         offersQueries[offersFilter].map(
