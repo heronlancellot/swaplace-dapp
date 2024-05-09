@@ -498,7 +498,7 @@ export const MockERC721Abi: Readonly<Array<Record<string, any>>> = [
         type: "uint256",
       },
     ],
-    name: "mintTo",
+    name: "mint",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -640,7 +640,7 @@ export const MockERC721Abi: Readonly<Array<Record<string, any>>> = [
     inputs: [
       {
         internalType: "uint256",
-        name: "tokenId",
+        name: "",
         type: "uint256",
       },
     ],
@@ -1009,7 +1009,7 @@ export const MockERC20Abi: Readonly<Array<Record<string, any>>> = [
         type: "uint256",
       },
     ],
-    name: "mintTo",
+    name: "mint",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1223,4 +1223,4 @@ export const MockERC20Abi: Readonly<Array<Record<string, any>>> = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;
