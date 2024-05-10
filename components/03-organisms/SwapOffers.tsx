@@ -24,7 +24,6 @@ import {
 import {
   FormattedSwapOfferAssets,
   PopulatedSwapOfferCard,
-  PageData,
 } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { getSwap } from "@/lib/service/getSwap";

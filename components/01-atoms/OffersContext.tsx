@@ -61,7 +61,7 @@ interface OffersContextProps {
   setTokensList: Dispatch<React.SetStateAction<PopulatedSwapOfferCard[]>>;
   tokensList: PopulatedSwapOfferCard[];
   isError: boolean;
-  data: any;
+  data: InifniteQueryData[] | undefined;
 }
 
 const DEFAULT_ERC20_TOKEN: Readonly<Token> = {
@@ -81,6 +81,20 @@ const DEFAULT_SWAP_OFFER: Readonly<PopulatedSwapOfferCard> = {
     address: new EthereumAddress(ADDRESS_ZERO),
     tokens: [DEFAULT_ERC20_TOKEN],
   },
+};
+
+const DEFAULT_PAGE_INFO: PageInfo = {
+  hasNextPage: false,
+  endCursor: null,
+};
+
+const DEFAULT_DATA_INFINITE_QUERY: InifniteQueryData = {
+  pages: [
+    {
+      swapOffers: [DEFAULT_SWAP_OFFER],
+      pageInfo: DEFAULT_PAGE_INFO,
+    },
+  ],
 };
 
 export const OffersContextProvider = ({ children }: any) => {
@@ -255,7 +269,6 @@ export const OffersContextProvider = ({ children }: any) => {
     }
   };
 
-  // Offers query
   const { data, status, isFetchingNextPage, fetchNextPage, isError, refetch } =
     useInfiniteQuery({
       queryKey: ["PonderQuerySwaps", authenticatedUserAddress, offersFilter],
@@ -272,14 +285,14 @@ export const OffersContextProvider = ({ children }: any) => {
             return {
               id: BigInt(swap.id),
               status: offersFilter,
-              expiryDate: swap.expiryDate,
+              expiryDate: 0,
               bidderTokens: {
                 address: swap.bidderAssets.address,
-                tokens: swap.bidderAssets.tokens,
+                tokens: [],
               },
               askerTokens: {
                 address: swap.askerAssets.address,
-                tokens: swap.askerAssets.tokens,
+                tokens: [],
               },
             };
           }),
@@ -379,5 +392,5 @@ export const OffersContext = React.createContext<OffersContextProps>({
   setTokensList: () => {},
   tokensList: [DEFAULT_SWAP_OFFER],
   isError: false,
-  data: null,
+  data: [DEFAULT_DATA_INFINITE_QUERY],
 });
