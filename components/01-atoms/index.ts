@@ -14,6 +14,7 @@ export * from "./ProgressBar";
 export * from "./SearchBar";
 export * from "./SearchItemsShelf";
 export * from "./StatusOffers";
+export * from "./StatusOffersMarketplace";
 export * from "./SwapExpireTime";
 export * from "./SwapModalButton";
 export * from "./SwapModalLayout";

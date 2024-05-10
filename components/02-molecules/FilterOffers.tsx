@@ -1,4 +1,4 @@
-import { StatusOffers } from "@/components/01-atoms";
+import { StatusOffers, StatusOffersMarketplace } from "@/components/01-atoms";
 
 export enum FilterVariant {
   MARKETPLACE = "MARKETPLACE",
@@ -25,7 +25,7 @@ export const FilterOffers = ({ variant }: { variant: FilterVariant }) => {
             <h2>Marketplace</h2>
           </div>
           <div>
-            <StatusOffers />
+            <StatusOffersMarketplace />
           </div>
         </div>
       </div>
