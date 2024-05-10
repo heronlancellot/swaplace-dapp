@@ -5,7 +5,6 @@ import React, {
   ReactNode,
   useCallback,
 } from "react";
-import { EthereumAddress } from "../../shared/types";
 
 interface SidebarContextType {
   isSidebarOpen: boolean;
