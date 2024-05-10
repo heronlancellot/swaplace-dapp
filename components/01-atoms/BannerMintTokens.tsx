@@ -4,6 +4,7 @@ import {
   SwapUserConfiguration,
   mintTokensMocked,
 } from "@/lib/service/mintTokensMocked";
+import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useState } from "react";
 import cc from "classcat";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
@@ -14,6 +15,7 @@ export const BannerMintTokens = () => {
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const { chain } = useNetwork();
   const { data: walletClient } = useWalletClient();
+  const { authenticatedUserAddress } = useAuthenticatedUser();
 
   let chainId: number;
   let userWalletClient: WalletClient;
@@ -71,26 +73,28 @@ export const BannerMintTokens = () => {
   );
 
   return (
-    <div className="w-full flex items-center">
-      The alpha phase is live!
-      <div className="flex flex-col gap-6  ml-2">
-        <button
-          className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
-          onClick={() => setToggleManually(!toggleManually)}
-        >
-          Mint your tokens 🔥
-        </button>
-        {toggleManually && (
-          <SwapModalLayout
-            toggleCloseButton={{
-              open: toggleManually,
-              onClose: () => setToggleManually(!toggleManually),
-            }}
-            body={MintTokenBody}
-            text={{ title: "What kind of token you want to mint?" }}
-          />
-        )}
+    authenticatedUserAddress && (
+      <div className="flex items-center">
+        The alpha phase is live!
+        <div className="flex flex-col gap-6 ml-2">
+          <button
+            className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
+            onClick={() => setToggleManually(!toggleManually)}
+          >
+            Mint your tokens 🔥
+          </button>
+          {toggleManually && (
+            <SwapModalLayout
+              toggleCloseButton={{
+                open: toggleManually,
+                onClose: () => setToggleManually(!toggleManually),
+              }}
+              body={MintTokenBody}
+              text={{ title: "What kind of token you want to mint?" }}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    )
   );
 };
