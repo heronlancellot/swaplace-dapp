@@ -222,7 +222,7 @@ export const SWAPLACE_MOCK_TOKENS = {
   },
   [ChainInfo.KAKAROT_SEPOLIA.id]: {
     ERC721: "0xfe5127768d8a43bc08ffabdd14d01939493b57d7",
-    ERC20: "0xb2ef52ea71935a334d77d15c9d10a0a26a3ef7a5 ",
+    ERC20: "0xb2ef52ea71935a334d77d15c9d10a0a26a3ef7a5",
   },
 };
 //SEPOLIA MOCKS   // ToDo: Refactor this function to use SWAPLACE_MOCK_TOKENS instead
