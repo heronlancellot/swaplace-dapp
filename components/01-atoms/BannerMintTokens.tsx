@@ -71,14 +71,14 @@ export const BannerMintTokens = () => {
   );
 
   return (
-    <div className="bg-[#F6F6F6] dark:bg-[#212322] w-full">
-      We are in LIVE ALPHA. Please mint your tokens here:
-      <div className="flex flex-col gap-6  ">
+    <div className="w-full flex items-center">
+      The alpha phase is live!
+      <div className="flex flex-col gap-6  ml-2">
         <button
           className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
           onClick={() => setToggleManually(!toggleManually)}
         >
-          Mint your token
+          Mint your tokens 🔥
         </button>
         {toggleManually && (
           <SwapModalLayout
