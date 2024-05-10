@@ -1,10 +1,12 @@
+/* eslint-disable unused-imports/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Token } from "@/lib/shared/types";
 import React, { Dispatch, useEffect, useState } from "react";
 
 interface ShelfContext {
-  isActiveTab: Number;
-  setActiveTab: (tabId: Number) => void;
+  isActiveTab: number;
+  setActiveTab: (tabId: number) => void;
   yourTokensList: Token[];
   setYourTokensList: Dispatch<React.SetStateAction<Token[]>>;
   theirTokensList: Token[];
@@ -16,7 +18,7 @@ interface ShelfContext {
 }
 
 export const ShelfContextProvider = ({ children }: any) => {
-  const [isActiveTab, setActiveTab] = useState<Number>(0);
+  const [isActiveTab, setActiveTab] = useState<number>(0);
   const [yourTokensList, setYourTokensList] = useState<Token[]>([]);
   const [yourManuallyAddedTokensList, setYourManuallyAddedTokensList] =
     useState<Token[]>([]);
@@ -65,7 +67,7 @@ export const ShelfContextProvider = ({ children }: any) => {
 
 export const ShelfContext = React.createContext<ShelfContext>({
   isActiveTab: 0,
-  setActiveTab: (tabId: Number) => {},
+  setActiveTab: (tabId: number) => {},
   yourTokensList: [],
   setYourTokensList: () => {},
   setTheirTokensList: () => {},
