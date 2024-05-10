@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { EthereumAddress } from "../../shared/types";
-import { SwapContext } from "@/components/01-atoms";
+import { SwapContext } from "../contexts";
 import { signOut, useSession } from "next-auth/react";
 import { useContext, useEffect, useState } from "react";
 import { useAccount, useDisconnect } from "wagmi";

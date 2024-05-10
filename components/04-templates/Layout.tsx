@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { WarningScreenSizeNotSupported } from "@/components/01-atoms/";
-import { SidebarProvider } from "@/lib/client/contexts/SidebarContext.tsx";
+import { SidebarProvider } from "@/lib/client/contexts/SidebarContext";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useSupportedNetworks } from "@/lib/client/hooks/useSupportedNetworks";
 import { useEffect } from "react";

@@ -7,13 +7,10 @@ import {
   UserOfferInfo,
   UserOfferVariant,
 } from "@/components/02-molecules";
-import {
-  OffersContext,
-  SwapContext,
-  TokenCardProperties,
-} from "@/components/01-atoms";
+import { TokenCardProperties } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { EthereumAddress, Token } from "@/lib/shared/types";
+import { SwapContext, OffersContext } from "@/lib/client/contexts";
 import { useContext } from "react";
 
 interface CardOffersProps {

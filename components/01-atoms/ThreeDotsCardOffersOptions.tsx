@@ -1,12 +1,8 @@
-import {
-  PonderFilter,
-  ShareIcon,
-  ThreeDotsIcon,
-  XMarkIcon,
-} from "@/components/01-atoms";
+import { ShareIcon, ThreeDotsIcon, XMarkIcon } from "@/components/01-atoms";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { SwapUserConfiguration, cancelSwap } from "@/lib/service/cancelSwap";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
+import { PonderFilter } from "@/lib/client/contexts";
 import { useState } from "react";
 import cc from "classcat";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
