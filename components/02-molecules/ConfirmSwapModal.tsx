@@ -2,10 +2,8 @@
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   SwapModalLayout,
-  SwapContext,
   SwapModalButton,
   ButtonVariant,
-  OffersContext,
   OfferExpiryConfirmSwap,
   ApproveTokenCards,
 } from "@/components/01-atoms";
@@ -21,6 +19,7 @@ import { fromTokensToAssets, getSwapConfig } from "@/lib/client/swap-utils";
 import { SwapModalSteps } from "@/lib/client/ui-utils";
 import { EthereumAddress, Token } from "@/lib/shared/types";
 import { acceptSwap } from "@/lib/service/acceptSwap";
+import { SwapContext, OffersContext } from "@/lib/client/contexts";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
 import { useContext, useEffect, useState } from "react";
 import { useTheme } from "next-themes";

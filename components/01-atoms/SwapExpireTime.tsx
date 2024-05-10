@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { SwapContext } from "@/components/01-atoms";
+import { SwapContext } from "@/lib/client/contexts";
 import { useContext, useEffect, useState } from "react";
 import cc from "classcat";
 

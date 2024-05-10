@@ -1,12 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { TokensShelf, ForWhom } from "@/components/03-organisms";
-import {
-  SearchItemsShelf,
-  SwapContext,
-  TokensShelfTab,
-} from "@/components/01-atoms/";
+import { SearchItemsShelf, TokensShelfTab } from "@/components/01-atoms/";
 import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
+import { SwapContext } from "@/lib/client/contexts";
 import { useContext, useEffect, useState } from "react";
 import { useAccount, useNetwork } from "wagmi";
 import cc from "classcat";

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { SwapContext, SwapModalLayout } from "@/components/01-atoms";
+import { SwapModalLayout } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { toastBlockchainTxError } from "@/lib/client/blockchain-utils";
 import { getTokenName } from "@/lib/client/ui-utils";
@@ -9,6 +9,7 @@ import {
   EthereumAddress,
   Token,
 } from "@/lib/shared/types";
+import { SwapContext } from "@/lib/client/contexts";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import toast from "react-hot-toast";

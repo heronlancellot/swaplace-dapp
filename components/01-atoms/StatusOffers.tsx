@@ -1,4 +1,4 @@
-import { OffersContext, PonderFilter } from "@/components/01-atoms";
+import { OffersContext, PonderFilter } from "@/lib/client/contexts";
 import { useState, useContext, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import cc from "classcat";

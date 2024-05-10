@@ -11,7 +11,7 @@ import {
   SwappingIcons,
   Tooltip,
 } from "@/components/01-atoms";
-import { useSidebar } from "@/lib/client/contexts/SidebarContext.tsx";
+import { useSidebar } from "@/lib/client/contexts/SidebarContext";
 import { WalletSidebarTemplate } from "@/components/03-organisms";
 import { SWAPLACE_WEBSITE } from "@/lib/client/constants";
 import React, { useEffect, useState } from "react";
