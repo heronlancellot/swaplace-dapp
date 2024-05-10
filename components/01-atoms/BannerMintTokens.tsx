@@ -72,29 +72,29 @@ export const BannerMintTokens = () => {
     </div>
   );
 
-  return (
-    authenticatedUserAddress && (
-      <div className="flex items-center">
-        The alpha phase is live!
-        <div className="flex flex-col gap-6 ml-2">
-          <button
-            className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
-            onClick={() => setToggleManually(!toggleManually)}
-          >
-            Mint your tokens 🔥
-          </button>
-          {toggleManually && (
-            <SwapModalLayout
-              toggleCloseButton={{
-                open: toggleManually,
-                onClose: () => setToggleManually(!toggleManually),
-              }}
-              body={MintTokenBody}
-              text={{ title: "What kind of token you want to mint?" }}
-            />
-          )}
+  return !authenticatedUserAddress
+    ? null
+    : authenticatedUserAddress && (
+        <div className="flex items-center">
+          The alpha phase is live!
+          <div className="flex flex-col gap-6 ml-2">
+            <button
+              className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
+              onClick={() => setToggleManually(!toggleManually)}
+            >
+              Mint your tokens 🔥
+            </button>
+            {toggleManually && (
+              <SwapModalLayout
+                toggleCloseButton={{
+                  open: toggleManually,
+                  onClose: () => setToggleManually(!toggleManually),
+                }}
+                body={MintTokenBody}
+                text={{ title: "What kind of token you want to mint?" }}
+              />
+            )}
+          </div>
         </div>
-      </div>
-    )
-  );
+      );
 };
