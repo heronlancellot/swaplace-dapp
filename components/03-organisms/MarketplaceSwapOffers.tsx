@@ -7,12 +7,12 @@ import {
   SwapOfferCard,
   SwapOffersDisplayVariant,
   SwapOffersLayout,
-} from "@/components/02-molecules";
+} from "@/components/02-molecules"; // TODO: create new components to handle marketplace
 import {
   SwapIcon,
   TokenOfferDetails,
   TokensOfferSkeleton,
-} from "@/components/01-atoms";
+} from "@/components/01-atoms"; // TODO: create new components to handle marketplace
 import {
   decodeConfig,
   retrieveDataFromTokensArray,
@@ -23,7 +23,7 @@ import {
 } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { getSwap } from "@/lib/service/getSwap";
-import { OffersContext, PonderFilter } from "@/lib/client/contexts";
+import { OffersContext, PonderFilter } from "@/lib/client/contexts"; // TODO: create new components to handle marketplace
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
