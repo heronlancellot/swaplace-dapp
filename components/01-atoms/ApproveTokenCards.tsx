@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ApproveTokenCardSkeleton } from "./ApproveTokenCardSkeleton";
-import { OffersContext, SwapContext } from "@/components/01-atoms";
 import { SwapModalAction } from "@/components/02-molecules";
 import { ApproveTokenCard } from "@/components/03-organisms";
 import { Token } from "@/lib/shared/types";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { isTokenSwapApproved } from "@/lib/service/verifyTokensSwapApproval";
+import { OffersContext, SwapContext } from "@/lib/client/contexts";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 

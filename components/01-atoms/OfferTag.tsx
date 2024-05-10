@@ -1,4 +1,4 @@
-import { PonderFilter } from "./OffersContext";
+import { PonderFilter } from "@/lib/client/contexts/OffersContext";
 
 export const OfferTag = ({ status }: { status: PonderFilter }) => {
   interface PonderFilterConfig {

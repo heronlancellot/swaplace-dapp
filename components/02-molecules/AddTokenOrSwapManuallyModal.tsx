@@ -1,10 +1,5 @@
 import { ForWhom } from "@/components/03-organisms";
-import {
-  OffersContext,
-  PonderFilter,
-  SwapContext,
-  SwapModalLayout,
-} from "@/components/01-atoms";
+import { SwapModalLayout } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   ERC20,
@@ -23,6 +18,11 @@ import {
   retrieveDataFromTokensArray,
 } from "@/lib/client/blockchain-utils";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
+import {
+  OffersContext,
+  PonderFilter,
+  SwapContext,
+} from "@/lib/client/contexts";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
 import { isAddress } from "viem";

@@ -1,10 +1,11 @@
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-named-as-default-member */
-import { MagnifyingGlassIcon, SwapContext } from "@/components/01-atoms";
+import { MagnifyingGlassIcon } from "@/components/01-atoms";
 import { EthereumAddress } from "@/lib/shared/types";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { normalizeENSName } from "@/lib/client/blockchain-utils";
+import { SwapContext } from "@/lib/client/contexts";
 import { useContext, useEffect } from "react";
 import { ENS } from "web3-eth-ens";
 import Web3 from "web3";

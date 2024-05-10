@@ -1,5 +1,6 @@
-import { SwapContext, ProgressBar, OffersContext } from "@/components/01-atoms";
+import { ProgressBar } from "@/components/01-atoms";
 import { SwapModalAction } from "@/components/02-molecules";
+import { SwapContext, OffersContext } from "@/lib/client/contexts";
 import { Token } from "@/lib/shared/types";
 import { useContext, useEffect, useState } from "react";
 

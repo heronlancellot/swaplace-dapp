@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   ArrowIcon,
   ArrowIconVariant,
   NetworkIcon,
   NetworkVariants,
-  SwapContext,
   Tooltip,
 } from "@/components/01-atoms";
 import {
@@ -14,6 +14,7 @@ import {
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useSupportedNetworks } from "@/lib/client/hooks/useSupportedNetworks";
 import { capitalizeFirstLetterPrhases } from "@/lib/client/utils";
+import { SwapContext } from "@/lib/client/contexts";
 import { useSwitchNetwork, sepolia, useNetwork } from "wagmi";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";

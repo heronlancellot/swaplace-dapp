@@ -1,13 +1,12 @@
 import {
   DoneIcon,
   OfferTag,
-  OffersContext,
-  PonderFilter,
   ThreeDotsCardOffersOptions,
 } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { ConfirmSwapModal, SwapModalAction } from "@/components/02-molecules";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
+import { OffersContext, PonderFilter } from "@/lib/client/contexts";
 import React, { useContext, useState } from "react";
 
 export const TokenOfferDetails = ({

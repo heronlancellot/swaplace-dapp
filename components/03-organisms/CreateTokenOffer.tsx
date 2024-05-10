@@ -1,12 +1,8 @@
 import { CardOffers, SwapModalAction } from "@/components/02-molecules";
-import {
-  SwapIcon,
-  SwapContext,
-  SwapIconVariant,
-  OffersContext,
-} from "@/components/01-atoms";
+import { SwapIcon, SwapIconVariant } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
+import { OffersContext, SwapContext } from "@/lib/client/contexts";
 import cc from "classcat";
 import { useContext } from "react";
 
