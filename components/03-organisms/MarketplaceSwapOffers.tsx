@@ -9,10 +9,6 @@ import {
   SwapOffersLayout,
 } from "@/components/02-molecules";
 import {
-  OffersContext,
-  PonderFilter,
-} from "@/components/01-atoms/OffersContext";
-import {
   SwapIcon,
   TokenOfferDetails,
   TokensOfferSkeleton,
@@ -27,6 +23,7 @@ import {
 } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { getSwap } from "@/lib/service/getSwap";
+import { OffersContext, PonderFilter } from "@/lib/client/contexts";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
