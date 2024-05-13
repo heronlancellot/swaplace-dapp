@@ -56,9 +56,9 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
                 {variant === ForWhom.Yours && validatedAddressToSwap
                   ? `${
                       searchedENSName
-                        ? searchedENSName
+                        ? `${searchedENSName} gets`
                         : validatedAddressToSwap
-                        ? validatedAddressToSwap.getEllipsedAddress()
+                        ? `${validatedAddressToSwap.getEllipsedAddress()} gets`
                         : "Use the search bar"
                     }`
                   : variant === ForWhom.Yours && !validatedAddressToSwap
@@ -66,9 +66,9 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
                   : variant === ForWhom.Their && authenticatedUserAddress
                   ? `${
                       authenticatedUserENSName
-                        ? authenticatedUserENSName
+                        ? `${authenticatedUserENSName} gets`
                         : authenticatedUserAddress
-                        ? authenticatedUserAddress.getEllipsedAddress()
+                        ? `${authenticatedUserAddress.getEllipsedAddress()} gets`
                         : "Connect your wallet"
                     }`
                   : "You get"}
