@@ -8,7 +8,6 @@ import {
   Token,
   TokenType,
 } from "@/lib/shared/types";
-import { verifyTokenOwnership } from "@/lib/service/verifyTokenOwnership";
 import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
 import { getSwap } from "@/lib/service/getSwap";
 import { Swap } from "@/lib/client/swap-utils";
@@ -23,6 +22,8 @@ import {
   PonderFilter,
   SwapContext,
 } from "@/lib/client/contexts";
+import { verifyTokenOwnershipAndParseTokenData } from "@/lib/service/verifyTokenOwnershipAndParseTokenData";
+import { getTokenUri } from "@/lib/service/getTokenUri";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
 import { isAddress } from "viem";
@@ -198,6 +199,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     contractAddress: `0x${string}`;
     tokenId: string;
     balance?: bigint;
+    metadata?: Record<string, any>;
   }
 
   const verifyTokenAlreadyInTokenList = async (token: Token) => {
@@ -232,6 +234,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     }
   };
 
+  /**
+   * This function adds a token manually to the tokens list if verification is successful.
+   * It takes a TokenManually object as input.
+   */
   const addTokenToTokensList = (token: TokenManually) => {
     if (forWhom === ForWhom.Yours) {
       if (token.tokenType === TokenType.ERC20 && token.balance) {
@@ -256,6 +262,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
           contract: token.contractAddress,
           id: token.tokenId,
           tokenType: token.tokenType,
+          metadata: token.metadata,
         };
         verifyTokenAlreadyInTokenList(tokenERC721).then(
           (tokenAlreadyInList) => {
@@ -291,6 +298,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
           contract: token.contractAddress,
           id: token.tokenId,
           tokenType: token.tokenType,
+          metadata: token.metadata,
         };
 
         verifyTokenAlreadyInTokenList(tokenERC721).then(
@@ -304,6 +312,14 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
           },
         );
       }
+    }
+  };
+
+  const addPrefixToIPFSLInk = (link: string) => {
+    if (link.startsWith("ipfs://")) {
+      return `https://ipfs.io/ipfs/${link.substring(7)}`;
+    } else {
+      return link;
     }
   };
 
@@ -329,25 +345,42 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       return;
     }
 
-    await verifyTokenOwnership({
+    const metadata: string = await getTokenUri(BigInt(tokenId), chain.id);
+    const updatedMetadata = addPrefixToIPFSLInk(metadata);
+
+    const fetchJSONFromIPFSLink = async (ipfsLink: string) => {
+      if (ipfsLink.startsWith("https://ipfs.io/")) {
+        const response = await fetch(ipfsLink);
+        const json = await response.json();
+        return json;
+      } else {
+        return ipfsLink;
+      }
+    };
+
+    const JSONDataIPFS = await fetchJSONFromIPFSLink(updatedMetadata);
+    const IPFSMetadata = addPrefixToIPFSLInk(JSONDataIPFS.image);
+
+    await verifyTokenOwnershipAndParseTokenData({
       address: address,
       chainId: chain.id,
       contractAddress: contractAddress,
       tokenId: tokenId,
       tokenType: tokenType,
     })
-      .then((verification) => {
-        if (!verification.isOwner) {
+      .then((tokenData) => {
+        if (!tokenData.isOwner) {
           toast.error(
             `This token doesn't belong to the address: ${address.getEllipsedAddress()}`,
           );
-        } else if (verification && verification.isOwner) {
+        } else if (tokenData && tokenData.isOwner) {
           addTokenToTokensList({
-            tokenName: verification.name,
+            tokenName: tokenData.name,
             contractAddress: contractAddress,
             tokenId: tokenId,
             tokenType: tokenType,
-            balance: verification.erc20Balance ?? 0n,
+            balance: tokenData.erc20Balance ?? 0n,
+            metadata: { image: IPFSMetadata },
           });
         }
       })
