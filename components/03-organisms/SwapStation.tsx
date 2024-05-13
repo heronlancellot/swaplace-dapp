@@ -78,7 +78,7 @@ export const SwapStation = () => {
 
       if (!searchedUserTokensList.length) {
         toast.error(
-          "You must select at least one token from their inventory to Swap",
+          "You must select at least one token from the targeted swap address",
         );
         return;
       }
