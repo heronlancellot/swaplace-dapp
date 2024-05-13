@@ -298,6 +298,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
           contract: token.contractAddress,
           id: token.tokenId,
           tokenType: token.tokenType,
+          metadata: token.metadata,
         };
 
         verifyTokenAlreadyInTokenList(tokenERC721).then(
