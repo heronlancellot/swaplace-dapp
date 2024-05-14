@@ -18,7 +18,11 @@ interface VerifyTokensResponse {
   name: string;
 }
 
-export async function verifyTokenOwnership({
+/**
+ * This function Verify if user is the owner of the token
+ * Also Parse the tokenData.
+ */
+export async function verifyTokenOwnershipAndParseTokenData({
   address,
   contractAddress,
   tokenId,
