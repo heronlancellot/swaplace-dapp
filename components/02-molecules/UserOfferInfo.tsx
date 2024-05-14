@@ -51,9 +51,9 @@ export const UserOfferInfo = ({
           </div>
           <div className="flex ">
             {primaryName ? (
-              <p>{primaryName} offers</p>
+              <p>{primaryName} gets</p>
             ) : (
-              <p>{displayAddress} offers</p>
+              <p>{displayAddress} gets</p>
             )}
           </div>
         </div>

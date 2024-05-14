@@ -38,11 +38,11 @@ export const CardOffers = ({
     ? ForWhom.Yours
     : ForWhom.Their;
   const tokensOfferFor: Record<ForWhom, Token[]> = {
-    [ForWhom.Their]:
+    [ForWhom.Yours]:
       swapModalAction === SwapModalAction.CREATE_SWAP
         ? searchedUserTokensList
         : swapOfferToAccept?.bidderTokens.tokens ?? [],
-    [ForWhom.Yours]:
+    [ForWhom.Their]:
       swapModalAction === SwapModalAction.CREATE_SWAP
         ? authenticatedUserTokensList
         : swapOfferToAccept?.askerTokens.tokens ?? [],
