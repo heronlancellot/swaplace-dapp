@@ -24,6 +24,7 @@ import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
 import { useContext, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import toast from "react-hot-toast";
+import { hexToNumber } from "viem";
 
 interface ConfirmSwapApprovalModalProps {
   open: boolean;
@@ -178,7 +179,10 @@ export const ConfirmSwapModal = ({
         }
 
         if (transactionReceipt != undefined) {
-          toast.success("Successfully created swap offer!");
+          const swapId = hexToNumber(
+            transactionReceipt.logs[0].topics[1] as `0x${string}`,
+          );
+          toast.success(`Successfully created swap [#${swapId}] offer!`);
           updateSwapStep(ButtonClickPossibilities.NEXT_STEP);
         } else {
           toastBlockchainTxError("Create swap failed");
