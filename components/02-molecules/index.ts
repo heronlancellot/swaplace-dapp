@@ -13,6 +13,7 @@ export * from "./SelectChainNetwork";
 export * from "./SwapOfferCard";
 export * from "./SwapOfferCardMarketplace";
 export * from "./SwapOffersLayout";
+export * from "./SwapOffersLayoutMarketplace";
 export * from "./TheHeader";
 export * from "./TheSidebarHeader";
 export * from "./TokenAmountSelectionModal";
