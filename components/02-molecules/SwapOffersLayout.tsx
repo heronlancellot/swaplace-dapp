@@ -1,9 +1,9 @@
-import { ForWhom } from "../03-organisms";
 import { ErrorIcon, NoSwapsIcon } from "@/components/01-atoms";
 import {
   AddTokenOrSwapManuallyModal,
   AddTokenOrSwapManuallyModalVariant,
 } from "@/components/02-molecules";
+import { ForWhom } from "@/lib/client/constants";
 import { useState } from "react";
 import { useRouter } from "next/router";
 

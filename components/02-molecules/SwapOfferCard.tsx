@@ -1,5 +1,4 @@
 import { TokensSwapList } from "./TokensSwapList";
-import { ForWhom } from "../03-organisms";
 import {
   TokenCardActionType,
   TokenCardStyleType,
@@ -8,6 +7,7 @@ import {
 import { TokenCardProperties } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { EthereumAddress, Token } from "@/lib/shared/types";
+import { ForWhom } from "@/lib/client/constants";
 
 interface SwapOfferCardProps {
   address: EthereumAddress | null;

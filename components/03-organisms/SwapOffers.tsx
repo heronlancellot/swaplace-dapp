@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ForWhom } from "./TokensShelf";
 import {
   AddTokenOrSwapManuallyModal,
   AddTokenOrSwapManuallyModalVariant,
@@ -27,6 +26,7 @@ import {
 } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { getSwap } from "@/lib/service/getSwap";
+import { ForWhom } from "@/lib/client/constants";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import cc from "classcat";

@@ -1,4 +1,4 @@
-import { ChainInfo, TokensQueryStatus } from "@/lib/client/constants";
+import { ChainInfo, ForWhom, TokensQueryStatus } from "@/lib/client/constants";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   getERC721TokensFromAddress,
@@ -13,11 +13,6 @@ import { SwapContext } from "@/lib/client/contexts";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 /* eslint-disable react-hooks/exhaustive-deps */
-
-export enum ForWhom {
-  Yours,
-  Their,
-}
 
 /**
  *

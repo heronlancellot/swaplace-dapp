@@ -10,9 +10,9 @@ import {
   OfferSummary,
   SwapModalAction,
 } from "@/components/02-molecules";
-import { ForWhom } from "@/components/03-organisms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { SwapContext } from "@/lib/client/contexts";
+import { ForWhom } from "@/lib/client/constants";
 import { useContext, useEffect, useState } from "react";
 import cc from "classcat";
 import { toast } from "react-hot-toast";

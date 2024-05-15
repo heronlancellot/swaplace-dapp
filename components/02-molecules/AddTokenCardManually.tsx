@@ -1,9 +1,9 @@
-import { ForWhom } from "../03-organisms";
 import {
   AddTokenOrSwapManuallyModal,
   AddTokenOrSwapManuallyModalVariant,
 } from "@/components/02-molecules";
 import { PlusIcon, Tooltip } from "@/components/01-atoms";
+import { ForWhom } from "@/lib/client/constants";
 import { useState } from "react";
 interface AddTokenCardManuallyProps {
   forWhom: ForWhom;

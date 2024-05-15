@@ -1,4 +1,3 @@
-import { ForWhom } from "@/components/03-organisms";
 import {
   AddTokenCardManually,
   TokenAmountSelectionModal,
@@ -9,6 +8,7 @@ import {
 import { TokenCardsPlaceholder } from "@/components/01-atoms";
 import { ERC20, EthereumAddress, Token } from "@/lib/shared/types";
 import { EMPTY_ERC_20_BALANCE } from "@/lib/client/blockchain-utils";
+import { ForWhom } from "@/lib/client/constants";
 import { useState } from "react";
 import toast from "react-hot-toast";
 

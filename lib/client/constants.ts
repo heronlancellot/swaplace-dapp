@@ -6,6 +6,11 @@ enum NetworkKakarot {
   ETH_KAKAROT = "eth-kakarot",
 }
 
+export enum ForWhom {
+  Yours,
+  Their,
+}
+
 export enum TokensQueryStatus {
   EMPTY_QUERY = "EMPTY_QUERY",
   LOADING = "LOADING",

@@ -1,4 +1,3 @@
-import { ForWhom } from "@/components/03-organisms";
 import { SwapModalLayout } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
@@ -11,7 +10,7 @@ import {
 import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
 import { getSwap } from "@/lib/service/getSwap";
 import { Swap } from "@/lib/client/swap-utils";
-import { ADDRESS_ZERO } from "@/lib/client/constants";
+import { ADDRESS_ZERO, ForWhom } from "@/lib/client/constants";
 import {
   decodeConfig,
   retrieveDataFromTokensArray,
