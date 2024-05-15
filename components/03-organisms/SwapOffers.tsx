@@ -4,7 +4,6 @@ import {
   AddTokenOrSwapManuallyModal,
   AddTokenOrSwapManuallyModalVariant,
   SwapOfferCard,
-  SwapOffersDisplayVariant,
   SwapOffersLayout,
 } from "@/components/02-molecules";
 import {
@@ -27,6 +26,7 @@ import {
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { getSwap } from "@/lib/service/getSwap";
 import { ForWhom } from "@/lib/client/constants";
+import { SwapDisplayScreenVariant } from "@/lib/client/ui-utils";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
@@ -125,7 +125,7 @@ export const SwapOffers = () => {
 
   return !authenticatedUserAddress ? (
     <SwapOffersLayout
-      variant={SwapOffersDisplayVariant.NO_USER_AUTHENTICATED}
+      variant={SwapDisplayScreenVariant.NO_USER_AUTHENTICATED}
     />
   ) : isLoading || isLoadingOffersQuery ? (
     <div className="flex gap-5 flex-col">
@@ -137,9 +137,9 @@ export const SwapOffers = () => {
       </div>
     </div>
   ) : isError && tokensList.length === 0 ? (
-    <SwapOffersLayout variant={SwapOffersDisplayVariant.ERROR} />
+    <SwapOffersLayout variant={SwapDisplayScreenVariant.ERROR} />
   ) : tokensList.length === 0 || !authenticatedUserAddress ? (
-    <SwapOffersLayout variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED} />
+    <SwapOffersLayout variant={SwapDisplayScreenVariant.NO_SWAPS_CREATED} />
   ) : (
     <div className="flex flex-col gap-5 no-scrollbar">
       {tokensList.map((swap, index) => {

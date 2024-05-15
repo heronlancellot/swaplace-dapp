@@ -4,6 +4,7 @@ import {
   AddTokenOrSwapManuallyModalVariant,
 } from "@/components/02-molecules";
 import { ForWhom } from "@/lib/client/constants";
+import { SwapDisplayScreenVariant } from "@/lib/client/ui-utils";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
@@ -12,12 +13,6 @@ interface EmptyLayoutOffersProps {
   title: string;
   description: string;
   button?: React.ReactNode;
-}
-
-export enum SwapOffersDisplayVariant {
-  ERROR,
-  NO_SWAPS_CREATED,
-  NO_USER_AUTHENTICATED,
 }
 
 const EmptyLayoutOffers = ({
@@ -43,7 +38,7 @@ const EmptyLayoutOffers = ({
 export const SwapOffersLayout = ({
   variant,
 }: {
-  variant: SwapOffersDisplayVariant;
+  variant: SwapDisplayScreenVariant;
 }) => {
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const router = useRouter();
@@ -104,14 +99,14 @@ export const SwapOffersLayout = ({
   );
 
   const SwapOffersConfigLayout: Record<
-    SwapOffersDisplayVariant,
+    SwapDisplayScreenVariant,
     React.ReactNode
   > = {
-    [SwapOffersDisplayVariant.ERROR]: <SwapOffersLayoutError />,
-    [SwapOffersDisplayVariant.NO_SWAPS_CREATED]: (
+    [SwapDisplayScreenVariant.ERROR]: <SwapOffersLayoutError />,
+    [SwapDisplayScreenVariant.NO_SWAPS_CREATED]: (
       <SwapOffersLayoutNoSwapsCreated />
     ),
-    [SwapOffersDisplayVariant.NO_USER_AUTHENTICATED]: (
+    [SwapDisplayScreenVariant.NO_USER_AUTHENTICATED]: (
       <SwapOffersLayoutErrorNoAuthenticatedUser />
     ),
   };

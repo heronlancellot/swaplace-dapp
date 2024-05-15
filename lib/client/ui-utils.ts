@@ -12,6 +12,12 @@ export const WIDE_SCREEN_SIZE = 1279;
 export const DESKTOP_SCREEN_SIZE = 1023;
 export const TABLET_SCREEN_SIZE = 768;
 
+export enum SwapDisplayScreenVariant {
+  ERROR,
+  NO_SWAPS_CREATED,
+  NO_USER_AUTHENTICATED,
+}
+
 export enum TokenCardActionType {
   "SELECT_TOKEN_FOR_SWAP",
   "APPROVE_TOKEN_SWAP",

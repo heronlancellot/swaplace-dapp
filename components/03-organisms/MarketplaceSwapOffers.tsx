@@ -3,9 +3,8 @@
 import {
   AddSwapManuallyModalMarketplace,
   SwapOfferCardMarketplace,
-  SwapOffersDisplayVariant,
-  SwapOffersLayout,
-} from "@/components/02-molecules"; // TODO: create new components to handle marketplace
+  SwapOffersLayoutMarketplace,
+} from "@/components/02-molecules";
 import {
   SwapIcon,
   TokenOfferDetails,
@@ -22,6 +21,7 @@ import {
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { getSwap } from "@/lib/service/getSwap";
 import { MarketplaceContext, PonderFilter } from "@/lib/client/contexts";
+import { SwapDisplayScreenVariant } from "@/lib/client/ui-utils";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
@@ -119,8 +119,8 @@ export const MarketplaceSwapOffers = () => {
   };
 
   return !authenticatedUserAddress ? (
-    <SwapOffersLayout
-      variant={SwapOffersDisplayVariant.NO_USER_AUTHENTICATED}
+    <SwapOffersLayoutMarketplace
+      variant={SwapDisplayScreenVariant.NO_USER_AUTHENTICATED}
     />
   ) : isLoading || isLoadingOffersQuery ? (
     <div className="flex gap-5 flex-col">
@@ -132,9 +132,11 @@ export const MarketplaceSwapOffers = () => {
       </div>
     </div>
   ) : isError && tokensList.length === 0 ? (
-    <SwapOffersLayout variant={SwapOffersDisplayVariant.ERROR} />
+    <SwapOffersLayoutMarketplace variant={SwapDisplayScreenVariant.ERROR} />
   ) : tokensList.length === 0 || !authenticatedUserAddress ? (
-    <SwapOffersLayout variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED} />
+    <SwapOffersLayoutMarketplace
+      variant={SwapDisplayScreenVariant.NO_SWAPS_CREATED}
+    />
   ) : (
     <div className="flex flex-col gap-5 no-scrollbar">
       {tokensList.map((swap, index) => {
