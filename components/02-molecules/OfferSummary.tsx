@@ -32,12 +32,12 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
         <div className="flex justify-between items-center h-9 gap-2">
           <div className="flex space-x-2 items-center">
             <div className="flex items-center">
-              {variant === ForWhom.Yours && validatedAddressToSwap ? (
+              {variant === ForWhom.Their && validatedAddressToSwap ? (
                 <ENSAvatar
                   avatarENSAddress={validatedAddressToSwap}
                   size={ENSAvatarSize.SMALL}
                 />
-              ) : variant === ForWhom.Their && authenticatedUserAddress ? (
+              ) : variant === ForWhom.Yours && authenticatedUserAddress ? (
                 <ENSAvatar
                   avatarENSAddress={authenticatedUserAddress}
                   size={ENSAvatarSize.SMALL}
@@ -53,25 +53,25 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
             </div>
             <div className="items-center">
               <p className="p-small-variant-black-3 dark:p-small-variant-light-2 contrast-50">
-                {variant === ForWhom.Yours && validatedAddressToSwap
+                {variant === ForWhom.Their && validatedAddressToSwap
                   ? `${
                       searchedENSName
-                        ? `${searchedENSName} gets`
+                        ? `${searchedENSName} offers`
                         : validatedAddressToSwap
-                        ? `${validatedAddressToSwap.getEllipsedAddress()} gets`
+                        ? `${validatedAddressToSwap.getEllipsedAddress()} offers`
                         : "Use the search bar"
                     }`
-                  : variant === ForWhom.Yours && !validatedAddressToSwap
-                  ? "They get"
-                  : variant === ForWhom.Their && authenticatedUserAddress
+                  : variant === ForWhom.Their && !validatedAddressToSwap
+                  ? "They offer"
+                  : variant === ForWhom.Yours && authenticatedUserAddress
                   ? `${
                       authenticatedUserENSName
-                        ? `${authenticatedUserENSName} gets`
+                        ? `${authenticatedUserENSName} offers`
                         : authenticatedUserAddress
-                        ? `${authenticatedUserAddress.getEllipsedAddress()} gets`
+                        ? `${authenticatedUserAddress.getEllipsedAddress()} offers`
                         : "Connect your wallet"
                     }`
-                  : "You get"}
+                  : "You offer"}
               </p>
             </div>
           </div>
