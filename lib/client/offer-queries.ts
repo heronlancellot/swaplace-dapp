@@ -1,10 +1,10 @@
 //Recipient and value added to each query
 export const ALL_OFFERS_QUERY = `
-         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String, $network: BigInt ) {
           swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
-             where: { OR: [{owner: $inputAddress}, {allowed: $allowed}] },
+             where: { AND: [{network: $network}, {OR: [{owner: $inputAddress}, {allowed: $allowed}]}]},
              limit: 20,
              after: $after
            ) {
@@ -29,11 +29,11 @@ export const ALL_OFFERS_QUERY = `
          }
        `;
 export const CREATED_OFFERS_QUERY = `
-         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_gt: BigInt) {
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_gt: BigInt, $network: BigInt ) {
           swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
-             where: { owner: $inputAddress, status: CREATED, expiry_gt: $expiry_gt },
+             where: { owner: $inputAddress, status: CREATED, expiry_gt: $expiry_gt, network: $network },
              limit: 20,
              after: $after
            ) {
@@ -59,11 +59,11 @@ export const CREATED_OFFERS_QUERY = `
        `;
 
 export const RECEIVED_OFFERS_QUERY = `
-         query swapDatabases($orderBy: String!, $orderDirection: String!, $after: String, $allowed: String, $expiry_gt: BigInt) {
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $after: String, $allowed: String, $expiry_gt: BigInt, $network: BigInt) {
           swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
-             where: { allowed: $allowed, status_not: ACCEPTED, expiry_gt: $expiry_gt },
+             where: { allowed: $allowed, status_not: ACCEPTED, expiry_gt: $expiry_gt, network: $network },
              limit: 20,
              after: $after
            ) {
@@ -89,11 +89,11 @@ export const RECEIVED_OFFERS_QUERY = `
        `;
 
 export const ACCEPTED_OFFERS_QUERY = `
-         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String, $network: BigInt) {
           swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
-             where: { AND: [ {status: ACCEPTED}, {OR: [ {owner: $inputAddress},{allowed: $allowed}]}]},
+             where: { AND: [ {status: ACCEPTED}, {network: $network}, {OR: [ {owner: $inputAddress},{allowed: $allowed}]}]},
              limit: 20,
              after: $after
            ) {
@@ -119,11 +119,11 @@ export const ACCEPTED_OFFERS_QUERY = `
        `;
 
 export const CANCELED_OFFERS_QUERY = `
-         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String) {
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String, $network: BigInt) {
           swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
-             where: { AND: [ {status: CANCELED}, {OR: [ {owner: $inputAddress}, {allowed: $allowed}]}]},
+             where: { AND: [ {status: CANCELED}, {network: $network}, {OR: [ {owner: $inputAddress}, {allowed: $allowed}]}]},
              limit: 20,
              after: $after
            ) {
@@ -149,23 +149,12 @@ export const CANCELED_OFFERS_QUERY = `
        `;
 
 export const EXPIRED_OFFERS_QUERY = `
-         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_lt: BigInt) {
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $expiry_lt: BigInt, $network: BigInt, $allowed: String,) {
           swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
-             where: {
-              AND: [
-                {
-                  OR: [
-                    { owner: $inputAddress },
-                    { allowed: $inputAddress }
-                  ]
-                },
-                { status_not: ACCEPTED },
-                { status_not: CANCELED },
-                { expiry_lt: $expiry_lt }
-              ]
-            },
+             where: { AND: [{ status_not: ACCEPTED }, { status_not: CANCELED }, { expiry_lt: $expiry_lt }, {network: $network}, 
+              {OR: [{ owner: $inputAddress }, { allowed: $allowed}]}]},
              limit: 20,
              after: $after
            ) {

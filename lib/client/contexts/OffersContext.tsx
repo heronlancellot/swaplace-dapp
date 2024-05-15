@@ -21,11 +21,12 @@ import {
   RawSwapOfferInterface,
   PageInfo,
 } from "@/lib/client/offers-utils";
+import { SwapContext } from "@/lib/client/contexts";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { isAddress } from "viem";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import toast from "react-hot-toast";
 
 export enum PonderFilter {
@@ -105,6 +106,9 @@ export const OffersContextProvider = ({ children }: any) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { address, isConnected } = useAccount();
 
+  const { destinyChain } = useContext(SwapContext);
+  const { chain } = useNetwork();
+
   const userAddress = authenticatedUserAddress?.address;
 
   const currentUnixTimeSeconds = Math.floor(new Date().getTime() / 1000);
@@ -118,6 +122,11 @@ export const OffersContextProvider = ({ children }: any) => {
     const after = pageParam || null;
     let query = "";
     let variables = {};
+    let chainId: number | undefined = undefined;
+
+    if (typeof chain?.id != "undefined") {
+      chainId = chain?.id;
+    }
 
     switch (offersFilter) {
       case PonderFilter.ALL_OFFERS:
@@ -128,6 +137,7 @@ export const OffersContextProvider = ({ children }: any) => {
           inputAddress: userAddress,
           after: after,
           allowed: userAddress,
+          network: chainId,
         };
         break;
       case PonderFilter.CREATED:
@@ -138,6 +148,7 @@ export const OffersContextProvider = ({ children }: any) => {
           inputAddress: userAddress,
           after: after,
           expiry_gt: currentUnixTimeSeconds,
+          network: chainId,
         };
         break;
       case PonderFilter.RECEIVED:
@@ -148,6 +159,7 @@ export const OffersContextProvider = ({ children }: any) => {
           after: after,
           allowed: userAddress,
           expiry_gt: currentUnixTimeSeconds,
+          network: chainId,
         };
         break;
       case PonderFilter.ACCEPTED:
@@ -158,6 +170,7 @@ export const OffersContextProvider = ({ children }: any) => {
           inputAddress: userAddress,
           after: after,
           allowed: userAddress,
+          network: chainId,
         };
         break;
       case PonderFilter.CANCELED:
@@ -168,6 +181,7 @@ export const OffersContextProvider = ({ children }: any) => {
           inputAddress: userAddress,
           after: after,
           allowed: userAddress,
+          network: chainId,
         };
         break;
       case PonderFilter.EXPIRED:
@@ -178,6 +192,7 @@ export const OffersContextProvider = ({ children }: any) => {
           inputAddress: userAddress,
           expiry_lt: currentUnixTimeSeconds,
           after: after,
+          network: chainId,
         };
         break;
       default:
@@ -256,7 +271,12 @@ export const OffersContextProvider = ({ children }: any) => {
   // Offers query
   const { data, status, isFetchingNextPage, fetchNextPage, isError, refetch } =
     useInfiniteQuery({
-      queryKey: ["PonderQuerySwaps", authenticatedUserAddress, offersFilter],
+      queryKey: [
+        "PonderQuerySwaps",
+        authenticatedUserAddress,
+        offersFilter,
+        destinyChain,
+      ],
       queryFn: async ({ pageParam }: { pageParam: string | null }) =>
         await fetchSwaps({ pageParam }),
       initialPageParam: null,
