@@ -1,11 +1,11 @@
-import { OffersContext, PonderFilter } from "@/lib/client/contexts";
+import { PonderFilter, MarketplaceContext } from "@/lib/client/contexts";
 import { useState, useContext, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import cc from "classcat";
 
 export const StatusOffersMarketplace = () => {
   const [offerIsActive, setOfferIsActive] = useState<number>(0);
-  const { setOffersFilter, fetchNextPage } = useContext(OffersContext);
+  const { setOffersFilter, fetchNextPage } = useContext(MarketplaceContext);
 
   const { inView } = useInView();
 
