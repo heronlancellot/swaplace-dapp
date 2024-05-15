@@ -50,7 +50,11 @@ export const UserOfferInfo = ({
             )}
           </div>
           <div className="flex ">
-            {primaryName ? <p>{primaryName}</p> : <p>{displayAddress}</p>}
+            {primaryName ? (
+              <p>{primaryName} gets</p>
+            ) : (
+              <p>{displayAddress} gets</p>
+            )}
           </div>
         </div>
         {/* TODO > Include logic to calculate tokens value */}
