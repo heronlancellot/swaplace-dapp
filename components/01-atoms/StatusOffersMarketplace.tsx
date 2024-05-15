@@ -8,14 +8,14 @@ import cc from "classcat";
  */
 export const StatusOffersMarketplace = () => {
   const [offerIsActive, setOfferIsActive] = useState<number>(0);
-  const { setOffersFilter } = useContext(MarketplaceContext);
+  const { setOffersFilterMarketplace } = useContext(MarketplaceContext);
 
   const handleFilterClick = (filterOption: PonderFilter, index: number) => {
     setOfferIsActive(index);
 
     switch (filterOption) {
       default:
-        setOffersFilter(PonderFilter.ALL_OFFERS);
+        setOffersFilterMarketplace(PonderFilter.ALL_OFFERS);
         break;
     }
   };

@@ -42,7 +42,7 @@ const DEFAULT_OFFERS_DATA = {
 };
 
 interface MarketplaceContextProps {
-  setOffersFilter: Dispatch<React.SetStateAction<PonderFilter>>;
+  setOffersFilterMarketplace: Dispatch<React.SetStateAction<PonderFilter>>;
   offersFilter: PonderFilter;
   offersQueries: Record<PonderFilter, Array<FormattedSwapOfferAssets>>;
   fetchNextPage: () => void;
@@ -88,7 +88,7 @@ export const MarketplaceContextProvider = ({ children }: any) => {
       DEFAULT_OFFERS_DATA,
     );
 
-  const [offersFilter, setOffersFilter] = useState<PonderFilter>(
+  const [offersFilter, setOffersFilterMarketplace] = useState<PonderFilter>(
     PonderFilter.ALL_OFFERS,
   );
   const [tokensList, setTokensList] = useState<PopulatedSwapOfferCard[]>([
@@ -132,61 +132,6 @@ export const MarketplaceContextProvider = ({ children }: any) => {
           network: chainId,
         };
         break;
-      // case PonderFilter.CREATED:
-      //   query = CREATED_OFFERS_MARKETPLACE_QUERY;
-      //   variables = {
-      //     orderBy: "blockTimestamp",
-      //     orderDirection: "desc",
-      //     inputAddress: userAddress,
-      //     after: after,
-      //     expiry_gt: currentUnixTimeSeconds,
-      //     network: chainId,
-      //   };
-      //   break;
-      // case PonderFilter.RECEIVED:
-      //   query = RECEIVED_OFFERS_MARKETPLACE_QUERY;
-      //   variables = {
-      //     orderBy: "blockTimestamp",
-      //     orderDirection: "desc",
-      //     after: after,
-      //     allowed: userAddress,
-      //     expiry_gt: currentUnixTimeSeconds,
-      //     network: chainId,
-      //   };
-      //   break;
-      // case PonderFilter.ACCEPTED:
-      //   query = ACCEPTED_OFFERS_MARKETPLACE_QUERY;
-      //   variables = {
-      //     orderBy: "blockTimestamp",
-      //     orderDirection: "desc",
-      //     inputAddress: userAddress,
-      //     after: after,
-      //     allowed: userAddress,
-      //     network: chainId,
-      //   };
-      //   break;
-      // case PonderFilter.CANCELED:
-      //   query = CANCELED_OFFERS_MARKETPLACE_QUERY;
-      //   variables = {
-      //     orderBy: "blockTimestamp",
-      //     orderDirection: "desc",
-      //     inputAddress: userAddress,
-      //     after: after,
-      //     allowed: userAddress,
-      //     network: chainId,
-      //   };
-      //   break;
-      // case PonderFilter.EXPIRED:
-      //   query = EXPIRED_OFFERS_MARKETPLACE_QUERY;
-      //   variables = {
-      //     orderBy: "blockTimestamp",
-      //     orderDirection: "desc",
-      //     inputAddress: userAddress,
-      //     expiry_lt: currentUnixTimeSeconds,
-      //     after: after,
-      //     network: chainId,
-      //   };
-      //   break;
       default:
         console.error("Invalid offersFilter:", offersFilter);
         throw new Error("Invalid offersFilter");
@@ -299,7 +244,7 @@ export const MarketplaceContextProvider = ({ children }: any) => {
 
   useEffect(() => {
     setOffersData({
-      setOffersFilter,
+      setOffersFilterMarketplace,
       offersFilter,
       offersQueries,
       fetchNextPage,
@@ -315,7 +260,7 @@ export const MarketplaceContextProvider = ({ children }: any) => {
       isError,
     });
   }, [
-    setOffersFilter,
+    setOffersFilterMarketplace,
     offersFilter,
     offersQueries,
     fetchNextPage,
@@ -330,7 +275,7 @@ export const MarketplaceContextProvider = ({ children }: any) => {
 
   // Exportable data
   const [offersData, setOffersData] = useState<MarketplaceContextProps>({
-    setOffersFilter,
+    setOffersFilterMarketplace,
     offersFilter,
     offersQueries,
     fetchNextPage,
@@ -354,7 +299,7 @@ export const MarketplaceContextProvider = ({ children }: any) => {
 };
 
 export const MarketplaceContext = React.createContext<MarketplaceContextProps>({
-  setOffersFilter: () => {},
+  setOffersFilterMarketplace: () => {},
   offersFilter: PonderFilter.ALL_OFFERS,
   offersQueries: DEFAULT_OFFERS_DATA,
   fetchNextPage: () => {},
