@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { SwapContext, SwaplaceIcon } from "@/components/01-atoms";
+import { SwaplaceIcon } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   ERC20,
@@ -9,6 +9,7 @@ import {
   TokenType,
 } from "@/lib/shared/types";
 import { getTokenName } from "@/lib/client/ui-utils";
+import { SwapContext } from "@/lib/client/contexts";
 import React, { useContext, useEffect, useState } from "react";
 import cc from "classcat";
 import toast from "react-hot-toast";

@@ -1,4 +1,4 @@
-import { OffersContext } from "@/components/01-atoms";
+import { OffersContext } from "@/lib/client/contexts";
 import { useContext } from "react";
 
 export const OfferExpiryConfirmSwap = () => {

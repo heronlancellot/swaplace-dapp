@@ -8,9 +8,9 @@ import {
 } from "../lib/wallet/wallet-config";
 import {
   SwapContextProvider,
+  ShelfContextProvider,
   OffersContextProvider,
-} from "@/components/01-atoms";
-import { ShelfContextProvider } from "@/lib/client/contexts/ShelfContext";
+} from "@/lib/client/contexts";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import { WagmiConfig } from "wagmi";

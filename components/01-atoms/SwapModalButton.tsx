@@ -3,8 +3,8 @@ import {
   ArrowIcon,
   ArrowIconVariant,
   LoadingIndicator,
-  SwapContext,
 } from "@/components/01-atoms";
+import { SwapContext } from "@/lib/client/contexts";
 import React, { ButtonHTMLAttributes, useContext } from "react";
 import { useTheme } from "next-themes";
 import cc from "classcat";

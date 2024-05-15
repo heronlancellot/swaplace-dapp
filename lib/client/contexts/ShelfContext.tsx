@@ -1,3 +1,5 @@
+/* eslint-disable unused-imports/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Token } from "@/lib/shared/types";
 import React, { Dispatch, useEffect, useState } from "react";
@@ -65,7 +67,7 @@ export const ShelfContextProvider = ({ children }: any) => {
 
 export const ShelfContext = React.createContext<ShelfContext>({
   isActiveTab: 0,
-  setActiveTab: (tabId: Number) => {},
+  setActiveTab: (tabId: number) => {},
   yourTokensList: [],
   setYourTokensList: () => {},
   setTheirTokensList: () => {},

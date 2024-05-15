@@ -20,12 +20,13 @@ import {
   PageParam,
   RawSwapOfferInterface,
   PageInfo,
-  InifniteQueryData,
 } from "@/lib/client/offers-utils";
+import { SwapContext } from "@/lib/client/contexts";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { isAddress } from "viem";
+import { useAccount, useNetwork } from "wagmi";
 import toast from "react-hot-toast";
 
 export enum PonderFilter {
@@ -61,15 +62,14 @@ interface OffersContextProps {
   setTokensList: Dispatch<React.SetStateAction<PopulatedSwapOfferCard[]>>;
   tokensList: PopulatedSwapOfferCard[];
   isError: boolean;
-  data: InifniteQueryData[] | undefined;
 }
 
-const DEFAULT_ERC20_TOKEN: Readonly<Token> = {
+const DEFAULT_ERC20_TOKEN: Token = {
   tokenType: TokenType.ERC20,
   rawBalance: 0n,
 };
 
-const DEFAULT_SWAP_OFFER: Readonly<PopulatedSwapOfferCard> = {
+const DEFAULT_SWAP_OFFER: PopulatedSwapOfferCard = {
   id: 0n,
   status: PonderFilter.ALL_OFFERS,
   expiryDate: 0n,
@@ -81,20 +81,6 @@ const DEFAULT_SWAP_OFFER: Readonly<PopulatedSwapOfferCard> = {
     address: new EthereumAddress(ADDRESS_ZERO),
     tokens: [DEFAULT_ERC20_TOKEN],
   },
-};
-
-const DEFAULT_PAGE_INFO: PageInfo = {
-  hasNextPage: false,
-  endCursor: null,
-};
-
-const DEFAULT_DATA_INFINITE_QUERY: InifniteQueryData = {
-  pages: [
-    {
-      swapOffers: [DEFAULT_SWAP_OFFER],
-      pageInfo: DEFAULT_PAGE_INFO,
-    },
-  ],
 };
 
 export const OffersContextProvider = ({ children }: any) => {
@@ -118,6 +104,10 @@ export const OffersContextProvider = ({ children }: any) => {
   const [isLoadingOffersQuery, setIsLoadingOffersQuery] = useState(false);
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
+  const { address, isConnected } = useAccount();
+
+  const { destinyChain } = useContext(SwapContext);
+  const { chain } = useNetwork();
 
   const userAddress = authenticatedUserAddress?.address;
 
@@ -129,11 +119,14 @@ export const OffersContextProvider = ({ children }: any) => {
   };
 
   const fetchSwaps = async ({ pageParam }: PageParam) => {
-    if (!userAddress) throw new Error("User address is not defined");
-
     const after = pageParam || null;
     let query = "";
     let variables = {};
+    let chainId: number | undefined = undefined;
+
+    if (typeof chain?.id != "undefined") {
+      chainId = chain?.id;
+    }
 
     switch (offersFilter) {
       case PonderFilter.ALL_OFFERS:
@@ -144,6 +137,7 @@ export const OffersContextProvider = ({ children }: any) => {
           inputAddress: userAddress,
           after: after,
           allowed: userAddress,
+          network: chainId,
         };
         break;
       case PonderFilter.CREATED:
@@ -154,6 +148,7 @@ export const OffersContextProvider = ({ children }: any) => {
           inputAddress: userAddress,
           after: after,
           expiry_gt: currentUnixTimeSeconds,
+          network: chainId,
         };
         break;
       case PonderFilter.RECEIVED:
@@ -164,6 +159,7 @@ export const OffersContextProvider = ({ children }: any) => {
           after: after,
           allowed: userAddress,
           expiry_gt: currentUnixTimeSeconds,
+          network: chainId,
         };
         break;
       case PonderFilter.ACCEPTED:
@@ -174,6 +170,7 @@ export const OffersContextProvider = ({ children }: any) => {
           inputAddress: userAddress,
           after: after,
           allowed: userAddress,
+          network: chainId,
         };
         break;
       case PonderFilter.CANCELED:
@@ -184,6 +181,7 @@ export const OffersContextProvider = ({ children }: any) => {
           inputAddress: userAddress,
           after: after,
           allowed: userAddress,
+          network: chainId,
         };
         break;
       case PonderFilter.EXPIRED:
@@ -194,6 +192,7 @@ export const OffersContextProvider = ({ children }: any) => {
           inputAddress: userAddress,
           expiry_lt: currentUnixTimeSeconds,
           after: after,
+          network: chainId,
         };
         break;
       default:
@@ -269,9 +268,15 @@ export const OffersContextProvider = ({ children }: any) => {
     }
   };
 
+  // Offers query
   const { data, status, isFetchingNextPage, fetchNextPage, isError, refetch } =
     useInfiniteQuery({
-      queryKey: ["PonderQuerySwaps", authenticatedUserAddress, offersFilter],
+      queryKey: [
+        "PonderQuerySwaps",
+        authenticatedUserAddress,
+        offersFilter,
+        destinyChain,
+      ],
       queryFn: async ({ pageParam }: { pageParam: string | null }) =>
         await fetchSwaps({ pageParam }),
       initialPageParam: null,
@@ -279,26 +284,6 @@ export const OffersContextProvider = ({ children }: any) => {
       staleTime: Infinity,
       getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
       enabled: !!authenticatedUserAddress,
-      select: (data) => {
-        return data.pages.map((page) => ({
-          swapOffers: page.swapOffers.map((swap) => {
-            return {
-              id: BigInt(swap.id),
-              status: offersFilter,
-              expiryDate: 0,
-              bidderTokens: {
-                address: swap.bidderAssets.address,
-                tokens: [],
-              },
-              askerTokens: {
-                address: swap.askerAssets.address,
-                tokens: [],
-              },
-            };
-          }),
-          pageInfo: page.pageInfo,
-        }));
-      },
     });
 
   useEffect(() => {
@@ -309,7 +294,7 @@ export const OffersContextProvider = ({ children }: any) => {
 
   useEffect(() => {
     if (data) {
-      setHasNextPage(data[data.length - 1].pageInfo.hasNextPage);
+      setHasNextPage(data.pages[data.pages.length - 1].pageInfo.hasNextPage);
     }
   }, [data]);
 
@@ -335,7 +320,6 @@ export const OffersContextProvider = ({ children }: any) => {
       setTokensList,
       tokensList,
       isError,
-      data,
     });
   }, [
     setOffersFilter,
@@ -367,7 +351,6 @@ export const OffersContextProvider = ({ children }: any) => {
     setTokensList,
     tokensList,
     isError,
-    data,
   });
 
   return (
@@ -392,5 +375,4 @@ export const OffersContext = React.createContext<OffersContextProps>({
   setTokensList: () => {},
   tokensList: [DEFAULT_SWAP_OFFER],
   isError: false,
-  data: [DEFAULT_DATA_INFINITE_QUERY],
 });

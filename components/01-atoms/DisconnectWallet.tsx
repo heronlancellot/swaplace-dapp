@@ -1,5 +1,6 @@
-import { OffersContext, PowerIcon, SwapContext } from "@/components/01-atoms";
-import { useSidebar } from "@/lib/client/contexts/SidebarContext.tsx";
+import { PowerIcon } from "@/components/01-atoms";
+import { useSidebar } from "@/lib/client/contexts/SidebarContext";
+import { OffersContext, SwapContext } from "@/lib/client/contexts";
 import { useDisconnect } from "wagmi";
 import cc from "classcat";
 import { useTheme } from "next-themes";

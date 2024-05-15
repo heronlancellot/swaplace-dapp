@@ -1,5 +1,5 @@
 import { TheSidebarHeader, UserInfo } from "@/components/02-molecules";
-import { useSidebar } from "@/lib/client/contexts/SidebarContext.tsx";
+import { useSidebar } from "@/lib/client/contexts/SidebarContext";
 import React from "react";
 import cc from "classcat";
 import { useTheme } from "next-themes";

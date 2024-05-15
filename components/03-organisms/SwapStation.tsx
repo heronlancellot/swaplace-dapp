@@ -1,6 +1,5 @@
 import {
   PaperPlane,
-  SwapContext,
   SwapExpireTime,
   SwapIcon,
   SwapIconVariant,
@@ -13,6 +12,7 @@ import {
 } from "@/components/02-molecules";
 import { ForWhom } from "@/components/03-organisms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
+import { SwapContext } from "@/lib/client/contexts";
 import { useContext, useEffect, useState } from "react";
 import cc from "classcat";
 import { toast } from "react-hot-toast";
@@ -78,7 +78,7 @@ export const SwapStation = () => {
 
       if (!searchedUserTokensList.length) {
         toast.error(
-          "You must select at least one token from their inventory to Swap",
+          "You must select at least one token from the targeted swap address",
         );
         return;
       }
@@ -97,8 +97,8 @@ export const SwapStation = () => {
           <SwapExpireTime />
         </div>
         <div className="flex flex-col gap-2 relative">
-          <OfferSummary variant={ForWhom.Their} />
           <OfferSummary variant={ForWhom.Yours} />
+          <OfferSummary variant={ForWhom.Their} />
 
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border dark:border-[#353836] border-[#E4E4E4] dark:bg-[#212322] bg-[#F6F6F6] rounded-[100px] w-[36px] h-[36px] items-center flex justify-center">
             <SwapIcon

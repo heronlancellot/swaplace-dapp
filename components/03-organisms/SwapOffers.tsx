@@ -11,7 +11,7 @@ import {
 import {
   OffersContext,
   PonderFilter,
-} from "@/components/01-atoms/OffersContext";
+} from "@/lib/client/contexts/OffersContext";
 import {
   TokenOfferDetails,
   SwapIcon,

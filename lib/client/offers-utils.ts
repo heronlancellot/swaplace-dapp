@@ -1,6 +1,6 @@
 import { Asset } from "./swap-utils";
+import { PonderFilter } from "./contexts";
 import { EthereumAddress, Token } from "../shared/types";
-import { PonderFilter } from "@/components/01-atoms";
 
 export interface RawSwapOfferInterface {
   // RawSwapOfferInterface represents the object interface of a Swap Offer coming from Ponder
