@@ -1,4 +1,5 @@
 export * from "./AccountBalanceWalletSidebar";
+export * from "./AddSwapManuallyModalMarketplace";
 export * from "./AddTokenCardManually";
 export * from "./AddTokenOrSwapManuallyModal";
 export * from "./CardOffers";

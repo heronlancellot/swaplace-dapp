@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
-  AddTokenOrSwapManuallyModal,
-  AddTokenOrSwapManuallyModalVariant,
+  AddSwapManuallyModalMarketplace,
   SwapOfferCard,
   SwapOffersDisplayVariant,
   SwapOffersLayout,
@@ -23,7 +22,6 @@ import {
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { getSwap } from "@/lib/service/getSwap";
 import { MarketplaceContext, PonderFilter } from "@/lib/client/contexts";
-import { ForWhom } from "@/lib/client/constants";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
@@ -154,13 +152,11 @@ export const MarketplaceSwapOffers = () => {
         >
           Add swap manually
         </button>
-        <AddTokenOrSwapManuallyModal
+        <AddSwapManuallyModalMarketplace
           open={toggleManually}
-          forWhom={ForWhom.Yours}
           onClose={() => {
             setToggleManually(false);
           }}
-          variant={AddTokenOrSwapManuallyModalVariant.SWAP}
         />
       </div>
     </div>
