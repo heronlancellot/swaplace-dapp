@@ -21,14 +21,13 @@ import {
   RawSwapOfferInterface,
   PageInfo,
 } from "@/lib/client/offers-utils";
+import { SwapContext } from "@/lib/client/contexts";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { Dispatch, useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { isAddress } from "viem";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import toast from "react-hot-toast";
-import { SwapContext } from "@/lib/client/contexts";
-import { useNetwork } from "wagmi";
 
 export enum PonderFilter {
   ALL_OFFERS = "All Offers",
