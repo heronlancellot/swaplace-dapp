@@ -1,19 +1,14 @@
 import { PonderFilter, MarketplaceContext } from "@/lib/client/contexts";
-import { useState, useContext, useEffect } from "react";
-import { useInView } from "react-intersection-observer";
+import { useState, useContext } from "react";
 import cc from "classcat";
 
+/**
+ * StatusOffersMarketplace component is a reusable component that displays the status of the offers in the marketplace.
+ *  - The component is used to filter the offers based on All Offers.
+ */
 export const StatusOffersMarketplace = () => {
   const [offerIsActive, setOfferIsActive] = useState<number>(0);
-  const { setOffersFilter, fetchNextPage } = useContext(MarketplaceContext);
-
-  const { inView } = useInView();
-
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [fetchNextPage, inView]);
+  const { setOffersFilter } = useContext(MarketplaceContext);
 
   const handleFilterClick = (filterOption: PonderFilter, index: number) => {
     setOfferIsActive(index);

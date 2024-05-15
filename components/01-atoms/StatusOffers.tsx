@@ -1,19 +1,14 @@
 import { OffersContext, PonderFilter } from "@/lib/client/contexts";
-import { useState, useContext, useEffect } from "react";
-import { useInView } from "react-intersection-observer";
+import { useState, useContext } from "react";
 import cc from "classcat";
 
+/**
+ *  StatusOffers component is a reusable component that displays the status of the offers in the marketplace.
+ *  - The component is used to filter the offers based on Created, Received, Accepted, Canceled, Expired, and All Offers.
+ */
 export const StatusOffers = () => {
   const [offerIsActive, setOfferIsActive] = useState<number>(0);
-  const { setOffersFilter, fetchNextPage } = useContext(OffersContext);
-
-  const { inView } = useInView();
-
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [fetchNextPage, inView]);
+  const { setOffersFilter } = useContext(OffersContext);
 
   const handleFilterClick = (filterOption: PonderFilter, index: number) => {
     setOfferIsActive(index);
