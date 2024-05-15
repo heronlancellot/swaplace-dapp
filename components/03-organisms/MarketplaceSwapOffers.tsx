@@ -23,7 +23,7 @@ import {
 } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { getSwap } from "@/lib/service/getSwap";
-import { OffersContext, PonderFilter } from "@/lib/client/contexts"; // TODO: create new components to handle marketplace
+import { MarketplaceContext, PonderFilter } from "@/lib/client/contexts";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
@@ -43,9 +43,9 @@ export const MarketplaceSwapOffers = () => {
     offersFilter,
     offersQueries,
     isError,
-  } = useContext(OffersContext);
+  } = useContext(MarketplaceContext);
   const [isLoading, setIsLoading] = useState(true);
-  const { tokensList, setTokensList } = useContext(OffersContext);
+  const { tokensList, setTokensList } = useContext(MarketplaceContext);
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { chain } = useNetwork();
@@ -167,11 +167,7 @@ export const MarketplaceSwapOffers = () => {
   );
 };
 
-interface SwapOfferProps {
-  swap: PopulatedSwapOfferCard;
-}
-
-const SwapOffer = ({ swap }: SwapOfferProps) => {
+const SwapOffer = ({ swap }: { swap: PopulatedSwapOfferCard }) => {
   return (
     <div className="flex flex-col no-scrollbar border border-solid border-[#D6D5D5] dark:border-[#353836] dark:shadow-swap-station shadow-swap-station-light dark:bg-[#212322] font-onest rounded-lg ">
       <div className="flex flex-row border-b mb-auto dark:border-[#353836] relative">
