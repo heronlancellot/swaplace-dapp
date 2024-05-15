@@ -12,7 +12,7 @@ import { ForWhom } from "@/lib/client/constants";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export interface TokensListProps {
+interface TokensListProps {
   tokensList: Token[];
   ownerAddress: EthereumAddress | null;
   withSelectionValidation?: boolean;
