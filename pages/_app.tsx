@@ -10,6 +10,7 @@ import {
   SwapContextProvider,
   ShelfContextProvider,
   OffersContextProvider,
+  MarketplaceContextProvider,
 } from "@/lib/client/contexts";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
@@ -41,33 +42,35 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           <ShelfContextProvider>
             <SessionProvider session={session}>
               <OffersContextProvider>
-                <RainbowKitSiweNextAuthProvider
-                  getSiweMessageOptions={getSiweMessageOptions}
-                >
-                  <RainbowKitProvider
-                    locale="en-US"
-                    theme={{
-                      lightMode: lightTheme({
-                        accentColor: "black",
-                        borderRadius: "small",
-                        overlayBlur: "small",
-                      }),
-                      darkMode: darkTheme({
-                        accentColor: "#888888",
-                        borderRadius: "small",
-                        overlayBlur: "small",
-                      }),
-                    }}
-                    chains={chains}
+                <MarketplaceContextProvider>
+                  <RainbowKitSiweNextAuthProvider
+                    getSiweMessageOptions={getSiweMessageOptions}
                   >
-                    <Toaster />
-                    <ThemeProvider enableSystem={true} attribute="class">
-                      <main className={cc([onest.className])}>
-                        <Component {...pageProps} />
-                      </main>
-                    </ThemeProvider>
-                  </RainbowKitProvider>
-                </RainbowKitSiweNextAuthProvider>
+                    <RainbowKitProvider
+                      locale="en-US"
+                      theme={{
+                        lightMode: lightTheme({
+                          accentColor: "black",
+                          borderRadius: "small",
+                          overlayBlur: "small",
+                        }),
+                        darkMode: darkTheme({
+                          accentColor: "#888888",
+                          borderRadius: "small",
+                          overlayBlur: "small",
+                        }),
+                      }}
+                      chains={chains}
+                    >
+                      <Toaster />
+                      <ThemeProvider enableSystem={true} attribute="class">
+                        <main className={cc([onest.className])}>
+                          <Component {...pageProps} />
+                        </main>
+                      </ThemeProvider>
+                    </RainbowKitProvider>
+                  </RainbowKitSiweNextAuthProvider>
+                </MarketplaceContextProvider>
               </OffersContextProvider>
             </SessionProvider>
           </ShelfContextProvider>
