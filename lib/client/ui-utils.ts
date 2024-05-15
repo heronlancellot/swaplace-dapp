@@ -12,6 +12,26 @@ export const WIDE_SCREEN_SIZE = 1279;
 export const DESKTOP_SCREEN_SIZE = 1023;
 export const TABLET_SCREEN_SIZE = 768;
 
+export enum TokenCardActionType {
+  "SELECT_TOKEN_FOR_SWAP",
+  "APPROVE_TOKEN_SWAP",
+  "SHOW_NFT_DETAILS",
+  "NO_ACTION",
+}
+
+export enum TokenCardStyleType {
+  SMALL = "small",
+  NORMAL = "normal",
+  MEDIUM = "medium",
+  LARGE = "large",
+}
+export const TokenSizeClassNames = {
+  [TokenCardStyleType.SMALL]: "card-token-small",
+  [TokenCardStyleType.NORMAL]: "card-token-normal",
+  [TokenCardStyleType.MEDIUM]: "card-token-medium",
+  [TokenCardStyleType.LARGE]: "card-token-large",
+};
+
 export interface ExpireOption {
   label: string;
   value: TimeStampDate;

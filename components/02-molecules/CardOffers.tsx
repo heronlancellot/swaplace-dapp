@@ -1,8 +1,6 @@
 import { CreateTokenOfferVariant } from "@/components/03-organisms";
 import {
   SwapModalAction,
-  TokenCardActionType,
-  TokenCardStyleType,
   TokensList,
   UserOfferInfo,
   UserOfferVariant,
@@ -12,6 +10,7 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { EthereumAddress, Token } from "@/lib/shared/types";
 import { SwapContext, OffersContext } from "@/lib/client/contexts";
 import { ForWhom } from "@/lib/client/constants";
+import { TokenCardActionType, TokenCardStyleType } from "@/lib/client/ui-utils";
 import { useContext } from "react";
 
 interface CardOffersProps {

@@ -2,13 +2,12 @@ import {
   AddTokenCardManually,
   TokenAmountSelectionModal,
   TokenCard,
-  TokenCardActionType,
-  TokenCardStyleType,
 } from "@/components/02-molecules";
 import { TokenCardsPlaceholder } from "@/components/01-atoms";
 import { ERC20, EthereumAddress, Token } from "@/lib/shared/types";
 import { EMPTY_ERC_20_BALANCE } from "@/lib/client/blockchain-utils";
 import { ForWhom } from "@/lib/client/constants";
+import { TokenCardActionType, TokenCardStyleType } from "@/lib/client/ui-utils";
 import { useState } from "react";
 import toast from "react-hot-toast";
 

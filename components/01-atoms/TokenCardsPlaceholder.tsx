@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-  TokenCardStyleType,
-  TokenSizeClassNames,
-} from "@/components/02-molecules";
+
 import { useScreenSize } from "@/lib/client/hooks/useScreenSize";
+import { TokenCardStyleType, TokenSizeClassNames } from "@/lib/client/ui-utils";
 
 interface TokenCardsPlaceholderProps {
   totalCardsLength: number;

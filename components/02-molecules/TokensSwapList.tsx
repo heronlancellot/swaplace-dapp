@@ -1,11 +1,9 @@
 import { TokenSwapCard } from "./TokenSwapCard";
-import {
-  TokenCardActionType,
-  TokenCardStyleType,
-} from "@/components/02-molecules";
+
 import { ERC20, EthereumAddress, Token } from "@/lib/shared/types";
 import { EMPTY_ERC_20_BALANCE } from "@/lib/client/blockchain-utils";
 import { ForWhom } from "@/lib/client/constants";
+import { TokenCardStyleType, TokenCardActionType } from "@/lib/client/ui-utils";
 
 interface TokensListProps {
   tokensList: Token[];

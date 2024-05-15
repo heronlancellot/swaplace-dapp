@@ -1,10 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { BlockExplorerExternalLinkButton } from "@/components/01-atoms";
-import {
-  TokenCard,
-  TokenCardActionType,
-  TokenCardStyleType,
-} from "@/components/02-molecules";
+import { TokenCard } from "@/components/02-molecules";
 import {
   getTokenAmountOrId,
   toastBlockchainTxError,
@@ -14,7 +10,12 @@ import { SWAPLACE_SMART_CONTRACT_ADDRESS } from "@/lib/client/constants";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { isTokenSwapApproved } from "@/lib/service/verifyTokensSwapApproval";
 import { IApproveTokenSwap } from "@/lib/client/swap-utils";
-import { getTokenContractAddress, getTokenName } from "@/lib/client/ui-utils";
+import {
+  TokenCardActionType,
+  TokenCardStyleType,
+  getTokenContractAddress,
+  getTokenName,
+} from "@/lib/client/ui-utils";
 import { Token } from "@/lib/shared/types";
 import toast from "react-hot-toast";
 import { type TransactionReceipt } from "viem";

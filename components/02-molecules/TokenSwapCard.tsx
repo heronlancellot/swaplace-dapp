@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
 import {
   ERC20,
   ERC721,
@@ -6,7 +7,12 @@ import {
   Token,
   TokenType,
 } from "@/lib/shared/types";
-import { getTokenName } from "@/lib/client/ui-utils";
+import {
+  TokenCardActionType,
+  TokenCardStyleType,
+  TokenSizeClassNames,
+  getTokenName,
+} from "@/lib/client/ui-utils";
 import React, { useEffect, useState } from "react";
 import cc from "classcat";
 
@@ -29,33 +35,12 @@ interface TokenCardProps {
   styleType?: StyleVariant;
 }
 
-export enum TokenCardActionType {
-  "SELECT_TOKEN_FOR_SWAP",
-  "APPROVE_TOKEN_SWAP",
-  "SHOW_NFT_DETAILS",
-  "NO_ACTION",
-}
-
-export enum TokenCardStyleType {
-  SMALL = "small",
-  NORMAL = "normal",
-  MEDIUM = "medium",
-  LARGE = "large",
-}
-
 type StyleVariant =
   | TokenCardStyleType
   | "small"
   | "normal"
   | "medium"
   | "large";
-
-export const TokenSizeClassNames = {
-  [TokenCardStyleType.SMALL]: "card-token-small",
-  [TokenCardStyleType.NORMAL]: "card-token-normal",
-  [TokenCardStyleType.MEDIUM]: "card-token-medium",
-  [TokenCardStyleType.LARGE]: "card-token-large",
-};
 
 /**
  * TokenCard Component
