@@ -2,9 +2,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ForWhom } from "./TokensShelf";
 import { AddTokenOrSwapManuallyModalMarketplace } from "../02-molecules/AddTokenOrSwapManuallyModalMarketplace";
+import { SwapOfferCardMarketplace } from "../02-molecules/SwapOfferCardMarketplace";
 import {
   AddTokenOrSwapManuallyModalVariant,
-  SwapOfferCard,
   SwapOffersDisplayVariant,
   SwapOffersLayout,
 } from "@/components/02-molecules";
@@ -179,12 +179,12 @@ const SwapOffer = ({ swap }: SwapOfferProps) => {
     <div className="flex flex-col no-scrollbar border border-solid border-[#D6D5D5] dark:border-[#353836] dark:shadow-swap-station shadow-swap-station-light dark:bg-[#212322] font-onest rounded-lg ">
       <div className="flex flex-row border-b mb-auto dark:border-[#353836] relative">
         <div className={cc(["border-r dark:border-[#353836]"])}>
-          <SwapOfferCard
+          <SwapOfferCardMarketplace
             tokens={swap.askerTokens.tokens}
             address={swap.askerTokens.address}
           />
         </div>
-        <SwapOfferCard
+        <SwapOfferCardMarketplace
           tokens={swap.bidderTokens.tokens}
           address={swap.bidderTokens.address}
         />
