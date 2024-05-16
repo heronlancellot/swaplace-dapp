@@ -4,6 +4,7 @@ import { ForWhom } from "./TokensShelf";
 import { AddTokenOrSwapManuallyModalMarketplace } from "../02-molecules/AddTokenOrSwapManuallyModalMarketplace";
 import { SwapOfferCardMarketplace } from "../02-molecules/SwapOfferCardMarketplace";
 import { SwapOffersLayoutMarketplace } from "../02-molecules/SwapOffersLayoutMarketplace";
+import { TokenOfferDetailsMarketplace } from "../01-atoms/TokenOfferDetailsMarketplace";
 import {
   AddTokenOrSwapManuallyModalVariant,
   SwapOffersDisplayVariant,
@@ -12,11 +13,7 @@ import {
   OffersContext,
   PonderFilter,
 } from "@/lib/client/contexts/OffersContext";
-import {
-  SwapIcon,
-  TokenOfferDetails,
-  TokensOfferSkeleton,
-} from "@/components/01-atoms";
+import { SwapIcon, TokensOfferSkeleton } from "@/components/01-atoms";
 import {
   decodeConfig,
   retrieveDataFromTokensArray,
@@ -195,7 +192,7 @@ const SwapOffer = ({ swap }: SwapOfferProps) => {
         </div>
       </div>
       <div className="flex-col">
-        <TokenOfferDetails swap={swap} />
+        <TokenOfferDetailsMarketplace swap={swap} />
       </div>
     </div>
   );
