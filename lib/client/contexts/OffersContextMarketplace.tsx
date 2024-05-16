@@ -136,7 +136,7 @@ export const OffersContextMarketplaceProvider = ({ children }: any) => {
           orderBy: "blockTimestamp",
           orderDirection: "desc",
           after: after,
-          allowed: ADDRESS_ZERO,
+          allowed: "0x00", // For some reason the Ponder retrieves that Data instead of ADDRESS_ZERO
           network: chainId,
         };
         break;

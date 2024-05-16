@@ -74,16 +74,12 @@ const SwapBody = () => {
     if (swap.owner === ADDRESS_ZERO) {
       toast.error("Swap ID doesn't exist. Please check the given ID");
     } else if (swap.owner !== ADDRESS_ZERO) {
-      toast.success("Searching for swap...");
-      if (
-        swap.owner.toUpperCase() ===
-        authenticatedUserAddress.address.toUpperCase()
-      ) {
-        swapBelongsToAuthUser = true;
-      } else if (bidingAddressAndExpiryData.allowed === ADDRESS_ZERO) {
+      if (bidingAddressAndExpiryData.allowed === ADDRESS_ZERO) {
+        toast.success("Searching for swap...");
         swapBelongsToAuthUser = true;
       } else {
         swapBelongsToAuthUser = false;
+        toast.error("This swap doesn't have allowed 0. Try offers");
       }
     }
     return swapBelongsToAuthUser;
