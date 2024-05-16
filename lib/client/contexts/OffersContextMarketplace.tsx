@@ -2,10 +2,10 @@
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
+import { ALL_OFFERS_MARKETPLACE_QUERY } from "../marketplace-queries";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   ACCEPTED_OFFERS_QUERY,
-  ALL_OFFERS_QUERY,
   CANCELED_OFFERS_QUERY,
   CREATED_OFFERS_QUERY,
   EXPIRED_OFFERS_QUERY,
@@ -131,13 +131,12 @@ export const OffersContextMarketplaceProvider = ({ children }: any) => {
 
     switch (offersFilter) {
       case PonderFilter.ALL_OFFERS:
-        query = ALL_OFFERS_QUERY;
+        query = ALL_OFFERS_MARKETPLACE_QUERY;
         variables = {
           orderBy: "blockTimestamp",
           orderDirection: "desc",
-          inputAddress: userAddress,
           after: after,
-          allowed: userAddress,
+          allowed: ADDRESS_ZERO,
           network: chainId,
         };
         break;
