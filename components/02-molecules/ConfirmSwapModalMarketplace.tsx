@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { ProgressStatusMarketplace } from "./ProgressStatusMarketplace";
 import { ApproveTokenCardsMarketplace } from "../01-atoms/ApproveTokenCardsMarketplace";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
@@ -7,7 +8,6 @@ import {
   ButtonVariant,
   OfferExpiryConfirmSwap,
 } from "@/components/01-atoms";
-import { ProgressStatus } from "@/components/02-molecules";
 import { SwapUserConfiguration, createSwap } from "@/lib/service/createSwap";
 import {
   ButtonClickPossibilities,
@@ -215,7 +215,7 @@ export const ConfirmSwapModalMarketplace = ({
         }
         footer={
           <div className="flex w-full justify-between items-center">
-            <ProgressStatus swapModalAction={swapModalAction} />
+            <ProgressStatusMarketplace swapModalAction={swapModalAction} />
             <SwapModalButton
               label={"Continue"}
               onClick={validateTokensAreApproved}
