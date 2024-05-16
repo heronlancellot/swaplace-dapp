@@ -24,6 +24,7 @@ import {
 } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { getSwap } from "@/lib/service/getSwap";
+import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
@@ -45,7 +46,7 @@ export const SwapOffersMarketplace = () => {
     isError,
   } = useContext(OffersContext);
   const [isLoading, setIsLoading] = useState(true);
-  const { tokensList, setTokensList } = useContext(OffersContext);
+  const { tokensList, setTokensList } = useContext(OffersContextMarketplace);
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { chain } = useNetwork();
