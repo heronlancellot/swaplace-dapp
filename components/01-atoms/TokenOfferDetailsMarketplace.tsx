@@ -1,10 +1,11 @@
+import { ConfirmSwapModalMarketplace } from "../02-molecules/ConfirmSwapModalMarketplace";
 import {
   DoneIcon,
   OfferTag,
   ThreeDotsCardOffersOptions,
 } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import { ConfirmSwapModal, SwapModalAction } from "@/components/02-molecules";
+import { SwapModalAction } from "@/components/02-molecules";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { PonderFilter } from "@/lib/client/contexts";
 import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
@@ -67,7 +68,7 @@ export const TokenOfferDetailsMarketplace = ({
         </ul>
       </div>
       <div className="flex gap-2 justify-center items-center ">
-        {authenticatedUserAddress?.equals(swap.bidderTokens.address) &&
+        {!authenticatedUserAddress?.equals(swap.bidderTokens.address) &&
           swap.status !== PonderFilter.ACCEPTED && (
             <div>
               <button
@@ -83,7 +84,7 @@ export const TokenOfferDetailsMarketplace = ({
         <ThreeDotsCardOffersOptions swap={swap} />
       </div>
 
-      <ConfirmSwapModal
+      <ConfirmSwapModalMarketplace
         open={openConfirmationModal}
         swapModalAction={SwapModalAction.ACCEPT_SWAP}
         onClose={() => {
