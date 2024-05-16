@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ForWhom } from "./TokensShelf";
+import { AddTokenOrSwapManuallyModalMarketplace } from "../02-molecules/AddTokenOrSwapManuallyModalMarketplace";
 import {
-  AddTokenOrSwapManuallyModal,
   AddTokenOrSwapManuallyModalVariant,
   SwapOfferCard,
   SwapOffersDisplayVariant,
@@ -157,7 +157,7 @@ export const SwapOffersMarketplace = () => {
         >
           Add swap manually
         </button>
-        <AddTokenOrSwapManuallyModal
+        <AddTokenOrSwapManuallyModalMarketplace
           open={toggleManually}
           forWhom={ForWhom.Yours}
           onClose={() => {
