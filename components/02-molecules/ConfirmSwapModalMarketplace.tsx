@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { ApproveTokenCardsMarketplace } from "../01-atoms/ApproveTokenCardsMarketplace";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   SwapModalLayout,
   SwapModalButton,
   ButtonVariant,
   OfferExpiryConfirmSwap,
-  ApproveTokenCards,
 } from "@/components/01-atoms";
 import { ProgressStatus } from "@/components/02-molecules";
 import { SwapUserConfiguration, createSwap } from "@/lib/service/createSwap";
@@ -210,7 +210,9 @@ export const ConfirmSwapModalMarketplace = ({
       <SwapModalLayout
         toggleCloseButton={{ open: open, onClose: onClose }}
         text={ModalTextContent[swapModalAction][SwapModalSteps.APPROVE_TOKENS]}
-        body={<ApproveTokenCards swapModalAction={swapModalAction} />}
+        body={
+          <ApproveTokenCardsMarketplace swapModalAction={swapModalAction} />
+        }
         footer={
           <div className="flex w-full justify-between items-center">
             <ProgressStatus swapModalAction={swapModalAction} />
