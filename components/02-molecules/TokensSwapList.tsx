@@ -40,6 +40,7 @@ export interface TokensListProps {
  *
  **/
 
+// Generic Component to display a list of tokens based on tokensList prop
 export const TokensSwapList = ({
   tokensList,
   ownerAddress,
