@@ -3,10 +3,10 @@
 import { ForWhom } from "./TokensShelf";
 import { AddTokenOrSwapManuallyModalMarketplace } from "../02-molecules/AddTokenOrSwapManuallyModalMarketplace";
 import { SwapOfferCardMarketplace } from "../02-molecules/SwapOfferCardMarketplace";
+import { SwapOffersLayoutMarketplace } from "../02-molecules/SwapOffersLayoutMarketplace";
 import {
   AddTokenOrSwapManuallyModalVariant,
   SwapOffersDisplayVariant,
-  SwapOffersLayout,
 } from "@/components/02-molecules";
 import {
   OffersContext,
@@ -124,7 +124,7 @@ export const SwapOffersMarketplace = () => {
   };
 
   return !authenticatedUserAddress ? (
-    <SwapOffersLayout
+    <SwapOffersLayoutMarketplace
       variant={SwapOffersDisplayVariant.NO_USER_AUTHENTICATED}
     />
   ) : isLoading || isLoadingOffersQuery ? (
@@ -137,9 +137,11 @@ export const SwapOffersMarketplace = () => {
       </div>
     </div>
   ) : isError && tokensList.length === 0 ? (
-    <SwapOffersLayout variant={SwapOffersDisplayVariant.ERROR} />
+    <SwapOffersLayoutMarketplace variant={SwapOffersDisplayVariant.ERROR} />
   ) : tokensList.length === 0 || !authenticatedUserAddress ? (
-    <SwapOffersLayout variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED} />
+    <SwapOffersLayoutMarketplace
+      variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED}
+    />
   ) : (
     <div className="flex flex-col gap-5 no-scrollbar">
       {tokensList.map((swap, index) => {
