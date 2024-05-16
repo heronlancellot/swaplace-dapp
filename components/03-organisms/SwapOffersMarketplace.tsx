@@ -9,10 +9,7 @@ import {
   AddTokenOrSwapManuallyModalVariant,
   SwapOffersDisplayVariant,
 } from "@/components/02-molecules";
-import {
-  OffersContext,
-  PonderFilter,
-} from "@/lib/client/contexts/OffersContext";
+import { PonderFilter } from "@/lib/client/contexts/OffersContext";
 import { SwapIcon, TokensOfferSkeleton } from "@/components/01-atoms";
 import {
   decodeConfig,
@@ -44,7 +41,7 @@ export const SwapOffersMarketplace = () => {
     offersFilter,
     offersQueries,
     isError,
-  } = useContext(OffersContext);
+  } = useContext(OffersContextMarketplace);
   const [isLoading, setIsLoading] = useState(true);
   const { tokensList, setTokensList } = useContext(OffersContextMarketplace);
   const [toggleManually, setToggleManually] = useState<boolean>(false);

@@ -17,13 +17,10 @@ import {
   retrieveDataFromTokensArray,
 } from "@/lib/client/blockchain-utils";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
-import {
-  OffersContext,
-  PonderFilter,
-  SwapContext,
-} from "@/lib/client/contexts";
+import { PonderFilter, SwapContext } from "@/lib/client/contexts";
 import { verifyTokenOwnershipAndParseTokenData } from "@/lib/service/verifyTokenOwnershipAndParseTokenData";
 import { getTokenUri } from "@/lib/service/getTokenUri";
+import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
 import { isAddress } from "viem";
@@ -51,7 +48,7 @@ const SwapBody = () => {
   const [swapId, setSwapId] = useState<bigint>(0n);
   const { chain } = useNetwork();
   let swapBelongsToAuthUser: boolean;
-  const { setTokensList, tokensList } = useContext(OffersContext);
+  const { setTokensList, tokensList } = useContext(OffersContextMarketplace);
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
 

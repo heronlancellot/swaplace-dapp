@@ -6,7 +6,8 @@ import {
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { ConfirmSwapModal, SwapModalAction } from "@/components/02-molecules";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
-import { OffersContext, PonderFilter } from "@/lib/client/contexts";
+import { PonderFilter } from "@/lib/client/contexts";
+import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
 import React, { useContext, useState } from "react";
 
 export const TokenOfferDetailsMarketplace = ({
@@ -18,7 +19,7 @@ export const TokenOfferDetailsMarketplace = ({
     useState<boolean>(false);
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  const { acceptSwapOffer } = useContext(OffersContext);
+  const { acceptSwapOffer } = useContext(OffersContextMarketplace);
 
   const acceptOffer = () => {
     acceptSwapOffer(swap);
