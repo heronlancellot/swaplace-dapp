@@ -137,6 +137,7 @@ export const OffersContextMarketplaceProvider = ({ children }: any) => {
           orderDirection: "desc",
           after: after,
           allowed: "0x00", // For some reason the Ponder retrieves that Data instead of ADDRESS_ZERO
+          expiry_gt: currentUnixTimeSeconds,
           network: chainId,
         };
         break;
