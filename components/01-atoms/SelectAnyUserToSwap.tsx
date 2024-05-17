@@ -3,6 +3,12 @@ import { SwapContext } from "@/lib/client/contexts";
 import { EthereumAddress } from "@/lib/shared/types";
 import { useContext, useState } from "react";
 
+/**
+ * This component is a checkbox that allows the user to select any user to swap tokens with.
+ *  This is useful when the user doesn't have a specific address to swap with.
+ *  It sets the validated address to swap to the zero address. ( Allowed = 0 )
+ *
+ */
 export const SelectAnyUserToSwap = () => {
   const [isChecked, setIsChecked] = useState(false);
   const { setValidatedAddressToSwap } = useContext(SwapContext);
@@ -11,6 +17,8 @@ export const SelectAnyUserToSwap = () => {
     setIsChecked(event.target.checked);
     if (event.target.checked) {
       setValidatedAddressToSwap(new EthereumAddress(ADDRESS_ZERO));
+    } else {
+      setValidatedAddressToSwap(null);
     }
   };
 
