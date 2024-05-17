@@ -344,6 +344,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       toast.error("Wallet not connected to any chain");
       return;
     }
+    if (tokenType === TokenType.ERC721 && !tokenId) {
+      toast.error("No token ID provided");
+      return;
+    }
 
     const metadata: string = await getTokenUri(BigInt(tokenId), chain.id);
     const updatedMetadata = addPrefixToIPFSLInk(metadata);
@@ -361,32 +365,44 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     const JSONDataIPFS = await fetchJSONFromIPFSLink(updatedMetadata);
     const IPFSMetadata = addPrefixToIPFSLInk(JSONDataIPFS.image);
 
-    await verifyTokenOwnershipAndParseTokenData({
-      address: address,
-      chainId: chain.id,
-      contractAddress: contractAddress,
-      tokenId: tokenId,
-      tokenType: tokenType,
-    })
-      .then((tokenData) => {
-        if (!tokenData.isOwner) {
-          toast.error(
-            `This token doesn't belong to the address: ${address.getEllipsedAddress()}`,
-          );
-        } else if (tokenData && tokenData.isOwner) {
-          addTokenToTokensList({
-            tokenName: tokenData.name,
-            contractAddress: contractAddress,
-            tokenId: tokenId,
-            tokenType: tokenType,
-            balance: tokenData.erc20Balance ?? 0n,
-            metadata: { image: IPFSMetadata },
-          });
-        }
+    if (validatedAddressToSwap?.address !== ADDRESS_ZERO) {
+      await verifyTokenOwnershipAndParseTokenData({
+        address: address,
+        chainId: chain.id,
+        contractAddress: contractAddress,
+        tokenId: tokenId,
+        tokenType: tokenType,
+        // allowedToSwapAnyUser: validatedAddressToSwap?.address === ADDRESS_ZERO,
       })
-      .catch((error) => {
-        console.error(error);
+        .then((tokenData) => {
+          if (!tokenData.isOwner) {
+            toast.error(
+              `This token doesn't belong to the address: ${address.getEllipsedAddress()}`,
+            );
+          } else if (tokenData && tokenData.isOwner) {
+            addTokenToTokensList({
+              tokenName: tokenData.name,
+              contractAddress: contractAddress,
+              tokenId: tokenId,
+              tokenType: tokenType,
+              balance: tokenData.erc20Balance ?? 0n,
+              metadata: { image: IPFSMetadata },
+            });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      // }
+    } else {
+      addTokenToTokensList({
+        tokenName: JSONDataIPFS.name,
+        contractAddress: contractAddress,
+        tokenId: tokenId,
+        tokenType: tokenType,
+        metadata: { image: IPFSMetadata },
       });
+    }
   };
 
   return (

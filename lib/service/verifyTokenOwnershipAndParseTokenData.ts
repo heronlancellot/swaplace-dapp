@@ -1,4 +1,5 @@
 import { MockERC20Abi, MockERC721Abi } from "../client/abi";
+import { ADDRESS_ZERO } from "../client/constants";
 import { EthereumAddress, TokenType } from "../shared/types";
 import { publicClient } from "../wallet/wallet-config";
 import toast from "react-hot-toast";
@@ -50,8 +51,10 @@ export async function verifyTokenOwnershipAndParseTokenData({
       if (typeof tokenOwner.result === "string") {
         return {
           isOwner:
-            (tokenOwner.result as string).toUpperCase() ===
-            address.address.toUpperCase(),
+            tokenOwner.result === ADDRESS_ZERO
+              ? true
+              : (tokenOwner.result as string).toUpperCase() ===
+                address.address.toUpperCase(),
           erc20Balance: 0n,
           name: tokenName as string,
         };

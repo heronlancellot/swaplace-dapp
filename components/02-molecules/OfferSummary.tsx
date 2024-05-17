@@ -1,6 +1,7 @@
 import { ForWhom } from "../03-organisms";
 import { ENSAvatar, ENSAvatarSize, PersonIcon } from "@/components/01-atoms";
 import { TokenCardStyleType, TokensList } from "@/components/02-molecules";
+import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { SwapContext } from "@/lib/client/contexts";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useEnsData } from "@/lib/client/hooks/useENSData";
@@ -58,7 +59,12 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
                       searchedENSName
                         ? `${searchedENSName} offers`
                         : validatedAddressToSwap
-                        ? `${validatedAddressToSwap.getEllipsedAddress()} offers`
+                        ? `${
+                            validatedAddressToSwap.address === ADDRESS_ZERO
+                              ? "Any User"
+                              : validatedAddressToSwap.getEllipsedAddress() +
+                                "offers"
+                          } `
                         : "Use the search bar"
                     }`
                   : variant === ForWhom.Their && !validatedAddressToSwap
