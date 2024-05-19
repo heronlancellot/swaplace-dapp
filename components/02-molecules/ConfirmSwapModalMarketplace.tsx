@@ -7,6 +7,7 @@ import {
   SwapModalButton,
   ButtonVariant,
   OfferExpiryConfirmSwap,
+  OfferExpiryConfirmSwapVariant,
 } from "@/components/01-atoms";
 import { SwapUserConfiguration, createSwap } from "@/lib/service/createSwap";
 import {
@@ -113,12 +114,12 @@ export const ConfirmSwapModalMarketplace = ({
     return null;
   }
 
-  let chainId: number;
+  let chainId: number | undefined = undefined;
   let userWalletClient: WalletClient;
 
   const handleSwap = async () => {
     if (typeof chain?.id != "undefined" && walletClient != undefined) {
-      chainId = chain?.id;
+      chainId = chain.id;
       userWalletClient = walletClient;
     } else {
       throw new Error("Chain ID is undefined");
@@ -231,7 +232,9 @@ export const ConfirmSwapModalMarketplace = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.ACCEPT_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap />
+            <OfferExpiryConfirmSwap
+              variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
+            />
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
@@ -267,7 +270,9 @@ export const ConfirmSwapModalMarketplace = ({
         }
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap />
+            <OfferExpiryConfirmSwap
+              variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
+            />
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
@@ -289,7 +294,9 @@ export const ConfirmSwapModalMarketplace = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.SUCCESSFUL_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap />
+            <OfferExpiryConfirmSwap
+              variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
+            />
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
