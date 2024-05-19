@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ProgressStatusMarketplace } from "./ProgressStatusMarketplace";
 import { ApproveTokenCardsMarketplace } from "../01-atoms/ApproveTokenCardsMarketplace";
+import { CreateTokenOfferMarketplace } from "../03-organisms/CreateTokenOfferMarketplace";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   SwapModalLayout,
@@ -15,7 +16,6 @@ import {
   encodeConfig,
   toastBlockchainTxError,
 } from "@/lib/client/blockchain-utils";
-import { CreateTokenOffer } from "@/components/03-organisms";
 import { fromTokensToAssets, getSwapConfig } from "@/lib/client/swap-utils";
 import { SwapModalSteps } from "@/lib/client/ui-utils";
 import { EthereumAddress, Token } from "@/lib/shared/types";
@@ -184,7 +184,13 @@ export const ConfirmSwapModalMarketplace = ({
           const swapId = hexToNumber(
             transactionReceipt.logs[0].topics[1] as `0x${string}`,
           );
-          toast.success(`Successfully created swap [#${swapId}] offer!`);
+          const toastTextAction =
+            swapModalAction === SwapModalAction.ACCEPT_SWAP
+              ? "accepted"
+              : "created";
+          toast.success(
+            `Successfully ${toastTextAction} swap offer [#${swapId}] !`,
+          );
           updateSwapStep(ButtonClickPossibilities.NEXT_STEP);
         } else {
           toastBlockchainTxError("Create swap failed");
@@ -235,7 +241,7 @@ export const ConfirmSwapModalMarketplace = ({
             <OfferExpiryConfirmSwap
               variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
             />
-            <CreateTokenOffer swapModalAction={swapModalAction} />
+            <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
           </div>
         }
         footer={
@@ -273,7 +279,7 @@ export const ConfirmSwapModalMarketplace = ({
             <OfferExpiryConfirmSwap
               variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
             />
-            <CreateTokenOffer swapModalAction={swapModalAction} />
+            <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
           </div>
         }
         footer={
@@ -297,7 +303,7 @@ export const ConfirmSwapModalMarketplace = ({
             <OfferExpiryConfirmSwap
               variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
             />
-            <CreateTokenOffer swapModalAction={swapModalAction} />
+            <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
           </div>
         }
         footer={
