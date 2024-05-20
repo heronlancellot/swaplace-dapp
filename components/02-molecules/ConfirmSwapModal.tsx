@@ -6,6 +6,7 @@ import {
   ButtonVariant,
   OfferExpiryConfirmSwap,
   ApproveTokenCards,
+  OfferExpiryConfirmSwapVariant,
 } from "@/components/01-atoms";
 import { ProgressStatus } from "@/components/02-molecules";
 import { SwapUserConfiguration, createSwap } from "@/lib/service/createSwap";
@@ -112,12 +113,12 @@ export const ConfirmSwapModal = ({
     return null;
   }
 
-  let chainId: number;
+  let chainId: number | undefined = undefined;
   let userWalletClient: WalletClient;
 
   const handleSwap = async () => {
     if (typeof chain?.id != "undefined" && walletClient != undefined) {
-      chainId = chain?.id;
+      chainId = chain.id;
       userWalletClient = walletClient;
     } else {
       throw new Error("Chain ID is undefined");
@@ -228,7 +229,9 @@ export const ConfirmSwapModal = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.ACCEPT_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap />
+            <OfferExpiryConfirmSwap
+              variant={OfferExpiryConfirmSwapVariant.OFFERS}
+            />
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
@@ -264,7 +267,9 @@ export const ConfirmSwapModal = ({
         }
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap />
+            <OfferExpiryConfirmSwap
+              variant={OfferExpiryConfirmSwapVariant.OFFERS}
+            />
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
@@ -286,7 +291,9 @@ export const ConfirmSwapModal = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.SUCCESSFUL_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap />
+            <OfferExpiryConfirmSwap
+              variant={OfferExpiryConfirmSwapVariant.OFFERS}
+            />
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }

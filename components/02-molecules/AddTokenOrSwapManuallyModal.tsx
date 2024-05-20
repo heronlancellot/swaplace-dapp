@@ -22,7 +22,12 @@ import {
   PonderFilter,
   SwapContext,
 } from "@/lib/client/contexts";
-import { verifyTokenOwnershipAndParseTokenData } from "@/lib/service/verifyTokenOwnershipAndParseTokenData";
+import {
+  TokenConfiguration,
+  UserConfiguration,
+  parseTokenData,
+  verifyTokenOwnership,
+} from "@/lib/service/verifyTokenOwnershipAndParseTokenData";
 import { getTokenUri } from "@/lib/service/getTokenUri";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
@@ -323,6 +328,26 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     }
   };
 
+  const fetchTokenMetadata = async (chainId: number, tokenId: string) => {
+    const metadata: string = await getTokenUri(BigInt(tokenId), chainId);
+    const updatedMetadata = addPrefixToIPFSLInk(metadata);
+
+    const fetchJSONFromIPFSLink = async (ipfsLink: string) => {
+      if (ipfsLink.startsWith("https://ipfs.io/")) {
+        const response = await fetch(ipfsLink);
+        const json = await response.json();
+        return json;
+      } else {
+        return ipfsLink;
+      }
+    };
+
+    const JSONDataIPFS = await fetchJSONFromIPFSLink(updatedMetadata);
+    const IPFSMetadata = addPrefixToIPFSLInk(JSONDataIPFS.image);
+
+    return { IPFSMetadata, JSONDataIPFS };
+  };
+
   const addTokenCard = async () => {
     const address =
       forWhom === ForWhom.Yours
@@ -344,49 +369,46 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       toast.error("Wallet not connected to any chain");
       return;
     }
+    if (tokenType === TokenType.ERC721 && !tokenId) {
+      toast.error("No token ID provided");
+      return;
+    }
 
-    const metadata: string = await getTokenUri(BigInt(tokenId), chain.id);
-    const updatedMetadata = addPrefixToIPFSLInk(metadata);
-
-    const fetchJSONFromIPFSLink = async (ipfsLink: string) => {
-      if (ipfsLink.startsWith("https://ipfs.io/")) {
-        const response = await fetch(ipfsLink);
-        const json = await response.json();
-        return json;
-      } else {
-        return ipfsLink;
-      }
-    };
-
-    const JSONDataIPFS = await fetchJSONFromIPFSLink(updatedMetadata);
-    const IPFSMetadata = addPrefixToIPFSLInk(JSONDataIPFS.image);
-
-    await verifyTokenOwnershipAndParseTokenData({
+    const userConfiguration: UserConfiguration = {
       address: address,
       chainId: chain.id,
+    };
+    const tokenConfiguration: TokenConfiguration = {
       contractAddress: contractAddress,
       tokenId: tokenId,
       tokenType: tokenType,
-    })
-      .then((tokenData) => {
-        if (!tokenData.isOwner) {
-          toast.error(
-            `This token doesn't belong to the address: ${address.getEllipsedAddress()}`,
-          );
-        } else if (tokenData && tokenData.isOwner) {
-          addTokenToTokensList({
-            tokenName: tokenData.name,
-            contractAddress: contractAddress,
-            tokenId: tokenId,
-            tokenType: tokenType,
-            balance: tokenData.erc20Balance ?? 0n,
-            metadata: { image: IPFSMetadata },
-          });
-        }
-      })
-      .catch((error) => {
-        console.error(error);
+    };
+    const tokenMetadata = await fetchTokenMetadata(chain.id, tokenId);
+    const tokenOwnership = await verifyTokenOwnership({
+      user: userConfiguration,
+      token: tokenConfiguration,
+    });
+    const allowedToSwapAnyUser = address.address === ADDRESS_ZERO; // Any user can swap with the zero address
+
+    if (!tokenOwnership && !allowedToSwapAnyUser)
+      toast.error(
+        `This token doesn't belong to the address: ${address.getEllipsedAddress()}`,
+      );
+    const tokenData = await parseTokenData({
+      token: { ...tokenConfiguration, tokenOwner: tokenOwnership },
+      user: userConfiguration,
+    });
+
+    if (tokenData && tokenOwnership) {
+      addTokenToTokensList({
+        tokenName: tokenData.name,
+        contractAddress: contractAddress,
+        tokenId: tokenId,
+        tokenType: tokenType,
+        balance: tokenData.erc20Balance ?? 0n,
+        metadata: { image: tokenMetadata.IPFSMetadata },
       });
+    }
   };
 
   return (

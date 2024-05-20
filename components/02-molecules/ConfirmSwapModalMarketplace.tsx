@@ -1,12 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ProgressStatusMarketplace } from "./ProgressStatusMarketplace";
 import { ApproveTokenCardsMarketplace } from "../01-atoms/ApproveTokenCardsMarketplace";
+import { CreateTokenOfferMarketplace } from "../03-organisms/CreateTokenOfferMarketplace";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   SwapModalLayout,
   SwapModalButton,
   ButtonVariant,
   OfferExpiryConfirmSwap,
+  OfferExpiryConfirmSwapVariant,
 } from "@/components/01-atoms";
 import { SwapUserConfiguration, createSwap } from "@/lib/service/createSwap";
 import {
@@ -14,7 +16,6 @@ import {
   encodeConfig,
   toastBlockchainTxError,
 } from "@/lib/client/blockchain-utils";
-import { CreateTokenOffer } from "@/components/03-organisms";
 import { fromTokensToAssets, getSwapConfig } from "@/lib/client/swap-utils";
 import { SwapModalSteps } from "@/lib/client/ui-utils";
 import { EthereumAddress, Token } from "@/lib/shared/types";
@@ -113,12 +114,12 @@ export const ConfirmSwapModalMarketplace = ({
     return null;
   }
 
-  let chainId: number;
+  let chainId: number | undefined = undefined;
   let userWalletClient: WalletClient;
 
   const handleSwap = async () => {
     if (typeof chain?.id != "undefined" && walletClient != undefined) {
-      chainId = chain?.id;
+      chainId = chain.id;
       userWalletClient = walletClient;
     } else {
       throw new Error("Chain ID is undefined");
@@ -183,7 +184,13 @@ export const ConfirmSwapModalMarketplace = ({
           const swapId = hexToNumber(
             transactionReceipt.logs[0].topics[1] as `0x${string}`,
           );
-          toast.success(`Successfully created swap [#${swapId}] offer!`);
+          const toastTextAction =
+            swapModalAction === SwapModalAction.ACCEPT_SWAP
+              ? "accepted"
+              : "created";
+          toast.success(
+            `Successfully ${toastTextAction} swap offer [#${swapId}] !`,
+          );
           updateSwapStep(ButtonClickPossibilities.NEXT_STEP);
         } else {
           toastBlockchainTxError("Create swap failed");
@@ -231,8 +238,10 @@ export const ConfirmSwapModalMarketplace = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.ACCEPT_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap />
-            <CreateTokenOffer swapModalAction={swapModalAction} />
+            <OfferExpiryConfirmSwap
+              variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
+            />
+            <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
           </div>
         }
         footer={
@@ -267,8 +276,10 @@ export const ConfirmSwapModalMarketplace = ({
         }
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap />
-            <CreateTokenOffer swapModalAction={swapModalAction} />
+            <OfferExpiryConfirmSwap
+              variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
+            />
+            <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
           </div>
         }
         footer={
@@ -289,8 +300,10 @@ export const ConfirmSwapModalMarketplace = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.SUCCESSFUL_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap />
-            <CreateTokenOffer swapModalAction={swapModalAction} />
+            <OfferExpiryConfirmSwap
+              variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
+            />
+            <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
           </div>
         }
         footer={
