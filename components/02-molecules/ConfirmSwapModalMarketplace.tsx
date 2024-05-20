@@ -1,26 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { ProgressStatusMarketplace } from "./ProgressStatusMarketplace";
+import { ApproveTokenCardsMarketplace } from "../01-atoms/ApproveTokenCardsMarketplace";
+import { CreateTokenOfferMarketplace } from "../03-organisms/CreateTokenOfferMarketplace";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   SwapModalLayout,
   SwapModalButton,
   ButtonVariant,
   OfferExpiryConfirmSwap,
-  ApproveTokenCards,
   OfferExpiryConfirmSwapVariant,
 } from "@/components/01-atoms";
-import { ProgressStatus } from "@/components/02-molecules";
 import { SwapUserConfiguration, createSwap } from "@/lib/service/createSwap";
 import {
   ButtonClickPossibilities,
   encodeConfig,
   toastBlockchainTxError,
 } from "@/lib/client/blockchain-utils";
-import { CreateTokenOffer } from "@/components/03-organisms";
 import { fromTokensToAssets, getSwapConfig } from "@/lib/client/swap-utils";
 import { SwapModalSteps } from "@/lib/client/ui-utils";
 import { EthereumAddress, Token } from "@/lib/shared/types";
 import { acceptSwap } from "@/lib/service/acceptSwap";
-import { SwapContext, OffersContext } from "@/lib/client/contexts";
+import { SwapContext } from "@/lib/client/contexts";
+import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
 import { useContext, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
@@ -33,7 +34,7 @@ interface ConfirmSwapApprovalModalProps {
   onClose: () => void;
 }
 
-export const ConfirmSwapModal = ({
+export const ConfirmSwapModalMarketplace = ({
   swapModalAction = SwapModalAction.ACCEPT_SWAP,
   open,
   onClose,
@@ -62,7 +63,7 @@ export const ConfirmSwapModal = ({
   const {
     swapOfferToAccept,
     approvedTokensCount: acceptSwapApprovedTokensCount,
-  } = useContext(OffersContext);
+  } = useContext(OffersContextMarketplace);
 
   useEffect(() => {
     switch (swapModalAction) {
@@ -183,7 +184,13 @@ export const ConfirmSwapModal = ({
           const swapId = hexToNumber(
             transactionReceipt.logs[0].topics[1] as `0x${string}`,
           );
-          toast.success(`Successfully created swap [#${swapId}] offer!`);
+          const toastTextAction =
+            swapModalAction === SwapModalAction.ACCEPT_SWAP
+              ? "accepted"
+              : "created";
+          toast.success(
+            `Successfully ${toastTextAction} swap offer [#${swapId}] !`,
+          );
           updateSwapStep(ButtonClickPossibilities.NEXT_STEP);
         } else {
           toastBlockchainTxError("Create swap failed");
@@ -210,10 +217,12 @@ export const ConfirmSwapModal = ({
       <SwapModalLayout
         toggleCloseButton={{ open: open, onClose: onClose }}
         text={ModalTextContent[swapModalAction][SwapModalSteps.APPROVE_TOKENS]}
-        body={<ApproveTokenCards swapModalAction={swapModalAction} />}
+        body={
+          <ApproveTokenCardsMarketplace swapModalAction={swapModalAction} />
+        }
         footer={
           <div className="flex w-full justify-between items-center">
-            <ProgressStatus swapModalAction={swapModalAction} />
+            <ProgressStatusMarketplace swapModalAction={swapModalAction} />
             <SwapModalButton
               label={"Continue"}
               onClick={validateTokensAreApproved}
@@ -230,9 +239,9 @@ export const ConfirmSwapModal = ({
         body={
           <div className="flex flex-col gap-2 flex-grow">
             <OfferExpiryConfirmSwap
-              variant={OfferExpiryConfirmSwapVariant.OFFERS}
+              variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
             />
-            <CreateTokenOffer swapModalAction={swapModalAction} />
+            <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
           </div>
         }
         footer={
@@ -268,9 +277,9 @@ export const ConfirmSwapModal = ({
         body={
           <div className="flex flex-col gap-2 flex-grow">
             <OfferExpiryConfirmSwap
-              variant={OfferExpiryConfirmSwapVariant.OFFERS}
+              variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
             />
-            <CreateTokenOffer swapModalAction={swapModalAction} />
+            <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
           </div>
         }
         footer={
@@ -292,9 +301,9 @@ export const ConfirmSwapModal = ({
         body={
           <div className="flex flex-col gap-2 flex-grow">
             <OfferExpiryConfirmSwap
-              variant={OfferExpiryConfirmSwapVariant.OFFERS}
+              variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
             />
-            <CreateTokenOffer swapModalAction={swapModalAction} />
+            <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
           </div>
         }
         footer={

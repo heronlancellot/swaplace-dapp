@@ -1,8 +1,22 @@
 import { OffersContext } from "@/lib/client/contexts";
+import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
 import { useContext } from "react";
 
-export const OfferExpiryConfirmSwap = () => {
-  const { swapOfferToAccept } = useContext(OffersContext);
+export enum OfferExpiryConfirmSwapVariant {
+  MARKETPLACE = "MARKETPLACE",
+  OFFERS = "OFFERS",
+}
+
+export const OfferExpiryConfirmSwap = ({
+  variant,
+}: {
+  variant: OfferExpiryConfirmSwapVariant;
+}) => {
+  const context =
+    variant === OfferExpiryConfirmSwapVariant.MARKETPLACE
+      ? OffersContextMarketplace
+      : OffersContext;
+  const { swapOfferToAccept } = useContext(context);
 
   let formattedSwapExpiryDate = null;
   let isDateValid = true;
