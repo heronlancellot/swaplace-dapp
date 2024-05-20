@@ -8,28 +8,17 @@ import {
   SwapOffersDisplayVariant,
   SwapOffersLayout,
 } from "@/components/02-molecules";
-import {
-  OffersContext,
-  PonderFilter,
-} from "@/lib/client/contexts/OffersContext";
+import { OffersContext } from "@/lib/client/contexts/OffersContext";
 import {
   TokenOfferDetails,
   SwapIcon,
   TokensOfferSkeleton,
 } from "@/components/01-atoms";
-import {
-  decodeConfig,
-  retrieveDataFromTokensArray,
-} from "@/lib/client/blockchain-utils";
-import {
-  FormattedSwapOfferAssets,
-  PopulatedSwapOfferCard,
-} from "@/lib/client/offers-utils";
+
+import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import { getSwap } from "@/lib/service/getSwap";
 import { useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { useNetwork } from "wagmi";
 import cc from "classcat";
 
 /**
@@ -44,20 +33,22 @@ export const SwapOffers = () => {
     fetchNextPage,
     isFetchingNextPage,
     isLoadingOffersQuery,
-    offersFilter,
-    offersQueries,
+    // offersFilter,
+    // offersQueries,
     isError,
     data,
   } = useContext(OffersContext);
-  const [isLoading, setIsLoading] = useState(true);
-  const { tokensList, setTokensList } = useContext(OffersContext);
+  // const [isLoading, setIsLoading] = useState(true);
+  const { tokensList } = useContext(OffersContext);
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  const { chain } = useNetwork();
+  // const { chain } = useNetwork();
 
   const { ref, inView } = useInView({
     threshold: 0.5,
   });
+
+  // console.log("InView", inView);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -65,86 +56,86 @@ export const SwapOffers = () => {
     }
   }, [fetchNextPage, inView, hasNextPage]);
 
-  useEffect(() => {
-    if (offersQueries) {
-      processSwaps();
-    }
-  }, [offersQueries]);
+  // useEffect(() => {
+  //   if (offersQueries) {
+  //     processSwaps();
+  //   }
+  // }, [offersQueries]);
 
-  const findStatus = (swap: FormattedSwapOfferAssets): PonderFilter => {
-    switch (swap.status.toUpperCase()) {
-      case PonderFilter.ACCEPTED.toUpperCase():
-        return PonderFilter.ACCEPTED;
-      case PonderFilter.ALL_OFFERS.toUpperCase():
-        return PonderFilter.ALL_OFFERS;
-      case PonderFilter.CANCELED.toUpperCase():
-        return PonderFilter.CANCELED;
-      case PonderFilter.CREATED.toUpperCase():
-        return PonderFilter.CREATED;
-      case PonderFilter.EXPIRED.toUpperCase():
-        return PonderFilter.EXPIRED;
-      default:
-        return PonderFilter.RECEIVED;
-    }
-  };
+  // const findStatus = (swap: FormattedSwapOfferAssets): PonderFilter => {
+  //   switch (swap.status.toUpperCase()) {
+  //     case PonderFilter.ACCEPTED.toUpperCase():
+  //       return PonderFilter.ACCEPTED;
+  //     case PonderFilter.ALL_OFFERS.toUpperCase():
+  //       return PonderFilter.ALL_OFFERS;
+  //     case PonderFilter.CANCELED.toUpperCase():
+  //       return PonderFilter.CANCELED;
+  //     case PonderFilter.CREATED.toUpperCase():
+  //       return PonderFilter.CREATED;
+  //     case PonderFilter.EXPIRED.toUpperCase():
+  //       return PonderFilter.EXPIRED;
+  //     default:
+  //       return PonderFilter.RECEIVED;
+  //   }
+  // };
 
-  const processSwaps = async () => {
-    setIsLoading(true);
+  // Get the formattedSwap and retrieve the data to PopulatedSwapOfferCard
+  // const processSwaps = async () => {
+  //   setIsLoading(true);
 
-    if (!chain) return null;
+  //   if (!chain) return null;
 
-    try {
-      const formattedTokensPromises: Promise<PopulatedSwapOfferCard>[] =
-        offersQueries[offersFilter].map(
-          async (swap: FormattedSwapOfferAssets) => {
-            const bidedTokensWithData = await retrieveDataFromTokensArray(
-              swap.bidderAssets.tokens,
-            );
-            const askedTokensWithData = await retrieveDataFromTokensArray(
-              swap.askerAssets.tokens,
-            );
-            const swapStatus = findStatus(swap);
-            const swapData: any = await getSwap(BigInt(swap.id), chain.id);
-            const swapExpiryData = await decodeConfig({
-              config: swapData.config,
-            });
+  //   try {
+  //     const formattedTokensPromises: Promise<PopulatedSwapOfferCard>[] =
+  //       offersQueries[offersFilter].map(
+  //         async (swap: FormattedSwapOfferAssets) => {
+  //           console.log("swapssssss", swap);
+  //           const bidedTokensWithData = await retrieveDataFromTokensArray(
+  //             swap.bidderAssets.tokens,
+  //           );
+  //           const askedTokensWithData = await retrieveDataFromTokensArray(
+  //             swap.askerAssets.tokens,
+  //           );
+  //           const swapStatus = findStatus(swap);
+  //           const swapData: any = await getSwap(BigInt(swap.id), chain.id);
+  //           const swapExpiryData = await decodeConfig({
+  //             config: swapData.config,
+  //           });
 
-            return {
-              id: BigInt(swap.id),
-              status: swapStatus,
-              expiryDate: swapExpiryData.expiry,
-              bidderTokens: {
-                address: swap.bidderAssets.address,
-                tokens: bidedTokensWithData,
-              },
-              askerTokens: {
-                address: swap.askerAssets.address,
-                tokens: askedTokensWithData,
-              },
-            };
-          },
-        );
+  //           return {
+  //             id: BigInt(swap.id),
+  //             status: swapStatus,
+  //             expiryDate: swapExpiryData.expiry,
+  //             bidderTokens: {
+  //               address: swap.bidderAssets.address,
+  //               tokens: bidedTokensWithData,
+  //             },
+  //             askerTokens: {
+  //               address: swap.askerAssets.address,
+  //               tokens: askedTokensWithData,
+  //             },
+  //           };
+  //         },
+  //       );
 
-      // Wait for all promises to resolve
-      const formattedTokens: PopulatedSwapOfferCard[] = await Promise.all(
-        formattedTokensPromises,
-      );
-      setTokensList(formattedTokens);
-    } catch (error) {
-      console.error("Failed to process swaps:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  console.log("data:", data);
-  console.log("tokenList:", tokensList);
+  //     // Wait for all promises to resolve
+  //     const formattedTokens: PopulatedSwapOfferCard[] = await Promise.all(
+  //       formattedTokensPromises,
+  //     );
+  //     console.log("formattedTokensSsssss", formattedTokens);
+  //     setTokensList(formattedTokens);
+  //   } catch (error) {
+  //     console.error("Failed to process swaps:", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return !authenticatedUserAddress ? (
     <SwapOffersLayout
       variant={SwapOffersDisplayVariant.NO_USER_AUTHENTICATED}
     />
-  ) : isLoading || isLoadingOffersQuery ? (
+  ) : isLoadingOffersQuery ? (
     <div className="flex gap-5 flex-col">
       <div>
         <TokensOfferSkeleton />
@@ -159,11 +150,11 @@ export const SwapOffers = () => {
     <SwapOffersLayout variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED} />
   ) : (
     <div className="flex flex-col gap-5 no-scrollbar">
-      {data
-        ?.flatMap((page: PageData) => page.swapOffers)
-        .map((swap: PopulatedSwapOfferCard, index: number) => (
-          <SwapOffer key={index} swap={swap} />
+      {data &&
+        data.map((pages, index) => (
+          <SwapOffer key={index} swap={pages.swapOffers[index]} />
         ))}
+
       <div ref={ref}>{isFetchingNextPage && "Loading..."}</div>
       <div className="flex justify-end mt-5">
         <button

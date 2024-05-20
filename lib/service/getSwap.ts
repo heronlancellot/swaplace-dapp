@@ -1,5 +1,6 @@
 import { SwaplaceAbi } from "../client/abi";
 import { SWAPLACE_SMART_CONTRACT_ADDRESS } from "../client/constants";
+import { Swap } from "../client/swap-utils";
 import { publicClient } from "../wallet/wallet-config";
 
 export async function getSwap(swapId: bigint, chainId: number) {
@@ -12,5 +13,5 @@ export async function getSwap(swapId: bigint, chainId: number) {
     args: [swapId],
   });
 
-  return swapDataById;
+  return swapDataById as Swap;
 }

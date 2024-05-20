@@ -2,6 +2,8 @@
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
+import { retrieveDataFromTokensArray, decodeConfig } from "../blockchain-utils";
+import { Swap } from "../swap-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   ACCEPTED_OFFERS_QUERY,
@@ -20,8 +22,10 @@ import {
   PageParam,
   RawSwapOfferInterface,
   PageInfo,
+  InifniteQueryData,
 } from "@/lib/client/offers-utils";
 import { SwapContext } from "@/lib/client/contexts";
+import { getSwap } from "@/lib/service/getSwap";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { Dispatch, useEffect, useState, useContext } from "react";
 import axios from "axios";
@@ -62,14 +66,20 @@ interface OffersContextProps {
   setTokensList: Dispatch<React.SetStateAction<PopulatedSwapOfferCard[]>>;
   tokensList: PopulatedSwapOfferCard[];
   isError: boolean;
+  data:
+    | {
+        swapOffers: PopulatedSwapOfferCard[];
+        pageInfo: PageInfo;
+      }[]
+    | undefined;
 }
 
-const DEFAULT_ERC20_TOKEN: Token = {
+const DEFAULT_ERC20_TOKEN: Readonly<Token> = {
   tokenType: TokenType.ERC20,
   rawBalance: 0n,
 };
 
-const DEFAULT_SWAP_OFFER: PopulatedSwapOfferCard = {
+const DEFAULT_SWAP_OFFER: Readonly<PopulatedSwapOfferCard> = {
   id: 0n,
   status: PonderFilter.ALL_OFFERS,
   expiryDate: 0n,
@@ -83,6 +93,41 @@ const DEFAULT_SWAP_OFFER: PopulatedSwapOfferCard = {
   },
 };
 
+const DEFAULT_PAGE_INFO: PageInfo = {
+  hasNextPage: false,
+  endCursor: null,
+};
+
+const DEFAULT_DATA_INFINITE_QUERY: InifniteQueryData = {
+  pages: {
+    swapOffers: [
+      {
+        id: BigInt(1),
+        status: PonderFilter.ALL_OFFERS, // Replace with actual PonderFilter instance
+        expiryDate: 0n,
+        bidderTokens: {
+          address: new EthereumAddress(ADDRESS_ZERO), // Replace with actual EthereumAddress instance
+          tokens: [DEFAULT_ERC20_TOKEN], // Replace with actual Token instances
+        },
+        askerTokens: {
+          address: new EthereumAddress(ADDRESS_ZERO), // Replace with actual EthereumAddress instance
+          tokens: [DEFAULT_ERC20_TOKEN], // Replace with actual Token instances
+        },
+      },
+    ],
+    pageInfo: DEFAULT_PAGE_INFO, // Replace with actual PageInfo instance
+  },
+};
+
+// const DEFAULT_DATA_INFINITE_QUERY: InifniteQueryData = {
+//   pages:
+//     [
+//       {
+//         swapOffers: [DEFAULT_SWAP_OFFER],
+//         pageInfo: DEFAULT_PAGE_INFO,
+//       },
+//     ] | undefined,
+// };
 export const OffersContextProvider = ({ children }: any) => {
   // States and constants
   const [swapOfferToAccept, setSwapOfferToBeAccepted] =
@@ -118,13 +163,21 @@ export const OffersContextProvider = ({ children }: any) => {
     setSwapOfferToBeAccepted(swap);
   };
 
-  const fetchSwaps = async ({ pageParam }: PageParam) => {
+  const fetchSwaps = async ({
+    pageParam,
+  }: PageParam): Promise<{
+    swapOffers: PopulatedSwapOfferCard[];
+    pageInfo: PageInfo;
+  }> => {
+    if (!userAddress) {
+      throw new Error("User address is not defined");
+    }
     const after = pageParam || null;
     let query = "";
     let variables = {};
     let chainId: number | undefined = undefined;
 
-    if (typeof chain?.id != "undefined") {
+    if (typeof chain?.id !== "undefined") {
       chainId = chain?.id;
     }
 
@@ -211,6 +264,23 @@ export const OffersContextProvider = ({ children }: any) => {
       );
     }
 
+    const findStatus = (swap: FormattedSwapOfferAssets): PonderFilter => {
+      switch (swap.status.toUpperCase()) {
+        case PonderFilter.ACCEPTED.toUpperCase():
+          return PonderFilter.ACCEPTED;
+        case PonderFilter.ALL_OFFERS.toUpperCase():
+          return PonderFilter.ALL_OFFERS;
+        case PonderFilter.CANCELED.toUpperCase():
+          return PonderFilter.CANCELED;
+        case PonderFilter.CREATED.toUpperCase():
+          return PonderFilter.CREATED;
+        case PonderFilter.EXPIRED.toUpperCase():
+          return PonderFilter.EXPIRED;
+        default:
+          return PonderFilter.RECEIVED;
+      }
+    };
+
     try {
       const response = await axios.post(
         endpoint,
@@ -248,17 +318,51 @@ export const OffersContextProvider = ({ children }: any) => {
               },
             };
           });
+        const itemsArrayAsSwapOffersPopulated: Promise<PopulatedSwapOfferCard>[] =
+          itemsArrayAsSwapOffers.map(async (swap) => {
+            const bidedTokensWithData = await retrieveDataFromTokensArray(
+              swap.bidderAssets.tokens,
+            );
+            const askedTokensWithData = await retrieveDataFromTokensArray(
+              swap.askerAssets.tokens,
+            );
+            const swapStatus = findStatus(swap);
+            const swapData: Swap = await getSwap(
+              BigInt(swap.id),
+              chainId as number,
+            );
+            const swapExpiryData = await decodeConfig({
+              config: swapData.config,
+            });
+
+            return {
+              id: BigInt(swap.id),
+              status: swapStatus,
+              expiryDate: swapExpiryData.expiry,
+              bidderTokens: {
+                address: swap.bidderAssets.address,
+                tokens: bidedTokensWithData,
+              },
+              askerTokens: {
+                address: swap.askerAssets.address,
+                tokens: askedTokensWithData,
+              },
+            };
+          });
+
+        const formattedTokens: PopulatedSwapOfferCard[] = await Promise.all(
+          itemsArrayAsSwapOffersPopulated,
+        );
         setOffersQueries({
           ...offersQueries,
-          [offersFilter]: itemsArrayAsSwapOffers,
+          [offersFilter]: formattedTokens,
         });
         return {
-          swapOffers: itemsArrayAsSwapOffers,
+          swapOffers: formattedTokens,
           pageInfo,
         };
       } else {
-        console.error("Unexpected response structure:", response.data);
-        throw new Error("Unexpected response structure");
+        throw new Error("Failed to fetch swaps from Subgraph");
       }
     } catch (error) {
       toast.error(
@@ -284,7 +388,29 @@ export const OffersContextProvider = ({ children }: any) => {
       staleTime: Infinity,
       getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
       enabled: !!authenticatedUserAddress,
+      select: (data) => {
+        return data.pages.map((page) => ({
+          swapOffers: page.swapOffers.map((swap) => {
+            return {
+              id: BigInt(swap.id),
+              status: offersFilter,
+              expiryDate: swap.expiryDate,
+              bidderTokens: {
+                address: swap.bidderTokens.address,
+                tokens: swap.bidderTokens.tokens,
+              },
+              askerTokens: {
+                address: swap.askerTokens.address,
+                tokens: swap.askerTokens.tokens,
+              },
+            };
+          }),
+          pageInfo: page.pageInfo,
+        }));
+      },
     });
+
+  console.log("data,", data);
 
   useEffect(() => {
     refetch();
@@ -294,7 +420,7 @@ export const OffersContextProvider = ({ children }: any) => {
 
   useEffect(() => {
     if (data) {
-      setHasNextPage(data.pages[data.pages.length - 1].pageInfo.hasNextPage);
+      setHasNextPage(data[data.length - 1].pageInfo.hasNextPage);
     }
   }, [data]);
 
@@ -320,6 +446,7 @@ export const OffersContextProvider = ({ children }: any) => {
       setTokensList,
       tokensList,
       isError,
+      data,
     });
   }, [
     setOffersFilter,
@@ -351,6 +478,7 @@ export const OffersContextProvider = ({ children }: any) => {
     setTokensList,
     tokensList,
     isError,
+    data,
   });
 
   return (
@@ -375,4 +503,5 @@ export const OffersContext = React.createContext<OffersContextProps>({
   setTokensList: () => {},
   tokensList: [DEFAULT_SWAP_OFFER],
   isError: false,
+  data: [DEFAULT_DATA_INFINITE_QUERY.pages],
 });

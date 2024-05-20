@@ -54,9 +54,22 @@ export interface PageParam {
   pageParam: string | null;
 }
 
-export interface InifniteQueryData {
+export interface InfinityQueryDatassssss {
   pages: {
     swapOffers: PopulatedSwapOfferCard[];
     pageInfo: PageInfo;
   }[];
+}
+
+export interface InifniteQueryData {
+  pages: {
+    swapOffers: {
+      id: bigint;
+      status: PonderFilter;
+      expiryDate: bigint;
+      bidderTokens: { address: EthereumAddress; tokens: Token[] };
+      askerTokens: { address: EthereumAddress; tokens: Token[] };
+    }[];
+    pageInfo: PageInfo;
+  };
 }
