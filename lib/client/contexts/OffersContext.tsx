@@ -87,19 +87,19 @@ const DEFAULT_DATA_INFINITE_QUERY: InfinityQueryData = {
     swapOffers: [
       {
         id: BigInt(1),
-        status: PonderFilter.ALL_OFFERS, // Replace with actual PonderFilter instance
+        status: PonderFilter.ALL_OFFERS,
         expiryDate: 0n,
         bidderTokens: {
-          address: new EthereumAddress(ADDRESS_ZERO), // Replace with actual EthereumAddress instance
-          tokens: [DEFAULT_ERC20_TOKEN], // Replace with actual Token instances
+          address: new EthereumAddress(ADDRESS_ZERO),
+          tokens: [DEFAULT_ERC20_TOKEN],
         },
         askerTokens: {
-          address: new EthereumAddress(ADDRESS_ZERO), // Replace with actual EthereumAddress instance
-          tokens: [DEFAULT_ERC20_TOKEN], // Replace with actual Token instances
+          address: new EthereumAddress(ADDRESS_ZERO),
+          tokens: [DEFAULT_ERC20_TOKEN],
         },
       },
     ],
-    pageInfo: DEFAULT_PAGE_INFO, // Replace with actual PageInfo instance
+    pageInfo: DEFAULT_PAGE_INFO,
   },
 };
 
