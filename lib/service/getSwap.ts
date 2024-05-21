@@ -13,5 +13,5 @@ export async function getSwap(swapId: bigint, chainId: number) {
     args: [swapId],
   })) as Swap;
 
-  return swapDataById;
+  return swapDataById as Swap;
 }

@@ -78,7 +78,7 @@ export const cleanJsonString = (jsonString: string) => {
     // Remove backslashes and extra quotes
     const cleanedString = jsonString.replace(/\\/g, "").replace(/^"|"$/g, "");
     // Parse the cleaned string into a JavaScript object
-    const cleanedObject = JSON.parse(cleanedString);
+    const cleanedObject = JSON.parse(String(cleanedString));
     return cleanedObject;
   } catch (error) {
     console.error("Error cleaning JSON string:", error);

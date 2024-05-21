@@ -8,27 +8,16 @@ import {
   SwapOffersDisplayVariant,
   SwapOffersLayout,
 } from "@/components/02-molecules";
+import { OffersContext } from "@/lib/client/contexts/OffersContext";
 import {
-  OffersContext,
-  PonderFilter,
-} from "@/lib/client/contexts/OffersContext";
-import {
-  SwapIcon,
   TokenOfferDetails,
+  SwapIcon,
   TokensOfferSkeleton,
 } from "@/components/01-atoms";
-import {
-  decodeConfig,
-  retrieveDataFromTokensArray,
-} from "@/lib/client/blockchain-utils";
-import {
-  FormattedSwapOfferAssets,
-  PopulatedSwapOfferCard,
-} from "@/lib/client/offers-utils";
+import { PageData, PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import { getSwap } from "@/lib/service/getSwap";
 import { useContext, useEffect, useState } from "react";
-import { useNetwork } from "wagmi";
+import { useInView } from "react-intersection-observer";
 import cc from "classcat";
 
 /**
@@ -38,96 +27,27 @@ import cc from "classcat";
  * @returns
  */
 export const SwapOffers = () => {
-  const {
-    // hasNextPage,
-    // fetchNextPage,
-    // isFetchingNextPage,
-    isLoadingOffersQuery,
-    offersFilter,
-    offersQueries,
-    isError,
-  } = useContext(OffersContext);
-  const [isLoading, setIsLoading] = useState(true);
-  const { tokensList, setTokensList } = useContext(OffersContext);
+  const { hasNextPage, fetchNextPage, isFetchingNextPage, isError, data } =
+    useContext(OffersContext);
+  const { tokensList } = useContext(OffersContext);
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  const { chain } = useNetwork();
+
+  const { ref, inView } = useInView({
+    threshold: 0.5,
+  });
 
   useEffect(() => {
-    offersQueries && processSwaps();
-  }, [offersQueries]);
-
-  const findStatus = (swap: FormattedSwapOfferAssets): PonderFilter => {
-    switch (swap.status.toUpperCase()) {
-      case PonderFilter.ACCEPTED.toUpperCase():
-        return PonderFilter.ACCEPTED;
-      case PonderFilter.ALL_OFFERS.toUpperCase():
-        return PonderFilter.ALL_OFFERS;
-      case PonderFilter.CANCELED.toUpperCase():
-        return PonderFilter.CANCELED;
-      case PonderFilter.CREATED.toUpperCase():
-        return PonderFilter.CREATED;
-      case PonderFilter.EXPIRED.toUpperCase():
-        return PonderFilter.EXPIRED;
-      default:
-        return PonderFilter.RECEIVED;
+    if (inView && hasNextPage) {
+      fetchNextPage();
     }
-  };
-
-  const processSwaps = async () => {
-    setIsLoading(true);
-
-    if (!chain) return null;
-
-    try {
-      const formattedTokensPromises: Promise<PopulatedSwapOfferCard>[] =
-        offersQueries[offersFilter].map(
-          async (swap: FormattedSwapOfferAssets) => {
-            const bidedTokensWithData = await retrieveDataFromTokensArray(
-              swap.bidderAssets.tokens,
-            );
-            const askedTokensWithData = await retrieveDataFromTokensArray(
-              swap.askerAssets.tokens,
-            );
-            const swapStatus = findStatus(swap);
-            const swapData: any = await getSwap(BigInt(swap.id), chain.id);
-            const swapExpiryData = await decodeConfig({
-              config: swapData.config,
-            });
-
-            return {
-              id: BigInt(swap.id),
-              status: swapStatus,
-              expiryDate: swapExpiryData.expiry,
-              bidderTokens: {
-                address: swap.bidderAssets.address,
-                tokens: bidedTokensWithData,
-              },
-              askerTokens: {
-                address: swap.askerAssets.address,
-                tokens: askedTokensWithData,
-              },
-            };
-          },
-        );
-
-      // Wait for all promises to resolve
-      const formattedTokens: PopulatedSwapOfferCard[] = await Promise.all(
-        formattedTokensPromises,
-      );
-      setTokensList(formattedTokens);
-    } catch (error) {
-      console.error("Failed to process swaps:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [fetchNextPage, inView, hasNextPage]);
 
   return !authenticatedUserAddress ? (
     <SwapOffersLayout
       variant={SwapOffersDisplayVariant.NO_USER_AUTHENTICATED}
     />
-  ) : isLoading || isLoadingOffersQuery ? (
+  ) : !data ? (
     <div className="flex gap-5 flex-col">
       <div>
         <TokensOfferSkeleton />
@@ -141,32 +61,44 @@ export const SwapOffers = () => {
   ) : tokensList.length === 0 || !authenticatedUserAddress ? (
     <SwapOffersLayout variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED} />
   ) : (
-    <div className="flex flex-col gap-5 no-scrollbar">
-      {tokensList.map((swap, index) => {
-        return <SwapOffer key={index} swap={swap} />;
-      })}
-      {/* {hasNextPage && (
-          <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-            {isFetchingNextPage ? "Loading..." : "Load More"}
+    data && (
+      <div className="flex flex-col gap-5 no-scrollbar">
+        {data
+          ?.flatMap((page: PageData) => page.swapOffers)
+          .map((swap: PopulatedSwapOfferCard, index: number) => (
+            <SwapOffer key={index} swap={swap} />
+          ))}
+
+        <div ref={ref}>
+          {isFetchingNextPage && (
+            <div className="flex gap-5 flex-col">
+              <div>
+                <TokensOfferSkeleton />
+              </div>
+              <div>
+                <TokensOfferSkeleton />
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="flex justify-end mt-5">
+          <button
+            className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
+            onClick={() => setToggleManually(!toggleManually)}
+          >
+            Add swap manually
           </button>
-        )} */}
-      <div className="flex justify-end mt-5">
-        <button
-          className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
-          onClick={() => setToggleManually(!toggleManually)}
-        >
-          Add swap manually
-        </button>
-        <AddTokenOrSwapManuallyModal
-          open={toggleManually}
-          forWhom={ForWhom.Yours}
-          onClose={() => {
-            setToggleManually(false);
-          }}
-          variant={AddTokenOrSwapManuallyModalVariant.SWAP}
-        />
+          <AddTokenOrSwapManuallyModal
+            open={toggleManually}
+            forWhom={ForWhom.Yours}
+            onClose={() => {
+              setToggleManually(false);
+            }}
+            variant={AddTokenOrSwapManuallyModalVariant.SWAP}
+          />
+        </div>
       </div>
-    </div>
+    )
   );
 };
 

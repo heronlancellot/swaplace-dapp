@@ -50,6 +50,24 @@ export interface PageInfo {
   endCursor: string | null;
 }
 
+export interface PageData {
+  swapOffers: PopulatedSwapOfferCard[];
+  pageInfo: PageInfo;
+}
+
 export interface PageParam {
   pageParam: string | null;
+}
+
+export interface InfiniteQueryData {
+  pages: {
+    swapOffers: {
+      id: bigint;
+      status: PonderFilter;
+      expiryDate: bigint;
+      bidderTokens: { address: EthereumAddress; tokens: Token[] };
+      askerTokens: { address: EthereumAddress; tokens: Token[] };
+    }[];
+    pageInfo: PageInfo;
+  };
 }
