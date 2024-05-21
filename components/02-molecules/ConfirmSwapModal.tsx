@@ -6,7 +6,6 @@ import {
   ButtonVariant,
   OfferExpiryConfirmSwap,
   ApproveTokenCards,
-  OfferExpiryConfirmSwapVariant,
 } from "@/components/01-atoms";
 import { ProgressStatus } from "@/components/02-molecules";
 import { SwapUserConfiguration, createSwap } from "@/lib/service/createSwap";
@@ -229,9 +228,7 @@ export const ConfirmSwapModal = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.ACCEPT_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap
-              variant={OfferExpiryConfirmSwapVariant.OFFERS}
-            />
+            <OfferExpiryConfirmSwap />
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
@@ -267,9 +264,7 @@ export const ConfirmSwapModal = ({
         }
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap
-              variant={OfferExpiryConfirmSwapVariant.OFFERS}
-            />
+            <OfferExpiryConfirmSwap />
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
@@ -291,9 +286,7 @@ export const ConfirmSwapModal = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.SUCCESSFUL_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap
-              variant={OfferExpiryConfirmSwapVariant.OFFERS}
-            />
+            <OfferExpiryConfirmSwap />
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }

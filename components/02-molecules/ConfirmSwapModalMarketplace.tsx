@@ -2,13 +2,12 @@
 import { ProgressStatusMarketplace } from "./ProgressStatusMarketplace";
 import { ApproveTokenCardsMarketplace } from "../01-atoms/ApproveTokenCardsMarketplace";
 import { CreateTokenOfferMarketplace } from "../03-organisms/CreateTokenOfferMarketplace";
+import { OfferExpiryConfirmSwapMarketplace } from "../01-atoms/OfferExpiryConfirmSwapMarketplace";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   SwapModalLayout,
   SwapModalButton,
   ButtonVariant,
-  OfferExpiryConfirmSwap,
-  OfferExpiryConfirmSwapVariant,
 } from "@/components/01-atoms";
 import { SwapUserConfiguration, createSwap } from "@/lib/service/createSwap";
 import {
@@ -238,9 +237,7 @@ export const ConfirmSwapModalMarketplace = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.ACCEPT_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap
-              variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
-            />
+            <OfferExpiryConfirmSwapMarketplace />
             <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
           </div>
         }
@@ -276,9 +273,7 @@ export const ConfirmSwapModalMarketplace = ({
         }
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap
-              variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
-            />
+            <OfferExpiryConfirmSwapMarketplace />
             <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
           </div>
         }
@@ -300,9 +295,7 @@ export const ConfirmSwapModalMarketplace = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.SUCCESSFUL_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap
-              variant={OfferExpiryConfirmSwapVariant.MARKETPLACE}
-            />
+            <OfferExpiryConfirmSwapMarketplace />
             <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
           </div>
         }
