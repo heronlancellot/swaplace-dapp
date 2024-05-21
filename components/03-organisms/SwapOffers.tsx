@@ -33,22 +33,16 @@ export const SwapOffers = () => {
     fetchNextPage,
     isFetchingNextPage,
     isLoadingOffersQuery,
-    // offersFilter,
-    // offersQueries,
     isError,
     data,
   } = useContext(OffersContext);
-  // const [isLoading, setIsLoading] = useState(true);
   const { tokensList } = useContext(OffersContext);
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  // const { chain } = useNetwork();
 
   const { ref, inView } = useInView({
     threshold: 0.5,
   });
-
-  // console.log("InView", inView);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -60,7 +54,7 @@ export const SwapOffers = () => {
     <SwapOffersLayout
       variant={SwapOffersDisplayVariant.NO_USER_AUTHENTICATED}
     />
-  ) : isLoadingOffersQuery ? (
+  ) : isLoadingOffersQuery || !data ? (
     <div className="flex gap-5 flex-col">
       <div>
         <TokensOfferSkeleton />
@@ -74,31 +68,33 @@ export const SwapOffers = () => {
   ) : tokensList.length === 0 || !authenticatedUserAddress ? (
     <SwapOffersLayout variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED} />
   ) : (
-    <div className="flex flex-col gap-5 no-scrollbar">
-      {data
-        ?.flatMap((page: PageData) => page.swapOffers)
-        .map((swap: PopulatedSwapOfferCard, index: number) => (
-          <SwapOffer key={index} swap={swap} />
-        ))}
+    data && (
+      <div className="flex flex-col gap-5 no-scrollbar">
+        {data
+          ?.flatMap((page: PageData) => page.swapOffers)
+          .map((swap: PopulatedSwapOfferCard, index: number) => (
+            <SwapOffer key={index} swap={swap} />
+          ))}
 
-      <div ref={ref}>{isFetchingNextPage && "Loading..."}</div>
-      <div className="flex justify-end mt-5">
-        <button
-          className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
-          onClick={() => setToggleManually(!toggleManually)}
-        >
-          Add swap manually
-        </button>
-        <AddTokenOrSwapManuallyModal
-          open={toggleManually}
-          forWhom={ForWhom.Yours}
-          onClose={() => {
-            setToggleManually(false);
-          }}
-          variant={AddTokenOrSwapManuallyModalVariant.SWAP}
-        />
+        <div ref={ref}>{isFetchingNextPage && "Loading..."}</div>
+        <div className="flex justify-end mt-5">
+          <button
+            className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
+            onClick={() => setToggleManually(!toggleManually)}
+          >
+            Add swap manually
+          </button>
+          <AddTokenOrSwapManuallyModal
+            open={toggleManually}
+            forWhom={ForWhom.Yours}
+            onClose={() => {
+              setToggleManually(false);
+            }}
+            variant={AddTokenOrSwapManuallyModalVariant.SWAP}
+          />
+        </div>
       </div>
-    </div>
+    )
   );
 };
 
