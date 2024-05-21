@@ -50,6 +50,11 @@ export interface PageInfo {
   endCursor: string | null;
 }
 
+export interface PageData {
+  swapOffers: PopulatedSwapOfferCard[];
+  pageInfo: PageInfo;
+}
+
 export interface PageParam {
   pageParam: string | null;
 }

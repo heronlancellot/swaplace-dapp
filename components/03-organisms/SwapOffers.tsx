@@ -15,7 +15,7 @@ import {
   TokensOfferSkeleton,
 } from "@/components/01-atoms";
 
-import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
+import { PageData, PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -56,81 +56,6 @@ export const SwapOffers = () => {
     }
   }, [fetchNextPage, inView, hasNextPage]);
 
-  // useEffect(() => {
-  //   if (offersQueries) {
-  //     processSwaps();
-  //   }
-  // }, [offersQueries]);
-
-  // const findStatus = (swap: FormattedSwapOfferAssets): PonderFilter => {
-  //   switch (swap.status.toUpperCase()) {
-  //     case PonderFilter.ACCEPTED.toUpperCase():
-  //       return PonderFilter.ACCEPTED;
-  //     case PonderFilter.ALL_OFFERS.toUpperCase():
-  //       return PonderFilter.ALL_OFFERS;
-  //     case PonderFilter.CANCELED.toUpperCase():
-  //       return PonderFilter.CANCELED;
-  //     case PonderFilter.CREATED.toUpperCase():
-  //       return PonderFilter.CREATED;
-  //     case PonderFilter.EXPIRED.toUpperCase():
-  //       return PonderFilter.EXPIRED;
-  //     default:
-  //       return PonderFilter.RECEIVED;
-  //   }
-  // };
-
-  // Get the formattedSwap and retrieve the data to PopulatedSwapOfferCard
-  // const processSwaps = async () => {
-  //   setIsLoading(true);
-
-  //   if (!chain) return null;
-
-  //   try {
-  //     const formattedTokensPromises: Promise<PopulatedSwapOfferCard>[] =
-  //       offersQueries[offersFilter].map(
-  //         async (swap: FormattedSwapOfferAssets) => {
-  //           console.log("swapssssss", swap);
-  //           const bidedTokensWithData = await retrieveDataFromTokensArray(
-  //             swap.bidderAssets.tokens,
-  //           );
-  //           const askedTokensWithData = await retrieveDataFromTokensArray(
-  //             swap.askerAssets.tokens,
-  //           );
-  //           const swapStatus = findStatus(swap);
-  //           const swapData: any = await getSwap(BigInt(swap.id), chain.id);
-  //           const swapExpiryData = await decodeConfig({
-  //             config: swapData.config,
-  //           });
-
-  //           return {
-  //             id: BigInt(swap.id),
-  //             status: swapStatus,
-  //             expiryDate: swapExpiryData.expiry,
-  //             bidderTokens: {
-  //               address: swap.bidderAssets.address,
-  //               tokens: bidedTokensWithData,
-  //             },
-  //             askerTokens: {
-  //               address: swap.askerAssets.address,
-  //               tokens: askedTokensWithData,
-  //             },
-  //           };
-  //         },
-  //       );
-
-  //     // Wait for all promises to resolve
-  //     const formattedTokens: PopulatedSwapOfferCard[] = await Promise.all(
-  //       formattedTokensPromises,
-  //     );
-  //     console.log("formattedTokensSsssss", formattedTokens);
-  //     setTokensList(formattedTokens);
-  //   } catch (error) {
-  //     console.error("Failed to process swaps:", error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   return !authenticatedUserAddress ? (
     <SwapOffersLayout
       variant={SwapOffersDisplayVariant.NO_USER_AUTHENTICATED}
@@ -150,9 +75,10 @@ export const SwapOffers = () => {
     <SwapOffersLayout variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED} />
   ) : (
     <div className="flex flex-col gap-5 no-scrollbar">
-      {data &&
-        data.map((pages, index) => (
-          <SwapOffer key={index} swap={pages.swapOffers[index]} />
+      {data
+        ?.flatMap((page: PageData) => page.swapOffers)
+        .map((swap: PopulatedSwapOfferCard, index: number) => (
+          <SwapOffer key={index} swap={swap} />
         ))}
 
       <div ref={ref}>{isFetchingNextPage && "Loading..."}</div>
@@ -181,10 +107,6 @@ interface SwapOfferProps {
 }
 
 const SwapOffer = ({ swap }: SwapOfferProps) => {
-  console.log("swap.askerTokens.tokens", swap.askerTokens.tokens);
-  console.log("swap.askerTokens.address", swap.askerTokens.address);
-  console.log("swap.bidderTokens.tokens", swap.bidderTokens.tokens);
-  console.log("swap.bidderTokens.address", swap.bidderTokens.address);
   return (
     <div className="flex flex-col no-scrollbar border border-solid border-[#D6D5D5] dark:border-[#353836] dark:shadow-swap-station shadow-swap-station-light dark:bg-[#212322] font-onest rounded-lg ">
       <div className="flex flex-row border-b mb-auto dark:border-[#353836] relative">
