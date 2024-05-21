@@ -59,14 +59,7 @@ export interface PageParam {
   pageParam: string | null;
 }
 
-export interface InfinityQueryDatassssss {
-  pages: {
-    swapOffers: PopulatedSwapOfferCard[];
-    pageInfo: PageInfo;
-  }[];
-}
-
-export interface InifniteQueryData {
+export interface InfinityQueryData {
   pages: {
     swapOffers: {
       id: bigint;
