@@ -1,5 +1,6 @@
 import { getBlockchainTimestamp, getTokenAmountOrId } from "./blockchain-utils";
 import { ERC20, EthereumAddress, Token, TokenType } from "../shared/types";
+import { getTokenUri } from "../service/getTokenUri";
 import { type WalletClient } from "wagmi";
 
 export interface Asset {
@@ -236,3 +237,34 @@ export function getTokensInfoBeforeSwap(
 
   return tokensWithInfo;
 }
+
+const addPrefixToIPFSLInk = (link: string) => {
+  if (link.startsWith("ipfs://")) {
+    return `https://ipfs.io/ipfs/${link.substring(7)}`;
+  } else {
+    return link;
+  }
+};
+
+export const fetchTokenERC721Metadata = async (
+  chainId: number,
+  tokenId: string,
+) => {
+  const metadata: string = await getTokenUri(BigInt(tokenId), chainId);
+  const updatedMetadata = addPrefixToIPFSLInk(metadata);
+
+  const fetchJSONFromIPFSLink = async (ipfsLink: string) => {
+    if (ipfsLink.startsWith("https://ipfs.io/")) {
+      const response = await fetch(ipfsLink);
+      const json = await response.json();
+      return json;
+    } else {
+      return ipfsLink;
+    }
+  };
+
+  const JSONDataIPFS = await fetchJSONFromIPFSLink(updatedMetadata);
+  const IPFSMetadata = addPrefixToIPFSLInk(JSONDataIPFS.image);
+
+  return { IPFSMetadata, JSONDataIPFS };
+};

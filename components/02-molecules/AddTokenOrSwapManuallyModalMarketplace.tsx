@@ -10,7 +10,7 @@ import {
 } from "@/lib/shared/types";
 import { ShelfContext } from "@/lib/client/contexts/ShelfContext";
 import { getSwap } from "@/lib/service/getSwap";
-import { Swap } from "@/lib/client/swap-utils";
+import { Swap, fetchTokenERC721Metadata } from "@/lib/client/swap-utils";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 import {
   decodeConfig,
@@ -24,7 +24,6 @@ import {
   parseTokenData,
   verifyTokenOwnership,
 } from "@/lib/service/verifyTokenOwnershipAndParseTokenData";
-import { getTokenUri } from "@/lib/service/getTokenUri";
 import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
 import React, { useContext, useState } from "react";
 import cc from "classcat";
@@ -313,34 +312,6 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
     }
   };
 
-  const addPrefixToIPFSLInk = (link: string) => {
-    if (link.startsWith("ipfs://")) {
-      return `https://ipfs.io/ipfs/${link.substring(7)}`;
-    } else {
-      return link;
-    }
-  };
-
-  const fetchTokenMetadata = async (chainId: number, tokenId: string) => {
-    const metadata: string = await getTokenUri(BigInt(tokenId), chainId);
-    const updatedMetadata = addPrefixToIPFSLInk(metadata);
-
-    const fetchJSONFromIPFSLink = async (ipfsLink: string) => {
-      if (ipfsLink.startsWith("https://ipfs.io/")) {
-        const response = await fetch(ipfsLink);
-        const json = await response.json();
-        return json;
-      } else {
-        return ipfsLink;
-      }
-    };
-
-    const JSONDataIPFS = await fetchJSONFromIPFSLink(updatedMetadata);
-    const IPFSMetadata = addPrefixToIPFSLInk(JSONDataIPFS.image);
-
-    return { IPFSMetadata, JSONDataIPFS };
-  };
-
   const addTokenCard = async () => {
     const address =
       forWhom === ForWhom.Yours
@@ -376,7 +347,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       tokenId: tokenId,
       tokenType: tokenType,
     };
-    const tokenMetadata = await fetchTokenMetadata(chain.id, tokenId);
+    const tokenMetadata = await fetchTokenERC721Metadata(chain.id, tokenId);
     const tokenOwnership = await verifyTokenOwnership({
       user: userConfiguration,
       token: tokenConfiguration,
