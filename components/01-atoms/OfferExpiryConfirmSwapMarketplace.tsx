@@ -1,8 +1,8 @@
-import { OffersContext } from "@/lib/client/contexts";
+import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
 import { useContext } from "react";
 
-export const OfferExpiryConfirmSwap = () => {
-  const { swapOfferToAccept } = useContext(OffersContext);
+export const OfferExpiryConfirmSwapMarketplace = () => {
+  const { swapOfferToAccept } = useContext(OffersContextMarketplace);
 
   let formattedSwapExpiryDate = null;
   let isDateValid = true;
