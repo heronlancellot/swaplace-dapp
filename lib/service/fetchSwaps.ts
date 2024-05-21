@@ -149,8 +149,6 @@ export const fetchSwaps = async ({
       const items = response.data.data.swapDatabases
         .items as RawSwapOfferInterface[];
       const pageInfo = response.data.data.swapDatabases.pageInfo as PageInfo;
-      console.log("items", items);
-
       const processedItems: RawSwapOfferInterface[] = items.map(
         (obj: RawSwapOfferInterface) => {
           const bid = cleanJsonString(String(obj.bid));
@@ -172,7 +170,6 @@ export const fetchSwaps = async ({
           };
         },
       );
-      console.log("processedItems", processedItems);
 
       const itemsArrayAsSwapOffers: FormattedSwapOfferAssets[] =
         processedItems.map((item) => {
@@ -192,8 +189,6 @@ export const fetchSwaps = async ({
             },
           };
         });
-
-      console.log("itemsArrayAsSwapOffers", itemsArrayAsSwapOffers);
 
       const itemsArrayAsSwapOffersPopulated: Promise<PopulatedSwapOfferCard>[] =
         itemsArrayAsSwapOffers.map(async (swap) => {
@@ -231,8 +226,6 @@ export const fetchSwaps = async ({
       const formattedTokens: PopulatedSwapOfferCard[] = await Promise.all(
         itemsArrayAsSwapOffersPopulated,
       );
-
-      console.log("formattedTokens", formattedTokens);
 
       return {
         swapOffers: formattedTokens,

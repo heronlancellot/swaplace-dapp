@@ -14,7 +14,6 @@ import {
   SwapIcon,
   TokensOfferSkeleton,
 } from "@/components/01-atoms";
-
 import { PageData, PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useContext, useEffect, useState } from "react";
