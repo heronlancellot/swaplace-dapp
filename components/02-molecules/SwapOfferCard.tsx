@@ -21,8 +21,6 @@ export const SwapOfferCard = ({ address, tokens }: SwapOfferCardProps) => {
     ? ForWhom.Yours
     : ForWhom.Their;
 
-  console.log("tokens", tokens);
-
   return (
     <div className="md:p-4">
       <div className="flex flex-col justify-between h-full gap-4 md:w-[326px]">
