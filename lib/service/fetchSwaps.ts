@@ -1,8 +1,45 @@
+import { getSwap } from "./getSwap";
+import { ADDRESS_ZERO } from "../client/constants";
+import { PonderFilter } from "../client/contexts";
+import {
+  ACCEPTED_OFFERS_QUERY,
+  ALL_OFFERS_QUERY,
+  CANCELED_OFFERS_QUERY,
+  CREATED_OFFERS_QUERY,
+  EXPIRED_OFFERS_QUERY,
+  RECEIVED_OFFERS_QUERY,
+} from "../client/offer-queries";
+import {
+  RawSwapOfferInterface,
+  PageInfo,
+  FormattedSwapOfferAssets,
+  PopulatedSwapOfferCard,
+} from "../client/offers-utils";
+import { EthereumAddress } from "../shared/types";
+import { cleanJsonString } from "../client/utils";
+import { Asset, Swap } from "../client/swap-utils";
+import {
+  retrieveDataFromTokensArray,
+  decodeConfig,
+} from "../client/blockchain-utils";
 import axios from "axios";
-import { ALL_OFFERS_QUERY } from "../client/offer-queries";
+import { isAddress } from "viem";
+import toast from "react-hot-toast";
 
-const fetchSwaps = async ({ pageParam, userAddress }: PageParam) => {
+export const fetchSwaps = async ({
+  pageParam,
+  userAddress,
+  offersFilter,
+  chainId,
+}: {
+  pageParam: string | null;
+  userAddress: `0x${string}` | undefined;
+  offersFilter: PonderFilter;
+  chainId: number;
+}) => {
   if (!userAddress) throw new Error("User address is not defined");
+
+  const currentUnixTimeSeconds = Math.floor(new Date().getTime() / 1000);
 
   const after = pageParam || null;
   let query = "";
@@ -85,6 +122,23 @@ const fetchSwaps = async ({ pageParam, userAddress }: PageParam) => {
     );
   }
 
+  const findStatus = (swap: FormattedSwapOfferAssets): PonderFilter => {
+    switch (swap.status.toUpperCase()) {
+      case PonderFilter.ACCEPTED.toUpperCase():
+        return PonderFilter.ACCEPTED;
+      case PonderFilter.ALL_OFFERS.toUpperCase():
+        return PonderFilter.ALL_OFFERS;
+      case PonderFilter.CANCELED.toUpperCase():
+        return PonderFilter.CANCELED;
+      case PonderFilter.CREATED.toUpperCase():
+        return PonderFilter.CREATED;
+      case PonderFilter.EXPIRED.toUpperCase():
+        return PonderFilter.EXPIRED;
+      default:
+        return PonderFilter.RECEIVED;
+    }
+  };
+
   try {
     const response = await axios.post(
       endpoint,
@@ -95,13 +149,31 @@ const fetchSwaps = async ({ pageParam, userAddress }: PageParam) => {
       const items = response.data.data.swapDatabases
         .items as RawSwapOfferInterface[];
       const pageInfo = response.data.data.swapDatabases.pageInfo as PageInfo;
-      const processedItems: RawSwapOfferInterface[] = items.map((obj: any) => {
-        return {
-          ...obj,
-          bid: cleanJsonString(obj.bid),
-          ask: cleanJsonString(obj.ask),
-        };
-      });
+      console.log("items", items);
+
+      const processedItems: RawSwapOfferInterface[] = items.map(
+        (obj: RawSwapOfferInterface) => {
+          const bid = cleanJsonString(String(obj.bid));
+          const ask = cleanJsonString(String(obj.ask));
+
+          const bidderAssets: Asset = {
+            addr: bid[0].addr as `0x${string}`,
+            amountOrId: BigInt(bid[0].amountOrId) as bigint,
+          };
+          const askerAssets: Asset = {
+            addr: ask[0].addr as `0x${string}`,
+            amountOrId: BigInt(ask[0].amountOrId) as bigint,
+          };
+
+          return {
+            ...obj,
+            bid: [bidderAssets],
+            ask: [askerAssets],
+          };
+        },
+      );
+      console.log("processedItems", processedItems);
+
       const itemsArrayAsSwapOffers: FormattedSwapOfferAssets[] =
         processedItems.map((item) => {
           return {
@@ -120,17 +192,54 @@ const fetchSwaps = async ({ pageParam, userAddress }: PageParam) => {
             },
           };
         });
-      setOffersQueries({
-        ...offersQueries,
-        [offersFilter]: itemsArrayAsSwapOffers,
-      });
+
+      console.log("itemsArrayAsSwapOffers", itemsArrayAsSwapOffers);
+
+      const itemsArrayAsSwapOffersPopulated: Promise<PopulatedSwapOfferCard>[] =
+        itemsArrayAsSwapOffers.map(async (swap) => {
+          const bidedTokensWithData = await retrieveDataFromTokensArray(
+            swap.bidderAssets.tokens,
+          );
+          const askedTokensWithData = await retrieveDataFromTokensArray(
+            swap.askerAssets.tokens,
+          );
+
+          const swapStatus = findStatus(swap);
+          const swapData: Swap = await getSwap(
+            BigInt(swap.id),
+            chainId as number,
+          );
+          const swapExpiryData = await decodeConfig({
+            config: swapData.config,
+          });
+
+          return {
+            id: BigInt(swap.id),
+            status: swapStatus,
+            expiryDate: swapExpiryData.expiry,
+            bidderTokens: {
+              address: swap.bidderAssets.address,
+              tokens: bidedTokensWithData,
+            },
+            askerTokens: {
+              address: swap.askerAssets.address,
+              tokens: askedTokensWithData,
+            },
+          };
+        });
+
+      const formattedTokens: PopulatedSwapOfferCard[] = await Promise.all(
+        itemsArrayAsSwapOffersPopulated,
+      );
+
+      console.log("formattedTokens", formattedTokens);
+
       return {
-        swapOffers: itemsArrayAsSwapOffers,
+        swapOffers: formattedTokens,
         pageInfo,
       };
     } else {
-      console.error("Unexpected response structure:", response.data);
-      throw new Error("Unexpected response structure");
+      throw new Error("Failed to fetch swaps from Subgraph");
     }
   } catch (error) {
     toast.error("Failed to fetch swaps from Subgraph. Please contact the team");
