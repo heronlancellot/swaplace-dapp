@@ -59,7 +59,7 @@ export interface PageParam {
   pageParam: string | null;
 }
 
-export interface InfinityQueryData {
+export interface InfiniteQueryData {
   pages: {
     swapOffers: {
       id: bigint;

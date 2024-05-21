@@ -9,7 +9,7 @@ import {
   FormattedSwapOfferAssets,
   PopulatedSwapOfferCard,
   PageInfo,
-  InfinityQueryData,
+  InfiniteQueryData,
 } from "@/lib/client/offers-utils";
 import { SwapContext } from "@/lib/client/contexts";
 import { fetchSwaps } from "@/lib/service/fetchSwaps";
@@ -82,7 +82,7 @@ const DEFAULT_PAGE_INFO: PageInfo = {
   endCursor: null,
 };
 
-const DEFAULT_DATA_INFINITE_QUERY: InfinityQueryData = {
+const DEFAULT_DATA_INFINITE_QUERY: InfiniteQueryData = {
   pages: {
     swapOffers: [
       {
