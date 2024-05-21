@@ -28,14 +28,8 @@ import cc from "classcat";
  * @returns
  */
 export const SwapOffers = () => {
-  const {
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-    isLoadingOffersQuery,
-    isError,
-    data,
-  } = useContext(OffersContext);
+  const { hasNextPage, fetchNextPage, isFetchingNextPage, isError, data } =
+    useContext(OffersContext);
   const { tokensList } = useContext(OffersContext);
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
@@ -54,7 +48,7 @@ export const SwapOffers = () => {
     <SwapOffersLayout
       variant={SwapOffersDisplayVariant.NO_USER_AUTHENTICATED}
     />
-  ) : isLoadingOffersQuery || !data ? (
+  ) : !data ? (
     <div className="flex gap-5 flex-col">
       <div>
         <TokensOfferSkeleton />
@@ -76,7 +70,18 @@ export const SwapOffers = () => {
             <SwapOffer key={index} swap={swap} />
           ))}
 
-        <div ref={ref}>{isFetchingNextPage && "Loading..."}</div>
+        <div ref={ref}>
+          {isFetchingNextPage && (
+            <div className="flex gap-5 flex-col">
+              <div>
+                <TokensOfferSkeleton />
+              </div>
+              <div>
+                <TokensOfferSkeleton />
+              </div>
+            </div>
+          )}
+        </div>
         <div className="flex justify-end mt-5">
           <button
             className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
