@@ -249,7 +249,7 @@ export function getTokensInfoBeforeSwap(
   return tokensWithInfo;
 }
 
-const addPrefixToIPFSLInk = (link: string) => {
+export const addPrefixToIPFSLInk = (link: string) => {
   if (link.startsWith("ipfs://")) {
     return `https://ipfs.io/ipfs/${link.substring(7)}`;
   } else {
@@ -346,43 +346,3 @@ async function getERC20OrERC721MetadataBlockchain(
     };
   }
 }
-// const chainId = sepolia.id;
-// const networkAPIKey = getAPIKeyForNetwork.get(chainId);
-// const networkName = getNetwork.get(chainId);
-
-// try {
-//   const response = await alchemy.core.getTokenMetadata(token.addr);
-//   // Retrieve metadata as an erc20
-//   if (response.decimals !== null) {
-//     return {
-//       tokenType: TokenType.ERC20,
-//       name: response.name ?? undefined,
-//       logo: response.logo ?? undefined,
-//       symbol: response.symbol ?? undefined,
-//       contract: token.addr,
-//       rawBalance: token.amountOrId,
-//       tokenAmount: token.amountOrId,
-//       decimals: response.decimals,
-//     };
-//   } else {
-//     // Retrieve metadata as an erc721
-//     const metadata = await alchemy.nft.getNftMetadata(
-//       token.addr,
-//       token.amountOrId,
-//     );
-
-//     return {
-//       tokenType: TokenType.ERC721,
-//       id: token.amountOrId.toString(),
-//       name: metadata.contract.name ?? undefined,
-//       symbol: metadata.contract.name ?? undefined,
-//       uri: metadata.image.originalUrl ?? undefined,
-//       contract: metadata.contract.address,
-//       metadata: metadata,
-//     };
-//   }
-// } catch (error) {
-//   console.error("Error fetching token metadata:", error);
-//   throw new Error("Error fetching token metadata.");
-// }
-// }

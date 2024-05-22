@@ -10,6 +10,7 @@ import {
 } from "@/lib/shared/types";
 import { getTokenName } from "@/lib/client/ui-utils";
 import { SwapContext } from "@/lib/client/contexts";
+import { addPrefixToIPFSLInk } from "@/lib/client/swap-utils";
 import React, { useContext, useEffect, useState } from "react";
 import cc from "classcat";
 import toast from "react-hot-toast";
@@ -116,9 +117,22 @@ export const TokenCard = ({
           displayableData.id = (tokenData as ERC20).id as string;
         }
       case TokenType.ERC721:
-        if ((tokenData as ERC721).metadata?.image) {
+        if ((tokenData as ERC721).metadata?.image?.originalUrl) {
+          displayableData.symbol = (tokenData as ERC721).metadata?.image
+            .originalUrl as string;
+          if (displayableData.symbol.startsWith("https://ipfs/")) {
+            displayableData.symbol = addPrefixToIPFSLInk(
+              displayableData.symbol,
+            );
+          }
+        } else if ((tokenData as ERC721).metadata?.image) {
           displayableData.symbol = (tokenData as ERC721).metadata
             ?.image as string;
+          if (displayableData.symbol.startsWith("ipfs://")) {
+            displayableData.symbol = addPrefixToIPFSLInk(
+              displayableData.symbol,
+            );
+          }
         } else {
           displayableData.symbol = "";
         }
