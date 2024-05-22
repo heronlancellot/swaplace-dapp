@@ -19,7 +19,6 @@ interface TokenCardProps {
     token: Token,
   ) => void;
   onClickAction?: TokenCardActionType;
-
   /* 
     When true, instead of displaying an ERC20 Token balance
     the TokenCard will display the ERC20 Token amount 
@@ -57,7 +56,6 @@ export const TokenSizeClassNames = {
   [TokenCardStyleType.MEDIUM]: "card-token-medium",
   [TokenCardStyleType.LARGE]: "card-token-large",
 };
-
 /**
  * TokenCard Component
  *
@@ -72,9 +70,7 @@ export const TokenSizeClassNames = {
  * @param displayERC20TokensAmount - Flag indicating whether to display ERC20 token amounts.
  * @param styleType - Style type for the token card (e.g., normal).
  * @param onClickAction - Action type to be performed on token card click.
- */
-
-export const TokenSwapCard = ({
+ */ export const TokenSwapCard = ({
   tokenData,
   displayERC20TokensAmount = true,
   styleType = TokenCardStyleType.NORMAL,
@@ -100,11 +96,12 @@ export const TokenSwapCard = ({
         if ((tokenData as ERC20).id) {
           displayableData.id = (tokenData as ERC20).id as string;
         }
+        break;
       case TokenType.ERC721:
         if ((tokenData as ERC721).metadata?.image?.originalUrl) {
           displayableData.symbol = (tokenData as ERC721).metadata?.image
             .originalUrl as string;
-          if (displayableData.symbol.startsWith("https://ipfs/")) {
+          if (displayableData.symbol?.startsWith("https://ipfs/")) {
             displayableData.symbol = addPrefixToIPFSLInk(
               displayableData.symbol,
             );
@@ -112,7 +109,7 @@ export const TokenSwapCard = ({
         } else if ((tokenData as ERC721).metadata?.image) {
           displayableData.symbol = (tokenData as ERC721).metadata?.image
             .originalUrl as string;
-          if (displayableData.symbol.startsWith("ipfs://")) {
+          if (displayableData.symbol?.startsWith("ipfs://")) {
             displayableData.symbol = addPrefixToIPFSLInk(
               displayableData.symbol,
             );
@@ -123,6 +120,7 @@ export const TokenSwapCard = ({
         if ((tokenData as ERC721).id) {
           displayableData.id = (tokenData as ERC721).id as string;
         }
+        break;
     }
 
     setDisplayableData(displayableData);
