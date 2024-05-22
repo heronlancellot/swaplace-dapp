@@ -1,7 +1,18 @@
 import { getBlockchainTimestamp, getTokenAmountOrId } from "./blockchain-utils";
-import { ERC20, EthereumAddress, Token, TokenType } from "../shared/types";
+import { MockERC20Abi, MockERC721Abi } from "./abi";
+import {
+  ERC20,
+  ERC20WithTokenAmountSelection,
+  ERC721,
+  EthereumAddress,
+  Token,
+  TokenType,
+} from "../shared/types";
 import { getTokenUri } from "../service/getTokenUri";
+import { UserConfiguration } from "../service/verifyTokenOwnershipAndParseTokenData";
+import { publicClient } from "../wallet/wallet-config";
 import { type WalletClient } from "wagmi";
+import { getContract } from "viem";
 
 export interface Asset {
   addr: `0x${string}`;
@@ -268,3 +279,110 @@ export const fetchTokenERC721Metadata = async (
 
   return { IPFSMetadata, JSONDataIPFS };
 };
+
+export const getArrayOfTokensFromArrayOfAssets = async (
+  tokens: Asset[],
+  user: UserConfiguration,
+): Promise<Token[]> => {
+  // Use map to transform tokens into an array of promises
+  const promises = tokens.map((token) =>
+    getERC20OrERC721MetadataBlockchain(token, user),
+  );
+
+  // Wait for all promises to resolve
+  const newTokensList = await Promise.all(promises);
+
+  return newTokensList;
+};
+
+async function getERC20OrERC721MetadataBlockchain(
+  token: Asset,
+  user: UserConfiguration,
+): Promise<ERC20WithTokenAmountSelection | ERC721> {
+  const contractERC20 = getContract({
+    address: token.addr,
+    publicClient: publicClient({ chainId: user.chainId }),
+    abi: MockERC20Abi,
+  });
+
+  const contractERC721 = getContract({
+    address: token.addr,
+    publicClient: publicClient({ chainId: user.chainId }),
+    abi: MockERC721Abi,
+  });
+
+  const hasDecimals = (await contractERC20.read.decimals([])) as number;
+  if (hasDecimals) {
+    const tokenBalance = (await contractERC20.read.balanceOf([
+      user.address.address,
+    ])) as bigint;
+    const tokenName = (await contractERC20.read.name([])) as string;
+    const tokenSymbol = (await contractERC20.read.symbol([])) as string;
+    return {
+      tokenType: TokenType.ERC20,
+      name: tokenName,
+      logo: "",
+      symbol: tokenSymbol,
+      contract: token.addr,
+      rawBalance: token.amountOrId,
+      tokenAmount: tokenBalance,
+      decimals: hasDecimals,
+    };
+  } else {
+    const tokenName = (await contractERC721.read.name([])) as string;
+    const tokenSymbol = (await contractERC721.read.symbol([])) as string;
+    const tokenMetadata = await fetchTokenERC721Metadata(
+      user.chainId,
+      token.amountOrId.toString(),
+    );
+
+    return {
+      tokenType: TokenType.ERC721,
+      name: tokenName,
+      symbol: tokenSymbol,
+      uri: tokenMetadata.IPFSMetadata,
+      contract: token.addr,
+      metadata: {},
+    };
+  }
+}
+// const chainId = sepolia.id;
+// const networkAPIKey = getAPIKeyForNetwork.get(chainId);
+// const networkName = getNetwork.get(chainId);
+
+// try {
+//   const response = await alchemy.core.getTokenMetadata(token.addr);
+//   // Retrieve metadata as an erc20
+//   if (response.decimals !== null) {
+//     return {
+//       tokenType: TokenType.ERC20,
+//       name: response.name ?? undefined,
+//       logo: response.logo ?? undefined,
+//       symbol: response.symbol ?? undefined,
+//       contract: token.addr,
+//       rawBalance: token.amountOrId,
+//       tokenAmount: token.amountOrId,
+//       decimals: response.decimals,
+//     };
+//   } else {
+//     // Retrieve metadata as an erc721
+//     const metadata = await alchemy.nft.getNftMetadata(
+//       token.addr,
+//       token.amountOrId,
+//     );
+
+//     return {
+//       tokenType: TokenType.ERC721,
+//       id: token.amountOrId.toString(),
+//       name: metadata.contract.name ?? undefined,
+//       symbol: metadata.contract.name ?? undefined,
+//       uri: metadata.image.originalUrl ?? undefined,
+//       contract: metadata.contract.address,
+//       metadata: metadata,
+//     };
+//   }
+// } catch (error) {
+//   console.error("Error fetching token metadata:", error);
+//   throw new Error("Error fetching token metadata.");
+// }
+// }
