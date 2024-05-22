@@ -284,6 +284,8 @@ export const toastBlockchainTxError = (e: string) => {
     toast.error("Transaction rejected");
   } else if (e.includes("InvalidExpiry")) {
     toast.error("Select a valid date to your swap.");
+  } else if (e.includes("approve caller is not token owner")) {
+    toast.error("You are not the owner of this token");
   } else {
     toast.error("Transaction failed. Please contact our team");
   }
