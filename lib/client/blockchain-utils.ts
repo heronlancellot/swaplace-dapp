@@ -104,7 +104,18 @@ export const getERC721TokensFromAddress = async (
     });
 };
 
-async function getERC20OrERC721Metadata(
+/**
+ * Retrieves the metadata for an ERC20 or ERC721 token.
+ * This function uses the Alchemy SDK to fetch the metadata for the token.
+ * If the token is an ERC20 token, the function retrieves the token's name, logo, symbol, and decimals.
+ * If the token is an ERC721 token, the function retrieves the token's name, symbol, and image URI.
+ *
+ * @param token - The token to retrieve metadata for.
+ * @returns A promise that resolves to the metadata of the token.
+ * @throws An error if there is no API key or network name defined for the network.
+ * @throws An error if there is an error fetching the token metadata.
+ */
+async function getERC20OrERC721MetadataAlchemySDK(
   token: Asset,
 ): Promise<ERC20WithTokenAmountSelection | ERC721> {
   const chainId = sepolia.id;
@@ -163,12 +174,20 @@ async function getERC20OrERC721Metadata(
   }
 }
 
-// retrieve data for array of tokens
+/**
+ * Retrieves data from an array of Assets.
+ * This function uses the Alchemy SDK to fetch the metadata for each token in the array.
+ *
+ * @param tokens - The array of tokens to retrieve data from.
+ * @returns A promise that resolves to an array of tokens with retrieved data.
+ */
 export const retrieveDataFromTokensArray = async (
   tokens: Asset[],
 ): Promise<Token[]> => {
   // Use map to transform tokens into an array of promises
-  const promises = tokens.map((token) => getERC20OrERC721Metadata(token));
+  const promises = tokens.map((token) =>
+    getERC20OrERC721MetadataAlchemySDK(token),
+  );
 
   // Wait for all promises to resolve
   const newTokensList = await Promise.all(promises);

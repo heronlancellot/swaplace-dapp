@@ -7,6 +7,7 @@ import {
   TokenType,
 } from "@/lib/shared/types";
 import { getTokenName } from "@/lib/client/ui-utils";
+import { addPrefixToIPFSLInk } from "@/lib/client/swap-utils";
 import React, { useEffect, useState } from "react";
 import cc from "classcat";
 
@@ -18,7 +19,6 @@ interface TokenCardProps {
     token: Token,
   ) => void;
   onClickAction?: TokenCardActionType;
-
   /* 
     When true, instead of displaying an ERC20 Token balance
     the TokenCard will display the ERC20 Token amount 
@@ -56,7 +56,6 @@ export const TokenSizeClassNames = {
   [TokenCardStyleType.MEDIUM]: "card-token-medium",
   [TokenCardStyleType.LARGE]: "card-token-large",
 };
-
 /**
  * TokenCard Component
  *
@@ -71,9 +70,7 @@ export const TokenSizeClassNames = {
  * @param displayERC20TokensAmount - Flag indicating whether to display ERC20 token amounts.
  * @param styleType - Style type for the token card (e.g., normal).
  * @param onClickAction - Action type to be performed on token card click.
- */
-
-export const TokenSwapCard = ({
+ */ export const TokenSwapCard = ({
   tokenData,
   displayERC20TokensAmount = true,
   styleType = TokenCardStyleType.NORMAL,
@@ -82,7 +79,7 @@ export const TokenSwapCard = ({
 
   const [tokenDisplayableData, setDisplayableData] = useState({
     id: "",
-    image: "",
+    symbol: "",
   });
 
   useEffect(() => {
@@ -91,24 +88,39 @@ export const TokenSwapCard = ({
     switch (tokenData.tokenType) {
       case TokenType.ERC20:
         if ((tokenData as ERC20).symbol) {
-          displayableData.image = (tokenData as ERC20).logo as string;
+          displayableData.symbol = (tokenData as ERC20).logo as string;
         } else {
-          displayableData.image = "";
+          displayableData.symbol = "";
         }
 
         if ((tokenData as ERC20).id) {
           displayableData.id = (tokenData as ERC20).id as string;
         }
+        break;
       case TokenType.ERC721:
-        if ((tokenData as ERC721).metadata?.image) {
-          displayableData.image = (tokenData as ERC721).metadata?.image
+        if ((tokenData as ERC721).metadata?.image?.originalUrl) {
+          displayableData.symbol = (tokenData as ERC721).metadata?.image
             .originalUrl as string;
+          if (displayableData.symbol?.startsWith("https://ipfs/")) {
+            displayableData.symbol = addPrefixToIPFSLInk(
+              displayableData.symbol,
+            );
+          }
+        } else if ((tokenData as ERC721).metadata?.image) {
+          displayableData.symbol = (tokenData as ERC721).metadata?.image
+            .originalUrl as string;
+          if (displayableData.symbol?.startsWith("ipfs://")) {
+            displayableData.symbol = addPrefixToIPFSLInk(
+              displayableData.symbol,
+            );
+          }
         } else {
-          displayableData.image = "";
+          displayableData.symbol = "";
         }
         if ((tokenData as ERC721).id) {
           displayableData.id = (tokenData as ERC721).id as string;
         }
+        break;
     }
 
     setDisplayableData(displayableData);
@@ -124,12 +136,12 @@ export const TokenSwapCard = ({
     );
   };
 
-  return tokenDisplayableData.image && !couldntLoadNftImage ? (
+  return tokenDisplayableData.symbol && !couldntLoadNftImage ? (
     <>
       {ButtonLayout(
         <img
           onError={handleImageLoadError}
-          src={tokenDisplayableData.image}
+          src={tokenDisplayableData.symbol}
           alt={getTokenName(tokenData)}
           className="dark:text-[#707572] text-[#707572] text-center static z-10 w-full h-full overflow-y-auto rounded-xl"
         />,
