@@ -153,20 +153,22 @@ export const fetchSwaps = async ({
         (obj: RawSwapOfferInterface) => {
           const bid = cleanJsonString(String(obj.bid));
           const ask = cleanJsonString(String(obj.ask));
-
-          const bidderAssets: Asset = {
-            addr: bid[0].addr as `0x${string}`,
-            amountOrId: BigInt(bid[0].amountOrId) as bigint,
-          };
-          const askerAssets: Asset = {
-            addr: ask[0].addr as `0x${string}`,
-            amountOrId: BigInt(ask[0].amountOrId) as bigint,
-          };
-
+          const bidderAssets: Asset[] = bid.map((item: Asset) => {
+            return {
+              addr: item.addr as `0x${string}`,
+              amountOrId: BigInt(item.amountOrId) as bigint,
+            };
+          });
+          const askerAssets: Asset[] = ask.map((item: Asset) => {
+            return {
+              addr: item.addr as `0x${string}`,
+              amountOrId: BigInt(item.amountOrId) as bigint,
+            };
+          });
           return {
             ...obj,
-            bid: [bidderAssets],
-            ask: [askerAssets],
+            bid: bidderAssets,
+            ask: askerAssets,
           };
         },
       );
@@ -178,13 +180,13 @@ export const fetchSwaps = async ({
             status: item.status,
             expiryDate: item.expiry,
             bidderAssets: {
-              address: isAddress(item.allowed)
-                ? new EthereumAddress(item.allowed)
-                : new EthereumAddress(ADDRESS_ZERO),
+              address: new EthereumAddress(item.owner),
               tokens: item.bid,
             },
             askerAssets: {
-              address: new EthereumAddress(item.owner),
+              address: isAddress(item.allowed)
+                ? new EthereumAddress(item.allowed)
+                : new EthereumAddress(ADDRESS_ZERO),
               tokens: item.ask,
             },
           };
