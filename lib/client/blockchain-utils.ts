@@ -1,5 +1,5 @@
 import { getAPIKeyForNetwork, getNetwork } from "./constants";
-import { Asset } from "./swap-utils";
+import { Asset, addPrefixToIPFSLInk } from "./swap-utils";
 import { publicClient } from "../wallet/wallet-config";
 import {
   Token,
@@ -15,6 +15,7 @@ import {
   type OwnedToken,
   type OwnedNft,
   Alchemy,
+  type Nft,
 } from "alchemy-sdk";
 import toast from "react-hot-toast";
 import { hexToNumber } from "viem";
@@ -158,21 +159,33 @@ async function getERC20OrERC721MetadataAlchemySDK(
         token.amountOrId,
       );
 
-      return {
-        tokenType: TokenType.ERC721,
-        id: token.amountOrId.toString(),
-        name: metadata.contract.name ?? undefined,
-        symbol: metadata.contract.name ?? undefined,
-        uri: metadata.image.originalUrl ?? undefined,
-        contract: metadata.contract.address,
-        metadata: metadata,
-      };
+      const metadataParsedNft = parseAlchemyERC721TokensNftMetadata(metadata);
+      return metadataParsedNft;
     }
   } catch (error) {
     console.error("Error fetching token metadata:", error);
     throw new Error("Error fetching token metadata.");
   }
 }
+
+const parseAlchemyERC721TokensNftMetadata = (token: Nft): ERC721 => {
+  if (
+    typeof token.raw.metadata.image === "string" &&
+    token.raw.metadata.image.startsWith("ipfs://")
+  ) {
+    token.raw.metadata.image = addPrefixToIPFSLInk(token.raw.metadata.image);
+  }
+  {
+    return {
+      tokenType: TokenType.ERC721,
+      id: token.tokenId,
+      name: token.contract.name,
+      metadata: token.raw.metadata,
+      contract: token.contract.address,
+      contractMetadata: token.contract,
+    };
+  }
+};
 
 /**
  * Retrieves data from an array of Assets.
@@ -197,6 +210,12 @@ export const retrieveDataFromTokensArray = async (
 
 const parseAlchemyERC721Tokens = (tokens: OwnedNft[]): ERC721[] => {
   return tokens.map((token) => {
+    if (
+      typeof token.raw.metadata.image === "string" &&
+      token.raw.metadata.image.startsWith("ipfs://")
+    ) {
+      token.raw.metadata.image = addPrefixToIPFSLInk(token.raw.metadata.image);
+    }
     return {
       tokenType: TokenType.ERC721,
       id: token.tokenId,
