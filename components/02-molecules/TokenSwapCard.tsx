@@ -7,7 +7,6 @@ import {
   TokenType,
 } from "@/lib/shared/types";
 import { getTokenName } from "@/lib/client/ui-utils";
-import { addPrefixToIPFSLInk } from "@/lib/client/swap-utils";
 import React, { useEffect, useState } from "react";
 import cc from "classcat";
 
@@ -88,7 +87,7 @@ export const TokenSizeClassNames = {
     switch (tokenData.tokenType) {
       case TokenType.ERC20:
         if ((tokenData as ERC20).symbol) {
-          displayableData.symbol = (tokenData as ERC20).logo as string;
+          displayableData.symbol = (tokenData as ERC20).symbol as string;
         } else {
           displayableData.symbol = "";
         }
@@ -96,31 +95,16 @@ export const TokenSizeClassNames = {
         if ((tokenData as ERC20).id) {
           displayableData.id = (tokenData as ERC20).id as string;
         }
-        break;
       case TokenType.ERC721:
-        if ((tokenData as ERC721).metadata?.image?.originalUrl) {
-          displayableData.symbol = (tokenData as ERC721).metadata?.image
-            .originalUrl as string;
-          if (displayableData.symbol?.startsWith("https://ipfs/")) {
-            displayableData.symbol = addPrefixToIPFSLInk(
-              displayableData.symbol,
-            );
-          }
-        } else if ((tokenData as ERC721).metadata?.image) {
-          displayableData.symbol = (tokenData as ERC721).metadata?.image
-            .originalUrl as string;
-          if (displayableData.symbol?.startsWith("ipfs://")) {
-            displayableData.symbol = addPrefixToIPFSLInk(
-              displayableData.symbol,
-            );
-          }
+        if ((tokenData as ERC721).metadata?.image) {
+          displayableData.symbol = (tokenData as ERC721).metadata
+            ?.image as string;
         } else {
           displayableData.symbol = "";
         }
         if ((tokenData as ERC721).id) {
           displayableData.id = (tokenData as ERC721).id as string;
         }
-        break;
     }
 
     setDisplayableData(displayableData);
