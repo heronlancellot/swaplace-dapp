@@ -1,7 +1,8 @@
 import { SWAPLACE_SMART_CONTRACT_ADDRESS } from "../client/constants";
 import { EthereumAddress } from "../shared/types";
 import { publicClient } from "../wallet/wallet-config";
-import { encodeFunctionData } from "viem";
+import { encodeFunctionData, parseEther } from "viem";
+import { ethers } from "ethers";
 
 export interface SwapUserConfiguration {
   walletClient: any;
@@ -42,12 +43,27 @@ export async function acceptSwap(
     ],
     args: [swapId, receiver.address],
   });
+
+  const provider = new ethers.providers.JsonRpcProvider(
+    "https://eth-sepolia.g.alchemy.com/v2/D4cZZW64N8gn71Xp8Vk5lr6CNlLMCdqr",
+  );
+
   try {
-    const transactionHash = await configurations.walletClient.sendTransaction({
+    // Simulate the transaction
+    const contractAddress = SWAPLACE_SMART_CONTRACT_ADDRESS[
+      configurations.chain
+    ] as `0x${string}`;
+    const estimatedGas = await provider.estimateGas({
+      to: contractAddress,
       data: data,
-      to: SWAPLACE_SMART_CONTRACT_ADDRESS[
-        configurations.chain
-      ] as `0x${string}`,
+    });
+
+    // Send the transaction with gas estimation
+    const transactionHash = await configurations.walletClient.sendTransaction({
+      to: contractAddress,
+      data: data,
+      gasLimit: estimatedGas,
+      maxPriorityFeePerGas: parseEther("2", "gwei"), // Example priority fee
     });
 
     const transactionReceipt = await publicClient({
