@@ -49,7 +49,6 @@ export async function acceptSwap(
   );
 
   try {
-    // Simulate the transaction
     const contractAddress = SWAPLACE_SMART_CONTRACT_ADDRESS[
       configurations.chain
     ] as `0x${string}`;
@@ -58,12 +57,11 @@ export async function acceptSwap(
       data: data,
     });
 
-    // Send the transaction with gas estimation
     const transactionHash = await configurations.walletClient.sendTransaction({
       to: contractAddress,
       data: data,
       gasLimit: estimatedGas,
-      maxPriorityFeePerGas: parseEther("2", "gwei"), // Example priority fee
+      maxPriorityFeePerGas: parseEther("1"),
     });
 
     const transactionReceipt = await publicClient({
