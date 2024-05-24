@@ -29,7 +29,6 @@ import cc from "classcat";
 export const SwapOffers = () => {
   const { hasNextPage, fetchNextPage, isFetchingNextPage, isError, data } =
     useContext(OffersContext);
-  const { tokensList } = useContext(OffersContext);
   const [toggleManually, setToggleManually] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
 
@@ -56,9 +55,10 @@ export const SwapOffers = () => {
         <TokensOfferSkeleton />
       </div>
     </div>
-  ) : isError && tokensList.length === 0 ? (
+  ) : isError && data.every((page) => page.swapOffers.length === 0) ? (
     <SwapOffersLayout variant={SwapOffersDisplayVariant.ERROR} />
-  ) : tokensList.length === 0 || !authenticatedUserAddress ? (
+  ) : data.every((page) => page.swapOffers.length === 0) ||
+    !authenticatedUserAddress ? (
     <SwapOffersLayout variant={SwapOffersDisplayVariant.NO_SWAPS_CREATED} />
   ) : (
     data && (
