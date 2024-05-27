@@ -64,7 +64,7 @@ export const ThreeDotsCardOffersOptions = ({
             >
               <ShareIcon /> Share
             </button>
-            {authenticatedUserAddress?.equals(swap.askerTokens.address) &&
+            {authenticatedUserAddress?.equals(swap.bidderTokens.address) &&
               swap.status !== PonderFilter.CANCELED && (
                 <button
                   type="button"
