@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { verifyTokenOwnership } from "@/lib/service/verifyTokenOwnershipAndParseTokenData";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   SwapModalLayout,
@@ -139,7 +140,29 @@ export const ConfirmSwapModal = ({
         switch (swapModalAction) {
           case SwapModalAction.ACCEPT_SWAP:
             if (swapOfferToAccept === null) throw Error("Swap offer is null");
+            if (chainId === undefined) throw Error("Chain ID is undefined");
+            const verificationPromises =
+              swapOfferToAccept?.askerTokens.tokens.map((token) =>
+                verifyTokenOwnership({
+                  user: {
+                    address: swapOfferToAccept.askerTokens.address,
+                    chainId: chainId as number,
+                  },
+                  token: {
+                    contractAddress: token.contract as `0x${string}`,
+                    tokenId: String(token.id),
+                    tokenType: token.tokenType,
+                  },
+                }),
+              );
 
+            const verificationResults = await Promise.all(verificationPromises);
+            if (verificationResults.includes(false)) {
+              toast.error(
+                `The address ${swapOfferToAccept.askerTokens.address.getEllipsedAddress()} does not have this token anymore`,
+              );
+              return;
+            }
             transactionReceipt = await acceptSwap(
               swapOfferToAccept.id,
               authenticatedUserAddress,
