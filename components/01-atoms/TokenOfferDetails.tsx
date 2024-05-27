@@ -61,12 +61,12 @@ export const TokenOfferDetails = ({
           )}
           <li className="flex items-center gap-2">
             <div className="w-1 h-1 bg-neutral-600 rounded-full shadow-inner" />
-            Created by {swap.askerTokens.address?.getEllipsedAddress()}
+            Created by {swap.bidderTokens.address?.getEllipsedAddress()}
           </li>
         </ul>
       </div>
       <div className="flex gap-2 justify-center items-center ">
-        {authenticatedUserAddress?.equals(swap.bidderTokens.address) &&
+        {authenticatedUserAddress?.equals(swap.askerTokens.address) &&
           swap.status !== PonderFilter.ACCEPTED && (
             <div>
               <button
