@@ -42,12 +42,24 @@ export async function acceptSwap(
     ],
     args: [swapId, receiver.address],
   });
+
   try {
+    const gasLimit = await publicClient({
+      chainId: configurations.chain,
+    }).estimateGas({
+      account: configurations.walletClient.account as `0x${string}`,
+      data: data,
+      to: SWAPLACE_SMART_CONTRACT_ADDRESS[
+        configurations.chain
+      ] as `0x${string}`,
+    });
+
     const transactionHash = await configurations.walletClient.sendTransaction({
       data: data,
       to: SWAPLACE_SMART_CONTRACT_ADDRESS[
         configurations.chain
       ] as `0x${string}`,
+      gasLimit: gasLimit,
     });
 
     const transactionReceipt = await publicClient({

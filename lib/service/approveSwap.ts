@@ -64,7 +64,7 @@ export async function approveSwap({
       receipt: txReceipt,
       errorMessage: null,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     return {
       receipt: null,

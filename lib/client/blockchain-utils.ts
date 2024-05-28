@@ -324,6 +324,9 @@ export const toastBlockchainTxError = (e: string) => {
     toast.error("Select a valid date to your swap.");
   } else if (e.includes("approve caller is not token owner")) {
     toast.error("You are not the owner of this token");
+  } else if (e.includes("0xa9fbf51f")) {
+    // Some contracts doesnt have a legible error message, So, they are retrieving this error code when the user is not the owner of the token or the token was already approved.
+    toast.error("You are not the owner of this token");
   } else {
     toast.error("Transaction failed. Please contact our team");
   }

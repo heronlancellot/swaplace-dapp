@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { verifyTokenOwnership } from "@/lib/service/verifyTokenOwnershipAndParseTokenData";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   SwapModalLayout,
@@ -139,7 +140,58 @@ export const ConfirmSwapModal = ({
         switch (swapModalAction) {
           case SwapModalAction.ACCEPT_SWAP:
             if (swapOfferToAccept === null) throw Error("Swap offer is null");
+            if (chainId === undefined) throw Error("Chain ID is undefined");
+            const verificationPromisesBidderTokens =
+              swapOfferToAccept?.bidderTokens.tokens.map(
+                async (token: Token) =>
+                  await verifyTokenOwnership({
+                    user: {
+                      address: swapOfferToAccept.bidderTokens.address,
+                      chainId: chainId as number,
+                    },
+                    token: {
+                      contractAddress: token.contract as `0x${string}`,
+                      tokenId: String(token.id),
+                      tokenType: token.tokenType,
+                    },
+                  }),
+              );
 
+            const verificationResultsBidderTokens = await Promise.all(
+              verificationPromisesBidderTokens,
+            );
+            if (verificationResultsBidderTokens.includes(false)) {
+              toast.error(
+                `The address ${swapOfferToAccept.bidderTokens.address.getEllipsedAddress()} does not have this token anymore`,
+              );
+              return;
+            }
+
+            const verificationPromisesAskerTokens =
+              swapOfferToAccept?.askerTokens.tokens.map(
+                async (token: Token) =>
+                  await verifyTokenOwnership({
+                    user: {
+                      address: swapOfferToAccept.askerTokens.address,
+                      chainId: chainId as number,
+                    },
+                    token: {
+                      contractAddress: token.contract as `0x${string}`,
+                      tokenId: String(token.id),
+                      tokenType: token.tokenType,
+                    },
+                  }),
+              );
+
+            const verificationResultsAskerTokens = await Promise.all(
+              verificationPromisesAskerTokens,
+            );
+            if (verificationResultsAskerTokens.includes(false)) {
+              toast.error(
+                `The address ${swapOfferToAccept.askerTokens.address.getEllipsedAddress()} does not have this token anymore`,
+              );
+              return;
+            }
             transactionReceipt = await acceptSwap(
               swapOfferToAccept.id,
               authenticatedUserAddress,
