@@ -1,10 +1,10 @@
 //Recipient and value added to each query
 export const ALL_OFFERS_QUERY = `
-         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String, $network: BigInt ) {
+         query swapDatabases($orderBy: String!, $orderDirection: String!, $inputAddress: String, $after: String, $allowed: String, $network: BigInt, $expiry_gt: BigInt ) {
           swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
-             where: { AND: [{network: $network}, {OR: [{owner: $inputAddress}, {allowed: $allowed}]}]},
+             where: { AND: [{network: $network}, {status_not: ACCEPTED}, {status_not: CANCELED}, {expiry_gt: $expiry_gt}, {allowed_not: "0x00"} {OR: [{owner: $inputAddress}, {allowed: $allowed}]}]},
              limit: 20,
              after: $after
            ) {
@@ -33,7 +33,7 @@ export const CREATED_OFFERS_QUERY = `
           swapDatabases(
              orderBy: $orderBy,
              orderDirection: $orderDirection,
-             where: { owner: $inputAddress, status: CREATED, expiry_gt: $expiry_gt, network: $network },
+             where: { owner: $inputAddress, status: CREATED, expiry_gt: $expiry_gt, network: $network, allowed_not: "0x00" },
              limit: 20,
              after: $after
            ) {
