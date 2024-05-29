@@ -23,9 +23,12 @@ export const SelectAnyUserToSwap = () => {
   };
 
   return (
-    <div className="flex">
-      <label htmlFor="toggle" className="flex items-center cursor-pointer">
-        Any User
+    <div className="flex gap-1">
+      <label
+        htmlFor="toggle"
+        className="flex items-center cursor-pointer p-small-variant-black-3 dark:p-small-variant-light-2 contrast-50"
+      >
+        Public Swap
       </label>
       <input
         type="checkbox"

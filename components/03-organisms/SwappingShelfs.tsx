@@ -65,6 +65,7 @@ export const SwappingShelfs = () => {
     ) {
       setAuthenticatedUserTokensList([]);
       setSearchedUserTokensList([]);
+      setYourTokensList([]);
     }
   }),
     [authenticatedUserAddress, lastWalletConnected];
