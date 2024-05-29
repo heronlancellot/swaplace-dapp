@@ -65,7 +65,7 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
                             validatedAddressToSwap.address === ADDRESS_ZERO
                               ? "Any user"
                               : validatedAddressToSwap.getEllipsedAddress() +
-                                "offers"
+                                " offers"
                           } `
                         : "Use the search bar"
                     }`
