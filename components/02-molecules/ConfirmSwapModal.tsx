@@ -162,6 +162,7 @@ export const ConfirmSwapModal = ({
               verificationPromisesBidderTokens,
             );
             if (verificationResultsBidderTokens.includes(false)) {
+              updateSwapStep(ButtonClickPossibilities.PREVIOUS_STEP);
               toast.error(
                 `The address ${swapOfferToAccept.bidderTokens.address.getEllipsedAddress()} does not have this token anymore`,
               );
