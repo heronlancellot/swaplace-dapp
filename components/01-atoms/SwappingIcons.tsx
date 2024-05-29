@@ -65,7 +65,6 @@ export const SwappingIcons = () => {
       name: "Leaderboard",
       href: "/leaderboard",
       icon: LeaderboardIcon,
-      disabled: true,
     },
     // {
     //   id: SwappingIconsID.CHAT,
