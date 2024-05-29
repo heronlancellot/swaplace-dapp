@@ -1,4 +1,5 @@
 import { ForWhom } from "../03-organisms";
+import { SelectAnyUserToSwap } from "../01-atoms/SelectAnyUserToSwap";
 import { ENSAvatar, ENSAvatarSize, PersonIcon } from "@/components/01-atoms";
 import { TokenCardStyleType, TokensList } from "@/components/02-molecules";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
@@ -9,6 +10,7 @@ import { useContext } from "react";
 
 export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
   const {
+    inputAddress,
     validatedAddressToSwap,
     authenticatedUserTokensList,
     searchedUserTokensList,
@@ -61,7 +63,7 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
                         : validatedAddressToSwap
                         ? `${
                             validatedAddressToSwap.address === ADDRESS_ZERO
-                              ? "Any User"
+                              ? "Any user"
                               : validatedAddressToSwap.getEllipsedAddress() +
                                 "offers"
                           } `
@@ -81,6 +83,9 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
               </p>
             </div>
           </div>
+          {variant === ForWhom.Their && !inputAddress && (
+            <SelectAnyUserToSwap />
+          )}
           {(variant === ForWhom.Their && !validatedAddressToSwap) ||
           (variant === ForWhom.Yours && !authenticatedUserAddress) ? null : (
             <div className="contrast-50">
