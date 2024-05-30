@@ -7,9 +7,8 @@ import cc from "classcat";
 
 export const StatusOffers = ({ variant }: { variant: FilterVariant }) => {
   const OffersBody = () => {
-    const [offerIsActive, setOfferIsActive] = useState<number>(0);
+    const [offerIsActive, setOfferIsActive] = useState<number>(1);
     const { setOffersFilter, fetchNextPage } = useContext(OffersContext);
-
     const { inView } = useInView();
 
     useEffect(() => {
@@ -17,6 +16,12 @@ export const StatusOffers = ({ variant }: { variant: FilterVariant }) => {
         fetchNextPage();
       }
     }, [fetchNextPage, inView]);
+
+    useEffect(() => {
+      if (offerIsActive === 1) {
+        setOffersFilter(PonderFilter.CREATED);
+      }
+    }, []);
 
     const handleFilterClick = (filterOption: PonderFilter, index: number) => {
       setOfferIsActive(index);
@@ -61,6 +66,7 @@ export const StatusOffers = ({ variant }: { variant: FilterVariant }) => {
               ])}
               key={index}
               onClick={() => handleFilterClick(filter, index)}
+              value={PonderFilter.ALL_OFFERS}
             >
               <div
                 className={cc([
