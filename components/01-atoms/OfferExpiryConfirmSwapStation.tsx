@@ -1,14 +1,17 @@
-import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
+import { SwapContext } from "@/lib/client/contexts";
 import { useContext } from "react";
 
-export const OfferExpiryConfirmSwapMarketplace = () => {
-  const { swapOfferToAccept } = useContext(OffersContextMarketplace);
+/**
+ * OfferExpiryConfirmSwap copy component
+ * This componente use the SwapContext to get the timeDate value
+ */
+export const OfferExpiryConfirmSwapStation = () => {
+  const { timeDate } = useContext(SwapContext);
 
   let formattedSwapExpiryDate = null;
   let isDateValid = true;
 
-  if (!swapOfferToAccept) return;
-  const swapExpiryDate = new Date(Number(swapOfferToAccept?.expiryDate) * 1000);
+  const swapExpiryDate = new Date(Number(timeDate) * 1000);
 
   if (isNaN(swapExpiryDate.getTime())) {
     isDateValid = false;
@@ -20,8 +23,7 @@ export const OfferExpiryConfirmSwapMarketplace = () => {
 
   formattedSwapExpiryDate = isDateValid ? `${day} ${month} ${year}` : null;
   // 31 Dec 1969 means the timeDate is equals 0n
-  if (swapOfferToAccept.expiryDate === 0n)
-    formattedSwapExpiryDate = "dd/mm/yyyy";
+  if (timeDate === 0n) formattedSwapExpiryDate = "dd/mm/yyyy";
   return (
     <div className="flex justify-between items-center self-stretch px-3 py-2 h-10 border rounded-lg border-solid dark:border-[#353836] border-[#353836] dark:bg-[#282B29] bg-[#DDF23D]">
       <p className="text-sm font-onest font-normal dark:text-[#A3A9A5] text-[#505150]">

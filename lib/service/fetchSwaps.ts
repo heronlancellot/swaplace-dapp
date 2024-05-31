@@ -54,6 +54,7 @@ export const fetchSwaps = async ({
         inputAddress: userAddress,
         after: after,
         allowed: userAddress,
+        expiry_gt: currentUnixTimeSeconds,
       };
       break;
     case PonderFilter.CREATED:

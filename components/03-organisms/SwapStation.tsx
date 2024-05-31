@@ -1,4 +1,3 @@
-import { SelectAnyUserToSwap } from "../01-atoms/SelectAnyUserToSwap";
 import {
   PaperPlane,
   SwapExpireTime,
@@ -95,7 +94,6 @@ export const SwapStation = () => {
           <h3 className="dark:title-h3-normal-dark title-h3-normal mb-7 contrast-50">
             Swap Station
           </h3>
-          <SelectAnyUserToSwap />
           <SwapExpireTime />
         </div>
         <div className="flex flex-col gap-2 relative">

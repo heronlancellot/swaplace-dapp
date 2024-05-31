@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { OfferExpiryConfirmSwapStation } from "../01-atoms/OfferExpiryConfirmSwapStation";
 import { verifyTokenOwnership } from "@/lib/service/verifyTokenOwnershipAndParseTokenData";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
@@ -161,6 +162,7 @@ export const ConfirmSwapModal = ({
               verificationPromisesBidderTokens,
             );
             if (verificationResultsBidderTokens.includes(false)) {
+              updateSwapStep(ButtonClickPossibilities.PREVIOUS_STEP);
               toast.error(
                 `The address ${swapOfferToAccept.bidderTokens.address.getEllipsedAddress()} does not have this token anymore`,
               );
@@ -280,7 +282,11 @@ export const ConfirmSwapModal = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.ACCEPT_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap />
+            {swapModalAction === SwapModalAction.CREATE_SWAP ? (
+              <OfferExpiryConfirmSwapStation />
+            ) : (
+              <OfferExpiryConfirmSwap />
+            )}
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
@@ -316,7 +322,11 @@ export const ConfirmSwapModal = ({
         }
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap />
+            {swapModalAction === SwapModalAction.CREATE_SWAP ? (
+              <OfferExpiryConfirmSwapStation />
+            ) : (
+              <OfferExpiryConfirmSwap />
+            )}
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
@@ -338,7 +348,11 @@ export const ConfirmSwapModal = ({
         text={ModalTextContent[swapModalAction][SwapModalSteps.SUCCESSFUL_SWAP]}
         body={
           <div className="flex flex-col gap-2 flex-grow">
-            <OfferExpiryConfirmSwap />
+            {swapModalAction === SwapModalAction.CREATE_SWAP ? (
+              <OfferExpiryConfirmSwapStation />
+            ) : (
+              <OfferExpiryConfirmSwap />
+            )}{" "}
             <CreateTokenOffer swapModalAction={swapModalAction} />
           </div>
         }
