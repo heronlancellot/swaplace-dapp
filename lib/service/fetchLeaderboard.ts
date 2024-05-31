@@ -5,6 +5,11 @@ import { SCOREBOARD_QUERY } from "../client/scoreboard-queries";
 import axios from "axios";
 import toast from "react-hot-toast";
 
+export interface LeaderboardDataResponse {
+  profileData: RawLeaderboardDataInterface[];
+  pageInfo: PageInfo;
+}
+
 export const fetchLeaderboard = async ({
   pageParam,
   userAddress,
@@ -13,21 +18,7 @@ export const fetchLeaderboard = async ({
   pageParam: string | null;
   userAddress: `0x${string}` | undefined;
   chainId: number;
-}) => {
-  if (!userAddress) throw new Error("User address is not defined");
-
-  // {
-  //           "totalScore": "130",
-  //           "ensName": "",
-  //           "acceptSwapCount": "1",
-  //           "cancelSwapCount": "0",
-  //           "createSwapCount": "3",
-  //           "id": "0x00000000000d86e4837ba41dacde4b8713d5ccac",
-  //           "totalTransactionCount": "4",
-  //           "firstInteractionDate": "5734777",
-  //           "lastInteractionDate": "5738563"
-  //         },
-
+}): Promise<LeaderboardDataResponse> => {
   const after = pageParam || null;
   const query = SCOREBOARD_QUERY;
   const variables = {
@@ -54,6 +45,7 @@ export const fetchLeaderboard = async ({
       { query, variables },
       { headers },
     );
+
     if (response.data && response.data.data) {
       const items = response.data.data.profileDatabases
         .items as RawLeaderboardDataInterface[];
@@ -64,10 +56,10 @@ export const fetchLeaderboard = async ({
         pageInfo,
       };
     } else {
-      throw new Error("Failed to fetch swaps from Subgraph");
+      throw new Error("Failed to fetch LEADERBOARD");
     }
   } catch (error) {
-    toast.error("Failed to fetch swaps from Subgraph. Please contact the team");
-    throw new Error("Failed to fetch swaps from Subgraph");
+    toast.error("Failed to fetch LEADERBOARD");
+    throw new Error("Failed to fetch LEADERBOARD");
   }
 };

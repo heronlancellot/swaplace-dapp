@@ -2,13 +2,74 @@ import {
   LeaderboardRankingIcon,
   Ranking,
 } from "./icons/LeaderboardRankingIcon";
+import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
+import {
+  LeaderboardDataResponse,
+  fetchLeaderboard,
+} from "@/lib/service/fetchLeaderboard";
+import { useEffect, useState } from "react";
+import { useNetwork } from "wagmi";
+
+interface LeaderboardData {
+  Rank: number;
+  Address: string;
+  Points: bigint;
+}
+
+enum Leaderboard {
+  Rank = "Rank",
+  Address = "Address",
+  Points = "Points",
+}
 
 export const LeaderboardTable = () => {
-  enum Leaderboard {
-    Rank = "Rank",
-    Address = "Address",
-    Points = "Points",
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardData[]>([]);
+  const { authenticatedUserAddress } = useAuthenticatedUser();
+  const userAddress = authenticatedUserAddress?.address;
+  const { chain } = useNetwork();
+
+  let chainId: number;
+
+  if (typeof chain?.id !== "undefined") {
+    chainId = chain?.id;
   }
+
+  if (typeof chain?.id !== "undefined") {
+    chainId = chain?.id;
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [leaderboardData]);
+
+  const parseLeaderboardData = (
+    data: LeaderboardDataResponse,
+  ): LeaderboardData[] => {
+    const leaderboardDataResponse: LeaderboardData[] = data.profileData.map(
+      (data, index) => {
+        return {
+          Rank: index + 1,
+          Address: data.id,
+          Points: data.totalScore,
+        };
+      },
+    );
+    return leaderboardDataResponse;
+  };
+
+  const fetchData = async () => {
+    try {
+      const data = await fetchLeaderboard({
+        pageParam: "",
+        userAddress: userAddress,
+        chainId: chainId,
+      });
+      const parsedLedboardData = parseLeaderboardData(data);
+      setLeaderboardData(parsedLedboardData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const LeaderboardData: Leaderboard[] = [
     Leaderboard.Rank,
@@ -16,28 +77,11 @@ export const LeaderboardTable = () => {
     Leaderboard.Points,
   ];
 
-  const dataBody: typeof BodyData = [
-    {
-      [Leaderboard.Rank]: "1",
-      [Leaderboard.Address]: "0x1234567890",
-      [Leaderboard.Points]: "100",
-    },
-    {
-      [Leaderboard.Rank]: "2",
-      [Leaderboard.Address]: "0x0987654321",
-      [Leaderboard.Points]: "90",
-    },
-    {
-      [Leaderboard.Rank]: "3",
-      [Leaderboard.Address]: "0x5678901234",
-      [Leaderboard.Points]: "80",
-    },
-    {
-      [Leaderboard.Rank]: "4",
-      [Leaderboard.Address]: "0x5678901234",
-      [Leaderboard.Points]: "80",
-    },
-  ];
+  const dataBody: typeof BodyData = leaderboardData.map((data) => ({
+    [Leaderboard.Rank]: String(data.Rank),
+    [Leaderboard.Address]: String(data.Address),
+    [Leaderboard.Points]: String(data.Points),
+  }));
 
   const BodyData: Record<Leaderboard, string | React.JSX.Element>[] = dataBody;
 
