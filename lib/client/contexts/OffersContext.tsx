@@ -13,6 +13,7 @@ import {
 } from "@/lib/client/offers-utils";
 import { SwapContext } from "@/lib/client/contexts";
 import { fetchSwaps } from "@/lib/service/fetchSwaps";
+import useDebounce from "@/lib/client/hooks/useDebounce";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { Dispatch, useEffect, useState, useContext } from "react";
 import { useNetwork } from "wagmi";
@@ -117,6 +118,8 @@ export const OffersContextProvider = ({ children }: any) => {
     PonderFilter.ALL_OFFERS,
   );
 
+  const debouncedOffersFilter: PonderFilter = useDebounce(offersFilter, 300); // Delay time between queries
+
   const [tokensList, setTokensList] = useState<PopulatedSwapOfferCard[]>([
     DEFAULT_SWAP_OFFER,
   ]);
@@ -145,14 +148,14 @@ export const OffersContextProvider = ({ children }: any) => {
       queryKey: [
         "PonderQuerySwaps",
         authenticatedUserAddress,
-        offersFilter,
+        debouncedOffersFilter,
         destinyChain,
       ],
       queryFn: async ({ pageParam }: { pageParam: string | null }) =>
         await fetchSwaps({
           pageParam: pageParam,
           userAddress: userAddress,
-          offersFilter: offersFilter,
+          offersFilter: debouncedOffersFilter,
           chainId: chainId,
         }),
       initialPageParam: null,
@@ -165,7 +168,7 @@ export const OffersContextProvider = ({ children }: any) => {
           swapOffers: page.swapOffers.map((swap) => {
             return {
               id: BigInt(swap.id),
-              status: offersFilter,
+              status: debouncedOffersFilter,
               expiryDate: swap.expiryDate,
               bidderTokens: {
                 address: swap.bidderTokens.address,
@@ -184,7 +187,7 @@ export const OffersContextProvider = ({ children }: any) => {
 
   useEffect(() => {
     refetch();
-  }, [offersFilter, refetch]);
+  }, [debouncedOffersFilter, refetch]);
 
   const [hasNextPage, setHasNextPage] = useState(false);
 
