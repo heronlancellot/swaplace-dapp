@@ -12,6 +12,7 @@ export const SwapExpireTime = () => {
       const dateTimestampBigInt = BigInt(dateTimestamp / 1000); // Transform the timestamp to seconds to send to contract
       setTimeDate(dateTimestampBigInt);
     } catch (error) {
+      setTimeDate(0n);
       console.error("error", error);
     }
   };
