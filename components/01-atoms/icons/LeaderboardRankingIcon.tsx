@@ -40,9 +40,9 @@ export const LeaderboardRankingIcon = ({
         <text
           x="50%"
           y="50%"
-          text-anchor="middle"
-          dominant-baseline="middle"
-          font-size="14"
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fontSize="14"
           fill="black"
         >
           {Ranking.FIRST}
@@ -55,9 +55,9 @@ export const LeaderboardRankingIcon = ({
             width="38"
             height="38"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feColorMatrix
               in="SourceAlpha"
               type="matrix"
@@ -110,9 +110,9 @@ export const LeaderboardRankingIcon = ({
         <text
           x="50%"
           y="50%"
-          text-anchor="middle"
-          dominant-baseline="middle"
-          font-size="14"
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fontSize="14"
           fill="black"
         >
           {Ranking.SECOND}
@@ -125,9 +125,9 @@ export const LeaderboardRankingIcon = ({
             width="38"
             height="38"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feColorMatrix
               in="SourceAlpha"
               type="matrix"
@@ -180,9 +180,9 @@ export const LeaderboardRankingIcon = ({
         <text
           x="50%"
           y="50%"
-          text-anchor="middle"
-          dominant-baseline="middle"
-          font-size="14"
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fontSize="14"
           fill="black"
         >
           {Ranking.THIRD}
@@ -195,9 +195,9 @@ export const LeaderboardRankingIcon = ({
             width="38"
             height="38"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feColorMatrix
               in="SourceAlpha"
               type="matrix"
