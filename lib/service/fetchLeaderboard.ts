@@ -1,6 +1,7 @@
 import { PageInfo } from "../client/offers-utils";
 
 import { RawLeaderboardDataInterface } from "../client/ponder-utils";
+import { SCOREBOARD_QUERY } from "../client/scoreboard-queries";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -27,10 +28,14 @@ export const fetchLeaderboard = async ({
   //           "lastInteractionDate": "5738563"
   //         },
 
-  console.log("ChainId: ", chainId);
   const after = pageParam || null;
-  const query = "";
-  const variables = {};
+  const query = SCOREBOARD_QUERY;
+  const variables = {
+    orderDirection: "desc",
+    inputAddress: userAddress,
+    after: after,
+    network: chainId,
+  };
 
   const endpoint = process.env.NEXT_PUBLIC_PONDER_ENDPOINT;
   const headers = {
