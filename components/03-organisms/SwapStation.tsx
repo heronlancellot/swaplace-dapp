@@ -28,9 +28,8 @@ export const SwapStation = () => {
 
   if (typeof chain?.id != "undefined" && chain?.id) {
     chainId = chain?.id;
-  } else {
-    throw new Error("Chain ID is undefined");
   }
+
   const {
     authenticatedUserTokensList,
     searchedUserTokensList,
