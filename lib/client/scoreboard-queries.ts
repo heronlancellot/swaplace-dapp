@@ -1,7 +1,7 @@
 export const SCOREBOARD_QUERY = `
-         query ProfileDatabase($orderDirection: String!, $after: String, $network: BigInt) {
-          ProfileDatabase(
-             orderBy: totalScore,
+         query profileDatabases($orderDirection: String!, $after: String, $network: BigInt) {
+          profileDatabases(
+             orderBy: "totalScore",
              orderDirection: $orderDirection,
              where: {network: $network}, 
              limit: 100,
