@@ -11,7 +11,7 @@ import { useInfiniteQuery, useNetwork } from "wagmi";
 interface LeaderboardContextProps {
   fetchNextPage: () => void;
   isFetchingNextPage: boolean;
-  // hasNextPage: boolean;
+  hasNextPage: boolean;
   // isLoadingOffersQuery: boolean;
   // isError: boolean;
   data:
@@ -81,11 +81,20 @@ export const LeaderboardContextProvider = ({ children }: any) => {
     enabled: !!authenticatedUserAddress,
   });
 
+  const [hasNextPage, setHasNextPage] = useState(false);
+
+  useEffect(() => {
+    if (data) {
+      setHasNextPage(data.pages[data.pages.length - 1].pageInfo.hasNextPage);
+    }
+  }, [data]);
+
   useEffect(() => {
     setLeaderboardData({
       fetchNextPage,
       isFetchingNextPage,
       data,
+      hasNextPage,
     });
   }, [data]);
 
@@ -95,6 +104,7 @@ export const LeaderboardContextProvider = ({ children }: any) => {
       fetchNextPage,
       isFetchingNextPage,
       data,
+      hasNextPage,
     });
   return (
     <LeaderboardContext.Provider value={leaderboardData}>
@@ -107,4 +117,5 @@ export const LeaderboardContext = createContext<LeaderboardContextProps>({
   fetchNextPage: () => {},
   isFetchingNextPage: false,
   data: [DEFAULT_DATA_INFINITE_QUERY.pages],
+  hasNextPage: false,
 });
