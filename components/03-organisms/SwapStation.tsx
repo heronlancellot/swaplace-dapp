@@ -13,37 +13,51 @@ import {
 import { ForWhom } from "@/components/03-organisms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { SwapContext } from "@/lib/client/contexts";
+import { getBlockchainTimestamp } from "@/lib/client/blockchain-utils";
 import { useContext, useEffect, useState } from "react";
 import cc from "classcat";
 import { toast } from "react-hot-toast";
+import { useNetwork } from "wagmi";
 
 export const SwapStation = () => {
   const [isValidSwap, setIsValidSwap] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
+  const { chain } = useNetwork();
+
+  let chainId: number;
+
+  if (typeof chain?.id != "undefined" && chain?.id) {
+    chainId = chain?.id;
+  }
 
   const {
     authenticatedUserTokensList,
     searchedUserTokensList,
     validatedAddressToSwap,
     inputAddress,
+    timeDate,
   } = useContext(SwapContext);
 
   useEffect(() => {
     setIsValidSwap(
       !!authenticatedUserTokensList.length &&
         !!searchedUserTokensList.length &&
-        !!validatedAddressToSwap,
+        !!validatedAddressToSwap &&
+        timeDate > 0,
     );
   }, [
     authenticatedUserTokensList,
     searchedUserTokensList,
     validatedAddressToSwap,
+    timeDate,
   ]);
 
   const [openConfirmationModal, setOpenConfirmationModal] =
     useState<boolean>(false);
 
-  const validateSwapSending = () => {
+  const validateSwapSending = async () => {
+    const timestamp = await getBlockchainTimestamp(chainId);
+
     if (!isValidSwap) {
       if (!authenticatedUserAddress) {
         toast.error("Please connect your wallet to begin");
@@ -80,6 +94,11 @@ export const SwapStation = () => {
         toast.error(
           "You must select at least one token from the targeted swap address",
         );
+        return;
+      }
+
+      if (timeDate < timestamp) {
+        toast.error("Select a valid date to your swap.");
         return;
       }
     } else {
