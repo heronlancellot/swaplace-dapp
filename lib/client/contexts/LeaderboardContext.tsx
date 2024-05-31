@@ -3,6 +3,7 @@ import { SwapContext } from "./SwapContext";
 import { useAuthenticatedUser } from "../hooks/useAuthenticatedUser";
 import { RawLeaderboardDataInterface } from "../ponder-utils";
 import { PageInfo } from "../offers-utils";
+import { ADDRESS_ZERO } from "../constants";
 import { fetchLeaderboard } from "@/lib/service/fetchLeaderboard";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useInfiniteQuery, useNetwork } from "wagmi";
@@ -21,10 +22,31 @@ interface LeaderboardContextProps {
     | undefined;
 }
 
-// {
-//           "totalScore": "130",
-//           "id": "0x00000000000d86e4837ba41dacde4b8713d5ccac",
-//         },
+export interface InfiniteQueryData {
+  pages: {
+    profileData: RawLeaderboardDataInterface[];
+    pageInfo: PageInfo;
+  };
+}
+
+const DEFAULT_PAGE_INFO: PageInfo = {
+  hasNextPage: false,
+  endCursor: null,
+};
+
+const DEFAULT_PROFILE_DATA: RawLeaderboardDataInterface[] = [
+  {
+    id: ADDRESS_ZERO,
+    totalScore: BigInt(1),
+  },
+];
+
+const DEFAULT_DATA_INFINITE_QUERY: InfiniteQueryData = {
+  pages: {
+    profileData: DEFAULT_PROFILE_DATA,
+    pageInfo: DEFAULT_PAGE_INFO,
+  },
+};
 
 export const LeaderboardContextProvider = ({ children }: any) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
@@ -57,18 +79,6 @@ export const LeaderboardContextProvider = ({ children }: any) => {
     staleTime: Infinity,
     getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
     enabled: !!authenticatedUserAddress,
-    select: (data) => {
-      return data.pages.map((page) => ({
-        leaderboard: page.leaderboard.map(
-          (leaderboardInitialData: RawLeaderboardDataInterface) => {
-            return {
-              ...leaderboardInitialData,
-            };
-          },
-        ),
-        pageInfo: page.pageInfo,
-      }));
-    },
   });
 
   useEffect(() => {
@@ -77,7 +87,7 @@ export const LeaderboardContextProvider = ({ children }: any) => {
       isFetchingNextPage,
       data,
     });
-  }, []);
+  }, [data]);
 
   // Exportable data
   const [leaderboardData, setLeaderboardData] =
@@ -96,5 +106,5 @@ export const LeaderboardContextProvider = ({ children }: any) => {
 export const LeaderboardContext = createContext<LeaderboardContextProps>({
   fetchNextPage: () => {},
   isFetchingNextPage: false,
-  data,
+  data: [DEFAULT_DATA_INFINITE_QUERY.pages],
 });

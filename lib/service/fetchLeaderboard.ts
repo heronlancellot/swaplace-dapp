@@ -53,36 +53,9 @@ export const fetchLeaderboard = async ({
       const items = response.data.data.profileDatabases
         .items as RawLeaderboardDataInterface[];
       const pageInfo = response.data.data.profileDatabases.pageInfo as PageInfo;
-      const processedItems: RawLeaderboardDataInterface[] = items.map(
-        (obj: RawLeaderboardDataInterface) => {
-          return {
-            ...obj,
-          };
-        },
-      );
-      console.log("processedItems", processedItems);
-
-      // const itemsArrayAsSwapOffers: FormattedSwapOfferAssets[] =
-      //   processedItems.map((item) => {
-      //     return {
-      //       id: item.swapId,
-      //       status: item.status,
-      //       expiryDate: item.expiry,
-      //       bidderAssets: {
-      //         address: new EthereumAddress(item.owner),
-      //         tokens: item.bid,
-      //       },
-      //       askerAssets: {
-      //         address: isAddress(item.allowed)
-      //           ? new EthereumAddress(item.allowed)
-      //           : new EthereumAddress(ADDRESS_ZERO),
-      //         tokens: item.ask,
-      //       },
-      //     };
-      //   });
 
       return {
-        leaderboard: processedItems,
+        profileData: items,
         pageInfo,
       };
     } else {
