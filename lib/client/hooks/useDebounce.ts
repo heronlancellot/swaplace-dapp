@@ -1,10 +1,10 @@
 import { PonderFilter } from "@/lib/client/contexts/OffersContext";
-import React from "react";
+import { useEffect, useState } from "react";
 
 export default function useDebounce(value: PonderFilter, delay = 500) {
-  const [debouncedValue, setDebouncedValue] = React.useState(value);
+  const [debouncedValue, setDebouncedValue] = useState<PonderFilter>(value);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handler: NodeJS.Timeout = setTimeout(() => {
       setDebouncedValue(value);
     }, delay);
