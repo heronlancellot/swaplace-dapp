@@ -10,8 +10,10 @@ import {
   fetchLeaderboard,
 } from "@/lib/service/fetchLeaderboard";
 import { Leaderboard, LeaderboardData } from "@/lib/client/leaderboard-utils";
+import { collapseAddress } from "@/lib/client/utils";
 import { useContext, useEffect } from "react";
 import { useNetwork } from "wagmi";
+import cc from "classcat";
 
 export const LeaderboardTable = () => {
   const { leaderboardData, setLeaderboardData } =
@@ -70,7 +72,7 @@ export const LeaderboardTable = () => {
 
   const dataBody: typeof BodyData = leaderboardData.map((data) => ({
     [Leaderboard.Rank]: String(data.Rank),
-    [Leaderboard.Address]: String(data.Address),
+    [Leaderboard.Address]: collapseAddress(String(data.Address)),
     [Leaderboard.Points]: String(data.Points),
   }));
 
@@ -88,12 +90,30 @@ export const LeaderboardTable = () => {
             ))}
           </tr>
         </thead>
-        <tbody className="">
+        <tbody className="items-center">
           {BodyData.map((data, rowIndex) => (
             <tr key={rowIndex}>
               {LeaderboardData.map((header, colIndex) => (
                 <td
-                  className="px-4 py-3 p-small-dark-variant-grey"
+                  className={cc([
+                    data[header] === Ranking.FIRST ||
+                    data[header] === Ranking.SECOND ||
+                    data[header] === Ranking.THIRD
+                      ? ""
+                      : "px-4 py-3 p-small-dark-variant-grey",
+                    data[header] === Ranking.FIRST ||
+                    data[header] === Ranking.SECOND ||
+                    data[header] === Ranking.THIRD
+                      ? cc([
+                          data[header] === Ranking.FIRST &&
+                            " p-small-dark-variant-grey",
+                          data[header] === Ranking.SECOND &&
+                            " p-small-dark-variant-grey",
+                          data[header] === Ranking.THIRD &&
+                            " p-small-dark-variant-grey",
+                        ])
+                      : "",
+                  ])}
                   key={colIndex}
                 >
                   {header === Leaderboard.Rank &&
