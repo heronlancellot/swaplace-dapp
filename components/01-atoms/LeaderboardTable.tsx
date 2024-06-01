@@ -1,33 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   LeaderboardRankingIcon,
   Ranking,
 } from "./icons/LeaderboardRankingIcon";
+import { LeaderboardContext } from "@/lib/client/contexts/LeaderboardContext";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   LeaderboardDataResponse,
   fetchLeaderboard,
 } from "@/lib/service/fetchLeaderboard";
-import { useEffect, useState } from "react";
+import { Leaderboard, LeaderboardData } from "@/lib/client/leaderboard-utils";
+import { useContext, useEffect } from "react";
 import { useNetwork } from "wagmi";
 
-interface LeaderboardData {
-  Rank: number;
-  Address: string;
-  Points: bigint;
-}
-
-enum Leaderboard {
-  Rank = "Rank",
-  Address = "Address",
-  Points = "Points",
-}
-
 export const LeaderboardTable = () => {
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardData[]>([]);
+  const { leaderboardData, setLeaderboardData } =
+    useContext(LeaderboardContext);
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const userAddress = authenticatedUserAddress?.address;
   const { chain } = useNetwork();
-
   let chainId: number;
 
   if (typeof chain?.id !== "undefined") {
@@ -40,7 +31,7 @@ export const LeaderboardTable = () => {
 
   useEffect(() => {
     fetchData();
-  }, [leaderboardData]);
+  }, [authenticatedUserAddress]);
 
   const parseLeaderboardData = (
     data: LeaderboardDataResponse,
