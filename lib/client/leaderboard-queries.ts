@@ -1,4 +1,4 @@
-export const SCOREBOARD_QUERY = `
+export const LEADERBOARD_QUERY = `
          query profileDatabases($orderDirection: String!, $after: String, $network: BigInt) {
           profileDatabases(
              orderBy: "totalScore",

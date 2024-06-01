@@ -1,9 +1,7 @@
 import { PageInfo } from "../client/offers-utils";
-
-import { RawLeaderboardDataInterface } from "../client/ponder-utils";
-import { SCOREBOARD_QUERY } from "../client/scoreboard-queries";
+import { RawLeaderboardDataInterface } from "../client/leaderboard-utils";
+import { LEADERBOARD_QUERY } from "../client/leaderboard-queries";
 import axios from "axios";
-import toast from "react-hot-toast";
 
 export interface LeaderboardDataResponse {
   profileData: RawLeaderboardDataInterface[];
@@ -20,7 +18,7 @@ export const fetchLeaderboard = async ({
   chainId: number;
 }): Promise<LeaderboardDataResponse> => {
   const after = pageParam || null;
-  const query = SCOREBOARD_QUERY;
+  const query = LEADERBOARD_QUERY;
   const variables = {
     orderDirection: "desc",
     inputAddress: userAddress,
@@ -56,10 +54,9 @@ export const fetchLeaderboard = async ({
         pageInfo,
       };
     } else {
-      throw new Error("Failed to fetch LEADERBOARD");
+      throw new Error("Failed to fetch data from Leaderboard.");
     }
   } catch (error) {
-    toast.error("Failed to fetch LEADERBOARD");
-    throw new Error("Failed to fetch LEADERBOARD");
+    throw new Error("Failed to fetch data from Leaderboard.");
   }
 };

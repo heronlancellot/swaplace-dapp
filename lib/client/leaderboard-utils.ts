@@ -16,3 +16,15 @@ export interface RawLeaderboardDataInterface {
   id: string;
   totalScore: bigint;
 }
+
+export interface LeaderboardData {
+  Rank: number;
+  Address: string;
+  Points: bigint;
+}
+
+export enum Leaderboard {
+  Rank = "Rank",
+  Address = "Address",
+  Points = "Points",
+}
