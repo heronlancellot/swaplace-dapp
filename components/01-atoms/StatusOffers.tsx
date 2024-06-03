@@ -2,20 +2,13 @@ import { FilterVariant } from "../02-molecules";
 import { OffersContext, PonderFilter } from "@/lib/client/contexts";
 import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
 import { useState, useContext, useEffect } from "react";
-import { useInView } from "react-intersection-observer";
+
 import cc from "classcat";
 
 export const StatusOffers = ({ variant }: { variant: FilterVariant }) => {
   const OffersBody = () => {
     const [offerIsActive, setOfferIsActive] = useState<number>(1);
-    const { setOffersFilter, fetchNextPage } = useContext(OffersContext);
-    const { inView } = useInView();
-
-    useEffect(() => {
-      if (inView) {
-        fetchNextPage();
-      }
-    }, [fetchNextPage, inView]);
+    const { setOffersFilter } = useContext(OffersContext);
 
     useEffect(() => {
       if (offerIsActive === 1) {
