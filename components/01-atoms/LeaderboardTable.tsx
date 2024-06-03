@@ -76,11 +76,18 @@ export const LeaderboardTable = () => {
 
   return (
     <div className="w-full border border-[#282B29] rounded-lg bg-[#282B29]">
-      <table className="w-full text-left table-auto ">
+      <table className="w-full text-left table-fixed ">
         <thead className="border-b border-[#353836]">
           <tr>
             {LeaderboardData.map((header, index) => (
-              <th className="px-4 py-3 p-small-dark-variant-grey" key={index}>
+              <th
+                className={cc([
+                  header === Leaderboard.Points && "text-end",
+                  header === Leaderboard.Rank && "flex justify-start",
+                  "px-4 py-3 p-small-dark-variant-grey",
+                ])}
+                key={index}
+              >
                 {header}
               </th>
             ))}
@@ -95,20 +102,24 @@ export const LeaderboardTable = () => {
                     data[header] === Ranking.FIRST ||
                     data[header] === Ranking.SECOND ||
                     data[header] === Ranking.THIRD
-                      ? ""
+                      ? "flex items-start justify-start px-3"
                       : "px-4 py-3 p-small-dark-variant-grey",
                     data[header] === Ranking.FIRST ||
                     data[header] === Ranking.SECOND ||
                     data[header] === Ranking.THIRD
                       ? cc([
                           data[header] === Ranking.FIRST &&
-                            " p-small-dark-variant-grey",
+                            "p-small-dark-variant-grey",
                           data[header] === Ranking.SECOND &&
-                            " p-small-dark-variant-grey",
+                            "p-small-dark-variant-grey",
                           data[header] === Ranking.THIRD &&
-                            " p-small-dark-variant-grey",
+                            "p-small-dark-variant-grey",
                         ])
-                      : "",
+                      : header === Leaderboard.Rank &&
+                        data[header] !== Ranking.FIRST &&
+                        "text-start px-[26px]", // padding 26px to fill in the center. The SVG icon and path have different values.
+                    header === Leaderboard.Address && "text-start",
+                    header === Leaderboard.Points && "text-end",
                   ])}
                   key={colIndex}
                 >
@@ -116,7 +127,10 @@ export const LeaderboardTable = () => {
                   (data[header] === Ranking.FIRST ||
                     data[header] === Ranking.SECOND ||
                     data[header] === Ranking.THIRD) ? (
-                    <LeaderboardRankingIcon variant={data[header] as Ranking} />
+                    <LeaderboardRankingIcon
+                      props={{ className: "" }}
+                      variant={data[header] as Ranking}
+                    />
                   ) : (
                     data[header]
                   )}
