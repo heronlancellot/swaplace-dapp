@@ -18,3 +18,17 @@ export const LEADERBOARD_QUERY = `
            }
          }
        `;
+
+export const USER_RANKING_QUERY = `
+       query profileDatabases($network: BigInt, $inputAddress: String) {
+        profileDatabases(
+           where: {network: $network, owner: $inputAddress}, 
+           limit: 1,
+         ) {
+           items {
+             id
+             totalScore
+           }
+         }
+       }
+     `;
