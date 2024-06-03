@@ -74,7 +74,6 @@ export const LeaderboardTable = () => {
 
   const BodyData: Record<Leaderboard, string | React.JSX.Element>[] = dataBody;
 
-  // BodyData.map((data) => console.log(data));
   return (
     <div className="w-full border border-[#282B29] rounded-lg bg-[#282B29]">
       <table className="w-full text-left table-fixed ">
@@ -108,7 +107,7 @@ export const LeaderboardTable = () => {
                     data[header] === Ranking.SECOND ||
                     data[header] === Ranking.THIRD
                       ? "flex items-start justify-start px-3" // That padding will fill the center of the cell
-                      : "px-4 py-3 p-small-dark-variant-grey",
+                      : "px-4 py-3 p-small-dark",
                     data[header] === Ranking.FIRST ||
                     data[header] === Ranking.SECOND ||
                     data[header] === Ranking.THIRD
@@ -132,10 +131,7 @@ export const LeaderboardTable = () => {
                   (data[header] === Ranking.FIRST ||
                     data[header] === Ranking.SECOND ||
                     data[header] === Ranking.THIRD) ? (
-                    <LeaderboardRankingIcon
-                      props={{ className: "" }}
-                      variant={data[header] as Ranking}
-                    />
+                    <LeaderboardRankingIcon variant={data[header] as Ranking} />
                   ) : (
                     data[header]
                   )}
