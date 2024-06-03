@@ -10,7 +10,6 @@ export interface LeaderboardDataResponse {
 
 export const fetchLeaderboard = async ({
   pageParam,
-  userAddress,
   chainId,
 }: {
   pageParam: string | null;
@@ -21,7 +20,6 @@ export const fetchLeaderboard = async ({
   const query = LEADERBOARD_QUERY;
   const variables = {
     orderDirection: "desc",
-    inputAddress: userAddress,
     after: after,
     network: chainId,
   };

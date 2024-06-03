@@ -27,10 +27,6 @@ export const LeaderboardTable = () => {
     chainId = chain?.id;
   }
 
-  if (typeof chain?.id !== "undefined") {
-    chainId = chain?.id;
-  }
-
   useEffect(() => {
     fetchData();
   }, [authenticatedUserAddress]);
@@ -117,14 +113,10 @@ export const LeaderboardTable = () => {
                   key={colIndex}
                 >
                   {header === Leaderboard.Rank &&
-                  data[header] === Ranking.FIRST ? (
-                    <LeaderboardRankingIcon variant={Ranking.FIRST} />
-                  ) : header === Leaderboard.Rank &&
-                    data[header] === Ranking.SECOND ? (
-                    <LeaderboardRankingIcon variant={Ranking.SECOND} />
-                  ) : header === Leaderboard.Rank &&
-                    data[header] === Ranking.THIRD ? (
-                    <LeaderboardRankingIcon variant={Ranking.THIRD} />
+                  (data[header] === Ranking.FIRST ||
+                    data[header] === Ranking.SECOND ||
+                    data[header] === Ranking.THIRD) ? (
+                    <LeaderboardRankingIcon variant={data[header] as Ranking} />
                   ) : (
                     data[header]
                   )}
