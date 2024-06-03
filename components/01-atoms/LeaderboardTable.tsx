@@ -74,6 +74,7 @@ export const LeaderboardTable = () => {
 
   const BodyData: Record<Leaderboard, string | React.JSX.Element>[] = dataBody;
 
+  // BodyData.map((data) => console.log(data));
   return (
     <div className="w-full border border-[#282B29] rounded-lg bg-[#282B29]">
       <table className="w-full text-left table-fixed ">
@@ -99,10 +100,14 @@ export const LeaderboardTable = () => {
               {LeaderboardData.map((header, colIndex) => (
                 <td
                   className={cc([
+                    data.Rank === Ranking.FIRST && "!text-[#AABE13]",
+                    data.Rank === Ranking.SECOND && "!text-[#A3A9A5]",
+                    data.Rank === Ranking.THIRD && "!text-[#DE7B30]",
+
                     data[header] === Ranking.FIRST ||
                     data[header] === Ranking.SECOND ||
                     data[header] === Ranking.THIRD
-                      ? "flex items-start justify-start px-3"
+                      ? "flex items-start justify-start px-3" // That padding will fill the center of the cell
                       : "px-4 py-3 p-small-dark-variant-grey",
                     data[header] === Ranking.FIRST ||
                     data[header] === Ranking.SECOND ||
