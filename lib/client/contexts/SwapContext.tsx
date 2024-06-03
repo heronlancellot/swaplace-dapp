@@ -53,6 +53,9 @@ interface SwapContextProps {
   setEtherValue: (etherValue: bigint) => void;
 
   clearSwapData: () => void;
+
+  setAnyUserToSwap: (isChecked: boolean) => void;
+  anyUserToSwap: boolean;
 }
 
 export const SwapContextProvider = ({ children }: any) => {
@@ -76,6 +79,7 @@ export const SwapContextProvider = ({ children }: any) => {
   const [currentSwapModalStep, setCurrentSwapModalStep] =
     useState<SwapModalSteps>(SwapModalSteps.APPROVE_TOKENS);
   const [approvedTokensCount, setApprovedTokensCount] = useState(0);
+  const [anyUserToSwap, setAnyUserToSwap] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -150,6 +154,8 @@ export const SwapContextProvider = ({ children }: any) => {
       etherRecipient,
       setEtherValue,
       etherValue,
+      anyUserToSwap,
+      setAnyUserToSwap,
     });
   }, [
     lastWalletConnected,
@@ -162,6 +168,7 @@ export const SwapContextProvider = ({ children }: any) => {
     timeDate,
     approvedTokensCount,
     currentSwapModalStep,
+    anyUserToSwap,
   ]);
 
   const [swapData, setSwapData] = useState<SwapContextProps>({
@@ -190,6 +197,8 @@ export const SwapContextProvider = ({ children }: any) => {
     etherRecipient,
     setEtherValue,
     etherValue,
+    anyUserToSwap,
+    setAnyUserToSwap,
   });
 
   // This is a temporary measure while we don't turn the dApp into a SPA
@@ -229,4 +238,6 @@ export const SwapContext = React.createContext<SwapContextProps>({
   setEtherRecipient: () => {},
   etherValue: BigInt(0),
   setEtherValue: () => {},
+  setAnyUserToSwap: (isChecked: boolean) => {},
+  anyUserToSwap: false,
 });
