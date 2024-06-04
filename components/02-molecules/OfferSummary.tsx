@@ -10,7 +10,6 @@ import { useContext } from "react";
 
 export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
   const {
-    inputAddress,
     validatedAddressToSwap,
     authenticatedUserTokensList,
     searchedUserTokensList,
@@ -83,9 +82,7 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
               </p>
             </div>
           </div>
-          {variant === ForWhom.Their && !inputAddress && (
-            <SelectAnyUserToSwap />
-          )}
+          {variant === ForWhom.Their && <SelectAnyUserToSwap />}
           {(variant === ForWhom.Their && !validatedAddressToSwap) ||
           (variant === ForWhom.Yours && !authenticatedUserAddress) ? null : (
             <div className="contrast-50">

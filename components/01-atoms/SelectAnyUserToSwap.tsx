@@ -1,7 +1,7 @@
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { SwapContext } from "@/lib/client/contexts";
 import { EthereumAddress } from "@/lib/shared/types";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 /**
  * This component is a checkbox that allows the user to select any user to swap tokens with.
@@ -10,11 +10,11 @@ import { useContext, useState } from "react";
  *
  */
 export const SelectAnyUserToSwap = () => {
-  const [isChecked, setIsChecked] = useState(false);
-  const { setValidatedAddressToSwap } = useContext(SwapContext);
+  const { setValidatedAddressToSwap, setAnyUserToSwap, anyUserToSwap } =
+    useContext(SwapContext);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(event.target.checked);
+    setAnyUserToSwap(event.target.checked);
     if (event.target.checked) {
       setValidatedAddressToSwap(new EthereumAddress(ADDRESS_ZERO));
     } else {
@@ -33,7 +33,7 @@ export const SelectAnyUserToSwap = () => {
       <input
         type="checkbox"
         id="toggle"
-        checked={isChecked}
+        checked={anyUserToSwap}
         onChange={handleCheckboxChange}
       />
     </div>

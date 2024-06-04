@@ -28,6 +28,7 @@ export const SearchBar = () => {
     setInputAddress,
     setValidatedAddressToSwap,
     setUserJustValidatedInput,
+    setAnyUserToSwap,
   } = useContext(SwapContext);
 
   useEffect(() => {
@@ -64,6 +65,7 @@ export const SearchBar = () => {
     const _inputAddress = new EthereumAddress(searchedENSAddress);
     setValidatedAddressToSwap(_inputAddress);
     setUserJustValidatedInput(true);
+    setAnyUserToSwap(false);
     toast.success("Searching for address...");
   };
 
