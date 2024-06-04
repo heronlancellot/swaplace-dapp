@@ -1,3 +1,4 @@
+import { LeaderboardTable } from "../01-atoms/LeaderboardTable";
 import { TheHeader } from "@/components/02-molecules";
 
 export const LeaderboardSection = () => {
@@ -6,7 +7,7 @@ export const LeaderboardSection = () => {
       <TheHeader />
       <section className="flex items-center xl:px-[60px] xl:py-[32px] xl:flex-row flex-col">
         <div className="flex xl:flex-row flex-col h-full xl:w-[1098px] w-[95%] justify-between xl:items-start md:items-center">
-          <div>Leaderboard</div>
+          <LeaderboardTable />
         </div>
       </section>
     </div>

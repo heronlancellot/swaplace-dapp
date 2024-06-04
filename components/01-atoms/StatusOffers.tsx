@@ -2,21 +2,19 @@ import { FilterVariant } from "../02-molecules";
 import { OffersContext, PonderFilter } from "@/lib/client/contexts";
 import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
 import { useState, useContext, useEffect } from "react";
-import { useInView } from "react-intersection-observer";
+
 import cc from "classcat";
 
 export const StatusOffers = ({ variant }: { variant: FilterVariant }) => {
   const OffersBody = () => {
-    const [offerIsActive, setOfferIsActive] = useState<number>(0);
-    const { setOffersFilter, fetchNextPage } = useContext(OffersContext);
-
-    const { inView } = useInView();
+    const [offerIsActive, setOfferIsActive] = useState<number>(1);
+    const { setOffersFilter } = useContext(OffersContext);
 
     useEffect(() => {
-      if (inView) {
-        fetchNextPage();
+      if (offerIsActive === 1) {
+        setOffersFilter(PonderFilter.CREATED);
       }
-    }, [fetchNextPage, inView]);
+    }, []);
 
     const handleFilterClick = (filterOption: PonderFilter, index: number) => {
       setOfferIsActive(index);
@@ -61,6 +59,7 @@ export const StatusOffers = ({ variant }: { variant: FilterVariant }) => {
               ])}
               key={index}
               onClick={() => handleFilterClick(filter, index)}
+              value={PonderFilter.ALL_OFFERS}
             >
               <div
                 className={cc([
