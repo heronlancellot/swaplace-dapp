@@ -21,6 +21,7 @@ export const SearchBar = () => {
     process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_HTTP,
   );
   const ens = new ENS(undefined, provider);
+  console.log("SearchBar -> ens", ens);
 
   const {
     lastWalletConnected,
@@ -75,7 +76,9 @@ export const SearchBar = () => {
       const formattedAddress = normalizeENSName(inputAddress);
 
       try {
-        const address: unknown = await ens.getOwner(formattedAddress);
+        console.log("getUserAddress -> formattedAddress", formattedAddress);
+        const address: unknown = await ens.getAddress(formattedAddress);
+        console.log("getUserAddress -> address", address);
         if (typeof address !== "string") {
           toast.error(
             "Wrong type of address returned by provider. Please contact the team",
