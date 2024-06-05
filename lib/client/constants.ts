@@ -122,7 +122,22 @@ export const KAKAROT_CHAIN_DATA = {
     symbol: "KKT",
     decimals: 18,
   },
-  blockExplorerUrls: ["https://etherscan.io"],
+  blockExplorerUrls: ["https://sepolia.kakarotscan.org/"],
+};
+
+export const BNB_TESTNET_DATA = {
+  chainId: "0x61",
+  chainName: "BNB Chain Testnet",
+  rpcUrls: ["https://bsc-testnet-rpc.publicnode.com	"],
+  iconUrls: [
+    "https://ipfs.io/ipfs/QmVsRNNpMF2DAtzPW7LJYEnN8b3Wou1VVevkZ74ESra48b/",
+  ],
+  nativeCurrency: {
+    name: "Kakarot",
+    symbol: "tBNB",
+    decimals: 18,
+  },
+  blockExplorerUrls: ["https://testnet.bscscan.com"],
 };
 
 // //Workaround to make `getNetwork` to add ETH_KAKAROT as alchemy does not support Kakarot.
