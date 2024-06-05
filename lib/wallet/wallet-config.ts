@@ -3,7 +3,15 @@ import {
   getCurrentNetworkHttpUrl,
 } from "../client/constants";
 import { kakarot } from "@/lib/client/wagmi-custom-chains";
-import { sepolia } from "@wagmi/core/chains";
+import {
+  sepolia,
+  optimismSepolia,
+  optimism,
+  polygonMumbai,
+  avalancheFuji,
+  baseGoerli,
+  arbitrumSepolia,
+} from "@wagmi/core/chains";
 import { configureChains, createConfig } from "wagmi";
 import {
   trustWallet,
@@ -16,7 +24,15 @@ import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 export const { chains, webSocketPublicClient, publicClient } = configureChains(
-  [sepolia, kakarot],
+  [
+    sepolia,
+    kakarot,
+    optimismSepolia,
+    optimism,
+    polygonMumbai,
+    baseGoerli,
+    arbitrumSepolia,
+  ],
   [
     jsonRpcProvider({
       rpc: (chain) => ({
@@ -28,7 +44,16 @@ export const { chains, webSocketPublicClient, publicClient } = configureChains(
 
 const connectorArgs = {
   appName: "Swaplace dApp",
-  chains: [sepolia, kakarot],
+  chains: [
+    sepolia,
+    kakarot,
+    optimismSepolia,
+    optimism,
+    polygonMumbai,
+    avalancheFuji,
+    baseGoerli,
+    arbitrumSepolia,
+  ],
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ?? "",
 };
 
