@@ -107,6 +107,7 @@ export const NetworkDropdown = ({
             }
           });
       }
+      // As BNBTESTNET is not in ALCHEMY we must manually add the RPC with the data.
       if (networkName === SupportedNetworks.BNBTESTNET) {
         networkId = hexToNumber(BNB_TESTNET_DATA.chainId as `0x${string}`);
         await window.ethereum
