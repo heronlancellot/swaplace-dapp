@@ -75,7 +75,7 @@ export const SearchBar = () => {
       const formattedAddress = normalizeENSName(inputAddress);
 
       try {
-        const address: unknown = await ens.getAddress(formattedAddress);
+        const address: unknown = await ens.getOwner(formattedAddress);
         if (typeof address !== "string") {
           toast.error(
             "Wrong type of address returned by provider. Please contact the team",
