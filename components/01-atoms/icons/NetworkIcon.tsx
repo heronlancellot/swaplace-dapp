@@ -49,6 +49,12 @@ export const NetworkIcon = ({
     [SupportedNetworks.OPTIMISM]: (
       <ChainOptimismIcon className={props?.className} />
     ),
+    [SupportedNetworks.OPSEPOLIA]: (
+      <ChainOptimismIcon className={props?.className} />
+    ),
+    [SupportedNetworks.BNBTESTNET]: (
+      <ChainBnbIcon className={props?.className} />
+    ),
     [SupportedNetworks.MUMBAI]: (
       <ChainPolygonIcon className={props?.className} />
     ),
