@@ -1,4 +1,4 @@
-import { ChainInfo, SupportedNetworks } from "../constants";
+import { ChainInfo } from "../constants";
 import { useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 
@@ -8,12 +8,7 @@ export const useSupportedNetworks = () => {
   const { chain } = useNetwork();
 
   useEffect(() => {
-    if (
-      chain &&
-      supportedNetworksId.includes(chain.id) &&
-      (chain.id === ChainInfo[SupportedNetworks.SEPOLIA].id ||
-        chain.id === ChainInfo[SupportedNetworks.KAKAROT_SEPOLIA].id)
-    ) {
+    if (chain && supportedNetworksId.includes(chain.id)) {
       setIsNetworkSupported(true);
     } else {
       setIsNetworkSupported(false);
