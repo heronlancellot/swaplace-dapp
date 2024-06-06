@@ -284,7 +284,7 @@ export const NetworkDropdown = ({
           </div>
           {isOpen && (
             <div className="max-w-[280px]">
-              <div className="absolute z-10 top-12 left-0 w-full bg-white dark:bg-[#212322] overflow-hidden border dark:border-[#505150] rounded-xl dark:shadow-swap-connection-dropwdown">
+              <div className="absolute z-20 top-12 left-0 w-full bg-white dark:bg-[#212322] overflow-hidden border dark:border-[#505150] rounded-xl dark:shadow-swap-connection-dropwdown">
                 {Object.values(NetworkInfo).map((network, index) => (
                   <div
                     key={index}
