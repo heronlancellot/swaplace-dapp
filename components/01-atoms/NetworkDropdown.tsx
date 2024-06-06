@@ -200,15 +200,15 @@ export const NetworkDropdown = ({
       ),
       name: SupportedNetworks.MUMBAI,
     },
-    // [SupportedNetworks.FUJI]: {
-    //   icon: (
-    //     <NetworkIcon
-    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-    //       variant={SupportedNetworks.FUJI}
-    //     />
-    //   ),
-    //   name: SupportedNetworks.FUJI,
-    // },
+    [SupportedNetworks.FUJI]: {
+      icon: (
+        <NetworkIcon
+          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          variant={SupportedNetworks.FUJI}
+        />
+      ),
+      name: SupportedNetworks.FUJI,
+    },
     [SupportedNetworks.BNBTESTNET]: {
       icon: (
         <NetworkIcon
