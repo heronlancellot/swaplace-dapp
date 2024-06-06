@@ -304,7 +304,7 @@ export const NetworkDropdown = ({
       </div>
     ),
     VERTICAL: (
-      <div className="flex justify-center">
+      <div className="flex justify-center relative">
         <Tooltip
           position={"right"}
           content={capitalizeFirstLetterPrhases(destinyChain)}
@@ -318,7 +318,7 @@ export const NetworkDropdown = ({
         </Tooltip>
         {isOpen && (
           <div className="max-w-[280px]">
-            <div className="absolute ml-2 bg-white dark:bg-[#212322] overflow-hidden border dark:border-[#505150] rounded-xl dark:shadow-swap-connection-dropwdown">
+            <div className="absolute xl:ml-2 lg:right-10 xl:right-auto xl:bottom-1 bg-white dark:bg-[#212322] overflow-hidden border dark:border-[#505150] rounded-xl dark:shadow-swap-connection-dropwdown">
               {Object.values(NetworkInfo).map((network, index) => (
                 <div
                   key={index}
@@ -328,7 +328,9 @@ export const NetworkDropdown = ({
                   className="gap-2 flex px-4 py-2 p-small-variant-black-2 dark:p-small-dark-variant-grey items-center hover:dark:bg-[#353836] transition-colors duration-200"
                 >
                   <NetworkIcon variant={network.name as NetworkVariants} />
-                  {capitalizeFirstLetterPrhases(network.name)}
+                  <span className="w-[200px]">
+                    {capitalizeFirstLetterPrhases(network.name)}
+                  </span>
                 </div>
               ))}
             </div>
