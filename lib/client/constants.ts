@@ -140,6 +140,21 @@ export const BNB_TESTNET_DATA = {
   blockExplorerUrls: ["https://testnet.bscscan.com"],
 };
 
+// export const POLYGON_MUMBAI_DATA = {
+//   chainId: "0x13881",
+//   chainName: "Mumbai Testnet",
+//   rpcUrls: ["https://rpc.ankr.com/polygon_mumbai"],
+//   iconUrls: [
+//     "https://ipfs.io/ipfs/QmVsRNNpMF2DAtzPW7LJYEnN8b3Wou1VVevkZ74ESra48b/",
+//   ],
+//   nativeCurrency: {
+//     name: "MATIC",
+//     symbol: "MATIC",
+//     decimals: 18,
+//   },
+//   blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+// };
+
 // //Workaround to make `getNetwork` to add ETH_KAKAROT as alchemy does not support Kakarot.
 const getNetworkKakarot: Map<number, NetworkKakarot> = new Map([
   [ChainInfo.KAKAROT_SEPOLIA.id, NetworkKakarot.ETH_KAKAROT],
