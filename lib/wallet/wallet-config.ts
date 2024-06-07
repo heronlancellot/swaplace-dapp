@@ -9,7 +9,7 @@ import {
   optimism,
   polygonMumbai,
   avalancheFuji,
-  baseGoerli,
+  baseSepolia,
   arbitrumSepolia,
 } from "@wagmi/core/chains";
 import { configureChains, createConfig } from "wagmi";
@@ -30,7 +30,7 @@ export const { chains, webSocketPublicClient, publicClient } = configureChains(
     optimismSepolia,
     optimism,
     polygonMumbai,
-    baseGoerli,
+    baseSepolia,
     arbitrumSepolia,
   ],
   [
@@ -51,7 +51,7 @@ const connectorArgs = {
     optimism,
     polygonMumbai,
     avalancheFuji,
-    baseGoerli,
+    baseSepolia,
     arbitrumSepolia,
   ],
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ?? "",

@@ -141,7 +141,42 @@ export const NetworkDropdown = ({
                 });
             }
           });
-      } else if (NetworkInfo[networkName as NetworkVariants]) {
+      }
+      // if (networkName === SupportedNetworks.MUMBAI) {
+      //   networkId = hexToNumber(POLYGON_MUMBAI_DATA.chainId as `0x${string}`);
+      //   await window.ethereum
+      //     .request({
+      //       method: "eth_chainId",
+      //       params: [],
+      //     })
+      //     .then(async (chain: number) => {
+      //       if (chain !== networkId) {
+      //         await window.ethereum
+      //           .request({
+      //             method: "wallet_switchEthereumChain",
+      //             params: [
+      //               {
+      //                 chainId: POLYGON_MUMBAI_DATA.chainId,
+      //               },
+      //             ],
+      //           })
+      //           .catch(async () => {
+      //             await window.ethereum
+      //               .request({
+      //                 method: "wallet_addEthereumChain",
+      //                 params: [POLYGON_MUMBAI_DATA],
+      //               })
+      //               .then(() => {
+      //                 toast.success("Network added successfully!");
+      //               })
+      //               .catch((error: any) => {
+      //                 console.error("Error adding network:", error);
+      //               });
+      //           });
+      //       }
+      //     });
+      // }
+      else if (NetworkInfo[networkName as NetworkVariants]) {
         const networkId = ChainInfo[networkName as SupportedNetworks];
         if (networkId.id) {
           await switchNetwork?.(networkId.id);
@@ -191,15 +226,15 @@ export const NetworkDropdown = ({
       ),
       name: SupportedNetworks.OPSEPOLIA,
     },
-    [SupportedNetworks.MUMBAI]: {
-      icon: (
-        <NetworkIcon
-          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-          variant={SupportedNetworks.MUMBAI}
-        />
-      ),
-      name: SupportedNetworks.MUMBAI,
-    },
+    // [SupportedNetworks.MUMBAI]: {
+    //   icon: (
+    //     <NetworkIcon
+    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+    //       variant={SupportedNetworks.MUMBAI}
+    //     />
+    //   ),
+    //   name: SupportedNetworks.MUMBAI,
+    // },
     [SupportedNetworks.FUJI]: {
       icon: (
         <NetworkIcon
@@ -218,14 +253,14 @@ export const NetworkDropdown = ({
       ),
       name: SupportedNetworks.BNBTESTNET,
     },
-    [SupportedNetworks.BASEGOERLI]: {
+    [SupportedNetworks.BASESEPOLIA]: {
       icon: (
         <NetworkIcon
           props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-          variant={SupportedNetworks.BASEGOERLI}
+          variant={SupportedNetworks.BASESEPOLIA}
         />
       ),
-      name: SupportedNetworks.BASEGOERLI,
+      name: SupportedNetworks.BASESEPOLIA,
     },
     [SupportedNetworks.ARBITRUMSEPOLIA]: {
       icon: (

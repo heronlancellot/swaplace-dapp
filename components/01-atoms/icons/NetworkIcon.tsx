@@ -1,7 +1,7 @@
 import { ChainKakarotSepoliaIcon } from "./ChainKakarotSepoliaIcon";
 import {
   ChainArbitrumSepoliaIcon,
-  ChainBaseGoerliIcon,
+  ChainBaseSepoliaIcon,
   ChainBnbIcon,
   ChainEthereumSepoliaIcon,
   ChainFujiIcon,
@@ -35,8 +35,8 @@ export const NetworkIcon = ({
     [SupportedNetworks.ARBITRUMSEPOLIA]: (
       <ChainArbitrumSepoliaIcon className={props?.className} />
     ),
-    [SupportedNetworks.BASEGOERLI]: (
-      <ChainBaseGoerliIcon className={props?.className} />
+    [SupportedNetworks.BASESEPOLIA]: (
+      <ChainBaseSepoliaIcon className={props?.className} />
     ),
     [SupportedNetworks.SEPOLIA]: (
       <ChainEthereumSepoliaIcon className={props?.className} />

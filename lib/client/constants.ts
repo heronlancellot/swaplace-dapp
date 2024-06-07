@@ -27,7 +27,7 @@ export enum SupportedNetworks {
   AVALANCHE = "AVALANCHE",
   FUJI = "FUJI",
   BASE = "BASE",
-  BASEGOERLI = "BASE_GOERLI",
+  BASESEPOLIA = "BASE_SEPOLIA",
   BNB = "BNB",
   BNBTESTNET = "BNB_TESTNET",
   ARBITRUMONE = "ARBITRUM_ONE",
@@ -88,9 +88,9 @@ export const ChainInfo: Record<SupportedNetworks, ChainProps> = {
     id: 8453,
     name: "Base",
   },
-  [SupportedNetworks.BASEGOERLI]: {
-    id: 84531,
-    name: "Base Goerli",
+  [SupportedNetworks.BASESEPOLIA]: {
+    id: 84532,
+    name: "Base Sepolia",
   },
   [SupportedNetworks.BNB]: {
     id: 56,
@@ -140,20 +140,20 @@ export const BNB_TESTNET_DATA = {
   blockExplorerUrls: ["https://testnet.bscscan.com"],
 };
 
-// export const POLYGON_MUMBAI_DATA = {
-//   chainId: "0x13881",
-//   chainName: "Mumbai Testnet",
-//   rpcUrls: ["https://rpc.ankr.com/polygon_mumbai"],
-//   iconUrls: [
-//     "https://ipfs.io/ipfs/QmVsRNNpMF2DAtzPW7LJYEnN8b3Wou1VVevkZ74ESra48b/",
-//   ],
-//   nativeCurrency: {
-//     name: "MATIC",
-//     symbol: "MATIC",
-//     decimals: 18,
-//   },
-//   blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
-// };
+export const POLYGON_MUMBAI_DATA = {
+  chainId: "0x13881",
+  chainName: "Mumbai Testnet",
+  rpcUrls: ["https://rpc.ankr.com/polygon_mumbai"],
+  iconUrls: [
+    "https://ipfs.io/ipfs/QmVsRNNpMF2DAtzPW7LJYEnN8b3Wou1VVevkZ74ESra48b/",
+  ],
+  nativeCurrency: {
+    name: "MATIC",
+    symbol: "MATIC",
+    decimals: 18,
+  },
+  blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+};
 
 // //Workaround to make `getNetwork` to add ETH_KAKAROT as alchemy does not support Kakarot.
 const getNetworkKakarot: Map<number, NetworkKakarot> = new Map([
@@ -190,8 +190,8 @@ export const getRpcHttpUrlForNetwork: Map<number, string> = new Map([
   [ChainInfo.FUJI.id, process.env.NEXT_PUBLIC_ALCHEMY_FUJI_HTTP ?? ""],
   [ChainInfo.BASE.id, process.env.NEXT_PUBLIC_ALCHEMY_BASE_HTTP ?? ""],
   [
-    ChainInfo.BASE_GOERLI.id,
-    process.env.NEXT_PUBLIC_ALCHEMY_BASEGOERLI_HTTP ?? "",
+    ChainInfo.BASE_SEPOLIA.id,
+    process.env.NEXT_PUBLIC_ALCHEMY_BASESEPOLIA_HTTP ?? "",
   ],
   [ChainInfo.BNB.id, process.env.NEXT_PUBLIC_ALCHEMY_BNB_HTTP ?? ""],
   [
@@ -238,7 +238,7 @@ export const SWAPLACE_SMART_CONTRACT_ADDRESS = {
   [ChainInfo.AVALANCHE.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.FUJI.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.BASE.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
-  [ChainInfo.BASE_GOERLI.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+  [ChainInfo.BASE_SEPOLIA.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318", // Should Update the contract address
   [ChainInfo.BNB.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.BNB_TESTNET.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.ARBITRUM_ONE.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
