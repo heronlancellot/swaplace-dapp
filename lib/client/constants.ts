@@ -20,7 +20,7 @@ export enum SupportedNetworks {
   SEPOLIA = "SEPOLIA",
   KAKAROT_SEPOLIA = "KAKAROT_SEPOLIA",
   POLYGON = "POLYGON",
-  MUMBAI = "MUMBAI",
+  AMOY = "AMOY",
   OPTIMISM = "OPTIMISM",
   OPGOERLI = "OPGOERLI",
   OPSEPOLIA = "OPTIMISM_SEPOLIA",
@@ -60,9 +60,9 @@ export const ChainInfo: Record<SupportedNetworks, ChainProps> = {
     id: 137,
     name: "Polygon",
   },
-  [SupportedNetworks.MUMBAI]: {
-    id: 80001,
-    name: "Polygon Mumbai",
+  [SupportedNetworks.AMOY]: {
+    id: 80002,
+    name: "Polygon Amoy Testnet",
   },
   [SupportedNetworks.OPTIMISM]: {
     id: 10,
@@ -140,10 +140,10 @@ export const BNB_TESTNET_DATA = {
   blockExplorerUrls: ["https://testnet.bscscan.com"],
 };
 
-export const POLYGON_MUMBAI_DATA = {
-  chainId: "0x13881",
-  chainName: "Mumbai Testnet",
-  rpcUrls: ["https://rpc.ankr.com/polygon_mumbai"],
+export const POLYGON_AMOY_DATA = {
+  chainId: "0x13882",
+  chainName: "Polygon Amoy Testnet",
+  rpcUrls: ["https://rpc-amoy.polygon.technology/"],
   iconUrls: [
     "https://ipfs.io/ipfs/QmVsRNNpMF2DAtzPW7LJYEnN8b3Wou1VVevkZ74ESra48b/",
   ],
@@ -152,7 +152,7 @@ export const POLYGON_MUMBAI_DATA = {
     symbol: "MATIC",
     decimals: 18,
   },
-  blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+  blockExplorerUrls: ["https://amoy.polygonscan.com/"],
 };
 
 // //Workaround to make `getNetwork` to add ETH_KAKAROT as alchemy does not support Kakarot.
@@ -162,7 +162,7 @@ const getNetworkKakarot: Map<number, NetworkKakarot> = new Map([
 
 export const getNetwork: Map<number, Network> = new Map([
   [ChainInfo.SEPOLIA.id, Network.ETH_SEPOLIA],
-  [ChainInfo.MUMBAI.id, Network.MATIC_MUMBAI],
+  [ChainInfo.AMOY.id, Network.MATIC_MUMBAI],
 ]);
 
 // //Workaround to make `getNetwork` to add ETH_KAKAROT as alchemy does not support Kakarot.
@@ -176,7 +176,7 @@ export const getRpcHttpUrlForNetwork: Map<number, string> = new Map([
   [ChainInfo.SEPOLIA.id, process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA_HTTP ?? ""],
   [ChainInfo.KAKAROT_SEPOLIA.id, process.env.NEXT_PUBLIC_KAKAROT_HTTP ?? ""],
   [ChainInfo.POLYGON.id, process.env.NEXT_PUBLIC_ALCHEMY_POLYGON_HTTP ?? ""],
-  [ChainInfo.MUMBAI.id, process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_HTTP ?? ""],
+  [ChainInfo.AMOY.id, process.env.NEXT_PUBLIC_ALCHEMY_AMOY_HTTP ?? ""],
   [ChainInfo.OPTIMISM.id, process.env.NEXT_PUBLIC_ALCHEMY_OPTIMISM_HTTP ?? ""],
   [ChainInfo.OPGOERLI.id, process.env.NEXT_PUBLIC_ALCHEMY_OPGOERLI_HTTP ?? ""],
   [
@@ -210,7 +210,7 @@ export const getRpcHttpUrlForNetwork: Map<number, string> = new Map([
 
 export const getAPIKeyForNetwork: Map<number, string | undefined> = new Map([
   [ChainInfo.SEPOLIA.id, process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA_KEY],
-  [ChainInfo.MUMBAI.id, process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_KEY],
+  [ChainInfo.AMOY.id, process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_KEY],
 ]);
 
 export const ALCHEMY_PUBLIC_RPC = "https://eth-mainnet.g.alchemy.com/v2/demo";
@@ -231,7 +231,7 @@ export const SWAPLACE_SMART_CONTRACT_ADDRESS = {
   [ChainInfo.SEPOLIA.id]: "0xFA682bcE8b1dff8D948aAE9f0fBade82D28E1842",
   [ChainInfo.KAKAROT_SEPOLIA.id]: "0xB317127b50b22e62637E3c333A585a8ccfd0721D",
   [ChainInfo.POLYGON.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
-  [ChainInfo.MUMBAI.id]: "0xcB003ed4Df4679D15b8863BB8F7609855A6a380d",
+  [ChainInfo.AMOY.id]: "0xcB003ed4Df4679D15b8863BB8F7609855A6a380d",
   [ChainInfo.OPTIMISM.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.OPGOERLI.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   [ChainInfo.OPTIMISM_SEPOLIA.id]: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",

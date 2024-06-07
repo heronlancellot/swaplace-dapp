@@ -55,9 +55,7 @@ export const NetworkIcon = ({
     [SupportedNetworks.BNBTESTNET]: (
       <ChainBnbIcon className={props?.className} />
     ),
-    [SupportedNetworks.MUMBAI]: (
-      <ChainPolygonIcon className={props?.className} />
-    ),
+    [SupportedNetworks.AMOY]: <ChainPolygonIcon className={props?.className} />,
     default: (
       <ChainNetworkDefaultIcon className="dark:text-[#707572] text-[#A3A9A5]" />
     ),

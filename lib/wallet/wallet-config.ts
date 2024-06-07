@@ -7,7 +7,6 @@ import {
   sepolia,
   optimismSepolia,
   optimism,
-  polygonMumbai,
   avalancheFuji,
   baseSepolia,
   arbitrumSepolia,
@@ -24,15 +23,7 @@ import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 export const { chains, webSocketPublicClient, publicClient } = configureChains(
-  [
-    sepolia,
-    kakarot,
-    optimismSepolia,
-    optimism,
-    polygonMumbai,
-    baseSepolia,
-    arbitrumSepolia,
-  ],
+  [sepolia, kakarot, optimismSepolia, optimism, baseSepolia, arbitrumSepolia],
   [
     jsonRpcProvider({
       rpc: (chain) => ({
@@ -49,7 +40,6 @@ const connectorArgs = {
     kakarot,
     optimismSepolia,
     optimism,
-    polygonMumbai,
     avalancheFuji,
     baseSepolia,
     arbitrumSepolia,

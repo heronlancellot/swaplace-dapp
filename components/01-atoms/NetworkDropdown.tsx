@@ -10,6 +10,7 @@ import {
   BNB_TESTNET_DATA,
   ChainInfo,
   KAKAROT_CHAIN_DATA,
+  POLYGON_AMOY_DATA,
   SupportedNetworks,
 } from "@/lib/client/constants";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
@@ -142,41 +143,40 @@ export const NetworkDropdown = ({
             }
           });
       }
-      // if (networkName === SupportedNetworks.MUMBAI) {
-      //   networkId = hexToNumber(POLYGON_MUMBAI_DATA.chainId as `0x${string}`);
-      //   await window.ethereum
-      //     .request({
-      //       method: "eth_chainId",
-      //       params: [],
-      //     })
-      //     .then(async (chain: number) => {
-      //       if (chain !== networkId) {
-      //         await window.ethereum
-      //           .request({
-      //             method: "wallet_switchEthereumChain",
-      //             params: [
-      //               {
-      //                 chainId: POLYGON_MUMBAI_DATA.chainId,
-      //               },
-      //             ],
-      //           })
-      //           .catch(async () => {
-      //             await window.ethereum
-      //               .request({
-      //                 method: "wallet_addEthereumChain",
-      //                 params: [POLYGON_MUMBAI_DATA],
-      //               })
-      //               .then(() => {
-      //                 toast.success("Network added successfully!");
-      //               })
-      //               .catch((error: any) => {
-      //                 console.error("Error adding network:", error);
-      //               });
-      //           });
-      //       }
-      //     });
-      // }
-      else if (NetworkInfo[networkName as NetworkVariants]) {
+      if (networkName === SupportedNetworks.AMOY) {
+        networkId = hexToNumber(POLYGON_AMOY_DATA.chainId as `0x${string}`);
+        await window.ethereum
+          .request({
+            method: "eth_chainId",
+            params: [],
+          })
+          .then(async (chain: number) => {
+            if (chain !== networkId) {
+              await window.ethereum
+                .request({
+                  method: "wallet_switchEthereumChain",
+                  params: [
+                    {
+                      chainId: POLYGON_AMOY_DATA.chainId,
+                    },
+                  ],
+                })
+                .catch(async () => {
+                  await window.ethereum
+                    .request({
+                      method: "wallet_addEthereumChain",
+                      params: [POLYGON_AMOY_DATA],
+                    })
+                    .then(() => {
+                      toast.success("Network added successfully!");
+                    })
+                    .catch((error: any) => {
+                      console.error("Error adding network:", error);
+                    });
+                });
+            }
+          });
+      } else if (NetworkInfo[networkName as NetworkVariants]) {
         const networkId = ChainInfo[networkName as SupportedNetworks];
         if (networkId.id) {
           await switchNetwork?.(networkId.id);
@@ -226,15 +226,15 @@ export const NetworkDropdown = ({
       ),
       name: SupportedNetworks.OPSEPOLIA,
     },
-    // [SupportedNetworks.MUMBAI]: {
-    //   icon: (
-    //     <NetworkIcon
-    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-    //       variant={SupportedNetworks.MUMBAI}
-    //     />
-    //   ),
-    //   name: SupportedNetworks.MUMBAI,
-    // },
+    [SupportedNetworks.AMOY]: {
+      icon: (
+        <NetworkIcon
+          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          variant={SupportedNetworks.AMOY}
+        />
+      ),
+      name: SupportedNetworks.AMOY,
+    },
     [SupportedNetworks.FUJI]: {
       icon: (
         <NetworkIcon
