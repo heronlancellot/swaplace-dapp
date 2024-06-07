@@ -307,13 +307,21 @@ export const NetworkDropdown = ({
       <div className="flex justify-center relative">
         <Tooltip
           position={"right"}
-          content={capitalizeFirstLetterPrhases(destinyChain)}
+          content={
+            !authenticatedUserAddress
+              ? "Network"
+              : capitalizeFirstLetterPrhases(destinyChain)
+          }
         >
           <button
             onClick={handleToggleDropdown}
             className="bg-black-500 outline-none dark:hover:bg-[#353836] hover:bg-[#E4E4E4] transition-colors duration-200 rounded-[10px] p-2"
           >
-            <NetworkIcon variant={destinyChain} />
+            {!authenticatedUserAddress ? (
+              <NetworkIcon variant={"default"} />
+            ) : (
+              <NetworkIcon variant={destinyChain} />
+            )}
           </button>
         </Tooltip>
         {isOpen && (
