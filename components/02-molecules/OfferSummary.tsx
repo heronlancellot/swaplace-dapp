@@ -85,30 +85,32 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
               </p>
             </div>
           </div>
-          {variant === ForWhom.Yours && (
-            <>
-              <button
-                className="w-6 h-6 rounded-full bg-[#FFFFFF1A] flex justify-center items-center"
-                onClick={() => {
-                  setIsOpen(!open);
-                }}
-              >
-                <PlusIconSmall />
-              </button>
-              <EtherAmountSelectionModal
-                open={open}
-                onClose={() => {
-                  setIsOpen(false);
-                }}
-              />
-            </>
-          )}
           {variant === ForWhom.Their && <SelectAnyUserToSwap />}
           {(variant === ForWhom.Their && !validatedAddressToSwap) ||
           (variant === ForWhom.Yours && !authenticatedUserAddress) ? null : (
-            <div className="contrast-50">
-              {tokensList.length} item
-              {tokensList.length !== 1 ? "s" : ""}
+            <div className="flex gap-2">
+              <p className="contrast-50 ">
+                {tokensList.length} item
+                {tokensList.length !== 1 ? "s" : ""}
+              </p>
+              {
+                <>
+                  <button
+                    className="w-6 h-6 rounded-full bg-[#FFFFFF1A] flex justify-center items-center"
+                    onClick={() => {
+                      setIsOpen(!open);
+                    }}
+                  >
+                    <PlusIconSmall />
+                  </button>
+                  <EtherAmountSelectionModal
+                    open={open}
+                    onClose={() => {
+                      setIsOpen(false);
+                    }}
+                  />
+                </>
+              }
             </div>
           )}
         </div>
