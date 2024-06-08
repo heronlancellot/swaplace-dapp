@@ -1,12 +1,14 @@
+import { EtherAmountSelectionModal } from "./EtherAmountSelectionModal";
 import { ForWhom } from "../03-organisms";
 import { SelectAnyUserToSwap } from "../01-atoms/SelectAnyUserToSwap";
+import { PlusIconSmall } from "../01-atoms/icons/PlusIconSmall";
 import { ENSAvatar, ENSAvatarSize, PersonIcon } from "@/components/01-atoms";
 import { TokenCardStyleType, TokensList } from "@/components/02-molecules";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { SwapContext } from "@/lib/client/contexts";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useEnsData } from "@/lib/client/hooks/useENSData";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
   const {
@@ -27,6 +29,7 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
   const { primaryName: authenticatedUserENSName } = useEnsData({
     ensAddress: authenticatedUserAddress,
   });
+  const [open, setIsOpen] = useState(false);
 
   return (
     <div className="w-full h-full dark:bg-[#282B29] border dark:border-[#353836] bg-[#F0EEEE] border-[#E4E4E4] rounded-lg ">
@@ -82,6 +85,24 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
               </p>
             </div>
           </div>
+          {variant === ForWhom.Yours && (
+            <>
+              <button
+                className="w-6 h-6 rounded-full bg-[#FFFFFF1A] flex justify-center items-center"
+                onClick={() => {
+                  setIsOpen(!open);
+                }}
+              >
+                <PlusIconSmall />
+              </button>
+              <EtherAmountSelectionModal
+                open={open}
+                onClose={() => {
+                  setIsOpen(false);
+                }}
+              />
+            </>
+          )}
           {variant === ForWhom.Their && <SelectAnyUserToSwap />}
           {(variant === ForWhom.Their && !validatedAddressToSwap) ||
           (variant === ForWhom.Yours && !authenticatedUserAddress) ? null : (
