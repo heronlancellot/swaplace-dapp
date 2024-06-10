@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { ForWhom } from "../03-organisms";
 import { SwapModalLayout } from "@/components/01-atoms";
 import { SwapContext } from "@/lib/client/contexts";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
@@ -12,24 +13,41 @@ import cc from "classcat";
 interface EtherAmountSelectionModalProps {
   open: boolean;
   onClose: () => void;
+  variant: ForWhom;
 }
 
 export const EtherAmountSelectionModal = ({
   open,
   onClose,
+  variant,
 }: EtherAmountSelectionModalProps) => {
-  const [etherAmount, setEtherAmount] = useState<bigint>(0n); // The amount of Ether to be setted on setEtherValue.
+  const [etherAmount, setEtherAmount] = useState<bigint>(0n); // The amount of Ether to be setted on setAuthenticatedUserEtherValue.
   const [etherAmountMax, setEtherAmountMax] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("0.00"); // User input value
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  const { setEtherValue, setEtherRecipient } = useContext(SwapContext);
+  const {
+    setAuthenticatedUserEtherValue,
+    setEtherRecipient,
+    setSearchedUserEtherValue,
+    validatedAddressToSwap,
+  } = useContext(SwapContext);
   const { chain } = useNetwork();
 
+  const userAddress =
+    variant === ForWhom.Yours
+      ? authenticatedUserAddress
+      : validatedAddressToSwap;
+
   const { balance } = useWalletBalance({
-    walletAddress: authenticatedUserAddress,
+    walletAddress: userAddress,
   });
   const match = balance?.match(/^(\d+\.\d{1,3})|\d+/);
   const displayBalance = match ? match[0] : balance;
+
+  const setEtherValue =
+    variant === ForWhom.Yours
+      ? setAuthenticatedUserEtherValue
+      : setSearchedUserEtherValue;
 
   const handleEtherAddition = () => {
     if (authenticatedUserAddress) {

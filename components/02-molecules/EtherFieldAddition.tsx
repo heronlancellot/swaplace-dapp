@@ -9,8 +9,15 @@ import { useNetwork } from "wagmi";
 export const EtherFieldAddition = ({ variant }: { variant: ForWhom }) => {
   const [open, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const { etherValue } = useContext(SwapContext);
+  const { authenticatedUserEtherValue, searchedUserEtherValue } =
+    useContext(SwapContext);
   const { chain } = useNetwork();
+
+  // Use authenticatedUserEtherValue if variant is 'YOURS', otherwise use searchedUserEtherValue
+  const etherValue =
+    variant === ForWhom.Yours
+      ? authenticatedUserEtherValue
+      : searchedUserEtherValue;
 
   useEffect(() => {
     setIsMounted(true);
@@ -41,6 +48,7 @@ export const EtherFieldAddition = ({ variant }: { variant: ForWhom }) => {
             onClose={() => {
               setIsOpen(false);
             }}
+            variant={variant}
           />
         </>
       ) : (
@@ -58,6 +66,7 @@ export const EtherFieldAddition = ({ variant }: { variant: ForWhom }) => {
             onClose={() => {
               setIsOpen(false);
             }}
+            variant={variant}
           />
         </>
       )}
