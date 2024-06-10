@@ -76,6 +76,10 @@ export const EtherAmountSelectionModal = ({
       text={{ title: "Add Ether Amount" }}
       body={
         <>
+          <div className="w-full flex justify-between text-sm text-[#707572] dark:text-[#A3A9A5]">
+            <p>Balance:</p>
+            <p>{displayBalance}</p>
+          </div>
           <div className="flex w-full">
             <div className="relative w-full">
               <input
