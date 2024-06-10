@@ -13,6 +13,7 @@ export * from "./OfferTag";
 export * from "./ProgressBar";
 export * from "./SearchBar";
 export * from "./SearchItemsShelf";
+export * from "./SelectAnyUserToSwap";
 export * from "./StatusOffers";
 export * from "./SwapExpireTime";
 export * from "./SwapModalButton";
