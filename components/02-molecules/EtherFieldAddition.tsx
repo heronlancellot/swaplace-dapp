@@ -1,8 +1,7 @@
-import { EtherAmountSelectionModal } from "./EtherAmountSelectionModal";
-import { EditionIcon } from "../01-atoms/icons/EditionIcon";
-import { PlusIconSmall } from "../01-atoms/icons/PlusIconSmall";
-import { ForWhom } from "../03-organisms";
+import { EtherAmountSelectionModal } from "@/components/02-molecules";
+import { EditionIcon, PlusIconSmall } from "@/components/01-atoms/";
 import { SwapContext } from "@/lib/client/contexts";
+import { ForWhom } from "@/components/03-organisms";
 import { useState, useContext } from "react";
 import { formatEther } from "viem";
 import { useNetwork } from "wagmi";
