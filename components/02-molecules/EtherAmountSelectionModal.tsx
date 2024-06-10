@@ -5,7 +5,7 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useWalletBalance } from "@/lib/client/hooks/useWalletBalance";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
-import { formatEther, parseEther } from "viem";
+import { parseEther } from "viem";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
 
@@ -20,6 +20,7 @@ export const EtherAmountSelectionModal = ({
 }: EtherAmountSelectionModalProps) => {
   const [etherAmount, setEtherAmount] = useState<bigint>(0n); // The amount of Ether to be setted on setEtherValue.
   const [etherAmountMax, setEtherAmountMax] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>("0.00"); // User input value
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { setEtherValue, setEtherRecipient } = useContext(SwapContext);
   const { chain } = useNetwork();
@@ -42,6 +43,8 @@ export const EtherAmountSelectionModal = ({
       ) {
         setEtherRecipient(1n); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
         setEtherValue(etherAmount);
+      } else {
+        toast.error("The amount is higher than the balance");
       }
     }
   };
@@ -67,6 +70,20 @@ export const EtherAmountSelectionModal = ({
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      if (etherAmountMax) {
+        setEtherAmount(parseEther(displayBalance as string));
+      }
+      const etherValueAmount = e.target.value;
+      setInputValue(etherValueAmount);
+      setEtherAmount(parseEther(etherValueAmount));
+    } catch {
+      toast.error("Invalid Ether amount provided");
+      setEtherValue(0n);
+    }
+  };
+
   return (
     <SwapModalLayout
       toggleCloseButton={{
@@ -83,26 +100,18 @@ export const EtherAmountSelectionModal = ({
           <div className="flex w-full">
             <div className="relative w-full">
               <input
+                readOnly={etherAmountMax}
                 type="number"
                 name="amount"
                 placeholder={
                   etherAmountMax ? (displayBalance as string) : "0.00"
                 }
-                value={
-                  etherAmountMax
-                    ? (displayBalance as string)
-                    : formatEther(etherAmount)
-                }
-                onChange={(e) => {
-                  try {
-                    const etherValueAmount = e.target.value;
-                    setEtherAmount(parseEther(etherValueAmount));
-                  } catch {
-                    toast.error("Invalid Ether amount provided");
-                    setEtherValue(0n);
-                  }
-                }}
-                className="w-full rounded-lg rounded-r-none p-3 text-left bg-[#e0e0e0] dark:bg-[#282B29] border-[#353836] border-r-0 focus:outline-none"
+                value={etherAmountMax ? (displayBalance as string) : inputValue}
+                onChange={handleInputChange}
+                className={cc([
+                  etherAmountMax && "cursor-not-allowed",
+                  "w-full rounded-lg rounded-r-none p-3 text-left bg-[#e0e0e0] dark:bg-[#282B29] border-[#353836] border-r-0 focus:outline-none",
+                ])}
               />
             </div>
             <button
