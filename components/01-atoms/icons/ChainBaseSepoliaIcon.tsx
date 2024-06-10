@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export const ChainBaseGoerliIcon = (props: SVGProps<SVGSVGElement>) => {
+export const ChainBaseSepoliaIcon = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}

@@ -7,15 +7,17 @@ import {
   Tooltip,
 } from "@/components/01-atoms";
 import {
+  BNB_TESTNET_DATA,
   ChainInfo,
   KAKAROT_CHAIN_DATA,
+  POLYGON_AMOY_DATA,
   SupportedNetworks,
 } from "@/lib/client/constants";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useSupportedNetworks } from "@/lib/client/hooks/useSupportedNetworks";
 import { capitalizeFirstLetterPrhases } from "@/lib/client/utils";
 import { SwapContext } from "@/lib/client/contexts";
-import { useSwitchNetwork, sepolia, useNetwork } from "wagmi";
+import { useSwitchNetwork, useNetwork } from "wagmi";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import cc from "classcat";
@@ -50,12 +52,13 @@ export const NetworkDropdown = ({
     if (!isNetworkSupported || !authenticatedUserAddress) {
       setNetworkText("default");
     } else if (chain) {
-      if (ChainInfo[SupportedNetworks.KAKAROT_SEPOLIA].id === chain.id) {
-        setDestinyChain(SupportedNetworks.KAKAROT_SEPOLIA);
-        setNetworkText(SupportedNetworks.KAKAROT_SEPOLIA);
-      } else if (ChainInfo[SupportedNetworks.SEPOLIA].id === chain.id) {
-        setDestinyChain(SupportedNetworks.SEPOLIA);
-        setNetworkText(SupportedNetworks.SEPOLIA);
+      const supportedNetworks = Object.values(SupportedNetworks);
+      const matchingNetwork = supportedNetworks.find(
+        (network) => ChainInfo[network]?.id === chain.id,
+      );
+      if (matchingNetwork) {
+        setDestinyChain(matchingNetwork);
+        setNetworkText(matchingNetwork);
       } else {
         setNetworkText("default");
       }
@@ -104,10 +107,79 @@ export const NetworkDropdown = ({
                 });
             }
           });
-      } else if (networkName === SupportedNetworks.SEPOLIA) {
-        networkId = sepolia.id;
-        if (networkId) {
-          await switchNetwork?.(networkId);
+      }
+      // As BNBTESTNET is not in ALCHEMY we must manually add the RPC with the data.
+      if (networkName === SupportedNetworks.BNBTESTNET) {
+        networkId = hexToNumber(BNB_TESTNET_DATA.chainId as `0x${string}`);
+        await window.ethereum
+          .request({
+            method: "eth_chainId",
+            params: [],
+          })
+          .then(async (chain: number) => {
+            if (chain !== networkId) {
+              await window.ethereum
+                .request({
+                  method: "wallet_switchEthereumChain",
+                  params: [
+                    {
+                      chainId: BNB_TESTNET_DATA.chainId,
+                    },
+                  ],
+                })
+                .catch(async () => {
+                  await window.ethereum
+                    .request({
+                      method: "wallet_addEthereumChain",
+                      params: [BNB_TESTNET_DATA],
+                    })
+                    .then(() => {
+                      toast.success("Network added successfully!");
+                    })
+                    .catch((error: any) => {
+                      console.error("Error adding network:", error);
+                    });
+                });
+            }
+          });
+      }
+      if (networkName === SupportedNetworks.AMOY) {
+        networkId = hexToNumber(POLYGON_AMOY_DATA.chainId as `0x${string}`);
+        await window.ethereum
+          .request({
+            method: "eth_chainId",
+            params: [],
+          })
+          .then(async (chain: number) => {
+            if (chain !== networkId) {
+              await window.ethereum
+                .request({
+                  method: "wallet_switchEthereumChain",
+                  params: [
+                    {
+                      chainId: POLYGON_AMOY_DATA.chainId,
+                    },
+                  ],
+                })
+                .catch(async () => {
+                  await window.ethereum
+                    .request({
+                      method: "wallet_addEthereumChain",
+                      params: [POLYGON_AMOY_DATA],
+                    })
+                    .then(() => {
+                      toast.success("Network added successfully!");
+                    })
+                    .catch((error: any) => {
+                      console.error("Error adding network:", error);
+                    });
+                });
+            }
+          });
+      } else if (NetworkInfo[networkName as NetworkVariants]) {
+        const networkId = ChainInfo[networkName as SupportedNetworks];
+        if (networkId.id) {
+          await switchNetwork?.(networkId.id);
         } else {
           console.error("Unsupported network selected:", networkName);
         }
@@ -145,60 +217,60 @@ export const NetworkDropdown = ({
       ),
       name: SupportedNetworks.SEPOLIA,
     },
-    // [SupportedNetworks.OPTIMISM]: {
-    //   icon: (
-    //     <NetworkIcon
-    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-    //       variant={SupportedNetworks.OPTIMISM}
-    //     />
-    //   ),
-    //   name: SupportedNetworks.OPTIMISM,
-    // },
-    // [SupportedNetworks.MUMBAI]: {
-    //   icon: (
-    //     <NetworkIcon
-    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-    //       variant={SupportedNetworks.MUMBAI}
-    //     />
-    //   ),
-    //   name: SupportedNetworks.MUMBAI,
-    // },
-    // [SupportedNetworks.FUJI]: {
-    //   icon: (
-    //     <NetworkIcon
-    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-    //       variant={SupportedNetworks.FUJI}
-    //     />
-    //   ),
-    //   name: SupportedNetworks.FUJI,
-    // },
-    // [SupportedNetworks.BNB]: {
-    //   icon: (
-    //     <NetworkIcon
-    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-    //       variant={SupportedNetworks.BNB}
-    //     />
-    //   ),
-    //   name: SupportedNetworks.BNB,
-    // },
-    // [SupportedNetworks.BASEGOERLI]: {
-    //   icon: (
-    //     <NetworkIcon
-    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-    //       variant={SupportedNetworks.BASEGOERLI}
-    //     />
-    //   ),
-    //   name: SupportedNetworks.BASEGOERLI,
-    // },
-    // [SupportedNetworks.ARBITRUMSEPOLIA]: {
-    //   icon: (
-    //     <NetworkIcon
-    //       props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
-    //       variant={SupportedNetworks.ARBITRUMSEPOLIA}
-    //     />
-    //   ),
-    //   name: SupportedNetworks.ARBITRUMSEPOLIA,
-    // },
+    [SupportedNetworks.OPSEPOLIA]: {
+      icon: (
+        <NetworkIcon
+          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          variant={SupportedNetworks.OPSEPOLIA}
+        />
+      ),
+      name: SupportedNetworks.OPSEPOLIA,
+    },
+    [SupportedNetworks.AMOY]: {
+      icon: (
+        <NetworkIcon
+          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          variant={SupportedNetworks.AMOY}
+        />
+      ),
+      name: SupportedNetworks.AMOY,
+    },
+    [SupportedNetworks.FUJI]: {
+      icon: (
+        <NetworkIcon
+          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          variant={SupportedNetworks.FUJI}
+        />
+      ),
+      name: SupportedNetworks.FUJI,
+    },
+    [SupportedNetworks.BNBTESTNET]: {
+      icon: (
+        <NetworkIcon
+          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          variant={SupportedNetworks.BNBTESTNET}
+        />
+      ),
+      name: SupportedNetworks.BNBTESTNET,
+    },
+    [SupportedNetworks.BASESEPOLIA]: {
+      icon: (
+        <NetworkIcon
+          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          variant={SupportedNetworks.BASESEPOLIA}
+        />
+      ),
+      name: SupportedNetworks.BASESEPOLIA,
+    },
+    [SupportedNetworks.ARBITRUMSEPOLIA]: {
+      icon: (
+        <NetworkIcon
+          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          variant={SupportedNetworks.ARBITRUMSEPOLIA}
+        />
+      ),
+      name: SupportedNetworks.ARBITRUMSEPOLIA,
+    },
   };
 
   const NetworkDropdownVariant: Record<NetworkVariantPosition, JSX.Element> = {
@@ -247,7 +319,7 @@ export const NetworkDropdown = ({
           </div>
           {isOpen && (
             <div className="max-w-[280px]">
-              <div className="absolute z-10 top-12 left-0 w-full bg-white dark:bg-[#212322] overflow-hidden border dark:border-[#505150] rounded-xl dark:shadow-swap-connection-dropwdown">
+              <div className="absolute z-20 top-12 left-0 w-full bg-white dark:bg-[#212322] overflow-hidden border dark:border-[#505150] rounded-xl dark:shadow-swap-connection-dropwdown">
                 {Object.values(NetworkInfo).map((network, index) => (
                   <div
                     key={index}
@@ -267,21 +339,29 @@ export const NetworkDropdown = ({
       </div>
     ),
     VERTICAL: (
-      <div className="flex justify-center">
+      <div className="flex justify-center relative">
         <Tooltip
           position={"right"}
-          content={capitalizeFirstLetterPrhases(destinyChain)}
+          content={
+            !authenticatedUserAddress
+              ? "Network"
+              : capitalizeFirstLetterPrhases(destinyChain)
+          }
         >
           <button
             onClick={handleToggleDropdown}
             className="bg-black-500 outline-none dark:hover:bg-[#353836] hover:bg-[#E4E4E4] transition-colors duration-200 rounded-[10px] p-2"
           >
-            <NetworkIcon variant={destinyChain} />
+            {!authenticatedUserAddress ? (
+              <NetworkIcon variant={"default"} />
+            ) : (
+              <NetworkIcon variant={destinyChain} />
+            )}
           </button>
         </Tooltip>
         {isOpen && (
           <div className="max-w-[280px]">
-            <div className="absolute ml-2 bg-white dark:bg-[#212322] overflow-hidden border dark:border-[#505150] rounded-xl dark:shadow-swap-connection-dropwdown">
+            <div className="absolute xl:ml-2 lg:right-10 xl:right-auto xl:bottom-1 bg-white dark:bg-[#212322] overflow-hidden border dark:border-[#505150] rounded-xl dark:shadow-swap-connection-dropwdown">
               {Object.values(NetworkInfo).map((network, index) => (
                 <div
                   key={index}
@@ -291,7 +371,9 @@ export const NetworkDropdown = ({
                   className="gap-2 flex px-4 py-2 p-small-variant-black-2 dark:p-small-dark-variant-grey items-center hover:dark:bg-[#353836] transition-colors duration-200"
                 >
                   <NetworkIcon variant={network.name as NetworkVariants} />
-                  {capitalizeFirstLetterPrhases(network.name)}
+                  <span className="w-[200px]">
+                    {capitalizeFirstLetterPrhases(network.name)}
+                  </span>
                 </div>
               ))}
             </div>
