@@ -1,7 +1,7 @@
 import { ChainKakarotSepoliaIcon } from "./ChainKakarotSepoliaIcon";
 import {
   ChainArbitrumSepoliaIcon,
-  ChainBaseGoerliIcon,
+  ChainBaseSepoliaIcon,
   ChainBnbIcon,
   ChainEthereumSepoliaIcon,
   ChainFujiIcon,
@@ -35,8 +35,8 @@ export const NetworkIcon = ({
     [SupportedNetworks.ARBITRUMSEPOLIA]: (
       <ChainArbitrumSepoliaIcon className={props?.className} />
     ),
-    [SupportedNetworks.BASEGOERLI]: (
-      <ChainBaseGoerliIcon className={props?.className} />
+    [SupportedNetworks.BASESEPOLIA]: (
+      <ChainBaseSepoliaIcon className={props?.className} />
     ),
     [SupportedNetworks.SEPOLIA]: (
       <ChainEthereumSepoliaIcon className={props?.className} />
@@ -49,9 +49,13 @@ export const NetworkIcon = ({
     [SupportedNetworks.OPTIMISM]: (
       <ChainOptimismIcon className={props?.className} />
     ),
-    [SupportedNetworks.MUMBAI]: (
-      <ChainPolygonIcon className={props?.className} />
+    [SupportedNetworks.OPSEPOLIA]: (
+      <ChainOptimismIcon className={props?.className} />
     ),
+    [SupportedNetworks.BNBTESTNET]: (
+      <ChainBnbIcon className={props?.className} />
+    ),
+    [SupportedNetworks.AMOY]: <ChainPolygonIcon className={props?.className} />,
     default: (
       <ChainNetworkDefaultIcon className="dark:text-[#707572] text-[#A3A9A5]" />
     ),

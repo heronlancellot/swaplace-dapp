@@ -29,7 +29,7 @@ export * from "./Tooltip";
 /** Icons */
 export * from "./icons/ArrowIcon";
 export * from "./icons/ChainArbitrumSepoliaIcon";
-export * from "./icons/ChainBaseGoerliIcon";
+export * from "./icons/ChainBaseSepoliaIcon";
 export * from "./icons/ChainBnbIcon";
 export * from "./icons/ChainEthereumSepoliaIcon";
 export * from "./icons/ChainFujiIcon";
