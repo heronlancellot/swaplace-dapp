@@ -5,7 +5,7 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useWalletBalance } from "@/lib/client/hooks/useWalletBalance";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
-import { parseEther } from "viem";
+import { formatEther, parseEther } from "viem";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
 
@@ -18,7 +18,7 @@ export const EtherAmountSelectionModal = ({
   open,
   onClose,
 }: EtherAmountSelectionModalProps) => {
-  const [etherAmount, setEtherAmount] = useState<bigint>(0n);
+  const [etherAmount, setEtherAmount] = useState<bigint>(0n); // The amount of Ether to be setted on setEtherValue.
   const [etherAmountMax, setEtherAmountMax] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { setEtherValue, setEtherRecipient } = useContext(SwapContext);
@@ -88,7 +88,11 @@ export const EtherAmountSelectionModal = ({
                 placeholder={
                   etherAmountMax ? (displayBalance as string) : "0.00"
                 }
-                value={etherAmountMax ? (displayBalance as string) : ""}
+                value={
+                  etherAmountMax
+                    ? (displayBalance as string)
+                    : formatEther(etherAmount)
+                }
                 onChange={(e) => {
                   try {
                     const etherValueAmount = e.target.value;
