@@ -44,6 +44,7 @@ export const EtherAmountSelectionModal = ({
           toast.success(
             `${displayBalance} ${chain?.nativeCurrency.symbol} has been added`,
           );
+          onClose();
         } else if (
           !etherAmountMax &&
           parseEther(inputValue) <= parseEther(displayBalance)
@@ -55,6 +56,7 @@ export const EtherAmountSelectionModal = ({
               chain?.nativeCurrency.symbol
             } has been added`,
           );
+          onClose();
         } else {
           toast.error("The amount is higher than the balance");
         }
