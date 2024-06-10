@@ -37,35 +37,19 @@ export const EtherAmountSelectionModal = ({
         toast.error("No chain found");
         return;
       }
-      if (
-        displayBalance !== null &&
-        etherAmount <= parseEther(displayBalance)
-      ) {
-        setEtherRecipient(1n); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
-        setEtherValue(etherAmount);
-      } else {
-        toast.error("The amount is higher than the balance");
-      }
-    }
-  };
-
-  const handleEtherMaxAmount = () => {
-    setEtherAmountMax(!etherAmountMax);
-    if (authenticatedUserAddress) {
-      if (!chain) {
-        toast.error("No chain found");
-        return;
-      }
       if (displayBalance !== null) {
         if (etherAmountMax) {
           setEtherRecipient(1n); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
           setEtherValue(parseEther(displayBalance));
-        } else if (!etherAmountMax) {
+        } else if (
+          !etherAmountMax &&
+          parseEther(inputValue) <= parseEther(displayBalance)
+        ) {
           setEtherRecipient(1n); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
-          setEtherValue(0n);
+          setEtherValue(etherAmount);
+        } else {
+          toast.error("The amount is higher than the balance");
         }
-      } else {
-        toast.error("No balance found");
       }
     }
   };
@@ -119,7 +103,7 @@ export const EtherAmountSelectionModal = ({
                 "w-fit rounded-lg rounded-l-none  bg-[#CCCCCC] dark:bg-[#353836] border-[#353836] text-sm text-[#707572] dark:text-[#A3A9A5] p-3 pt-3.5",
                 etherAmountMax && "dark:bg-[#DDF23D] dark:text-black",
               ])}
-              onClick={handleEtherMaxAmount}
+              onClick={() => setEtherAmountMax(!etherAmountMax)}
             >
               Max
             </button>

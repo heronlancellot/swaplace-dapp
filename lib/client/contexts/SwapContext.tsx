@@ -169,6 +169,8 @@ export const SwapContextProvider = ({ children }: any) => {
     approvedTokensCount,
     currentSwapModalStep,
     anyUserToSwap,
+    etherValue,
+    etherRecipient,
   ]);
 
   const [swapData, setSwapData] = useState<SwapContextProps>({
