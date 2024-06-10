@@ -7,6 +7,7 @@ import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { parseEther } from "viem";
 import { useNetwork } from "wagmi";
+import cc from "classcat";
 
 interface EtherAmountSelectionModalProps {
   open: boolean;
@@ -18,6 +19,7 @@ export const EtherAmountSelectionModal = ({
   onClose,
 }: EtherAmountSelectionModalProps) => {
   const [etherAmount, setEtherAmount] = useState<bigint>(0n);
+  const [etherAmountMax, setEtherAmountMax] = useState<boolean>(false);
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { setEtherValue, setEtherRecipient } = useContext(SwapContext);
   const { chain } = useNetwork();
@@ -44,6 +46,27 @@ export const EtherAmountSelectionModal = ({
     }
   };
 
+  const handleEtherMaxAmount = () => {
+    setEtherAmountMax(!etherAmountMax);
+    if (authenticatedUserAddress) {
+      if (!chain) {
+        toast.error("No chain found");
+        return;
+      }
+      if (displayBalance !== null) {
+        if (etherAmountMax) {
+          setEtherRecipient(1n); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
+          setEtherValue(parseEther(displayBalance));
+        } else if (!etherAmountMax) {
+          setEtherRecipient(1n); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
+          setEtherValue(0n);
+        }
+      } else {
+        toast.error("No balance found");
+      }
+    }
+  };
+
   return (
     <SwapModalLayout
       toggleCloseButton={{
@@ -58,7 +81,10 @@ export const EtherAmountSelectionModal = ({
               <input
                 type="number"
                 name="amount"
-                placeholder="0.00"
+                placeholder={
+                  etherAmountMax ? (displayBalance as string) : "0.00"
+                }
+                value={etherAmountMax ? (displayBalance as string) : ""}
                 onChange={(e) => {
                   try {
                     const etherValueAmount = e.target.value;
@@ -71,10 +97,15 @@ export const EtherAmountSelectionModal = ({
                 className="w-full rounded-lg rounded-r-none p-3 text-left bg-[#e0e0e0] dark:bg-[#282B29] border-[#353836] border-r-0 focus:outline-none"
               />
             </div>
-            <label className="w-fit rounded-lg rounded-l-none  bg-[#CCCCCC] dark:bg-[#353836] border-[#353836] text-sm text-[#707572] dark:text-[#A3A9A5] p-3 pt-3.5">
-              {displayBalance || "0"}
-              {chain?.nativeCurrency.symbol}
-            </label>
+            <button
+              className={cc([
+                "w-fit rounded-lg rounded-l-none  bg-[#CCCCCC] dark:bg-[#353836] border-[#353836] text-sm text-[#707572] dark:text-[#A3A9A5] p-3 pt-3.5",
+                etherAmountMax && "dark:bg-[#DDF23D] dark:text-black",
+              ])}
+              onClick={handleEtherMaxAmount}
+            >
+              Max
+            </button>
           </div>
           <button
             onClick={handleEtherAddition}
