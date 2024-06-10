@@ -5,7 +5,7 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useWalletBalance } from "@/lib/client/hooks/useWalletBalance";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
-import { parseEther } from "viem";
+import { formatEther, parseEther } from "viem";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
 
@@ -41,12 +41,18 @@ export const EtherAmountSelectionModal = ({
         if (etherAmountMax) {
           setEtherRecipient(1n); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
           setEtherValue(parseEther(displayBalance));
+          toast.success(`${displayBalance} amount has been added`);
         } else if (
           !etherAmountMax &&
           parseEther(inputValue) <= parseEther(displayBalance)
         ) {
           setEtherRecipient(1n); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
           setEtherValue(etherAmount);
+          toast.success(
+            `${formatEther(etherAmount)} ${
+              chain?.nativeCurrency.symbol
+            } has been added`,
+          );
         } else {
           toast.error("The amount is higher than the balance");
         }
