@@ -130,6 +130,10 @@ export const SwapContextProvider = ({ children }: any) => {
     setAuthenticatedUserTokensList([]);
   }, [inputAddress]);
 
+  useEffect(() => {
+    setSearchedUserEtherValue(0n);
+  }, [validatedAddressToSwap]);
+
   // useEffect(() => {
   //   setSearchedUserTokensList([]);
   // }, [destinyChain]);
