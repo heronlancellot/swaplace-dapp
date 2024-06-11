@@ -1,7 +1,15 @@
 import { ForWhom } from "../03-organisms";
-import { SelectAnyUserToSwap } from "../01-atoms/SelectAnyUserToSwap";
-import { ENSAvatar, ENSAvatarSize, PersonIcon } from "@/components/01-atoms";
-import { TokenCardStyleType, TokensList } from "@/components/02-molecules";
+import {
+  ENSAvatar,
+  ENSAvatarSize,
+  PersonIcon,
+  SelectAnyUserToSwap,
+} from "@/components/01-atoms";
+import {
+  EtherFieldAddition,
+  TokenCardStyleType,
+  TokensList,
+} from "@/components/02-molecules";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { SwapContext } from "@/lib/client/contexts";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
@@ -82,13 +90,14 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
               </p>
             </div>
           </div>
-          {variant === ForWhom.Their && <SelectAnyUserToSwap />}
-          {(variant === ForWhom.Their && !validatedAddressToSwap) ||
-          (variant === ForWhom.Yours && !authenticatedUserAddress) ? null : (
-            <div className="contrast-50">
-              {tokensList.length} item
-              {tokensList.length !== 1 ? "s" : ""}
-            </div>
+          {variant === ForWhom.Yours && (
+            <EtherFieldAddition variant={ForWhom.Yours} />
+          )}
+          {variant === ForWhom.Their && validatedAddressToSwap && (
+            <>
+              <SelectAnyUserToSwap />
+              <EtherFieldAddition variant={ForWhom.Their} />
+            </>
           )}
         </div>
         <div className="w-full h-full max-h-[156px] rounded overflow-x-hidden overflow-y-auto no-scrollbar">

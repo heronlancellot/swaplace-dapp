@@ -26,16 +26,6 @@ export interface Swap {
   asking: Asset[];
 }
 
-export interface ICreateSwap {
-  walletClient: WalletClient;
-  expireDate: bigint;
-  searchedUserTokensList: Token[];
-  authenticatedUserTokensList: Token[];
-  validatedAddressToSwap: string;
-  authenticatedUserAddress: EthereumAddress;
-  chain: number;
-}
-
 export type TokenWithSwapInfo = {
   tokenAddress: `0x${string}`;
   amountOrId: bigint;

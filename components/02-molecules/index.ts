@@ -5,6 +5,8 @@ export * from "./CardOffers";
 export * from "./ConfirmSwapModal";
 export * from "./CopyAdressButton";
 export * from "./EnsNameAndAddressWallet";
+export * from "./EtherAmountSelectionModal";
+export * from "./EtherFieldAddition";
 export * from "./FilterOffers";
 export * from "./OfferSummary";
 export * from "./ProgressStatus";
