@@ -2,16 +2,20 @@ import { ForWhom } from "../03-organisms";
 import { SwapContext } from "@/lib/client/contexts";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { EthereumAddress } from "@/lib/shared/types";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import cc from "classcat";
 
 export const SwappingSearchTab = () => {
+  const [lastSearchedUser, setLastsearchedUser] =
+    useState<EthereumAddress | null>(null);
   // PUBLIC OFFER
   const {
     setValidatedAddressToSwap,
     setAnyUserToSwap,
     setPublicOrPrivateSwap,
     publicOrPrivateSwap,
+    validatedAddressToSwap,
+    setInputAddress,
   } = useContext(SwapContext);
   interface SwappingSearchTab {
     id: number;
@@ -35,11 +39,18 @@ export const SwappingSearchTab = () => {
     switch (tabId) {
       case ForWhom.Yours:
         setAnyUserToSwap(false);
-        setValidatedAddressToSwap(null);
+        setValidatedAddressToSwap(lastSearchedUser);
+        if (lastSearchedUser !== validatedAddressToSwap && lastSearchedUser) {
+          setInputAddress(lastSearchedUser.address);
+        }
         break;
       case ForWhom.Their:
+        setLastsearchedUser(validatedAddressToSwap);
         setAnyUserToSwap(true);
         setValidatedAddressToSwap(new EthereumAddress(ADDRESS_ZERO));
+        if (lastSearchedUser !== validatedAddressToSwap) {
+          setInputAddress("");
+        }
         break;
       default:
         break;
