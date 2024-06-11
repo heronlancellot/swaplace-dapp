@@ -1,6 +1,7 @@
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-named-as-default-member */
+import { SwappingSearchTab } from "./SwappingSearchTab";
 import { MagnifyingGlassIcon } from "@/components/01-atoms";
 import { EthereumAddress } from "@/lib/shared/types";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
@@ -108,25 +109,28 @@ export const SearchBar = () => {
           Who are you swapping with today?
         </h2>
       </div>
-      <div
-        className={
-          "flex items-center border rounded-2xl pl-4 pr-3 gap-4 bg-[#F6F6F6] hover:bg-[#F0EEEE75] hover:shadow-[0_0_6px_1px_#00000014] dark:bg-[#212322] border-[#D6D5D5] hover:border-[#AABE13] dark:border-[#353836] focus:border-[#FFFFFF] dark:hover:border-[#edff6259] dark:shadow-swap-station shadow-swap-connection-light transition duration-300 ease-in-out"
-        }
-      >
-        <div className="justify-center items-center">
-          <MagnifyingGlassIcon className="w-5 text-[#A3A9A5] dark:text-[#353836]" />
-        </div>
-        <input
-          id="search"
-          name="search"
-          type="search"
+      <div className="w-full flex items-center">
+        <div
           className={
-            "h-11 w-full border-gray-100 focus:ring-0 focus:ring-transparent focus:outline-none focus-visible:border-gray-300 placeholder:p-small text-ellipsis border-none bg-transparent dark:border-none dark:bg-transparent contrast-50"
+            "flex w-full items-center border rounded-2xl pl-4 pr-3 gap-4 bg-[#F6F6F6] hover:bg-[#F0EEEE75] hover:shadow-[0_0_6px_1px_#00000014] dark:bg-[#212322] border-[#D6D5D5] hover:border-[#AABE13] dark:border-[#353836] focus:border-[#FFFFFF] dark:hover:border-[#edff6259] dark:shadow-swap-station shadow-swap-connection-light transition duration-300 ease-in-out"
           }
-          placeholder="Search username, address or ENS"
-          value={inputAddress}
-          onChange={({ target }) => setInputAddress(target.value)}
-        />
+        >
+          <SwappingSearchTab />
+          <div className="justify-center items-center">
+            <MagnifyingGlassIcon className="w-5 text-[#A3A9A5] dark:text-[#353836]" />
+          </div>
+          <input
+            id="search"
+            name="search"
+            type="search"
+            className={
+              "h-11 w-full border-gray-100 focus:ring-0 focus:ring-transparent focus:outline-none focus-visible:border-gray-300 placeholder:p-small text-ellipsis border-none bg-transparent dark:border-none dark:bg-transparent contrast-50"
+            }
+            placeholder="Search username, address or ENS"
+            value={inputAddress}
+            onChange={({ target }) => setInputAddress(target.value)}
+          />
+        </div>
       </div>
     </div>
   );
