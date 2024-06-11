@@ -1,6 +1,7 @@
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-named-as-default-member */
+import { ForWhom } from "../03-organisms";
 import { MagnifyingGlassIcon } from "@/components/01-atoms";
 import { EthereumAddress } from "@/lib/shared/types";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
@@ -29,6 +30,7 @@ export const SearchBar = () => {
     setValidatedAddressToSwap,
     setUserJustValidatedInput,
     setAnyUserToSwap,
+    setPublicOrPrivateSwap,
   } = useContext(SwapContext);
 
   useEffect(() => {
@@ -66,6 +68,7 @@ export const SearchBar = () => {
     setValidatedAddressToSwap(_inputAddress);
     setUserJustValidatedInput(true);
     setAnyUserToSwap(false);
+    setPublicOrPrivateSwap(ForWhom.Yours);
     toast.success("Searching for address...");
   };
 

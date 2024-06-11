@@ -2,15 +2,17 @@ import { ForWhom } from "../03-organisms";
 import { SwapContext } from "@/lib/client/contexts";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { EthereumAddress } from "@/lib/shared/types";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import cc from "classcat";
 
 export const SwappingSearchTab = () => {
-  const [activeTab, setIsActiveTab] = useState(ForWhom.Their);
-
   // PUBLIC OFFER
-  const { setValidatedAddressToSwap, setAnyUserToSwap } =
-    useContext(SwapContext);
+  const {
+    setValidatedAddressToSwap,
+    setAnyUserToSwap,
+    setPublicOrPrivateSwap,
+    publicOrPrivateSwap,
+  } = useContext(SwapContext);
   interface SwappingSearchTab {
     id: number;
     name: string;
@@ -28,7 +30,7 @@ export const SwappingSearchTab = () => {
   ];
 
   const handleTabChange = (tabId: number) => {
-    setIsActiveTab(tabId);
+    setPublicOrPrivateSwap(tabId);
 
     switch (tabId) {
       case ForWhom.Yours:
@@ -51,7 +53,7 @@ export const SwappingSearchTab = () => {
           <div
             key={tab.id}
             className={cc([
-              activeTab === tab.id && "bg-[#DDF23D]",
+              publicOrPrivateSwap === tab.id && "bg-[#DDF23D]",
               "flex cursor-pointer rounded-lg py-2 px-3 justify-center items-center dark:p-medium-bold-variant-black p-medium-bold-variant-black w-[100px]",
             ])}
             role="tab"
