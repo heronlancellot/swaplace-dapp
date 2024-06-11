@@ -31,6 +31,7 @@ export const SearchBar = () => {
     setUserJustValidatedInput,
     setAnyUserToSwap,
     setPublicOrPrivateSwap,
+    anyUserToSwap,
   } = useContext(SwapContext);
 
   useEffect(() => {
@@ -98,7 +99,7 @@ export const SearchBar = () => {
       toast.error("You must connect your wallet to search for an address");
       setUserJustValidatedInput(true);
       setValidatedAddressToSwap(null);
-    } else if (inputAddress.length === 0) {
+    } else if (inputAddress.length === 0 && !anyUserToSwap) {
       setUserJustValidatedInput(true);
       setValidatedAddressToSwap(null);
     }
