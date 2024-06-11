@@ -9,11 +9,8 @@ export const SwappingSearchTab = () => {
   const [activeTab, setIsActiveTab] = useState(ForWhom.Their);
 
   // PUBLIC OFFER
-  const {
-    setValidatedAddressToSwap,
-    setAnyUserToSwap,
-    validatedAddressToSwap,
-  } = useContext(SwapContext);
+  const { setValidatedAddressToSwap, setAnyUserToSwap } =
+    useContext(SwapContext);
   interface SwappingSearchTab {
     id: number;
     name: string;
@@ -35,13 +32,10 @@ export const SwappingSearchTab = () => {
 
     switch (tabId) {
       case ForWhom.Yours:
-        console.log("User");
         setAnyUserToSwap(false);
         setValidatedAddressToSwap(null);
-        setValidatedAddressToSwap(validatedAddressToSwap);
         break;
       case ForWhom.Their:
-        console.log("Public offer");
         setAnyUserToSwap(true);
         setValidatedAddressToSwap(new EthereumAddress(ADDRESS_ZERO));
         break;
@@ -57,8 +51,8 @@ export const SwappingSearchTab = () => {
           <div
             key={tab.id}
             className={cc([
-              activeTab === tab.id && "dark:bg-[#DDF23D]",
-              "flex cursor-pointer rounded-lg py-2 px-3 justify-center items-center dark:p-medium-bold-variant-black w-[100px]",
+              activeTab === tab.id && "bg-[#DDF23D]",
+              "flex cursor-pointer rounded-lg py-2 px-3 justify-center items-center dark:p-medium-bold-variant-black p-medium-bold-variant-black w-[100px]",
             ])}
             role="tab"
             onClick={() => {
