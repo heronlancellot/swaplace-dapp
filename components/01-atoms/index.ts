@@ -19,6 +19,7 @@ export * from "./SwapExpireTime";
 export * from "./SwapModalButton";
 export * from "./SwapModalLayout";
 export * from "./SwappingIcons";
+export * from "./SwappingSearchTab";
 export * from "./ThreeDotsCardOffersOptions";
 export * from "./TokenCardProperties";
 export * from "./TokenCardsPlaceholder";

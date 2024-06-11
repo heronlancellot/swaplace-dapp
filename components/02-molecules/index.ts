@@ -10,6 +10,7 @@ export * from "./EtherFieldAddition";
 export * from "./FilterOffers";
 export * from "./OfferSummary";
 export * from "./ProgressStatus";
+export * from "./SearchUserConnection";
 export * from "./SelectChainNetwork";
 export * from "./SwapOffersLayout";
 export * from "./TheHeader";
