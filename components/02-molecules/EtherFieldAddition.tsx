@@ -23,8 +23,6 @@ export const EtherFieldAddition = ({ variant }: { variant: ForWhom }) => {
     setIsMounted(true);
   }, []);
 
-  console.log("variant", variant);
-
   return (
     <div className="flex gap-2">
       <p className="flex items-center p-small-variant-black-3 dark:p-small-variant-light-2">

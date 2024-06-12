@@ -22,7 +22,7 @@ export const LEADERBOARD_QUERY = `
 export const USER_RANKING_QUERY = `
        query profileDatabases($network: BigInt, $inputAddress: String) {
         profileDatabases(
-           where: {network: $network, owner: $inputAddress}, 
+           where: {network: $network, id: $inputAddress}, 
            limit: 1,
          ) {
            items {
