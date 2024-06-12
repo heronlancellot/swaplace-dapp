@@ -1,10 +1,5 @@
 import { ForWhom } from "../03-organisms";
-import {
-  ENSAvatar,
-  ENSAvatarSize,
-  PersonIcon,
-  SelectAnyUserToSwap,
-} from "@/components/01-atoms";
+import { ENSAvatar, ENSAvatarSize, PersonIcon } from "@/components/01-atoms";
 import {
   EtherFieldAddition,
   TokenCardStyleType,
@@ -94,10 +89,7 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
             <EtherFieldAddition variant={ForWhom.Yours} />
           )}
           {variant === ForWhom.Their && validatedAddressToSwap && (
-            <>
-              <SelectAnyUserToSwap />
-              <EtherFieldAddition variant={ForWhom.Their} />
-            </>
+            <EtherFieldAddition variant={ForWhom.Their} />
           )}
         </div>
         <div className="w-full h-full max-h-[156px] rounded overflow-x-hidden overflow-y-auto no-scrollbar">
