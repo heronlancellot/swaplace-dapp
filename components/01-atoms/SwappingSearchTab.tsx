@@ -7,7 +7,7 @@ import cc from "classcat";
 
 export const SwappingSearchTab = () => {
   const [lastSearchedUser, setLastsearchedUser] =
-    useState<EthereumAddress | null>(new EthereumAddress(ADDRESS_ZERO));
+    useState<EthereumAddress | null>(null);
   // PUBLIC OFFER
   const {
     setValidatedAddressToSwap,
@@ -39,15 +39,29 @@ export const SwappingSearchTab = () => {
     switch (tabId) {
       case ForWhom.Yours:
         setAnyUserToSwap(false);
-        if (lastSearchedUser !== validatedAddressToSwap && lastSearchedUser) {
+        if (
+          lastSearchedUser &&
+          validatedAddressToSwap &&
+          lastSearchedUser.address !== validatedAddressToSwap.address
+        ) {
           setInputAddress(lastSearchedUser.address);
+        } else if (
+          lastSearchedUser &&
+          validatedAddressToSwap &&
+          lastSearchedUser.address === validatedAddressToSwap.address
+        ) {
+          setValidatedAddressToSwap(null);
         }
         break;
       case ForWhom.Their:
-        setLastsearchedUser(validatedAddressToSwap);
         setAnyUserToSwap(true);
         setValidatedAddressToSwap(new EthereumAddress(ADDRESS_ZERO));
-        if (lastSearchedUser !== validatedAddressToSwap) {
+        setLastsearchedUser(new EthereumAddress(ADDRESS_ZERO));
+        if (
+          lastSearchedUser &&
+          validatedAddressToSwap &&
+          lastSearchedUser.address !== validatedAddressToSwap.address
+        ) {
           setInputAddress("");
         }
         break;
