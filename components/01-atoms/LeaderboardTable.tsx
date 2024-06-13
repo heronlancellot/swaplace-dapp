@@ -12,7 +12,7 @@ import {
 } from "@/lib/service/fetchLeaderboard";
 import { Leaderboard, LeaderboardData } from "@/lib/client/leaderboard-utils";
 import { collapseAddress } from "@/lib/client/utils";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
 
@@ -27,6 +27,8 @@ export const LeaderboardTable = () => {
   if (typeof chain?.id !== "undefined") {
     chainId = chain?.id;
   }
+
+  const [userRank, setUserRank] = useState<number | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -56,6 +58,7 @@ export const LeaderboardTable = () => {
       });
       const parsedLedboardData = parseLeaderboardData(data);
       setLeaderboardData(parsedLedboardData);
+      setUserRank(data.userRank || null);
     } catch (error) {
       console.log(error);
     }
@@ -157,7 +160,7 @@ export const LeaderboardTable = () => {
           {userData && (
             <tr>
               <td className="px-6 py-3 text-[#ddf23d] text-sm">
-                {userData.Rank}
+                {userRank !== null ? userRank : userData.Rank}
               </td>
               <td className="px-3.5 py-3 text-[#ddf23d] text-sm flex items-center">
                 <StarIcon className="mr-1.5" />{" "}

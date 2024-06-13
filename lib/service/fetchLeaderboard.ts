@@ -62,11 +62,15 @@ export const fetchLeaderboard = async ({
         const userScore =
           userRankingResponse.data.data.profileDatabases.items[0]?.totalScore;
         const rankingEndpoint = process.env.NEXT_PUBLIC_EXPRESS_ENDPOINT;
-        const rankingResponse = await axios.get(
-          `${rankingEndpoint}?score=${userScore}`,
-        );
-        userRank = rankingResponse.data.total_count;
-        console.log(`Current rank position of the user: ${userRank}`);
+
+        try {
+          const rankingResponse = await axios.get(
+            `${rankingEndpoint}?score=${userScore}`,
+          );
+          userRank = rankingResponse.data.total_count;
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
 
