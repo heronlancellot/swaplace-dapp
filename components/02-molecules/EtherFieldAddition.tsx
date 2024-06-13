@@ -9,15 +9,12 @@ import { useNetwork } from "wagmi";
 export const EtherFieldAddition = ({ variant }: { variant: ForWhom }) => {
   const [open, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const { authenticatedUserEtherValue, searchedUserEtherValue } =
-    useContext(SwapContext);
+  const { etherValue } = useContext(SwapContext);
   const { chain } = useNetwork();
 
-  // Use authenticatedUserEtherValue if variant is 'YOURS', otherwise use searchedUserEtherValue
-  const etherValue =
-    variant === ForWhom.Yours
-      ? authenticatedUserEtherValue
-      : searchedUserEtherValue;
+  // if (variant === ForWhom.Yours && !etherValue) {
+  //   return <></>;
+  // }
 
   useEffect(() => {
     setIsMounted(true);

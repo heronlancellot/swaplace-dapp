@@ -52,12 +52,6 @@ interface SwapContextProps {
   etherValue: bigint;
   setEtherValue: (etherValue: bigint) => void;
 
-  authenticatedUserEtherValue: bigint;
-  setAuthenticatedUserEtherValue: (authenticatedUserEtherValue: bigint) => void;
-
-  searchedUserEtherValue: bigint;
-  setSearchedUserEtherValue: (searchedUserEtherValue: bigint) => void;
-
   clearSwapData: () => void;
 
   setAnyUserToSwap: (isChecked: boolean) => void;
@@ -69,11 +63,6 @@ interface SwapContextProps {
 
 export const SwapContextProvider = ({ children }: any) => {
   const [etherRecipient, setEtherRecipient] = useState<number>(0);
-  const [authenticatedUserEtherValue, setAuthenticatedUserEtherValue] =
-    useState<bigint>(BigInt(0));
-  const [searchedUserEtherValue, setSearchedUserEtherValue] = useState<bigint>(
-    BigInt(0),
-  );
   const [etherValue, setEtherValue] = useState<bigint>(BigInt(0));
   const [lastWalletConnected, setLastWalletConnected] = useState("");
   const [inputAddress, setInputAddress] = useState("");
@@ -89,6 +78,7 @@ export const SwapContextProvider = ({ children }: any) => {
     SupportedNetworks.KAKAROT_SEPOLIA,
   );
   const [timeDate, setTimeDate] = useState<bigint>(BigInt(1));
+
   const [currentSwapModalStep, setCurrentSwapModalStep] =
     useState<SwapModalSteps>(SwapModalSteps.APPROVE_TOKENS);
   const [approvedTokensCount, setApprovedTokensCount] = useState(0);
@@ -138,7 +128,7 @@ export const SwapContextProvider = ({ children }: any) => {
   }, [inputAddress]);
 
   useEffect(() => {
-    setSearchedUserEtherValue(0n);
+    setEtherValue(0n); // Check if need this
   }, [validatedAddressToSwap]);
 
   useEffect(() => {
@@ -166,12 +156,8 @@ export const SwapContextProvider = ({ children }: any) => {
       clearSwapData,
       setEtherRecipient,
       etherRecipient,
-      setAuthenticatedUserEtherValue,
-      authenticatedUserEtherValue,
       anyUserToSwap,
       setAnyUserToSwap,
-      setSearchedUserEtherValue,
-      searchedUserEtherValue,
       setPublicOrPrivateSwap,
       publicOrPrivateSwap,
       setEtherValue,
@@ -189,10 +175,8 @@ export const SwapContextProvider = ({ children }: any) => {
     approvedTokensCount,
     currentSwapModalStep,
     anyUserToSwap,
-    authenticatedUserEtherValue,
     etherRecipient,
     etherValue,
-    searchedUserEtherValue,
     publicOrPrivateSwap,
   ]);
 
@@ -220,12 +204,8 @@ export const SwapContextProvider = ({ children }: any) => {
     clearSwapData,
     setEtherRecipient,
     etherRecipient,
-    setAuthenticatedUserEtherValue,
-    authenticatedUserEtherValue,
     anyUserToSwap,
     setAnyUserToSwap,
-    setSearchedUserEtherValue,
-    searchedUserEtherValue,
     setPublicOrPrivateSwap,
     publicOrPrivateSwap,
     setEtherValue,
@@ -267,12 +247,8 @@ export const SwapContext = React.createContext<SwapContextProps>({
   clearSwapData: () => {},
   etherRecipient: 0,
   setEtherRecipient: () => {},
-  authenticatedUserEtherValue: BigInt(0),
-  setAuthenticatedUserEtherValue: () => {},
   setAnyUserToSwap: (isChecked: boolean) => {},
   anyUserToSwap: false,
-  setSearchedUserEtherValue: () => {},
-  searchedUserEtherValue: BigInt(0),
   publicOrPrivateSwap: 0,
   setPublicOrPrivateSwap: (tabId: number) => {},
   setEtherValue: (etherValue: bigint) => {},

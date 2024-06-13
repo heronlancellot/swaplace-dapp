@@ -25,12 +25,8 @@ export const EtherAmountSelectionModal = ({
   const [etherAmountMax, setEtherAmountMax] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("0.00"); // User input value
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  const {
-    setAuthenticatedUserEtherValue,
-    setEtherRecipient,
-    setSearchedUserEtherValue,
-    validatedAddressToSwap,
-  } = useContext(SwapContext);
+  const { setEtherValue, setEtherRecipient, validatedAddressToSwap } =
+    useContext(SwapContext);
   const { chain } = useNetwork();
 
   const userAddress =
@@ -43,11 +39,6 @@ export const EtherAmountSelectionModal = ({
   });
   const match = balance?.match(/^(\d+\.\d{1,3})|\d+/);
   const displayBalance = match ? match[0] : balance;
-
-  const setEtherValue =
-    variant === ForWhom.Yours
-      ? setAuthenticatedUserEtherValue
-      : setSearchedUserEtherValue;
 
   const handleEtherAddition = () => {
     if (authenticatedUserAddress) {

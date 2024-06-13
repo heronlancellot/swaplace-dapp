@@ -47,10 +47,10 @@ export const ConfirmSwapModal = ({
     approvedTokensCount: createSwapApprovedTokensCount,
     validatedAddressToSwap,
     currentSwapModalStep,
-    authenticatedUserEtherValue, // TODO : Remove authenticated & Searched to use etherValue
+    // TODO : Remove authenticated & Searched to use etherValue
     // searchedUserEtherValue,
     etherRecipient,
-    // etherValue,
+    etherValue,
     updateSwapStep,
     clearSwapData,
   } = useContext(SwapContext);
@@ -220,19 +220,15 @@ export const ConfirmSwapModal = ({
 
             // MSG VALUE
             //
-            console.log(
-              "authenticatedUserEtherValue",
-              authenticatedUserEtherValue,
-            );
+            console.log("etherValue", etherValue);
             // 0,000001 ETH == 1 ( Min Value to create swap )
             // 1 ETH == 1000000
-            const etherValue = BigInt(0);
 
             const encodeConfigData = await encodeConfig({
               allowed: validatedAddressToSwap.address,
               expiry: timeDate,
               etherRecipient: etherRecipient, // 0 -> allowed gets the eth  // 1 ~ 255 -> the allowed send the eth, the owner receives
-              etherValue: etherValue * BigInt(10e6), //authenticatedUserEtherValue,
+              etherValue: etherValue * BigInt(10e6), //etherValue,
             });
 
             const swapConfig = await getSwapConfig(
