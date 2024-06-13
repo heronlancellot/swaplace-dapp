@@ -3,7 +3,7 @@ import {
   LeaderboardRankingIcon,
   Ranking,
 } from "./icons/LeaderboardRankingIcon";
-import { StarIcon } from "./icons/StarIcon";
+import { StarIcon } from "@/components/01-atoms/";
 import { LeaderboardContext } from "@/lib/client/contexts/LeaderboardContext";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
