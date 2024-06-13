@@ -3,6 +3,7 @@ import {
   LeaderboardRankingIcon,
   Ranking,
 } from "./icons/LeaderboardRankingIcon";
+import { StarIcon } from "./icons/StarIcon";
 import { LeaderboardContext } from "@/lib/client/contexts/LeaderboardContext";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
@@ -74,6 +75,10 @@ export const LeaderboardTable = () => {
 
   const BodyData: Record<Leaderboard, string | React.JSX.Element>[] = dataBody;
 
+  const userData = leaderboardData.find(
+    (data) => data.Address.toLowerCase() === userAddress?.toLowerCase(),
+  );
+
   return (
     <div className="w-full border border-[#282B29] rounded-lg bg-[#282B29]">
       <table className="w-full text-left table-fixed ">
@@ -139,6 +144,32 @@ export const LeaderboardTable = () => {
               ))}
             </tr>
           ))}
+
+          {userData && (
+            <tr>
+              <td
+                colSpan={LeaderboardData.length}
+                className="border-t border-[#353836] "
+              ></td>
+            </tr>
+          )}
+
+          {userData && (
+            <tr>
+              <td className="px-6 py-3 text-[#ddf23d] text-sm">
+                {userData.Rank}
+              </td>
+              <td className="px-0 py-3 text-[#ddf23d] text-sm flex items-center pr-5">
+                {" "}
+                {/* Increase paddingLeft to move content to the right */}
+                <StarIcon className="ml-[-5px] mr-2" />
+                {collapseAddress(userData.Address)}
+              </td>
+              <td className="px-4 py-3 text-end text-[#ddf23d] text-sm">
+                {userData.Points.toString()}
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
