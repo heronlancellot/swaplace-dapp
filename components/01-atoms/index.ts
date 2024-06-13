@@ -61,6 +61,7 @@ export * from "./icons/PlusIconSmall";
 export * from "./icons/PowerIcon";
 export * from "./icons/SelectUserIcon";
 export * from "./icons/ShareIcon";
+export * from "./icons/StarIcon";
 export * from "./icons/SunIcon";
 export * from "./icons/SwapIcon";
 export * from "./icons/SwaplaceIcon";
