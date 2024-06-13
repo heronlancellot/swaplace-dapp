@@ -47,8 +47,10 @@ export const ConfirmSwapModal = ({
     approvedTokensCount: createSwapApprovedTokensCount,
     validatedAddressToSwap,
     currentSwapModalStep,
-    authenticatedUserEtherValue,
+    authenticatedUserEtherValue, // TODO : Remove authenticated & Searched to use etherValue
+    // searchedUserEtherValue,
     etherRecipient,
+    // etherValue,
     updateSwapStep,
     clearSwapData,
   } = useContext(SwapContext);
@@ -212,11 +214,25 @@ export const ConfirmSwapModal = ({
               searchedUserTokensList,
             );
 
+            // 0,045 ETH ( input )
+            // 0,045 * 10e6 = 45000
+            // 45000 = etherValue
+
+            // MSG VALUE
+            //
+            console.log(
+              "authenticatedUserEtherValue",
+              authenticatedUserEtherValue,
+            );
+            // 0,000001 ETH == 1 ( Min Value to create swap )
+            // 1 ETH == 1000000
+            const etherValue = BigInt(0);
+
             const encodeConfigData = await encodeConfig({
               allowed: validatedAddressToSwap.address,
               expiry: timeDate,
-              etherRecipient: etherRecipient,
-              etherValue: authenticatedUserEtherValue,
+              etherRecipient: etherRecipient, // 0 -> allowed gets the eth  // 1 ~ 255 -> the allowed send the eth, the owner receives
+              etherValue: etherValue * BigInt(10e6), //authenticatedUserEtherValue,
             });
 
             const swapConfig = await getSwapConfig(
@@ -228,7 +244,19 @@ export const ConfirmSwapModal = ({
               chainId,
             );
 
-            transactionReceipt = await createSwap(swapConfig, configurations);
+            // Create swap
+            const msgValue =
+              etherRecipient == 0 ? etherValue * BigInt(10e18) : BigInt(0);
+
+            // ACCEPT SWAP
+            const msgValueAcceptSwap =
+              etherRecipient > 0 ? etherValue * BigInt(10e18) : BigInt(0);
+
+            transactionReceipt = await createSwap(
+              swapConfig,
+              configurations,
+              msgValue,
+            );
             break;
         }
 

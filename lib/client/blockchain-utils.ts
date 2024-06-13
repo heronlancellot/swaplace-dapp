@@ -335,7 +335,7 @@ export const toastBlockchainTxError = (e: string) => {
 interface encodeConfigProps {
   allowed: string;
   expiry: bigint;
-  etherRecipient: bigint;
+  etherRecipient: number;
   etherValue: bigint;
 }
 export async function encodeConfig({

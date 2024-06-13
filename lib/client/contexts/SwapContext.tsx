@@ -46,8 +46,8 @@ interface SwapContextProps {
   timeDate: bigint;
   setTimeDate: Dispatch<React.SetStateAction<bigint>>;
 
-  etherRecipient: bigint;
-  setEtherRecipient: (etherRecipient: bigint) => void;
+  etherRecipient: number;
+  setEtherRecipient: (etherRecipient: number) => void;
 
   authenticatedUserEtherValue: bigint;
   setAuthenticatedUserEtherValue: (authenticatedUserEtherValue: bigint) => void;
@@ -65,12 +65,13 @@ interface SwapContextProps {
 }
 
 export const SwapContextProvider = ({ children }: any) => {
-  const [etherRecipient, setEtherRecipient] = useState<bigint>(BigInt(0));
+  const [etherRecipient, setEtherRecipient] = useState<number>(0);
   const [authenticatedUserEtherValue, setAuthenticatedUserEtherValue] =
     useState<bigint>(BigInt(0));
   const [searchedUserEtherValue, setSearchedUserEtherValue] = useState<bigint>(
     BigInt(0),
   );
+  const [etherValue, setEtherValue] = useState<bigint>(BigInt(0));
   const [lastWalletConnected, setLastWalletConnected] = useState("");
   const [inputAddress, setInputAddress] = useState("");
   const [validatedAddressToSwap, setValidatedAddressToSwap] =
@@ -261,7 +262,7 @@ export const SwapContext = React.createContext<SwapContextProps>({
   currentSwapModalStep: SwapModalSteps.APPROVE_TOKENS,
   updateSwapStep: (buttonClickAction: ButtonClickPossibilities) => {},
   clearSwapData: () => {},
-  etherRecipient: BigInt(0),
+  etherRecipient: 0,
   setEtherRecipient: () => {},
   authenticatedUserEtherValue: BigInt(0),
   setAuthenticatedUserEtherValue: () => {},

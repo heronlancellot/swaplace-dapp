@@ -11,6 +11,7 @@ export interface SwapUserConfiguration {
 export async function createSwap(
   swap: Swap,
   configurations: SwapUserConfiguration,
+  msgValue: bigint,
 ) {
   const data = encodeFunctionData({
     abi: [
@@ -106,6 +107,7 @@ export async function createSwap(
         configurations.chain
       ] as `0x${string}`,
       gasLimit: gasLimit,
+      value: msgValue, // amount of ether to send to contract
     });
 
     const transactionReceipt = await publicClient({

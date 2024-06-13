@@ -57,7 +57,7 @@ export const EtherAmountSelectionModal = ({
       }
       if (displayBalance !== null) {
         if (etherAmountMax) {
-          setEtherRecipient(1n); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
+          setEtherRecipient(1); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
           setEtherValue(parseEther(displayBalance));
           toast.success(
             `${displayBalance} ${chain?.nativeCurrency.symbol} has been added`,
@@ -67,7 +67,7 @@ export const EtherAmountSelectionModal = ({
           !etherAmountMax &&
           parseEther(inputValue) <= parseEther(displayBalance)
         ) {
-          setEtherRecipient(1n); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
+          setEtherRecipient(1); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
           setEtherValue(etherAmount);
           toast.success(
             `${formatEther(etherAmount)} ${
