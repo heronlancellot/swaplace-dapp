@@ -161,7 +161,6 @@ export const LeaderboardTable = () => {
               </td>
               <td className="px-3.5 py-3 text-[#ddf23d] text-sm flex items-center">
                 <StarIcon className="mr-1.5" />{" "}
-                {/* Adjust marginRight as needed */}
                 {collapseAddress(userData.Address)}
               </td>
               <td className="px-4 py-3 text-end text-[#ddf23d] text-sm">
