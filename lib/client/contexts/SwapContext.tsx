@@ -49,6 +49,9 @@ interface SwapContextProps {
   etherRecipient: number;
   setEtherRecipient: (etherRecipient: number) => void;
 
+  etherValue: bigint;
+  setEtherValue: (etherValue: bigint) => void;
+
   authenticatedUserEtherValue: bigint;
   setAuthenticatedUserEtherValue: (authenticatedUserEtherValue: bigint) => void;
 
@@ -86,7 +89,6 @@ export const SwapContextProvider = ({ children }: any) => {
     SupportedNetworks.KAKAROT_SEPOLIA,
   );
   const [timeDate, setTimeDate] = useState<bigint>(BigInt(1));
-
   const [currentSwapModalStep, setCurrentSwapModalStep] =
     useState<SwapModalSteps>(SwapModalSteps.APPROVE_TOKENS);
   const [approvedTokensCount, setApprovedTokensCount] = useState(0);
@@ -139,10 +141,6 @@ export const SwapContextProvider = ({ children }: any) => {
     setSearchedUserEtherValue(0n);
   }, [validatedAddressToSwap]);
 
-  // useEffect(() => {
-  //   setSearchedUserTokensList([]);
-  // }, [destinyChain]);
-
   useEffect(() => {
     setSwapData({
       lastWalletConnected,
@@ -176,6 +174,8 @@ export const SwapContextProvider = ({ children }: any) => {
       searchedUserEtherValue,
       setPublicOrPrivateSwap,
       publicOrPrivateSwap,
+      setEtherValue,
+      etherValue,
     });
   }, [
     lastWalletConnected,
@@ -191,6 +191,7 @@ export const SwapContextProvider = ({ children }: any) => {
     anyUserToSwap,
     authenticatedUserEtherValue,
     etherRecipient,
+    etherValue,
     searchedUserEtherValue,
     publicOrPrivateSwap,
   ]);
@@ -227,6 +228,8 @@ export const SwapContextProvider = ({ children }: any) => {
     searchedUserEtherValue,
     setPublicOrPrivateSwap,
     publicOrPrivateSwap,
+    setEtherValue,
+    etherValue,
   });
 
   // This is a temporary measure while we don't turn the dApp into a SPA
@@ -272,4 +275,6 @@ export const SwapContext = React.createContext<SwapContextProps>({
   searchedUserEtherValue: BigInt(0),
   publicOrPrivateSwap: 0,
   setPublicOrPrivateSwap: (tabId: number) => {},
+  setEtherValue: (etherValue: bigint) => {},
+  etherValue: BigInt(0),
 });
