@@ -48,7 +48,14 @@ export const EtherAmountSelectionModal = ({
       }
       if (userAddressBalance !== null) {
         if (isMaxEtherSelected) {
-          setEtherRecipient(1); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
+          switch (variant) {
+            case ForWhom.Yours:
+              setEtherRecipient(0); // If the recipient is 0 then the recipient will be the user.
+              break;
+            case ForWhom.Their:
+              setEtherRecipient(1); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
+              break;
+          }
           setEtherValue(parseEther(userAddressBalance));
           toast.success(
             `${userAddressBalance} ${chain?.nativeCurrency.symbol} has been added`,
@@ -58,7 +65,14 @@ export const EtherAmountSelectionModal = ({
           !isMaxEtherSelected &&
           parseEther(inputValue) <= parseEther(userAddressBalance)
         ) {
-          setEtherRecipient(1); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
+          switch (variant) {
+            case ForWhom.Yours:
+              setEtherRecipient(0); // If the recipient is 0 then the recipient will be the user.
+              break;
+            case ForWhom.Their:
+              setEtherRecipient(1); // If the recipient is* between 1<>255 then the recipient will be the owner of the Swap.
+              break;
+          }
           setEtherValue(etherAmount);
           toast.success(
             `${formatEther(etherAmount)} ${
