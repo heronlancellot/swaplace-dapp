@@ -62,7 +62,7 @@ interface SwapContextProps {
 }
 
 export const SwapContextProvider = ({ children }: any) => {
-  const [etherRecipient, setEtherRecipient] = useState<number>(0);
+  const [etherRecipient, setEtherRecipient] = useState<number>(256); // 256 is the default value for the user
   const [etherValue, setEtherValue] = useState<bigint>(BigInt(0));
   const [lastWalletConnected, setLastWalletConnected] = useState("");
   const [inputAddress, setInputAddress] = useState("");
