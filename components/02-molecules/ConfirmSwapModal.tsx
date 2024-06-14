@@ -196,10 +196,15 @@ export const ConfirmSwapModal = ({
               );
               return;
             }
+            // ACCEPT SWAP
+            const msgValueAcceptSwap =
+              etherRecipient > 0 ? etherValue : BigInt(0);
+
             transactionReceipt = await acceptSwap(
               swapOfferToAccept.id,
               authenticatedUserAddress,
               configurations,
+              msgValueAcceptSwap,
             );
             break;
           case SwapModalAction.CREATE_SWAP:
@@ -214,21 +219,11 @@ export const ConfirmSwapModal = ({
               searchedUserTokensList,
             );
 
-            // 0,045 ETH ( input )
-            // 0,045 * 10e6 = 45000
-            // 45000 = etherValue
-
-            // MSG VALUE
-            //
-            console.log("etherValue", etherValue);
-            // 0,000001 ETH == 1 ( Min Value to create swap )
-            // 1 ETH == 1000000
-
             const encodeConfigData = await encodeConfig({
               allowed: validatedAddressToSwap.address,
               expiry: timeDate,
               etherRecipient: etherRecipient, // 0 -> allowed gets the eth  // 1 ~ 255 -> the allowed send the eth, the owner receives
-              etherValue: etherValue * BigInt(10e6), //etherValue,
+              etherValue: etherValue / BigInt(1e12),
             });
 
             const swapConfig = await getSwapConfig(
@@ -241,17 +236,13 @@ export const ConfirmSwapModal = ({
             );
 
             // Create swap
-            const msgValue =
-              etherRecipient == 0 ? etherValue * BigInt(10e18) : BigInt(0);
-
-            // ACCEPT SWAP
-            const msgValueAcceptSwap =
-              etherRecipient > 0 ? etherValue * BigInt(10e18) : BigInt(0);
+            const msgValueCreateSwap =
+              etherRecipient == 0 ? etherValue : BigInt(0);
 
             transactionReceipt = await createSwap(
               swapConfig,
               configurations,
-              msgValue,
+              msgValueCreateSwap,
             );
             break;
         }

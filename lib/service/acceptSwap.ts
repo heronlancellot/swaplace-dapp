@@ -12,6 +12,7 @@ export async function acceptSwap(
   swapId: bigint,
   receiver: EthereumAddress,
   configurations: SwapUserConfiguration,
+  msgValue: bigint,
 ) {
   const data = encodeFunctionData({
     abi: [
@@ -52,6 +53,7 @@ export async function acceptSwap(
       to: SWAPLACE_SMART_CONTRACT_ADDRESS[
         configurations.chain
       ] as `0x${string}`,
+      value: msgValue,
     });
 
     const transactionHash = await configurations.walletClient.sendTransaction({
@@ -60,6 +62,7 @@ export async function acceptSwap(
         configurations.chain
       ] as `0x${string}`,
       gasLimit: gasLimit,
+      value: msgValue,
     });
 
     const transactionReceipt = await publicClient({

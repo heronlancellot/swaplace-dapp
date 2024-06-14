@@ -99,6 +99,7 @@ export async function createSwap(
       to: SWAPLACE_SMART_CONTRACT_ADDRESS[
         configurations.chain
       ] as `0x${string}`,
+      value: msgValue,
     });
 
     const transactionHash = await configurations.walletClient.sendTransaction({
