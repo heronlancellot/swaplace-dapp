@@ -1,7 +1,13 @@
 import { ENSAvatar, ENSAvatarSize } from "@/components/01-atoms";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
+import { SwapContext } from "@/lib/client/contexts";
+import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useEnsData } from "@/lib/client/hooks/useENSData";
+import { isInRange } from "@/lib/client/utils";
 import { EthereumAddress } from "@/lib/shared/types";
+import { useContext, useEffect, useState } from "react";
+import { formatEther } from "viem";
+import { useNetwork } from "wagmi";
 
 export enum UserOfferVariant {
   DEFAULT = "default",
@@ -19,11 +25,20 @@ export const UserOfferInfo = ({
   const { primaryName } = useEnsData({
     ensAddress: address,
   });
+  const { etherValue, etherRecipient } = useContext(SwapContext);
+  const [isMounted, setIsMounted] = useState(false);
+  const { chain } = useNetwork();
+  const { authenticatedUserAddress } = useAuthenticatedUser();
+
   const displayAddress =
     address?.address === ADDRESS_ZERO
       ? "Acceptor"
       : address?.getEllipsedAddress();
 
+  useEffect(() => {
+    /* Only render the chain symbol after the component has mounted */
+    setIsMounted(true);
+  }, []);
   return variant == UserOfferVariant.DEFAULT ? (
     <div>
       <div className="flex gap-2">
@@ -57,15 +72,29 @@ export const UserOfferInfo = ({
             )}
           </div>
         </div>
-        {/* TODO > Include logic to calculate tokens value */}
-        {/* <div className="flex-row flex">
-            <p className="dark:p-small-dark p-small-variant-black">
-              0.1639 ETH
+        {address?.address !== authenticatedUserAddress?.address &&
+        etherRecipient === 0 ? (
+          <div className="flex-row flex items-center gap-1">
+            <p className="flex dark:p-small-dark p-small-variant-black">
+              {formatEther(etherValue).toString()}
             </p>
-            <p className="dark:p-small-dark dark:!text-[#A3A9A5] p-small-variant-black">
-              &nbsp; ($252.15)
+            <p className="flex dark:p-small-dark p-small-variant-black">
+              {isMounted && chain ? chain.nativeCurrency.symbol : ""}
             </p>
-          </div> */}
+          </div>
+        ) : address?.address === authenticatedUserAddress?.address &&
+          isInRange(etherRecipient, 1, 255) ? (
+          <div className="flex-row flex items-center gap-1">
+            <p className="flex dark:p-small-dark p-small-variant-black">
+              {formatEther(etherValue).toString()}
+            </p>
+            <p className="flex dark:p-small-dark p-small-variant-black">
+              {isMounted && chain ? chain.nativeCurrency.symbol : ""}
+            </p>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   ) : (
