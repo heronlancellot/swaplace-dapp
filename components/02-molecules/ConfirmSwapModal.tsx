@@ -198,7 +198,9 @@ export const ConfirmSwapModal = ({
             }
             // ACCEPT SWAP
             const msgValueAcceptSwap =
-              etherRecipient > 0 ? etherValue : BigInt(0);
+              etherRecipient > 0
+                ? BigInt(swapOfferToAccept.value) * BigInt(1e12)
+                : BigInt(0);
 
             transactionReceipt = await acceptSwap(
               swapOfferToAccept.id,

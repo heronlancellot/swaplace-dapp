@@ -173,13 +173,14 @@ export const fetchSwaps = async ({
           };
         },
       );
-
       const itemsArrayAsSwapOffers: FormattedSwapOfferAssets[] =
         processedItems.map((item) => {
           return {
             id: item.swapId,
             status: item.status,
             expiryDate: item.expiry,
+            recipient: item.recipient,
+            value: item.value,
             bidderAssets: {
               address: new EthereumAddress(item.owner),
               tokens: item.bid,
@@ -192,7 +193,6 @@ export const fetchSwaps = async ({
             },
           };
         });
-
       const itemsArrayAsSwapOffersPopulated: Promise<PopulatedSwapOfferCard>[] =
         itemsArrayAsSwapOffers.map(async (swap) => {
           const bidedTokensWithData = await retrieveDataFromTokensArray(
@@ -215,6 +215,8 @@ export const fetchSwaps = async ({
             id: BigInt(swap.id),
             status: swapStatus,
             expiryDate: swapExpiryData.expiry,
+            recipient: swap.recipient,
+            value: swap.value,
             bidderTokens: {
               address: swap.bidderAssets.address,
               tokens: bidedTokensWithData,
