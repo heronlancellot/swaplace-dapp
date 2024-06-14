@@ -3,6 +3,7 @@ import {
   LeaderboardRankingIcon,
   Ranking,
 } from "./icons/LeaderboardRankingIcon";
+import { StarIcon } from "@/components/01-atoms/";
 import { LeaderboardContext } from "@/lib/client/contexts/LeaderboardContext";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
@@ -11,7 +12,7 @@ import {
 } from "@/lib/service/fetchLeaderboard";
 import { Leaderboard, LeaderboardData } from "@/lib/client/leaderboard-utils";
 import { collapseAddress } from "@/lib/client/utils";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import cc from "classcat";
 
@@ -26,6 +27,8 @@ export const LeaderboardTable = () => {
   if (typeof chain?.id !== "undefined") {
     chainId = chain?.id;
   }
+
+  const [userRank, setUserRank] = useState<number | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -55,6 +58,7 @@ export const LeaderboardTable = () => {
       });
       const parsedLedboardData = parseLeaderboardData(data);
       setLeaderboardData(parsedLedboardData);
+      setUserRank(data.userRank || null);
     } catch (error) {
       console.log(error);
     }
@@ -73,6 +77,10 @@ export const LeaderboardTable = () => {
   }));
 
   const BodyData: Record<Leaderboard, string | React.JSX.Element>[] = dataBody;
+
+  const userData = leaderboardData.find(
+    (data) => data.Address.toLowerCase() === userAddress?.toLowerCase(),
+  );
 
   return (
     <div className="w-full border border-[#282B29] rounded-lg bg-[#282B29]">
@@ -139,6 +147,30 @@ export const LeaderboardTable = () => {
               ))}
             </tr>
           ))}
+
+          {userData && (
+            <tr>
+              <td
+                colSpan={LeaderboardData.length}
+                className="border-t border-[#353836] "
+              ></td>
+            </tr>
+          )}
+
+          {userData && (
+            <tr>
+              <td className="px-6 py-3 text-[#ddf23d] text-sm">
+                {userRank !== null ? userRank : userData.Rank}
+              </td>
+              <td className="px-3.5 py-3 text-[#ddf23d] text-sm flex items-center">
+                <StarIcon className="mr-1.5" />{" "}
+                {collapseAddress(userData.Address)}
+              </td>
+              <td className="px-4 py-3 text-end text-[#ddf23d] text-sm">
+                {userData.Points.toString()}
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

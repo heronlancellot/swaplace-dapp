@@ -5,11 +5,21 @@ import {
   USER_RANKING_QUERY,
 } from "../client/leaderboard-queries";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export interface LeaderboardDataResponse {
   profileData: RawLeaderboardDataInterface[];
   pageInfo: PageInfo;
   userRank?: number;
+}
+
+function handleErrorFlag() {
+  const errorDisplayed = localStorage.getItem("errorDisplayed");
+  if (!errorDisplayed) {
+    localStorage.setItem("errorDisplayed", "true");
+    return false;
+  }
+  return true;
 }
 
 export const fetchLeaderboard = async ({
@@ -62,11 +72,17 @@ export const fetchLeaderboard = async ({
         const userScore =
           userRankingResponse.data.data.profileDatabases.items[0]?.totalScore;
         const rankingEndpoint = process.env.NEXT_PUBLIC_EXPRESS_ENDPOINT;
-        const rankingResponse = await axios.get(
-          `${rankingEndpoint}?score=${userScore}`,
-        );
-        userRank = rankingResponse.data.total_count;
-        console.log(`Current rank position of the user: ${userRank}`);
+
+        try {
+          const rankingResponse = await axios.get(
+            `${rankingEndpoint}?score=${userScore}`,
+          );
+          userRank = rankingResponse.data.total_count;
+        } catch (error) {
+          if (!handleErrorFlag()) {
+            toast.error("Unable to connect. Please contact the team.");
+          }
+        }
       }
     }
 
