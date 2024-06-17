@@ -47,8 +47,6 @@ export const ConfirmSwapModal = ({
     approvedTokensCount: createSwapApprovedTokensCount,
     validatedAddressToSwap,
     currentSwapModalStep,
-    // TODO : Remove authenticated & Searched to use etherValue
-    // searchedUserEtherValue,
     etherRecipient,
     etherValue,
     updateSwapStep,
