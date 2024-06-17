@@ -31,6 +31,17 @@ export const capitalizeFirstLetterPrhases = (name: string): string => {
   return capitalizedName;
 };
 
+/**
+ * Checks if a given value is within a specified range.
+ * @param value - The value to check.
+ * @param min - The minimum value of the range.
+ * @param max - The maximum value of the range.
+ * @returns A boolean indicating whether the value is within the range.
+ */
+export function isInRange(value: number, min: number, max: number) {
+  return value >= min && value <= max;
+}
+
 export const getTimestamp = async (chainId: number) => {
   const provider = publicClient({
     chainId,

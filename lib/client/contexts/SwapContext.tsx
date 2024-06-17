@@ -46,14 +46,11 @@ interface SwapContextProps {
   timeDate: bigint;
   setTimeDate: Dispatch<React.SetStateAction<bigint>>;
 
-  etherRecipient: bigint;
-  setEtherRecipient: (etherRecipient: bigint) => void;
+  etherRecipient: number;
+  setEtherRecipient: (etherRecipient: number) => void;
 
-  authenticatedUserEtherValue: bigint;
-  setAuthenticatedUserEtherValue: (authenticatedUserEtherValue: bigint) => void;
-
-  searchedUserEtherValue: bigint;
-  setSearchedUserEtherValue: (searchedUserEtherValue: bigint) => void;
+  etherValue: bigint;
+  setEtherValue: (etherValue: bigint) => void;
 
   clearSwapData: () => void;
 
@@ -65,12 +62,8 @@ interface SwapContextProps {
 }
 
 export const SwapContextProvider = ({ children }: any) => {
-  const [etherRecipient, setEtherRecipient] = useState<bigint>(BigInt(0));
-  const [authenticatedUserEtherValue, setAuthenticatedUserEtherValue] =
-    useState<bigint>(BigInt(0));
-  const [searchedUserEtherValue, setSearchedUserEtherValue] = useState<bigint>(
-    BigInt(0),
-  );
+  const [etherRecipient, setEtherRecipient] = useState<number>(256); // 256 is the default value for the user
+  const [etherValue, setEtherValue] = useState<bigint>(BigInt(0));
   const [lastWalletConnected, setLastWalletConnected] = useState("");
   const [inputAddress, setInputAddress] = useState("");
   const [validatedAddressToSwap, setValidatedAddressToSwap] =
@@ -135,12 +128,8 @@ export const SwapContextProvider = ({ children }: any) => {
   }, [inputAddress]);
 
   useEffect(() => {
-    setSearchedUserEtherValue(0n);
+    setEtherValue(0n); // Check if need this
   }, [validatedAddressToSwap]);
-
-  // useEffect(() => {
-  //   setSearchedUserTokensList([]);
-  // }, [destinyChain]);
 
   useEffect(() => {
     setSwapData({
@@ -167,14 +156,12 @@ export const SwapContextProvider = ({ children }: any) => {
       clearSwapData,
       setEtherRecipient,
       etherRecipient,
-      setAuthenticatedUserEtherValue,
-      authenticatedUserEtherValue,
       anyUserToSwap,
       setAnyUserToSwap,
-      setSearchedUserEtherValue,
-      searchedUserEtherValue,
       setPublicOrPrivateSwap,
       publicOrPrivateSwap,
+      setEtherValue,
+      etherValue,
     });
   }, [
     lastWalletConnected,
@@ -188,9 +175,8 @@ export const SwapContextProvider = ({ children }: any) => {
     approvedTokensCount,
     currentSwapModalStep,
     anyUserToSwap,
-    authenticatedUserEtherValue,
     etherRecipient,
-    searchedUserEtherValue,
+    etherValue,
     publicOrPrivateSwap,
   ]);
 
@@ -218,14 +204,12 @@ export const SwapContextProvider = ({ children }: any) => {
     clearSwapData,
     setEtherRecipient,
     etherRecipient,
-    setAuthenticatedUserEtherValue,
-    authenticatedUserEtherValue,
     anyUserToSwap,
     setAnyUserToSwap,
-    setSearchedUserEtherValue,
-    searchedUserEtherValue,
     setPublicOrPrivateSwap,
     publicOrPrivateSwap,
+    setEtherValue,
+    etherValue,
   });
 
   // This is a temporary measure while we don't turn the dApp into a SPA
@@ -261,14 +245,12 @@ export const SwapContext = React.createContext<SwapContextProps>({
   currentSwapModalStep: SwapModalSteps.APPROVE_TOKENS,
   updateSwapStep: (buttonClickAction: ButtonClickPossibilities) => {},
   clearSwapData: () => {},
-  etherRecipient: BigInt(0),
+  etherRecipient: 0,
   setEtherRecipient: () => {},
-  authenticatedUserEtherValue: BigInt(0),
-  setAuthenticatedUserEtherValue: () => {},
   setAnyUserToSwap: (isChecked: boolean) => {},
   anyUserToSwap: false,
-  setSearchedUserEtherValue: () => {},
-  searchedUserEtherValue: BigInt(0),
   publicOrPrivateSwap: 0,
   setPublicOrPrivateSwap: (tabId: number) => {},
+  setEtherValue: (etherValue: bigint) => {},
+  etherValue: BigInt(0),
 });

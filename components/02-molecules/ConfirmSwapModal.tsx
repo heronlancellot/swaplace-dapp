@@ -47,8 +47,8 @@ export const ConfirmSwapModal = ({
     approvedTokensCount: createSwapApprovedTokensCount,
     validatedAddressToSwap,
     currentSwapModalStep,
-    authenticatedUserEtherValue,
     etherRecipient,
+    etherValue,
     updateSwapStep,
     clearSwapData,
   } = useContext(SwapContext);
@@ -194,10 +194,17 @@ export const ConfirmSwapModal = ({
               );
               return;
             }
+            // ACCEPT SWAP
+            const msgValueAcceptSwap =
+              etherRecipient > 0
+                ? BigInt(swapOfferToAccept.value) * BigInt(1e12)
+                : BigInt(0);
+
             transactionReceipt = await acceptSwap(
               swapOfferToAccept.id,
               authenticatedUserAddress,
               configurations,
+              msgValueAcceptSwap,
             );
             break;
           case SwapModalAction.CREATE_SWAP:
@@ -215,8 +222,8 @@ export const ConfirmSwapModal = ({
             const encodeConfigData = await encodeConfig({
               allowed: validatedAddressToSwap.address,
               expiry: timeDate,
-              etherRecipient: etherRecipient,
-              etherValue: authenticatedUserEtherValue,
+              etherRecipient: etherRecipient, // 0 -> allowed gets the eth  // 1 ~ 255 -> the allowed send the eth, the owner receives
+              etherValue: etherValue / BigInt(1e12),
             });
 
             const swapConfig = await getSwapConfig(
@@ -228,7 +235,15 @@ export const ConfirmSwapModal = ({
               chainId,
             );
 
-            transactionReceipt = await createSwap(swapConfig, configurations);
+            // Create swap
+            const msgValueCreateSwap =
+              etherRecipient == 0 ? etherValue : BigInt(0);
+
+            transactionReceipt = await createSwap(
+              swapConfig,
+              configurations,
+              msgValueCreateSwap,
+            );
             break;
         }
 

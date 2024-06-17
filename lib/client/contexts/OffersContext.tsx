@@ -68,6 +68,8 @@ const DEFAULT_SWAP_OFFER: Readonly<PopulatedSwapOfferCard> = {
   id: 0n,
   status: PonderFilter.ALL_OFFERS,
   expiryDate: 0n,
+  recipient: 0n,
+  value: 0n,
   bidderTokens: {
     address: new EthereumAddress(ADDRESS_ZERO),
     tokens: [DEFAULT_ERC20_TOKEN],
@@ -90,6 +92,8 @@ const DEFAULT_DATA_INFINITE_QUERY: InfiniteQueryData = {
         id: BigInt(1),
         status: PonderFilter.ALL_OFFERS,
         expiryDate: 0n,
+        recipient: 0n,
+        value: 0n,
         bidderTokens: {
           address: new EthereumAddress(ADDRESS_ZERO),
           tokens: [DEFAULT_ERC20_TOKEN],
@@ -170,6 +174,8 @@ export const OffersContextProvider = ({ children }: any) => {
               id: BigInt(swap.id),
               status: debouncedOffersFilter,
               expiryDate: swap.expiryDate,
+              recipient: swap.recipient,
+              value: swap.value,
               bidderTokens: {
                 address: swap.bidderTokens.address,
                 tokens: swap.bidderTokens.tokens,

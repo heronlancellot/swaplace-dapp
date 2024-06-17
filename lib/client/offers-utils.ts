@@ -9,16 +9,18 @@ export interface RawSwapOfferInterface {
   owner: string;
   allowed: string;
   expiry: bigint;
-  bid: Asset[];
-  ask: Asset[];
   recipient: bigint;
   value: bigint;
+  bid: Asset[];
+  ask: Asset[];
 }
 export interface FormattedSwapOfferAssets {
   // FormattedSwapOffers represents the object interface in the middle of the process to populated the swap
   id: string;
   status: string;
   expiryDate: bigint;
+  recipient: bigint;
+  value: bigint;
   bidderAssets: {
     address: EthereumAddress;
     tokens: Asset[];
@@ -34,6 +36,8 @@ export interface PopulatedSwapOfferCard {
   id: bigint;
   status: PonderFilter;
   expiryDate: bigint;
+  recipient: bigint;
+  value: bigint;
   bidderTokens: {
     address: EthereumAddress;
     tokens: Token[];
@@ -65,6 +69,8 @@ export interface InfiniteQueryData {
       id: bigint;
       status: PonderFilter;
       expiryDate: bigint;
+      recipient: bigint;
+      value: bigint;
       bidderTokens: { address: EthereumAddress; tokens: Token[] };
       askerTokens: { address: EthereumAddress; tokens: Token[] };
     }[];
