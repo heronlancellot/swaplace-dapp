@@ -73,6 +73,8 @@ const DEFAULT_SWAP_OFFER: PopulatedSwapOfferCard = {
   id: 0n,
   status: PonderFilter.ALL_OFFERS,
   expiryDate: 0n,
+  recipient: 0n,
+  value: 0n,
   bidderTokens: {
     address: new EthereumAddress(ADDRESS_ZERO),
     tokens: [DEFAULT_ERC20_TOKEN],
@@ -237,6 +239,8 @@ export const OffersContextMarketplaceProvider = ({ children }: any) => {
               id: item.swapId,
               status: item.status,
               expiryDate: item.expiry,
+              recipient: item.recipient,
+              value: item.recipient,
               bidderAssets: {
                 address: isAddress(item.allowed)
                   ? new EthereumAddress(item.allowed)

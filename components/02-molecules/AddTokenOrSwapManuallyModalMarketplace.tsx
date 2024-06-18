@@ -101,6 +101,8 @@ const SwapBody = () => {
       status: PonderFilter.ALL_OFFERS,
       id: swapId,
       expiryDate: BigInt(bidingAddressAndExpiryData.expiry),
+      recipient: bidingAddressAndExpiryData.etherRecipient,
+      value: bidingAddressAndExpiryData.etherValue,
       bidderTokens: {
         address: new EthereumAddress(bidingAddressAndExpiryData.allowed),
         tokens: bidedTokensWithData,

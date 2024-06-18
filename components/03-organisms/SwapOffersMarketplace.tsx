@@ -94,6 +94,8 @@ export const SwapOffersMarketplace = () => {
               id: BigInt(swap.id),
               status: swapStatus,
               expiryDate: swapExpiryData.expiry,
+              recipient: swap.recipient,
+              value: swap.value,
               bidderTokens: {
                 address: swap.bidderAssets.address,
                 tokens: bidedTokensWithData,
