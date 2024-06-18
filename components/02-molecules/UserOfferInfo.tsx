@@ -56,11 +56,6 @@ export const UserOfferInfo = ({
     displayNativeEther = Number(nativeEther.value) / 1e6;
   }
 
-  // console.log("nativeEther", nativeEther);
-  // console.log("displayNativeEther", displayNativeEther);
-  // console.log("address", address);
-  // console.log("authenticatedUserAddress", authenticatedUserAddress);
-
   const UserOfferInfoConfig: Record<UserOfferVariant, JSX.Element> = {
     [UserOfferVariant.NAME_ENS]: (
       <div>
@@ -169,6 +164,34 @@ export const UserOfferInfo = ({
               </p>
             </div>
           ) : (
+            // ) : address?.address === ADDRESS_ZERO &&
+            //   nativeEther &&
+            //   nativeEther.recipient === BigInt(0) &&
+            //   nativeEther.value !== BigInt(0) ? (
+            //   <>
+            //     <div className="flex-row flex items-center gap-1 dark:!bg-blue-500">
+            //       <p className="flex dark:p-small-dark p-small-variant-black">
+            //         {displayNativeEther.toString()}
+            //       </p>
+            //       <p className="flex dark:p-small-dark p-small-variant-black">
+            //         {isMounted && chain ? chain.nativeCurrency.symbol : ""}
+            //       </p>
+            //     </div>
+            //   </>
+            // ) : address?.address !== ADDRESS_ZERO &&
+            //   address?.address !== authenticatedUserAddress?.address &&
+            //   nativeEther &&
+            //   nativeEther.recipient !== BigInt(0) ? (
+            //   <>
+            //     <div className="flex-row flex items-center gap-1 dark:!bg-red-500">
+            //       <p className="flex dark:p-small-dark p-small-variant-black">
+            //         {displayNativeEther.toString()}
+            //       </p>
+            //       <p className="flex dark:p-small-dark p-small-variant-black">
+            //         {isMounted && chain ? chain.nativeCurrency.symbol : ""}
+            //       </p>
+            //     </div>
+            //   </>
             <></>
           )}
         </div>

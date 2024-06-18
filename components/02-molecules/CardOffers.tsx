@@ -11,12 +11,14 @@ import { TokenCardProperties } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { EthereumAddress, Token } from "@/lib/shared/types";
 import { SwapContext, OffersContext } from "@/lib/client/contexts";
+import { SwapNativeEther } from "@/lib/client/swap-utils";
 import { useContext } from "react";
 
 interface CardOffersProps {
   address: EthereumAddress | null;
   variant?: CreateTokenOfferVariant;
   swapModalAction: SwapModalAction;
+  nativeEther?: SwapNativeEther;
 }
 
 interface CardOfferSConfig {
@@ -27,6 +29,7 @@ export const CardOffers = ({
   address,
   swapModalAction,
   variant = CreateTokenOfferVariant.HORIZONTAL,
+  nativeEther,
 }: CardOffersProps) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const { authenticatedUserTokensList, searchedUserTokensList } =
@@ -78,7 +81,37 @@ export const CardOffers = ({
 
     return (
       <div className="flex flex-col justify-content gap-4 md:w-[400px] overflow-x-hidden no-scrollbar">
-        <UserOfferInfo address={address} variant={UserOfferVariant.SECONDARY} />
+        <UserOfferInfo
+          address={address}
+          variant={UserOfferVariant.CREATING_SWAP}
+        />
+        <TokensList
+          ownerAddress={address}
+          withAddTokenCard={false}
+          withPlaceholders={true}
+          variant={tokenShelfVariant}
+          displayERC20TokensAmount={true}
+          withSelectionValidation={false}
+          tokenCardClickAction={TokenCardActionType.NO_ACTION}
+          tokensList={tokensOfferFor[tokenShelfVariant]}
+          confirmationModalTotalSquares={5}
+          tokenCardStyleType={TokenCardStyleType.MEDIUM}
+          gridClassNames="grid md:grid-cols-5 md:gap-3"
+        />
+      </div>
+    );
+  };
+
+  const VerticalVariantSwapNativeEther = (address: EthereumAddress | null) => {
+    if (!address) return null;
+
+    return (
+      <div className="flex flex-col justify-content gap-4 md:w-[400px] overflow-x-hidden no-scrollbar">
+        <UserOfferInfo
+          address={address}
+          variant={UserOfferVariant.SWAP_CREATED}
+          nativeEther={nativeEther}
+        />
         <TokensList
           ownerAddress={address}
           withAddTokenCard={false}
@@ -105,6 +138,9 @@ export const CardOffers = ({
     },
     [CreateTokenOfferVariant.VERTICAL]: {
       body: VerticalVariant(address),
+    },
+    [CreateTokenOfferVariant.VerticalVariantSwapNativeEther]: {
+      body: VerticalVariantSwapNativeEther(address),
     },
   };
 
