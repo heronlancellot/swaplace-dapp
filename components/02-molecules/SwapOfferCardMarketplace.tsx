@@ -9,15 +9,18 @@ import {
 import { TokenCardProperties } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { EthereumAddress, Token } from "@/lib/shared/types";
+import { SwapNativeEther } from "@/lib/client/swap-utils";
 
 interface SwapOfferCardProps {
   address: EthereumAddress | null;
   tokens?: Token[];
+  nativeEther?: SwapNativeEther;
 }
 
 export const SwapOfferCardMarketplace = ({
   address,
   tokens,
+  nativeEther,
 }: SwapOfferCardProps) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
 
@@ -25,10 +28,15 @@ export const SwapOfferCardMarketplace = ({
     ? ForWhom.Yours
     : ForWhom.Their;
 
+  console.log("nativeEther,,,", nativeEther);
   return (
     <div className="md:p-4">
       <div className="flex flex-col justify-between h-full gap-4 md:w-[326px]">
-        <UserOfferInfo address={address} variant={UserOfferVariant.SECONDARY} />
+        <UserOfferInfo
+          address={address}
+          variant={UserOfferVariant.SWAP_CREATED}
+          nativeEther={nativeEther}
+        />
         <div className="mb-auto max-h-[100px] overflow-auto no-scrollbar">
           <TokensSwapList
             ownerAddress={authenticatedUserAddress}

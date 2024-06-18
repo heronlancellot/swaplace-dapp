@@ -22,9 +22,9 @@ import {
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { getSwap } from "@/lib/service/getSwap";
 import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
+import { SwapNativeEther } from "@/lib/client/swap-utils";
 import { useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
-import cc from "classcat";
 
 /**
  * The horizonalVariant from TokenOffers get the data from Ponder
@@ -89,13 +89,12 @@ export const SwapOffersMarketplace = () => {
             const swapExpiryData = await decodeConfig({
               config: swapData.config,
             });
-
             return {
               id: BigInt(swap.id),
               status: swapStatus,
               expiryDate: swapExpiryData.expiry,
-              recipient: swap.recipient,
-              value: swap.value,
+              recipient: swapExpiryData.etherRecipient,
+              value: swapExpiryData.etherValue,
               bidderTokens: {
                 address: swap.bidderAssets.address,
                 tokens: bidedTokensWithData,
@@ -144,11 +143,6 @@ export const SwapOffersMarketplace = () => {
       {tokensList.map((swap, index) => {
         return <SwapOffer key={index} swap={swap} />;
       })}
-      {/* {hasNextPage && (
-          <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-            {isFetchingNextPage ? "Loading..." : "Load More"}
-          </button>
-        )} */}
       <div className="flex justify-end mt-5">
         <button
           className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
@@ -169,23 +163,25 @@ export const SwapOffersMarketplace = () => {
   );
 };
 
-interface SwapOfferProps {
-  swap: PopulatedSwapOfferCard;
-}
-
-const SwapOffer = ({ swap }: SwapOfferProps) => {
+const SwapOffer = ({ swap }: { swap: PopulatedSwapOfferCard }) => {
+  const nativeEtherSwap: SwapNativeEther = {
+    recipient: swap.recipient,
+    value: swap.value,
+  };
   return (
     <div className="flex flex-col no-scrollbar border border-solid border-[#D6D5D5] dark:border-[#353836] dark:shadow-swap-station shadow-swap-station-light dark:bg-[#212322] font-onest rounded-lg ">
       <div className="flex flex-row border-b mb-auto dark:border-[#353836] relative">
-        <div className={cc(["border-r dark:border-[#353836]"])}>
+        <div className="border-r dark:border-[#353836]">
           <SwapOfferCardMarketplace
             tokens={swap.askerTokens.tokens}
             address={swap.askerTokens.address}
+            nativeEther={nativeEtherSwap}
           />
         </div>
         <SwapOfferCardMarketplace
           tokens={swap.bidderTokens.tokens}
           address={swap.bidderTokens.address}
+          nativeEther={nativeEtherSwap}
         />
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-[#70757230] bg-[#f6f6f6] dark:bg-[#212322] rounded-[100px] w-[24px] h-[24px] items-center flex justify-center">
           <SwapIcon />

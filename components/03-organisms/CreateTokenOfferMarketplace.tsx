@@ -5,12 +5,14 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { SwapContext } from "@/lib/client/contexts";
 import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
+import { SwapNativeEther } from "@/lib/client/swap-utils";
 import cc from "classcat";
 import { useContext } from "react";
 
 export enum CreateTokenOfferVariant {
-  HORIZONTAL = "horizontal",
-  VERTICAL = "vertical",
+  HORIZONTAL,
+  VERTICAL,
+  VerticalVariantSwapNativeEther,
 }
 
 interface CreateTokenOfferProps {
@@ -47,6 +49,15 @@ export const CreateTokenOfferMarketplace = ({
     !swapOfferToAccept
   ) {
     return null;
+  }
+
+  let nativeEtherSwap: SwapNativeEther;
+
+  if (swapOfferToAccept) {
+    nativeEtherSwap = {
+      recipient: swapOfferToAccept.recipient,
+      value: swapOfferToAccept.value,
+    };
   }
 
   const HorizontalVariant = () => {
@@ -124,6 +135,48 @@ export const CreateTokenOfferMarketplace = ({
     );
   };
 
+  const VerticalVariantSwapNativeEther = () => {
+    return (
+      <div className="flex flex-col rounded-lg flex-grow dark:!bg-red-500">
+        <div className="flex flex-col relative gap-2 flex-grow">
+          <div className="p-4 relative flex flex-grow border border-[#353836] rounded-lg dark:bg-[#282B29]">
+            <CardOffersMarketplace
+              swapModalAction={swapModalAction}
+              address={
+                swapModalAction === SwapModalAction.CREATE_SWAP
+                  ? authenticatedUserAddress
+                  : (swapOfferToAccept as PopulatedSwapOfferCard).askerTokens
+                      .address
+              }
+              variant={CreateTokenOfferVariant.VerticalVariantSwapNativeEther}
+              nativeEther={nativeEtherSwap}
+            />
+          </div>
+
+          <div className="w-full relative">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border dark:border-[#353836] border-[#707572] bg-[#F6F6F6] dark:bg-[#212322] rounded-full w-9 h-9 flex items-center justify-center">
+              <SwapIcon variant={SwapIconVariant.VERTICAL} />
+            </div>
+          </div>
+
+          <div className="p-4 flex flex-grow border border-[#353836] rounded-lg dark:bg-[#282B29]">
+            <CardOffersMarketplace
+              swapModalAction={swapModalAction}
+              address={
+                swapModalAction === SwapModalAction.CREATE_SWAP
+                  ? validatedAddressToSwap
+                  : (swapOfferToAccept as PopulatedSwapOfferCard).bidderTokens
+                      .address
+              }
+              variant={CreateTokenOfferVariant.VerticalVariantSwapNativeEther}
+              nativeEther={nativeEtherSwap}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const CreateTokenOfferPropsConfig: Record<
     CreateTokenOfferVariant,
     CreateTokenOfferConfig
@@ -133,6 +186,9 @@ export const CreateTokenOfferMarketplace = ({
     },
     [CreateTokenOfferVariant.VERTICAL]: {
       body: <VerticalVariant />,
+    },
+    [CreateTokenOfferVariant.VerticalVariantSwapNativeEther]: {
+      body: <VerticalVariantSwapNativeEther />,
     },
   };
 

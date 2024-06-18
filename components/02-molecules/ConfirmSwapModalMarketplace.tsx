@@ -1,7 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ProgressStatusMarketplace } from "./ProgressStatusMarketplace";
 import { ApproveTokenCardsMarketplace } from "../01-atoms/ApproveTokenCardsMarketplace";
-import { CreateTokenOfferMarketplace } from "../03-organisms/CreateTokenOfferMarketplace";
+import {
+  CreateTokenOfferMarketplace,
+  CreateTokenOfferVariant,
+} from "../03-organisms/CreateTokenOfferMarketplace";
 import { OfferExpiryConfirmSwapMarketplace } from "../01-atoms/OfferExpiryConfirmSwapMarketplace";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
@@ -247,7 +250,14 @@ export const ConfirmSwapModalMarketplace = ({
         body={
           <div className="flex flex-col gap-2 flex-grow">
             <OfferExpiryConfirmSwapMarketplace />
-            <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
+            {swapModalAction === SwapModalAction.CREATE_SWAP ? (
+              <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
+            ) : (
+              <CreateTokenOfferMarketplace
+                swapModalAction={swapModalAction}
+                variant={CreateTokenOfferVariant.VerticalVariantSwapNativeEther}
+              />
+            )}
           </div>
         }
         footer={
@@ -283,7 +293,14 @@ export const ConfirmSwapModalMarketplace = ({
         body={
           <div className="flex flex-col gap-2 flex-grow">
             <OfferExpiryConfirmSwapMarketplace />
-            <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
+            {swapModalAction === SwapModalAction.CREATE_SWAP ? (
+              <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
+            ) : (
+              <CreateTokenOfferMarketplace
+                swapModalAction={swapModalAction}
+                variant={CreateTokenOfferVariant.VerticalVariantSwapNativeEther}
+              />
+            )}
           </div>
         }
         footer={
@@ -305,7 +322,14 @@ export const ConfirmSwapModalMarketplace = ({
         body={
           <div className="flex flex-col gap-2 flex-grow">
             <OfferExpiryConfirmSwapMarketplace />
-            <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
+            {swapModalAction === SwapModalAction.CREATE_SWAP ? (
+              <CreateTokenOfferMarketplace swapModalAction={swapModalAction} />
+            ) : (
+              <CreateTokenOfferMarketplace
+                swapModalAction={swapModalAction}
+                variant={CreateTokenOfferVariant.VerticalVariantSwapNativeEther}
+              />
+            )}
           </div>
         }
         footer={
