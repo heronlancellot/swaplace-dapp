@@ -56,8 +56,10 @@ export const UserOfferInfo = ({
     displayNativeEther = Number(nativeEther.value) / 1e6;
   }
 
-  console.log("nativeEther", nativeEther);
-  console.log("displayNativeEther", displayNativeEther);
+  // console.log("nativeEther", nativeEther);
+  // console.log("displayNativeEther", displayNativeEther);
+  // console.log("address", address);
+  // console.log("authenticatedUserAddress", authenticatedUserAddress);
 
   const UserOfferInfoConfig: Record<UserOfferVariant, JSX.Element> = {
     [UserOfferVariant.NAME_ENS]: (
@@ -145,7 +147,7 @@ export const UserOfferInfo = ({
           </div>
           {address?.address !== authenticatedUserAddress?.address &&
           nativeEther &&
-          nativeEther.recipient === BigInt(0) ? (
+          nativeEther.recipient !== BigInt(0) ? (
             <div className="flex-row flex items-center gap-1">
               <p className="flex dark:p-small-dark p-small-variant-black">
                 {displayNativeEther.toString()}
@@ -156,7 +158,7 @@ export const UserOfferInfo = ({
             </div>
           ) : address?.address === authenticatedUserAddress?.address &&
             nativeEther &&
-            nativeEther.recipient !== BigInt(0) &&
+            nativeEther.recipient === BigInt(0) &&
             isInRange(Number(nativeEther.recipient), 1, 255) ? (
             <div className="flex-row flex items-center gap-1">
               <p className="flex dark:p-small-dark p-small-variant-black">
