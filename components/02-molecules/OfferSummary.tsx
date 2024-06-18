@@ -85,7 +85,7 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
               </p>
             </div>
           </div>
-          {variant === ForWhom.Yours && (
+          {variant === ForWhom.Yours && authenticatedUserAddress && (
             <EtherFieldAddition variant={ForWhom.Yours} />
           )}
           {variant === ForWhom.Their && validatedAddressToSwap && (
