@@ -16,6 +16,7 @@ import {
 } from "@/components/01-atoms";
 import { PageData, PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
+import { SwapNativeEther } from "@/lib/client/swap-utils";
 import { useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -102,6 +103,11 @@ export const SwapOffers = () => {
 };
 
 const SwapOffer = ({ swap }: { swap: PopulatedSwapOfferCard }) => {
+  const nativeEtherSwap: SwapNativeEther = {
+    recipient: swap.recipient,
+    value: swap.value,
+  };
+
   return (
     <div className="flex flex-col no-scrollbar border border-solid border-[#D6D5D5] dark:border-[#353836] dark:shadow-swap-station shadow-swap-station-light dark:bg-[#212322] font-onest rounded-lg ">
       <div className="flex flex-row border-b mb-auto dark:border-[#353836] relative">
@@ -109,11 +115,13 @@ const SwapOffer = ({ swap }: { swap: PopulatedSwapOfferCard }) => {
           <SwapOfferCard
             tokens={swap.askerTokens.tokens}
             address={swap.bidderTokens.address} // Should be inversed to display different in the UI
+            nativeEther={nativeEtherSwap}
           />
         </div>
         <SwapOfferCard
           tokens={swap.bidderTokens.tokens}
           address={swap.askerTokens.address} // Should be inversed to display different in the UI
+          nativeEther={nativeEtherSwap}
         />
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-[#70757230] bg-[#f6f6f6] dark:bg-[#212322] rounded-[100px] w-[24px] h-[24px] items-center flex justify-center">
           <SwapIcon />
