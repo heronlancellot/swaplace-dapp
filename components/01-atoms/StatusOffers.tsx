@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FilterVariant } from "../02-molecules";
 import { OffersContext, PonderFilter } from "@/lib/client/contexts";
 import { OffersContextMarketplace } from "@/lib/client/contexts/OffersContextMarketplace";
