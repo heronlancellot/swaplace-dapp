@@ -134,17 +134,22 @@ export const ConfirmSwapModalMarketplace = ({
         toast.error("You must approve the Tokens to Swap");
         updateSwapStep(ButtonClickPossibilities.PREVIOUS_STEP);
       }
+      if (swapOfferToAccept === null) throw Error("Swap offer is null");
+      // ACCEPT SWAP
+      const msgValueAcceptSwap =
+        etherRecipient > 0
+          ? BigInt(swapOfferToAccept.value) * BigInt(1e12)
+          : BigInt(0);
 
       if (authenticatedUserAddress) {
         let transactionReceipt;
         switch (swapModalAction) {
           case SwapModalAction.ACCEPT_SWAP:
-            if (swapOfferToAccept === null) throw Error("Swap offer is null");
-
             transactionReceipt = await acceptSwap(
               swapOfferToAccept.id,
               authenticatedUserAddress,
               configurations,
+              msgValueAcceptSwap,
             );
             break;
           case SwapModalAction.CREATE_SWAP:
@@ -175,7 +180,11 @@ export const ConfirmSwapModalMarketplace = ({
               chainId,
             );
 
-            transactionReceipt = await createSwap(swapConfig, configurations);
+            transactionReceipt = await createSwap(
+              swapConfig,
+              configurations,
+              msgValueAcceptSwap,
+            );
             break;
         }
 
