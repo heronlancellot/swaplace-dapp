@@ -10,8 +10,10 @@ import { TokenCardProperties } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { EthereumAddress, Token } from "@/lib/shared/types";
 import { SwapNativeEther } from "@/lib/client/swap-utils";
+import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 
 interface SwapOfferCardProps {
+  swap?: PopulatedSwapOfferCard;
   address: EthereumAddress | null;
   tokens?: Token[];
   nativeEther?: SwapNativeEther;
@@ -23,6 +25,7 @@ interface SwapOfferCardProps {
  */
 
 export const SwapOfferCard = ({
+  swap,
   address,
   tokens,
   nativeEther,
@@ -40,6 +43,7 @@ export const SwapOfferCard = ({
           address={address}
           variant={UserOfferVariant.SWAP_CREATED}
           nativeEther={nativeEther}
+          swap={swap}
         />
         <div className="mb-auto max-h-[100px] overflow-auto no-scrollbar">
           <TokensSwapList

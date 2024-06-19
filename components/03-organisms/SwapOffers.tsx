@@ -116,12 +116,14 @@ const SwapOffer = ({ swap }: { swap: PopulatedSwapOfferCard }) => {
             tokens={swap.askerTokens.tokens}
             address={swap.bidderTokens.address} // Should be inversed to display different in the UI
             nativeEther={nativeEtherSwap}
+            swap={swap}
           />
         </div>
         <SwapOfferCard
           tokens={swap.bidderTokens.tokens}
           address={swap.askerTokens.address} // Should be inversed to display different in the UI
           nativeEther={nativeEtherSwap}
+          swap={swap}
         />
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-[#70757230] bg-[#f6f6f6] dark:bg-[#212322] rounded-[100px] w-[24px] h-[24px] items-center flex justify-center">
           <SwapIcon />

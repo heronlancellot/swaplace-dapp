@@ -3,6 +3,7 @@ import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { SwapContext } from "@/lib/client/contexts";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import { useEnsData } from "@/lib/client/hooks/useENSData";
+import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { SwapNativeEther } from "@/lib/client/swap-utils";
 import { isInRange } from "@/lib/client/utils";
 import { EthereumAddress } from "@/lib/shared/types";
@@ -20,6 +21,7 @@ interface UserOfferInfoProps {
   address: EthereumAddress | null;
   variant?: UserOfferVariant;
   nativeEther?: SwapNativeEther;
+  swap?: PopulatedSwapOfferCard;
 }
 
 /**
@@ -32,6 +34,7 @@ export const UserOfferInfo = ({
   address,
   variant = UserOfferVariant.NAME_ENS,
   nativeEther,
+  swap,
 }: UserOfferInfoProps) => {
   const { primaryName } = useEnsData({
     ensAddress: address,
@@ -40,7 +43,6 @@ export const UserOfferInfo = ({
   const [isMounted, setIsMounted] = useState(false);
   const { chain } = useNetwork();
   const { authenticatedUserAddress } = useAuthenticatedUser();
-
   const displayAddress =
     address?.address === ADDRESS_ZERO
       ? "Acceptor"
@@ -56,6 +58,8 @@ export const UserOfferInfo = ({
   if (nativeEther) {
     displayNativeEther = Number(nativeEther.value) / 1e6;
   }
+
+  console.log("nativeEther.recipient", nativeEther?.recipient);
 
   const UserOfferInfoConfig: Record<UserOfferVariant, JSX.Element> = {
     [UserOfferVariant.NAME_ENS]: (
@@ -141,9 +145,9 @@ export const UserOfferInfo = ({
               )}
             </div>
           </div>
-          {address?.address === authenticatedUserAddress?.address &&
-          nativeEther &&
-          nativeEther.recipient !== BigInt(0) ? (
+          {nativeEther &&
+          nativeEther.recipient === BigInt(0) &&
+          address === swap?.askerTokens.address ? (
             <div className="flex-row flex items-center gap-1">
               <p className="flex dark:p-small-dark p-small-variant-black">
                 {displayNativeEther.toString()}
@@ -152,9 +156,9 @@ export const UserOfferInfo = ({
                 {isMounted && chain ? chain.nativeCurrency.symbol : ""}
               </p>
             </div>
-          ) : address?.address !== authenticatedUserAddress?.address &&
-            nativeEther &&
-            nativeEther.recipient === BigInt(0) ? (
+          ) : nativeEther &&
+            nativeEther.recipient !== BigInt(0) &&
+            address !== swap?.askerTokens.address ? (
             <div className="flex-row flex items-center gap-1">
               <p className="flex dark:p-small-dark p-small-variant-black">
                 {displayNativeEther.toString()}

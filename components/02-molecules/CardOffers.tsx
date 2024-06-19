@@ -104,6 +104,7 @@ export const CardOffers = ({
 
   const VerticalVariantSwapNativeEther = (address: EthereumAddress | null) => {
     if (!address) return null;
+    if (!swapOfferToAccept) return null;
 
     return (
       <div className="flex flex-col justify-content gap-4 md:w-[400px] overflow-x-hidden no-scrollbar">
@@ -111,6 +112,7 @@ export const CardOffers = ({
           address={address}
           variant={UserOfferVariant.SWAP_CREATED}
           nativeEther={nativeEther}
+          swap={swapOfferToAccept}
         />
         <TokensList
           ownerAddress={address}
