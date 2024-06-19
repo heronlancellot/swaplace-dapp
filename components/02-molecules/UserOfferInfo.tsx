@@ -59,8 +59,6 @@ export const UserOfferInfo = ({
     displayNativeEther = Number(nativeEther.value) / 1e6;
   }
 
-  console.log("nativeEther.recipient", nativeEther?.recipient);
-
   const UserOfferInfoConfig: Record<UserOfferVariant, JSX.Element> = {
     [UserOfferVariant.NAME_ENS]: (
       <div>
