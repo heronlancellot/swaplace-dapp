@@ -141,7 +141,7 @@ export const UserOfferInfo = ({
               )}
             </div>
           </div>
-          {address?.address !== authenticatedUserAddress?.address &&
+          {address?.address === authenticatedUserAddress?.address &&
           nativeEther &&
           nativeEther.recipient !== BigInt(0) ? (
             <div className="flex-row flex items-center gap-1">
@@ -152,7 +152,7 @@ export const UserOfferInfo = ({
                 {isMounted && chain ? chain.nativeCurrency.symbol : ""}
               </p>
             </div>
-          ) : address?.address === authenticatedUserAddress?.address &&
+          ) : address?.address !== authenticatedUserAddress?.address &&
             nativeEther &&
             nativeEther.recipient === BigInt(0) ? (
             <div className="flex-row flex items-center gap-1">
