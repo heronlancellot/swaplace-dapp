@@ -81,7 +81,7 @@ export const CardOffersMarketplace = ({
     if (!address) return null;
 
     return (
-      <div className="flex flex-col justify-content gap-4 md:w-[400px] overflow-x-hidden no-scrollbar bg-blue-500">
+      <div className="flex flex-col justify-content gap-4 md:w-[400px] overflow-x-hidden no-scrollbar">
         <UserOfferInfo
           address={address}
           variant={UserOfferVariant.CREATING_SWAP}
@@ -107,7 +107,7 @@ export const CardOffersMarketplace = ({
     if (!address) return null;
 
     return (
-      <div className="flex flex-col justify-content gap-4 md:w-[400px] overflow-x-hidden no-scrollbar bg-blue-500">
+      <div className="flex flex-col justify-content gap-4 md:w-[400px] overflow-x-hidden no-scrollbar">
         <UserOfferInfo
           address={address}
           variant={UserOfferVariant.SWAP_CREATED_MARKETPLACE}

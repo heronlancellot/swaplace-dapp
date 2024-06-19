@@ -137,7 +137,7 @@ export const CreateTokenOfferMarketplace = ({
 
   const VerticalVariantSwapNativeEther = () => {
     return (
-      <div className="flex flex-col rounded-lg flex-grow dark:!bg-red-500">
+      <div className="flex flex-col rounded-lg flex-grow">
         <div className="flex flex-col relative gap-2 flex-grow">
           <div className="p-4 relative flex flex-grow border border-[#353836] rounded-lg dark:bg-[#282B29]">
             <CardOffersMarketplace
