@@ -110,7 +110,7 @@ export const CardOffersMarketplace = ({
       <div className="flex flex-col justify-content gap-4 md:w-[400px] overflow-x-hidden no-scrollbar bg-blue-500">
         <UserOfferInfo
           address={address}
-          variant={UserOfferVariant.SWAP_CREATED}
+          variant={UserOfferVariant.SWAP_CREATED_MARKETPLACE}
           nativeEther={nativeEther}
         />
         <TokensList

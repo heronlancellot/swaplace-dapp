@@ -28,13 +28,12 @@ export const SwapOfferCardMarketplace = ({
     ? ForWhom.Yours
     : ForWhom.Their;
 
-  console.log("nativeEther,,,", nativeEther);
   return (
     <div className="md:p-4">
       <div className="flex flex-col justify-between h-full gap-4 md:w-[326px]">
         <UserOfferInfo
           address={address}
-          variant={UserOfferVariant.SWAP_CREATED}
+          variant={UserOfferVariant.SWAP_CREATED_MARKETPLACE}
           nativeEther={nativeEther}
         />
         <div className="mb-auto max-h-[100px] overflow-auto no-scrollbar">

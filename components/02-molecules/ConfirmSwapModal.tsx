@@ -238,6 +238,7 @@ export const ConfirmSwapModal = ({
               chainId,
             );
 
+            console.log("etherRecipient", etherRecipient);
             // Create swap
             const msgValueCreateSwap =
               etherRecipient == 0 ? etherValue : BigInt(0);

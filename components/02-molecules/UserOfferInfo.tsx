@@ -14,6 +14,7 @@ export enum UserOfferVariant {
   NAME_ENS = "NAME_ENS", // only the name of the ENS and avatar
   CREATING_SWAP = "CREATING_SWAP", // the name of the ENS and avatar with the amount of ether being sent ( etherValue )
   SWAP_CREATED = "SWAP_CREATED", // the name of the ENS and avatar with the amount of ether in the swap already created
+  SWAP_CREATED_MARKETPLACE = "SWAP_CREATED_MARKETPLACE", // the name of the ENS and avatar with the amount of ether in the swap already created
 }
 interface UserOfferInfoProps {
   address: EthereumAddress | null;
@@ -164,34 +165,58 @@ export const UserOfferInfo = ({
               </p>
             </div>
           ) : (
-            // ) : address?.address === ADDRESS_ZERO &&
-            //   nativeEther &&
-            //   nativeEther.recipient === BigInt(0) &&
-            //   nativeEther.value !== BigInt(0) ? (
-            //   <>
-            //     <div className="flex-row flex items-center gap-1 dark:!bg-blue-500">
-            //       <p className="flex dark:p-small-dark p-small-variant-black">
-            //         {displayNativeEther.toString()}
-            //       </p>
-            //       <p className="flex dark:p-small-dark p-small-variant-black">
-            //         {isMounted && chain ? chain.nativeCurrency.symbol : ""}
-            //       </p>
-            //     </div>
-            //   </>
-            // ) : address?.address !== ADDRESS_ZERO &&
-            //   address?.address !== authenticatedUserAddress?.address &&
-            //   nativeEther &&
-            //   nativeEther.recipient !== BigInt(0) ? (
-            //   <>
-            //     <div className="flex-row flex items-center gap-1 dark:!bg-red-500">
-            //       <p className="flex dark:p-small-dark p-small-variant-black">
-            //         {displayNativeEther.toString()}
-            //       </p>
-            //       <p className="flex dark:p-small-dark p-small-variant-black">
-            //         {isMounted && chain ? chain.nativeCurrency.symbol : ""}
-            //       </p>
-            //     </div>
-            //   </>
+            <></>
+          )}
+        </div>
+      </div>
+    ),
+    [UserOfferVariant.SWAP_CREATED_MARKETPLACE]: (
+      <div>
+        <div className="flex justify-between">
+          <div className="flex gap-2">
+            <div>
+              {address && (
+                <ENSAvatar
+                  avatarENSAddress={address}
+                  size={ENSAvatarSize.SMALL}
+                />
+              )}
+            </div>
+            <div className="flex">
+              {primaryName ? (
+                <p>{primaryName} gets</p>
+              ) : (
+                <p>{displayAddress} gets</p>
+              )}
+            </div>
+          </div>
+          {address?.address !== ADDRESS_ZERO &&
+          nativeEther &&
+          nativeEther.recipient !== BigInt(0) ? (
+            <>
+              <div className="flex-row flex items-center gap-1">
+                <p className="flex dark:p-small-dark p-small-variant-black">
+                  {displayNativeEther.toString()}
+                </p>
+                <p className="flex dark:p-small-dark p-small-variant-black">
+                  {isMounted && chain ? chain.nativeCurrency.symbol : ""}
+                </p>
+              </div>
+            </>
+          ) : address?.address === ADDRESS_ZERO &&
+            nativeEther &&
+            nativeEther.recipient === BigInt(0) ? (
+            <>
+              <div className="flex-row flex items-center gap-1">
+                <p className="flex dark:p-small-dark p-small-variant-black">
+                  {displayNativeEther.toString()}
+                </p>
+                <p className="flex dark:p-small-dark p-small-variant-black">
+                  {isMounted && chain ? chain.nativeCurrency.symbol : ""}
+                </p>
+              </div>
+            </>
+          ) : (
             <></>
           )}
         </div>
