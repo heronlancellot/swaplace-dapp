@@ -1,4 +1,3 @@
-import { TimeStampDate } from "./swap-utils";
 import {
   ERC20,
   ERC20WithTokenAmountSelection,
@@ -12,24 +11,12 @@ export const WIDE_SCREEN_SIZE = 1279;
 export const DESKTOP_SCREEN_SIZE = 1023;
 export const TABLET_SCREEN_SIZE = 768;
 
-export interface ExpireOption {
-  label: string;
-  value: TimeStampDate;
-}
-
 export enum SwapModalSteps {
   APPROVE_TOKENS,
   ACCEPT_SWAP,
   WAIT_BLOCKCHAIN_INTERACTION,
   SUCCESSFUL_SWAP,
 }
-
-export const ExpireDate: ExpireOption[] = [
-  { label: "1 day", value: TimeStampDate.ONE_DAY },
-  { label: "1 week", value: TimeStampDate.ONE_WEEK },
-  { label: "1 month", value: TimeStampDate.ONE_MONTH },
-  { label: "1 year", value: TimeStampDate.ONE_YEAR },
-];
 
 export const getTokenName = (
   token: Token,

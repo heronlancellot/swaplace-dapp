@@ -65,7 +65,7 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
                         : validatedAddressToSwap
                         ? `${
                             validatedAddressToSwap.address === ADDRESS_ZERO
-                              ? "Any user"
+                              ? "Any user offers"
                               : validatedAddressToSwap.getEllipsedAddress() +
                                 " offers"
                           } `
@@ -85,7 +85,7 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
               </p>
             </div>
           </div>
-          {variant === ForWhom.Yours && (
+          {variant === ForWhom.Yours && authenticatedUserAddress && (
             <EtherFieldAddition variant={ForWhom.Yours} />
           )}
           {variant === ForWhom.Their && validatedAddressToSwap && (

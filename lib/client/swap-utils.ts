@@ -31,6 +31,11 @@ export type TokenWithSwapInfo = {
   amountOrId: bigint;
 };
 
+export interface SwapNativeEther {
+  recipient: bigint;
+  value: bigint;
+}
+
 export interface IApproveTokenSwap {
   walletClient: WalletClient;
   tokenContractAddress: `0x${string}`;
@@ -39,14 +44,6 @@ export interface IApproveTokenSwap {
   chainId: number;
   token: Token;
   onWalletConfirmation: () => void;
-}
-
-export enum TimeStampDate {
-  ONE_DAY = 24 * 60 * 60 * 1000,
-  ONE_WEEK = ONE_DAY * 7,
-  ONE_MONTH = ONE_WEEK * 4,
-  SIX_MONTH = ONE_MONTH * 6,
-  ONE_YEAR = SIX_MONTH * 2,
 }
 
 export function getTokenInfoBeforeSwap(token: Token): TokenWithSwapInfo {

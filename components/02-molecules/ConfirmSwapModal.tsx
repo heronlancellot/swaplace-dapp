@@ -16,7 +16,10 @@ import {
   encodeConfig,
   toastBlockchainTxError,
 } from "@/lib/client/blockchain-utils";
-import { CreateTokenOffer } from "@/components/03-organisms";
+import {
+  CreateTokenOffer,
+  CreateTokenOfferVariant,
+} from "@/components/03-organisms";
 import { fromTokensToAssets, getSwapConfig } from "@/lib/client/swap-utils";
 import { SwapModalSteps } from "@/lib/client/ui-utils";
 import { EthereumAddress, Token } from "@/lib/shared/types";
@@ -235,6 +238,7 @@ export const ConfirmSwapModal = ({
               chainId,
             );
 
+            console.log("etherRecipient", etherRecipient);
             // Create swap
             const msgValueCreateSwap =
               etherRecipient == 0 ? etherValue : BigInt(0);
@@ -302,7 +306,14 @@ export const ConfirmSwapModal = ({
             ) : (
               <OfferExpiryConfirmSwap />
             )}
-            <CreateTokenOffer swapModalAction={swapModalAction} />
+            {swapModalAction === SwapModalAction.CREATE_SWAP ? (
+              <CreateTokenOffer swapModalAction={swapModalAction} />
+            ) : (
+              <CreateTokenOffer
+                swapModalAction={swapModalAction}
+                variant={CreateTokenOfferVariant.VerticalVariantSwapNativeEther}
+              />
+            )}
           </div>
         }
         footer={
@@ -342,7 +353,14 @@ export const ConfirmSwapModal = ({
             ) : (
               <OfferExpiryConfirmSwap />
             )}
-            <CreateTokenOffer swapModalAction={swapModalAction} />
+            {swapModalAction === SwapModalAction.CREATE_SWAP ? (
+              <CreateTokenOffer swapModalAction={swapModalAction} />
+            ) : (
+              <CreateTokenOffer
+                swapModalAction={swapModalAction}
+                variant={CreateTokenOfferVariant.VerticalVariantSwapNativeEther}
+              />
+            )}
           </div>
         }
         footer={
@@ -367,8 +385,15 @@ export const ConfirmSwapModal = ({
               <OfferExpiryConfirmSwapStation />
             ) : (
               <OfferExpiryConfirmSwap />
-            )}{" "}
-            <CreateTokenOffer swapModalAction={swapModalAction} />
+            )}
+            {swapModalAction === SwapModalAction.CREATE_SWAP ? (
+              <CreateTokenOffer swapModalAction={swapModalAction} />
+            ) : (
+              <CreateTokenOffer
+                swapModalAction={swapModalAction}
+                variant={CreateTokenOfferVariant.VerticalVariantSwapNativeEther}
+              />
+            )}
           </div>
         }
         footer={
