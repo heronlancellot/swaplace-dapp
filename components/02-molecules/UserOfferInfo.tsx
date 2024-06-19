@@ -143,7 +143,7 @@ export const UserOfferInfo = ({
           </div>
           {address?.address !== authenticatedUserAddress?.address &&
           nativeEther &&
-          nativeEther.recipient !== BigInt(0) ? ( // Inverted to display correct in the UI
+          nativeEther.recipient !== BigInt(0) ? (
             <div className="flex-row flex items-center gap-1">
               <p className="flex dark:p-small-dark p-small-variant-black">
                 {displayNativeEther.toString()}
@@ -154,8 +154,7 @@ export const UserOfferInfo = ({
             </div>
           ) : address?.address === authenticatedUserAddress?.address &&
             nativeEther &&
-            nativeEther.recipient === BigInt(0) && // Inverted to display correct in the UI
-            isInRange(Number(nativeEther.recipient), 1, 255) ? (
+            nativeEther.recipient === BigInt(0) ? (
             <div className="flex-row flex items-center gap-1">
               <p className="flex dark:p-small-dark p-small-variant-black">
                 {displayNativeEther.toString()}
