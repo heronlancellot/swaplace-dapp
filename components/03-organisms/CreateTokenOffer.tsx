@@ -53,8 +53,8 @@ export const CreateTokenOffer = ({
 
   if (swapOfferToAccept) {
     nativeEtherSwap = {
-      recipient: swapOfferToAccept.recipient,
-      value: swapOfferToAccept.value,
+      recipient: BigInt(swapOfferToAccept.recipient),
+      value: BigInt(swapOfferToAccept.value),
     };
   }
 

@@ -104,8 +104,8 @@ export const SwapOffers = () => {
 
 const SwapOffer = ({ swap }: { swap: PopulatedSwapOfferCard }) => {
   const nativeEtherSwap: SwapNativeEther = {
-    recipient: swap.recipient,
-    value: swap.value,
+    recipient: BigInt(swap.recipient),
+    value: BigInt(swap.value),
   };
 
   return (
