@@ -13,6 +13,7 @@ import { SwapContext } from "@/lib/client/contexts";
 import React, { useContext, useEffect, useState } from "react";
 import cc from "classcat";
 import toast from "react-hot-toast";
+import Atropos from "atropos/react";
 
 interface TokenCardProps {
   tokenData: Token;
@@ -31,6 +32,7 @@ interface TokenCardProps {
   displayERC20TokensAmount?: boolean;
   withSelectionValidation?: boolean;
   styleType?: StyleVariant;
+  isToken3D?: boolean; // If true, the token card will be displayed in 3D using the AtroposLibrary
 }
 
 export enum TokenCardActionType {
@@ -85,6 +87,7 @@ export const TokenCard = ({
   displayERC20TokensAmount = false,
   styleType = TokenCardStyleType.NORMAL,
   onClickAction = TokenCardActionType.SELECT_TOKEN_FOR_SWAP,
+  isToken3D = false,
 }: TokenCardProps) => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
   const {
@@ -217,7 +220,30 @@ export const TokenCard = ({
   };
 
   const ButtonLayout = (children: React.ReactNode) => {
-    return (
+    return isToken3D ? (
+      <Atropos shadowScale={0.5} scaleClassName="atropos-scale" scaleChildren>
+        <button
+          onClick={onCardClick}
+          className={cc([
+            TokenSizeClassNames[styleType],
+            {
+              "border-green-500":
+                currentNftIsSelected && withSelectionValidation,
+              "cursor-auto": onClickAction === TokenCardActionType.NO_ACTION,
+            },
+          ])}
+        >
+          {currentNftIsSelected && withSelectionValidation && (
+            <div className="flex items-end justify-end absolute bottom-0 right-0 w-full h-full rounded-xl z-20">
+              <div className=" dark:bg-[#212322] bg-[#F6F6F6] translate-x-[1px] translate-y-[1px] p-1 rounded-tl-xl">
+                <SwaplaceIcon className="text-[#AABE13] dark:text-[#DDF23D] w-4 h-4" />
+              </div>
+            </div>
+          )}
+          {children}
+        </button>
+      </Atropos>
+    ) : (
       <button
         onClick={onCardClick}
         className={cc([
