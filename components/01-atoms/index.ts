@@ -21,6 +21,7 @@ export * from "./SwapModalLayout";
 export * from "./SwappingIcons";
 export * from "./SwappingSearchTab";
 export * from "./ThreeDotsCardOffersOptions";
+export * from "./Token3DModal";
 export * from "./TokenCardProperties";
 export * from "./TokenCardsPlaceholder";
 export * from "./TokenOfferDetails";
