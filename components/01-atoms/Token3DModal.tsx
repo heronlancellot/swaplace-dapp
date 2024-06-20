@@ -1,12 +1,23 @@
+import { TokenCard, TokenCardActionType } from "../02-molecules";
+import { ERC721, EthereumAddress, Token, TokenType } from "@/lib/shared/types";
+import { collapseAddress } from "@/lib/client/utils";
 import React from "react";
 import cc from "classcat";
+import { Atropos } from "atropos/react";
 
 interface Token3DModalProps {
   isOpen: boolean;
   onClose: () => void;
+  token: Token;
+  ownerAddress: EthereumAddress | null;
 }
 
-export const Token3DModal = ({ isOpen, onClose }: Token3DModalProps) => {
+export const Token3DModal = ({
+  isOpen,
+  onClose,
+  token,
+  ownerAddress,
+}: Token3DModalProps) => {
   return (
     <>
       {isOpen && (
@@ -24,7 +35,30 @@ export const Token3DModal = ({ isOpen, onClose }: Token3DModalProps) => {
           "top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2",
         ])}
       >
-        <div className="flex flex-col gap-6">Conteúdo do Modal</div>
+        <div className="flex w-full h-full gap-2">
+          <div className="flex w-full h-full">
+            <Atropos>
+              <TokenCard
+                tokenData={token}
+                ownerAddress={ownerAddress}
+                styleType="fit"
+                withSelectionValidation={false}
+                onClickAction={TokenCardActionType.SHOW_NFT_DETAILS}
+                key={token.id}
+              />
+            </Atropos>
+          </div>
+          <div className="flex flex-col">
+            <p>
+              {token.name} (
+              {token.tokenType === TokenType.ERC721 &&
+                (token as ERC721).contractMetadata?.symbol}
+              )
+            </p>
+            <p>#{token.id}</p>
+            <p>{token.contract && collapseAddress(token.contract)}</p>
+          </div>
+        </div>
       </div>
     </>
   );
