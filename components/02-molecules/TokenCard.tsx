@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { SwaplaceIcon } from "@/components/01-atoms";
+import { SwaplaceIcon, Token3DModal } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   ERC20,
@@ -10,10 +10,11 @@ import {
 } from "@/lib/shared/types";
 import { getTokenName } from "@/lib/client/ui-utils";
 import { SwapContext } from "@/lib/client/contexts";
+import useLongPress from "@/lib/client/hooks/useLongPress";
 import React, { useContext, useEffect, useState } from "react";
 import cc from "classcat";
 import toast from "react-hot-toast";
-import Atropos from "atropos/react";
+import { Atropos } from "atropos/react";
 
 interface TokenCardProps {
   tokenData: Token;
@@ -98,11 +99,11 @@ export const TokenCard = ({
   } = useContext(SwapContext);
   const [currentNftIsSelected, setCurrentNftIsSelected] = useState(false);
   const [couldntLoadNftImage, setCouldntLoadNftImage] = useState(false);
-
   const [tokenDisplayableData, setDisplayableData] = useState({
     id: "",
     symbol: "",
   });
+  const [isPressed, setIsPressed] = useState(false);
 
   useEffect(() => {
     const displayableData = { ...tokenDisplayableData };
@@ -158,6 +159,52 @@ export const TokenCard = ({
     ownerAddress,
     tokenData,
   ]);
+
+  // const getTokenSelected = (ownerEthAddress: EthereumAddress) => {
+  //   if (authenticatedUserAddress?.equals(ownerEthAddress)) {
+  //     const isSelected = authenticatedUserTokensList.some(
+  //       (selectedNft) => selectedNft.id === tokenData.id,
+  //     );
+
+  //     if (isSelected) {
+  //       setAuthenticatedUserTokensList((prevNftAuthUser) =>
+  //         prevNftAuthUser.filter((selectedNft) => {
+  //           return selectedNft.id !== tokenData.id;
+  //         }),
+  //       );
+  //     } else {
+  //       setAuthenticatedUserTokensList((prevNftAuthUser) => [
+  //         ...prevNftAuthUser,
+  //         tokenData,
+  //       ]);
+
+  //       if (tokenData.tokenType === TokenType.ERC20) {
+  //         openTokenAmountSelectionModal?.(ownerEthAddress, tokenData);
+  //       }
+  //     }
+  //   } else {
+  //     const isSelected = searchedUserTokensList.some(
+  //       (selectedNft) => selectedNft.id === tokenData.id,
+  //     );
+
+  //     if (isSelected) {
+  //       setSearchedUserTokensList((prevNftInputUser) => {
+  //         return prevNftInputUser.filter((selectedNft) => {
+  //           return selectedNft.id !== tokenData.id;
+  //         });
+  //       });
+  //     } else {
+  //       setSearchedUserTokensList((prevNftInputUser) => [
+  //         ...prevNftInputUser,
+  //         tokenData,
+  //       ]);
+
+  //       if (tokenData.tokenType === TokenType.ERC20) {
+  //         openTokenAmountSelectionModal?.(ownerEthAddress, tokenData);
+  //       }
+  //     }
+  //   }
+  // };
 
   const onCardClick = () => {
     if (
@@ -219,11 +266,27 @@ export const TokenCard = ({
     setCouldntLoadNftImage(true);
   };
 
+  const handleClick = () => {
+    setIsPressed(false);
+  };
+
+  const handleClickLong = () => {
+    setIsPressed(true);
+  };
+
+  const { onMouseDown, onMouseUp, onMouseLeave } = useLongPress(
+    handleClickLong,
+    onCardClick, // when the user clicks in Button card
+  );
+
   const ButtonLayout = (children: React.ReactNode) => {
     return isToken3D ? (
       <Atropos shadowScale={0.5} scaleClassName="atropos-scale" scaleChildren>
         <button
-          onClick={onCardClick}
+          onClick={handleClick}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseLeave}
           className={cc([
             TokenSizeClassNames[styleType],
             {
@@ -276,6 +339,15 @@ export const TokenCard = ({
           className="dark:text-[#707572] text-[#707572] text-center static z-10 w-full h-full overflow-y-auto rounded-xl"
         />,
       )}
+      {isPressed && (
+        <Token3DModal
+          // token={currentToken}
+          isOpen={isPressed}
+          onClose={() => {
+            setIsPressed(false);
+          }}
+        />
+      )}
     </>
   ) : (
     <>
@@ -286,6 +358,15 @@ export const TokenCard = ({
             displayTokenAmount: displayERC20TokensAmount,
           })}
         </div>,
+      )}
+      {isPressed && (
+        <Token3DModal
+          // token={currentToken}
+          isOpen={isPressed}
+          onClose={() => {
+            setIsPressed(false);
+          }}
+        />
       )}
     </>
   );
