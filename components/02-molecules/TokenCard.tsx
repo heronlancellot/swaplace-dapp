@@ -48,6 +48,7 @@ export enum TokenCardStyleType {
   NORMAL = "normal",
   MEDIUM = "medium",
   LARGE = "large",
+  FIT = "fit",
 }
 
 type StyleVariant =
@@ -55,13 +56,15 @@ type StyleVariant =
   | "small"
   | "normal"
   | "medium"
-  | "large";
+  | "large"
+  | "fit";
 
 export const TokenSizeClassNames = {
   [TokenCardStyleType.SMALL]: "card-token-small",
   [TokenCardStyleType.NORMAL]: "card-token-normal",
   [TokenCardStyleType.MEDIUM]: "card-token-medium",
   [TokenCardStyleType.LARGE]: "card-token-large",
+  [TokenCardStyleType.FIT]: "w-full h-full",
 };
 
 /**
@@ -159,52 +162,6 @@ export const TokenCard = ({
     ownerAddress,
     tokenData,
   ]);
-
-  // const getTokenSelected = (ownerEthAddress: EthereumAddress) => {
-  //   if (authenticatedUserAddress?.equals(ownerEthAddress)) {
-  //     const isSelected = authenticatedUserTokensList.some(
-  //       (selectedNft) => selectedNft.id === tokenData.id,
-  //     );
-
-  //     if (isSelected) {
-  //       setAuthenticatedUserTokensList((prevNftAuthUser) =>
-  //         prevNftAuthUser.filter((selectedNft) => {
-  //           return selectedNft.id !== tokenData.id;
-  //         }),
-  //       );
-  //     } else {
-  //       setAuthenticatedUserTokensList((prevNftAuthUser) => [
-  //         ...prevNftAuthUser,
-  //         tokenData,
-  //       ]);
-
-  //       if (tokenData.tokenType === TokenType.ERC20) {
-  //         openTokenAmountSelectionModal?.(ownerEthAddress, tokenData);
-  //       }
-  //     }
-  //   } else {
-  //     const isSelected = searchedUserTokensList.some(
-  //       (selectedNft) => selectedNft.id === tokenData.id,
-  //     );
-
-  //     if (isSelected) {
-  //       setSearchedUserTokensList((prevNftInputUser) => {
-  //         return prevNftInputUser.filter((selectedNft) => {
-  //           return selectedNft.id !== tokenData.id;
-  //         });
-  //       });
-  //     } else {
-  //       setSearchedUserTokensList((prevNftInputUser) => [
-  //         ...prevNftInputUser,
-  //         tokenData,
-  //       ]);
-
-  //       if (tokenData.tokenType === TokenType.ERC20) {
-  //         openTokenAmountSelectionModal?.(ownerEthAddress, tokenData);
-  //       }
-  //     }
-  //   }
-  // };
 
   const onCardClick = () => {
     if (
@@ -341,7 +298,8 @@ export const TokenCard = ({
       )}
       {isPressed && (
         <Token3DModal
-          // token={currentToken}
+          token={tokenData}
+          ownerAddress={ownerAddress}
           isOpen={isPressed}
           onClose={() => {
             setIsPressed(false);
@@ -361,7 +319,8 @@ export const TokenCard = ({
       )}
       {isPressed && (
         <Token3DModal
-          // token={currentToken}
+          token={tokenData}
+          ownerAddress={ownerAddress}
           isOpen={isPressed}
           onClose={() => {
             setIsPressed(false);
