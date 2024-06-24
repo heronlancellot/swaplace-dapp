@@ -108,6 +108,37 @@ export const TokenCard = ({
   });
   const [isPressed, setIsPressed] = useState(false);
 
+  interface TokenToClipboard {
+    tokenType: TokenType;
+    id?: string;
+    name?: string;
+    image: string;
+    contract: string;
+  }
+
+  /**
+   * Parses the token data into a format suitable for copying to the clipboard.
+   * @param tokenData The token data to be parsed.
+   * @returns The parsed token data in the form of TokenToClipboard object.
+   */
+  const parseTokenDataToClipboard = (tokenData: Token): TokenToClipboard => {
+    const tokenCopyToClipboard: TokenToClipboard = {
+      tokenType: tokenData.tokenType,
+      id: tokenData.id,
+      name: tokenData.name,
+      image:
+        tokenData.tokenType === TokenType.ERC721
+          ? ((tokenData as ERC721).metadata?.image as string)
+          : "",
+      contract:
+        tokenData.tokenType === TokenType.ERC721
+          ? ((tokenData as ERC721).contract as string)
+          : "",
+    };
+
+    return tokenCopyToClipboard;
+  };
+
   useEffect(() => {
     const displayableData = { ...tokenDisplayableData };
 
@@ -214,7 +245,8 @@ export const TokenCard = ({
         }
       }
     } else if (onClickAction === TokenCardActionType.SHOW_NFT_DETAILS) {
-      navigator.clipboard.writeText(JSON.stringify(tokenData));
+      const tokenDataToClipboard = parseTokenDataToClipboard(tokenData);
+      navigator.clipboard.writeText(JSON.stringify(tokenDataToClipboard));
       toast.success("NFT data copied to your clipboard!");
     }
   };
