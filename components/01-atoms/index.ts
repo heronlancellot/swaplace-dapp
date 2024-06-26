@@ -10,6 +10,7 @@ export * from "./NetworkDropdown";
 export * from "./MobileNotSupported";
 export * from "./OfferExpiryConfirmSwap";
 export * from "./OfferTag";
+export * from "./OpenSeaExternalLinkButton";
 export * from "./ProgressBar";
 export * from "./SearchBar";
 export * from "./SearchItemsShelf";
