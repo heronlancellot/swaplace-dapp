@@ -1,5 +1,8 @@
-import { TokenCard, TokenCardActionType } from "../02-molecules";
-import { BlockExplorerExternalLinkButton } from "@/components/01-atoms";
+import { TokenCard, TokenCardActionType } from "@/components/02-molecules";
+import {
+  BlockExplorerExternalLinkButton,
+  OpenSeaExternalLinkButton,
+} from "@/components/01-atoms";
 import { ERC721, EthereumAddress, Token, TokenType } from "@/lib/shared/types";
 import cc from "classcat";
 import { Atropos } from "atropos/react";
@@ -28,7 +31,7 @@ export const Token3DModal = ({
       )}
       <div
         className={cc([
-          "fixed z-50 flex justify-center items-center transition-transform duration-300 ease-in-out p-6 ",
+          "fixed z-50 flex justify-center items-center transition-transform duration-300 ease-in-out p-6",
           "rounded-[20px] border dark:bg-[#212322] dark:border-[#353836] dark:shadow-sidebarDark bg-[#F6F6F6] border-[#F0EEEE] shadow-sidebarLight",
           isOpen ? "opacity-100 scale-100 " : "opacity-0 scale-75",
           isOpen
@@ -37,8 +40,8 @@ export const Token3DModal = ({
         ])}
       >
         <div className="flex flex-row w-full h-full gap-2">
-          <div className="flex w-full h-full justify-center">
-            <Atropos>
+          <div className="flex w-[500px] h-full justify-center">
+            <Atropos className="flex w-full h-full">
               <TokenCard
                 tokenData={token}
                 ownerAddress={ownerAddress}
@@ -53,10 +56,20 @@ export const Token3DModal = ({
             <p className="text-lg font-bold">
               {token.name} (
               {token.tokenType === TokenType.ERC721 &&
+                (token as ERC721).contractMetadata?.name &&
                 (token as ERC721).contractMetadata?.symbol}
               )
             </p>
-            <p className="text-md">#{token.id}</p>
+            <p className="text-md">
+              {token.id && token.contract && (
+                <>
+                  <OpenSeaExternalLinkButton
+                    contractAddress={new EthereumAddress(token.contract)}
+                    tokenId={Number(token.id)}
+                  />
+                </>
+              )}
+            </p>
             <p className="text-md">
               {token.contract && (
                 <BlockExplorerExternalLinkButton
