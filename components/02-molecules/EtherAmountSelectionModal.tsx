@@ -37,7 +37,7 @@ export const EtherAmountSelectionModal = ({
   const { balance } = useWalletBalance({
     walletAddress: userAddress,
   });
-  const match = balance?.match(/^(\d+\.\d{1,3})|\d+/);
+  const match = balance?.match(/^(\d+\.\d{1,6})|\d+/);
   const userAddressBalance = match ? match[0] : balance;
 
   const handleEtherAddition = () => {
@@ -89,18 +89,32 @@ export const EtherAmountSelectionModal = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
+      let etherValueAmount = e.target.value;
+
       if (isMaxEtherSelected) {
-        setEtherAmount(parseEther(userAddressBalance as string));
+        // Convert userAddressBalance to a string and limit to 6 decimal places
+        let balance = userAddressBalance as string;
+        const balanceParts = balance.split(".");
+        if (balanceParts.length > 1 && balanceParts[1].length > 6) {
+          balanceParts[1] = balanceParts[1].substring(0, 6); // Keep only the first 6 digits after the decimal
+          balance = balanceParts.join("."); // Rejoin the parts
+        }
+        setEtherAmount(parseEther(balance));
+      } else {
+        // Limit etherValueAmount to 6 decimal places
+        const parts = etherValueAmount.split(".");
+        if (parts.length > 1 && parts[1].length > 6) {
+          parts[1] = parts[1].substring(0, 6); // Keep only the first 6 digits after the decimal
+          etherValueAmount = parts.join("."); // Rejoin the parts
+        }
+        setInputValue(etherValueAmount);
+        setEtherAmount(parseEther(etherValueAmount));
       }
-      const etherValueAmount = e.target.value;
-      setInputValue(etherValueAmount);
-      setEtherAmount(parseEther(etherValueAmount));
     } catch {
       toast.error("Invalid Ether amount provided");
       setEtherValue(0n);
     }
   };
-
   return (
     <SwapModalLayout
       toggleCloseButton={{

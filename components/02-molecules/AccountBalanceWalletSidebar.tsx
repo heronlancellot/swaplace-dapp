@@ -18,7 +18,7 @@ export const AccountBalanceWalletSidebar = () => {
     walletAddress: authenticatedUserAddress,
   });
 
-  const match = balance?.match(/^(\d+\.\d{1,3})|\d+/);
+  const match = balance?.match(/^(\d+\.\d{1,6})|\d+/);
   const displayBalance = match ? match[0] : balance;
 
   return (

@@ -23,31 +23,35 @@ export const EtherFieldAddition = ({ variant }: { variant: ForWhom }) => {
         {variant === ForWhom.Yours &&
         (etherRecipient === 0 || etherRecipient === 256) ? (
           <>
-            <p className="flex items-center p-small-variant-black-3 dark:p-small-variant-light-2">
+            <p className="flex items-center p-small-variant-black-3 dark:p-small-variant-light-2 contrast-50">
               {formatEther(etherValue)}
             </p>
             {/* Only render the chain symbol after the component has mounted */}
-            <p>{isMounted && chain ? chain.nativeCurrency.symbol : ""}</p>
+            <p className="flex items-center p-small-variant-black-3 dark:p-small-variant-light-2 contrast-50">
+              {isMounted && chain ? chain.nativeCurrency.symbol : ""}
+            </p>
           </>
         ) : variant === ForWhom.Their && isInRange(etherRecipient, 1, 256) ? (
           <>
-            <p className="flex items-center p-small-variant-black-3 dark:p-small-variant-light-2">
+            <p className="flex items-center p-small-variant-black-3 dark:p-small-variant-light-2 contrast-50">
               {formatEther(etherValue)}
             </p>
             {/* Only render the chain symbol after the component has mounted */}
-            <p>{isMounted && chain ? chain.nativeCurrency.symbol : ""}</p>
+            <p className="flex items-center p-small-variant-black-3 dark:p-small-variant-light-2 contrast-50">
+              {isMounted && chain ? chain.nativeCurrency.symbol : ""}
+            </p>
           </>
         ) : null}
       </div>
       {etherValue === 0n || isInRange(etherRecipient, 0, 256) ? (
         <>
           <button
-            className="w-6 h-6 rounded-full bg-[#FFFFFF1A] flex justify-center items-center"
+            className="w-6 h-6 rounded-full dark:bg-[#FFFFFF1A] bg-[#E4E4E4] flex justify-center items-center"
             onClick={() => {
               setIsOpen(!open);
             }}
           >
-            <PlusIconSmall />
+            <PlusIconSmall className="text-[#A3A9A5] dark:text-[#E4E4E4]" />
           </button>
           <EtherAmountSelectionModal
             open={open}
