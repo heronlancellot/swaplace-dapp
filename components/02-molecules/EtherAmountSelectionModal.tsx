@@ -37,7 +37,7 @@ export const EtherAmountSelectionModal = ({
   const { balance } = useWalletBalance({
     walletAddress: userAddress,
   });
-  const match = balance?.match(/^(\d+\.\d{1,3})|\d+/);
+  const match = balance?.match(/^(\d+\.\d{1,6})|\d+/);
   const userAddressBalance = match ? match[0] : balance;
 
   const handleEtherAddition = () => {
