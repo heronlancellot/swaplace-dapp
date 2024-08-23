@@ -32,21 +32,50 @@ export async function mintTokensMocked(
     abi: abi,
     functionName: "totalSupply",
   });
-  const amountOrId =
+
+  let amountOrId: bigint =
     tokenType === TokenType.ERC721
-      ? (tokenTotalSupply as bigint) + 1n
-      : 10000000000000000000; //TO DO: check if need set amount to mint here
+      ? (tokenTotalSupply as bigint) + BigInt(1)
+      : BigInt(10000000000000000000); // ERC20
 
   try {
-    const { request } = await publicClient({
-      chainId: configurations.chain,
-    }).simulateContract({
-      account: configurations.walletClient.account.address as `0x${string}`,
-      address: tokenContractAddress as `0x${string}`,
-      args: [configurations.walletClient.account.address, amountOrId],
-      functionName,
-      abi,
-    });
+    let request;
+    let attempts = 0;
+    while (!request) {
+      try {
+        const simulation = await publicClient({
+          chainId: configurations.chain,
+        }).simulateContract({
+          account: configurations.walletClient.account.address as `0x${string}`,
+          address: tokenContractAddress as `0x${string}`,
+          args: [configurations.walletClient.account.address, amountOrId],
+          functionName,
+          abi,
+        });
+        request = simulation.request;
+        break;
+      } catch (simulationError) {
+        console.log(
+          `simulation failed with amountOrId ${amountOrId}, trying again...`,
+        );
+        if (tokenType === TokenType.ERC721) {
+          attempts++;
+          if (attempts >= 10) {
+            const randomIncrement = BigInt(Math.floor(Math.random() * 91) + 10);
+            amountOrId += randomIncrement;
+            attempts = 0;
+          } else {
+            amountOrId += 1n;
+          }
+        } else {
+          throw simulationError;
+        }
+      }
+    }
+
+    if (!request) {
+      throw new Error("Failed to simulate contract after several attempts.");
+    }
 
     const transactionHash: Hash =
       await configurations.walletClient.writeContract(request);
