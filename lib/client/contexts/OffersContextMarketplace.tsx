@@ -2,23 +2,12 @@
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-//  import { ALL_OFFERS_MARKETPLACE_QUERY } from "../marketplace-queries";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-// import {
-//   ACCEPTED_OFFERS_QUERY,
-//   CANCELED_OFFERS_QUERY,
-//   CREATED_OFFERS_QUERY,
-//   EXPIRED_OFFERS_QUERY,
-//   RECEIVED_OFFERS_QUERY,
-// } from "@/lib/client/offer-queries";
 import { EthereumAddress, Token, TokenType } from "@/lib/shared/types";
-// import { cleanJsonString } from "@/lib/client/utils";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 import {
   FormattedSwapOfferAssets,
   PopulatedSwapOfferCard,
-  /*PageParam,*/
-  /*RawSwapOfferInterface,*/
   PageInfo,
   InfiniteQueryData,
 } from "@/lib/client/offers-utils";
@@ -27,10 +16,7 @@ import { fetchSwaps } from "@/lib/service/fetchSwaps";
 import useDebounce from "@/lib/client/hooks/useDebounce";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { Dispatch, useEffect, useState, useContext } from "react";
-// import axios from "axios";
-// import { isAddress } from "viem";
-import { /*useAccount,*/ useNetwork } from "wagmi";
-// import toast from "react-hot-toast";
+import { useNetwork } from "wagmi";
 
 export enum PonderFilter {
   MARKETPLACE = "Marketplace",
@@ -149,7 +135,6 @@ export const OffersContextMarketplaceProvider = ({ children }: any) => {
   const [isLoadingOffersQuery, setIsLoadingOffersQuery] = useState(false);
 
   const { authenticatedUserAddress } = useAuthenticatedUser();
-  // const { address, isConnected } = useAccount();
 
   const { destinyChain } = useContext(SwapContext);
   const { chain } = useNetwork();
@@ -160,8 +145,6 @@ export const OffersContextMarketplaceProvider = ({ children }: any) => {
   if (typeof chain?.id !== "undefined") {
     chainId = chain?.id;
   }
-
-  // const currentUnixTimeSeconds = Math.floor(new Date().getTime() / 1000);
 
   // Functions
   const acceptSwapOffer = async (swap: PopulatedSwapOfferCard) => {
@@ -217,12 +200,8 @@ export const OffersContextMarketplaceProvider = ({ children }: any) => {
     refetch();
   }, [debouncedOffersFilter, refetch]);
 
-  console.log("testando!");
-  console.log("testando!!!");
-
   const [hasNextPage, setHasNextPage] = useState(false);
 
-  console.log("dataContext", data);
   useEffect(() => {
     if (data) {
       setHasNextPage(data[data.length - 1].pageInfo.hasNextPage);
@@ -233,197 +212,6 @@ export const OffersContextMarketplaceProvider = ({ children }: any) => {
     !!authenticatedUserAddress &&
       setIsLoadingOffersQuery(status === "pending" || isFetchingNextPage);
   }, [isFetchingNextPage, status]);
-
-  // const fetchSwaps = async ({ pageParam }: PageParam) => {
-  //   const after = pageParam || null;
-  //   let query = "";
-  //   let variables = {};
-  //   let chainId: number | undefined = undefined;
-
-  //   if (typeof chain?.id != "undefined") {
-  //     chainId = chain?.id;
-  //   }
-
-  //   switch (offersFilter) {
-  //     case PonderFilter.ALL_OFFERS:
-  //       query = ALL_OFFERS_MARKETPLACE_QUERY;
-  //       variables = {
-  //         orderBy: "blockTimestamp",
-  //         orderDirection: "desc",
-  //         after: after,
-  //         allowed: "0x00", // For some reason the Ponder retrieves that Data instead of ADDRESS_ZERO
-  //         expiry_gte: currentUnixTimeSeconds,
-  //         network: chainId,
-  //       };
-  //       break;
-  //     case PonderFilter.CREATED:
-  //       query = CREATED_OFFERS_QUERY;
-  //       variables = {
-  //         orderBy: "blockTimestamp",
-  //         orderDirection: "desc",
-  //         inputAddress: userAddress,
-  //         after: after,
-  //         expiry_gt: currentUnixTimeSeconds,
-  //         network: chainId,
-  //       };
-  //       break;
-  //     case PonderFilter.RECEIVED:
-  //       query = RECEIVED_OFFERS_QUERY;
-  //       variables = {
-  //         orderBy: "blockTimestamp",
-  //         orderDirection: "desc",
-  //         after: after,
-  //         allowed: userAddress,
-  //         expiry_gt: currentUnixTimeSeconds,
-  //         network: chainId,
-  //       };
-  //       break;
-  //     case PonderFilter.ACCEPTED:
-  //       query = ACCEPTED_OFFERS_QUERY;
-  //       variables = {
-  //         orderBy: "blockTimestamp",
-  //         orderDirection: "desc",
-  //         inputAddress: userAddress,
-  //         after: after,
-  //         allowed: userAddress,
-  //         network: chainId,
-  //       };
-  //       break;
-  //     case PonderFilter.CANCELED:
-  //       query = CANCELED_OFFERS_QUERY;
-  //       variables = {
-  //         orderBy: "blockTimestamp",
-  //         orderDirection: "desc",
-  //         inputAddress: userAddress,
-  //         after: after,
-  //         allowed: userAddress,
-  //         network: chainId,
-  //       };
-  //       break;
-  //     case PonderFilter.EXPIRED:
-  //       query = EXPIRED_OFFERS_QUERY;
-  //       variables = {
-  //         orderBy: "blockTimestamp",
-  //         orderDirection: "desc",
-  //         inputAddress: userAddress,
-  //         expiry_lt: currentUnixTimeSeconds,
-  //         after: after,
-  //         network: chainId,
-  //       };
-  //       break;
-  //     default:
-  //       console.error("Invalid offersFilter:", offersFilter);
-  //       throw new Error("Invalid offersFilter");
-  //   }
-
-  //   const endpoint = process.env.NEXT_PUBLIC_PONDER_ENDPOINT;
-  //   const headers = {
-  //     "Content-Type": "application/json",
-  //   };
-
-  //   if (!endpoint) {
-  //     throw new Error(
-  //       "NEXT_PUBLIC_PONDER_ENDPOINT is not defined in the environment variables.",
-  //     );
-  //   }
-
-  //   try {
-  //     const response = await axios.post(
-  //       endpoint,
-  //       { query, variables },
-  //       { headers },
-  //     );
-  //     console.log("passou do axios");
-  //     console.log("response", response);
-  //     if (response.data && response.data.data) {
-  //       const items = response.data.data.swapDatabases
-  //         .items as RawSwapOfferInterface[];
-  //       const pageInfo = response.data.data.swapDatabases.pageInfo as PageInfo;
-  //       const processedItems: RawSwapOfferInterface[] = items.map(
-  //         (obj: any) => {
-  //           return {
-  //             ...obj,
-  //             bid: cleanJsonString(obj.bid),
-  //             ask: cleanJsonString(obj.ask),
-  //           };
-  //         },
-  //       );
-  //       const itemsArrayAsSwapOffers: FormattedSwapOfferAssets[] =
-  //         processedItems.map((item) => {
-  //           return {
-  //             id: item.swapId,
-  //             status: item.status,
-  //             expiryDate: item.expiry,
-  //             recipient: item.recipient,
-  //             value: item.recipient,
-  //             bidderAssets: {
-  //               address: isAddress(item.allowed)
-  //                 ? new EthereumAddress(item.allowed)
-  //                 : new EthereumAddress(ADDRESS_ZERO),
-  //               tokens: item.bid,
-  //             },
-  //             askerAssets: {
-  //               address: new EthereumAddress(item.owner),
-  //               tokens: item.ask,
-  //             },
-  //           };
-  //         });
-  //       setOffersQueries({
-  //         ...offersQueries,
-  //         [offersFilter]: itemsArrayAsSwapOffers,
-  //       });
-  //       return {
-  //         swapOffers: itemsArrayAsSwapOffers,
-  //         pageInfo,
-  //       };
-  //     } else {
-  //       console.error("Unexpected response structure:", response.data);
-  //       throw new Error("Unexpected response structure");
-  //     }
-  //   } catch (error) {
-  //     toast.error(
-  //       "Failed to fetch swaps from Subgraph. Please contact the team",
-  //     );
-  //     throw new Error("Failed to fetch swaps from Subgraph");
-  //   }
-  // };
-
-  // Offers query
-  // const { data, status, isFetchingNextPage, fetchNextPage, isError, refetch } =
-  //   useInfiniteQuery({
-  //     queryKey: [
-  //       "PonderQuerySwaps",
-  //       authenticatedUserAddress,
-  //       offersFilter,
-  //       destinyChain,
-  //     ],
-  //     queryFn: async ({ pageParam }: { pageParam: string | null }) =>
-  //       await fetchSwaps({ pageParam }),
-  //     initialPageParam: null,
-  //     refetchOnWindowFocus: false,
-  //     staleTime: Infinity,
-  //     getNextPageParam: (lastPage) => lastPage?.pageInfo?.endCursor,
-  //     enabled: !!authenticatedUserAddress,
-  //   });
-
-  // useEffect(() => {
-  //   refetch();
-  // }, [offersFilter, refetch]);
-
-  // const [hasNextPage, setHasNextPage] = useState(false);
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setHasNextPage(data.pages[data.pages.length - 1].pageInfo.hasNextPage);
-  //   }
-  // }, [data]);
-  // console.log("data:", data);
-
-  // // Effects
-  // useEffect(() => {
-  //   !!authenticatedUserAddress &&
-  //     setIsLoadingOffersQuery(status === "pending" || isFetchingNextPage);
-  // }, [isFetchingNextPage, status]);
 
   useEffect(() => {
     setOffersData({
@@ -455,6 +243,7 @@ export const OffersContextMarketplaceProvider = ({ children }: any) => {
     approvedTokensCount,
     setApprovedTokensCount,
     tokensList,
+    data,
   ]);
 
   // Exportable data
