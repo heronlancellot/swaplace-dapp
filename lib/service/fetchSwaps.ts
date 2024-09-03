@@ -22,6 +22,7 @@ import {
   retrieveDataFromTokensArray,
   decodeConfig,
 } from "../client/blockchain-utils";
+import { ALL_OFFERS_MARKETPLACE_QUERY } from "@/lib/client/marketplace-queries";
 import axios from "axios";
 import { isAddress } from "viem";
 import toast from "react-hot-toast";
@@ -46,6 +47,17 @@ export const fetchSwaps = async ({
   let variables = {};
 
   switch (offersFilter) {
+    case PonderFilter.MARKETPLACE:
+      query = ALL_OFFERS_MARKETPLACE_QUERY;
+      variables = {
+        orderBy: "blockTimestamp",
+        orderDirection: "desc",
+        after: after,
+        allowed: "0x00",
+        expiry_gte: currentUnixTimeSeconds,
+        network: chainId,
+      };
+      break;
     case PonderFilter.ALL_OFFERS:
       query = ALL_OFFERS_QUERY;
       variables = {
