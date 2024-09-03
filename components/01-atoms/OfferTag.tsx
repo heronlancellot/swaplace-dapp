@@ -43,6 +43,11 @@ export const OfferTag = ({ status }: { status: PonderFilter }) => {
         <div className="bg-[#DE7B30] p-1 rounded">{SwapStatus.PENDING}</div>
       ),
     },
+    [PonderFilter.MARKETPLACE]: {
+      body: (
+        <div className="bg-[#DE7B30] p-1 rounded">{SwapStatus.PENDING}</div>
+      ),
+    },
   };
 
   return (
