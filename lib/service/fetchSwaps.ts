@@ -67,6 +67,7 @@ export const fetchSwaps = async ({
         after: after,
         allowed: userAddress,
         expiry_gt: currentUnixTimeSeconds,
+        network: chainId,
       };
       break;
     case PonderFilter.CREATED:
@@ -77,6 +78,7 @@ export const fetchSwaps = async ({
         inputAddress: userAddress,
         after: after,
         expiry_gt: currentUnixTimeSeconds,
+        network: chainId,
       };
       break;
     case PonderFilter.RECEIVED:
@@ -87,6 +89,7 @@ export const fetchSwaps = async ({
         after: after,
         allowed: userAddress,
         expiry_gt: currentUnixTimeSeconds,
+        network: chainId,
       };
       break;
     case PonderFilter.ACCEPTED:
@@ -97,6 +100,7 @@ export const fetchSwaps = async ({
         inputAddress: userAddress,
         after: after,
         allowed: userAddress,
+        network: chainId,
       };
       break;
     case PonderFilter.CANCELED:
@@ -107,6 +111,7 @@ export const fetchSwaps = async ({
         inputAddress: userAddress,
         after: after,
         allowed: userAddress,
+        network: chainId,
       };
       break;
     case PonderFilter.EXPIRED:
@@ -117,6 +122,7 @@ export const fetchSwaps = async ({
         inputAddress: userAddress,
         expiry_lt: currentUnixTimeSeconds,
         after: after,
+        network: chainId,
       };
       break;
     default:
