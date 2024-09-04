@@ -19,6 +19,7 @@ import React, { Dispatch, useEffect, useState, useContext } from "react";
 import { useNetwork } from "wagmi";
 
 export enum PonderFilter {
+  MARKETPLACE = "Marketplace",
   ALL_OFFERS = "All Offers",
   CREATED = "Created",
   RECEIVED = "Received",
@@ -28,6 +29,7 @@ export enum PonderFilter {
 }
 
 const DEFAULT_OFFERS_DATA = {
+  [PonderFilter.MARKETPLACE]: [],
   [PonderFilter.ALL_OFFERS]: [],
   [PonderFilter.CREATED]: [],
   [PonderFilter.RECEIVED]: [],
