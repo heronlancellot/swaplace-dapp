@@ -81,7 +81,7 @@ export const SwapOffersMarketplace = () => {
             </div>
           )}
         </div>
-        <div className="flex justify-end mt-5">
+        <div className="flex justify-end">
           <button
             className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
             onClick={() => setToggleManually(!toggleManually)}
