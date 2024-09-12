@@ -1,6 +1,4 @@
 import { Layout, SwapSection } from "@/components/04-templates";
-// import { BannerMintTokens, DocsIcon, GithubLogo } from "@/components/01-atoms";
-// import Link from "next/link";
 
 export default function IndexPage() {
   return (
