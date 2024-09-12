@@ -10,7 +10,7 @@ export default function IndexPage() {
         {/**
          * This is the Token Mint component.
          *
-         * @deprecated This component is currently deprecated as the token mint functionality is not in use in Swaplace.
+         * @deprecated This feature is currently deprecated.
          */}
         {/* <div className="flex xl:flex-row flex-col lg:justify-center gap-2 ">
           <BannerMintTokens />
