@@ -1,6 +1,5 @@
 /** Atoms */
 export * from "./ApproveTokenCards";
-export * from "./BannerMintTokens";
 export * from "./BlockExplorerExternalLinkButton";
 export * from "./ConnectWallet";
 export * from "./DisconnectWallet";

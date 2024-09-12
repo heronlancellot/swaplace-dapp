@@ -10,6 +10,11 @@ import cc from "classcat";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
 import toast from "react-hot-toast";
 
+/**
+ * Renders a banner component for minting tokens.
+ *
+ * @deprecated This component is not in use currently.
+ */
 export const BannerMintTokens = () => {
   const [tokenType, setTokenType] = useState<TokenType | null>(null);
   const [toggleManually, setToggleManually] = useState<boolean>(false);
