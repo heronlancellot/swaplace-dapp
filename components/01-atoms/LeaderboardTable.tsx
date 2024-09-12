@@ -83,8 +83,8 @@ export const LeaderboardTable = () => {
   );
 
   return (
-    <div className="w-full border border-[#282B29] rounded-lg bg-[#282B29]">
-      <table className="w-full text-left table-fixed ">
+    <div className="w-full border border-[#282B29] rounded-lg dark:bg-[#282B29]  bg-[#E4E4E4]">
+      <table className="w-full text-left table-fixed">
         <thead className="border-b border-[#353836]">
           <tr>
             {LeaderboardData.map((header, index) => (
@@ -92,7 +92,7 @@ export const LeaderboardTable = () => {
                 className={cc([
                   header === Leaderboard.Points && "text-end",
                   header === Leaderboard.Rank && "flex justify-start",
-                  "px-4 py-3 p-small-dark-variant-grey",
+                  "px-4 py-3 dark:p-small-dark-variant-grey p-small-variant-black-2",
                 ])}
                 key={index}
               >
@@ -115,7 +115,7 @@ export const LeaderboardTable = () => {
                     data[header] === Ranking.SECOND ||
                     data[header] === Ranking.THIRD
                       ? "flex items-start justify-start px-3" // That padding will fill the center of the cell
-                      : "px-4 py-3 p-small-dark",
+                      : "px-4 py-3 dark:p-small-dark p-small-variant-black",
                     data[header] === Ranking.FIRST ||
                     data[header] === Ranking.SECOND ||
                     data[header] === Ranking.THIRD
@@ -159,14 +159,14 @@ export const LeaderboardTable = () => {
 
           {userData && (
             <tr>
-              <td className="px-6 py-3 text-[#ddf23d] text-sm">
+              <td className="px-6 py-3 dark:text-[#ddf23d] text-sm">
                 {userRank !== null ? userRank : userData.Rank}
               </td>
-              <td className="px-3.5 py-3 text-[#ddf23d] text-sm flex items-center">
-                <StarIcon className="mr-1.5" />{" "}
+              <td className="px-3.5 py-3 dark:text-[#ddf23d] text-sm flex items-center">
+                <StarIcon className="mr-1.5  dark:text-[#DDF23D]" />
                 {collapseAddress(userData.Address)}
               </td>
-              <td className="px-4 py-3 text-end text-[#ddf23d] text-sm">
+              <td className="px-4 py-3 text-end dark:text-[#ddf23d] text-sm">
                 {userData.Points.toString()}
               </td>
             </tr>
