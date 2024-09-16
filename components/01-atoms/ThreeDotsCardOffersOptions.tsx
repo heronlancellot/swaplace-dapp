@@ -43,23 +43,23 @@ export const ThreeDotsCardOffersOptions = ({
   return (
     <div className="flex relative">
       <div
-        className="dark:hover:bg-[#353836] hover:bg-[#e0e0e0] w-[24px] h-[24px] flex justify-center items-center p-1 rounded-[100px] "
+        className="dark:hover:bg-darkGray hover:bg-lightGray w-[24px] h-[24px] flex justify-center items-center p-1 rounded-[100px] "
         onClick={toggleDropdown}
         role="button"
       >
         <ThreeDotsIcon
           className={cc([
-            "dark:hover:text-[#F6F6F1] dark:text-[#A3A9A5] ",
-            { isOpen: "dark:text-[#F6F6F1] text-[#A3A9A5]" },
+            "dark:hover:text-frostWhite dark:text-sageGray ",
+            { isOpen: "dark:text-frostWhite text-sageGray" },
           ])}
         />
       </div>
       {isOpen && (
-        <div className="origin-top-right z-50 absolute right-0 top-1 mt-6 border border-[#353836] rounded-lg shadow-lg dark:bg-[#282B29] bg-[#ffffff] ring-1 ring-black ring-opacity-5 focus:outline-none shadow-three-dots">
+        <div className="origin-top-right z-50 absolute right-0 top-1 mt-6 border border-darkGray rounded-lg shadow-lg dark:bg-darkGreen bg-white ring-1 ring-black ring-opacity-5 focus:outline-none shadow-three-dots">
           <div className="relative">
             <button
               type="button"
-              className="flex items-center gap-3 w-full px-4 py-2 text-sm dark:p-small-dark-variant-grey rounded-lg  dark:hover:bg-[#353836] hover:bg-[#e4e4e4] hover:text-gray-900"
+              className="flex items-center gap-3 w-full px-4 py-2 text-sm dark:p-small-dark-variant-grey rounded-lg  dark:hover:bg-darkGray hover:bg-lightSilver hover:text-gray-900"
               role="menuitem"
             >
               <ShareIcon /> Share
@@ -68,7 +68,7 @@ export const ThreeDotsCardOffersOptions = ({
               swap.status !== PonderFilter.CANCELED && (
                 <button
                   type="button"
-                  className=" flex items-center gap-3 w-full px-4 py-2 text-sm dark:p-small-dark-variant-grey rounded-lg dark:hover:bg-[#353836] hover:bg-[#e4e4e4] hover:text-gray-900"
+                  className=" flex items-center gap-3 w-full px-4 py-2 text-sm dark:p-small-dark-variant-grey rounded-lg dark:hover:bg-darkGray hover:bg-lightSilver hover:text-gray-900"
                   role="menuitem"
                   onClick={() => handleCancelSwap(swap)}
                 >

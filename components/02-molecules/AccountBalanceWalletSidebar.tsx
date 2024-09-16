@@ -25,10 +25,10 @@ export const AccountBalanceWalletSidebar = () => {
     <div
       className={cc([
         "flex flex-col pt-5 border-t",
-        isDark ? "border-[#353836]" : "border-[#E4E4E4]",
+        isDark ? "border-darkGray" : "borderlightSilver",
       ])}
     >
-      <p className={cc([isDark ? "text-[#A3A9A5]" : "text-[#505150]"])}>
+      <p className={cc([isDark ? "text-sageGray" : "text-smokeGray"])}>
         Current balance
       </p>
       <div className="flex items-end gap-2">

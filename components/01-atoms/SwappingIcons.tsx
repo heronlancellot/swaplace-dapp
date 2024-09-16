@@ -106,10 +106,10 @@ export const SwappingIcons = () => {
               key={swappingTab.id}
               className={cc([
                 isSelected
-                  ? "dark:p-medium-bold-dark p-medium-bold border-l dark:border-[#DDF23D] border-[#AABE13] hover:dark:bg-[#333534]"
+                  ? "dark:p-medium-bold-dark p-medium-bold border-l dark:border-yellowGreen border-limeYellow hover:dark:bg-[#333534]"
                   : "dark:p-medium-bold p-medium-bold",
                 `flex-1 md:p-4 cursor-pointer ${
-                  !isDisabled && "hover:dark:bg-[#343635] hover:bg-[#eff3cf]"
+                  !isDisabled && "hover:dark:bg-[#343635] hover:bg-[#EFF3CF]"
                 } group`,
                 isDisabled && "disabled hover:cursor-not-allowed hover:none",
               ])}
@@ -123,10 +123,10 @@ export const SwappingIcons = () => {
                     "w-5 h-5",
                     theme === "dark"
                       ? isSelected
-                        ? "text-[#DDF23D]"
+                        ? "text-yellowGreen"
                         : "text-[#747474] group-hover:text-white"
                       : isSelected
-                      ? "text-[#AABE13]"
+                      ? "text-limeYellow"
                       : "text-[#c1c3c2] group-hover:text-[#4F4F4F]",
                     isDisabled && "disabled cursor-not-allowed",
                   ])}
@@ -140,9 +140,9 @@ export const SwappingIcons = () => {
               key={swappingTab.id}
               className={cc([
                 activeTab == swappingTab.id
-                  ? "dark:p-medium-bold-dark p-medium-bold border-l dark:border-[#DDF23D] border-black hover:dark:bg-[#333534]"
+                  ? "dark:p-medium-bold-dark p-medium-bold border-l dark:border-yellowGreen border-black hover:dark:bg-[#333534]"
                   : "dark:p-medium-bold p-medium-bold opacity-50 border-l dark:border-[#313131]",
-                "flex-1 md:p-4 cursor-pointer hover:dark:bg-[#343635] hover:bg-[#eff3cf]",
+                "flex-1 md:p-4 cursor-pointer hover:dark:bg-[#343635] hover:bg-[#EFF3CF]",
               ])}
               onClick={() => {
                 handleClick(swappingTab);

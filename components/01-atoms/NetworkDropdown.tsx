@@ -202,7 +202,7 @@ export const NetworkDropdown = ({
     [SupportedNetworks.KAKAROT_SEPOLIA]: {
       icon: (
         <NetworkIcon
-          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          props={{ className: "text-sageGray dark:text-mediumGray" }}
           variant={SupportedNetworks.KAKAROT_SEPOLIA}
         />
       ),
@@ -211,7 +211,7 @@ export const NetworkDropdown = ({
     [SupportedNetworks.SEPOLIA]: {
       icon: (
         <NetworkIcon
-          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          props={{ className: "text-sageGray dark:text-mediumGray" }}
           variant={SupportedNetworks.SEPOLIA}
         />
       ),
@@ -220,7 +220,7 @@ export const NetworkDropdown = ({
     [SupportedNetworks.OPSEPOLIA]: {
       icon: (
         <NetworkIcon
-          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          props={{ className: "text-sageGray dark:text-mediumGray" }}
           variant={SupportedNetworks.OPSEPOLIA}
         />
       ),
@@ -229,7 +229,7 @@ export const NetworkDropdown = ({
     [SupportedNetworks.AMOY]: {
       icon: (
         <NetworkIcon
-          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          props={{ className: "text-sageGray dark:text-mediumGray" }}
           variant={SupportedNetworks.AMOY}
         />
       ),
@@ -238,7 +238,7 @@ export const NetworkDropdown = ({
     [SupportedNetworks.FUJI]: {
       icon: (
         <NetworkIcon
-          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          props={{ className: "text-sageGray dark:text-mediumGray" }}
           variant={SupportedNetworks.FUJI}
         />
       ),
@@ -247,7 +247,7 @@ export const NetworkDropdown = ({
     [SupportedNetworks.BNBTESTNET]: {
       icon: (
         <NetworkIcon
-          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          props={{ className: "text-sageGray dark:text-mediumGray" }}
           variant={SupportedNetworks.BNBTESTNET}
         />
       ),
@@ -256,7 +256,7 @@ export const NetworkDropdown = ({
     [SupportedNetworks.BASESEPOLIA]: {
       icon: (
         <NetworkIcon
-          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          props={{ className: "text-sageGray dark:text-mediumGray" }}
           variant={SupportedNetworks.BASESEPOLIA}
         />
       ),
@@ -265,7 +265,7 @@ export const NetworkDropdown = ({
     [SupportedNetworks.ARBITRUMSEPOLIA]: {
       icon: (
         <NetworkIcon
-          props={{ className: "text-[#A3A9A5] dark:text-[#707572]" }}
+          props={{ className: "text-sageGray dark:text-mediumGray" }}
           variant={SupportedNetworks.ARBITRUMSEPOLIA}
         />
       ),
@@ -285,14 +285,14 @@ export const NetworkDropdown = ({
         >
           <div
             className={cc([
-              "lg:max-w-[280px] max-h-[44px] rounded-xl pl-3 pr-4 dark:bg-[#212322] bg-[#F6F6F6] hover:bg-[#F0EEEE75] hover:shadow-[0_0_6px_1px_#00000014] border dark:border-[#353836] border-[#D6D5D5] hover:border-[#AABE13] dark:hover:border-[#edff6259] dark:shadow-swap-connection shadow-swap-connection-light transition duration-300 ease-in-out",
+              "lg:max-w-[280px] max-h-[44px] rounded-xl pl-3 pr-4 dark:bg-midnightGreen bg-offWhite hover:bg-lightFrost hover:shadow-[0_0_6px_1px_#00000014] border dark:border-darkGray border-softGray hover:border-limeYellow dark:hover:border-softLemon dark:shadow-swap-connection shadow-swap-connection-light transition duration-300 ease-in-out",
               isOpen &&
-                "hover:bg-[#F0EEEE75] border-[#E4E4E4] hover:border-[#AABE13] hover:shadow-[0_0_6px_1px_#00000014] dark:border-[#DDF23D33] dark:hover:border-[#edff6259]",
+                "hover:bg-lightFrost borderlightSilver hover:border-limeYellow hover:shadow-[0_0_6px_1px_#00000014] dark:border-[#DDF23D33] dark:hover:border-softLemon",
             ])}
           >
             <div className="flex justify-between items-center h-[44px] lg:w-[252px]">
               <div className="flex gap-2 items-center">
-                <div className="flex dark:bg-[#353836] bg-[#E4E4E4] rounded-md">
+                <div className="flex dark:bg-darkGray bg-lightSilver rounded-md">
                   <NetworkIcon variant={networkText} />
                 </div>
                 <div
@@ -311,7 +311,7 @@ export const NetworkDropdown = ({
               </div>
               <div>
                 <ArrowIcon
-                  props={{ className: "dark:text-[#707572] text-[#A3A9A5]" }}
+                  props={{ className: "dark:text-mediumGray text-sageGray" }}
                   variant={isOpen ? ArrowIconVariant.UP : ArrowIconVariant.DOWN}
                 />
               </div>
@@ -319,14 +319,14 @@ export const NetworkDropdown = ({
           </div>
           {isOpen && (
             <div className="max-w-[280px]">
-              <div className="absolute z-20 top-12 left-0 w-full bg-white dark:bg-[#212322] overflow-hidden border dark:border-[#505150] rounded-xl dark:shadow-swap-connection-dropwdown">
+              <div className="absolute z-20 top-12 left-0 w-full bg-white dark:bg-midnightGreen overflow-hidden border dark:border-smokeGray rounded-xl dark:shadow-swap-connection-dropwdown">
                 {Object.values(NetworkInfo).map((network, index) => (
                   <div
                     key={index}
                     onClick={() =>
                       handleDropdownItemClick(network.name as NetworkVariants)
                     }
-                    className="gap-2 flex px-4 py-2 p-small-variant-black-2 dark:p-small-dark-variant-grey items-center hover:dark:bg-[#353836] transition-colors duration-200"
+                    className="gap-2 flex px-4 py-2 p-small-variant-black-2 dark:p-small-dark-variant-grey items-center hover:dark:bg-darkGray transition-colors duration-200"
                   >
                     <NetworkIcon variant={network.name as NetworkVariants} />
                     {capitalizeFirstLetterPrhases(network.name)}
@@ -350,7 +350,7 @@ export const NetworkDropdown = ({
         >
           <button
             onClick={handleToggleDropdown}
-            className="bg-black-500 outline-none dark:hover:bg-[#353836] hover:bg-[#E4E4E4] transition-colors duration-200 rounded-[10px] p-2"
+            className="bg-black-500 outline-none dark:hover:bg-darkGray hover:bg-lightSilver transition-colors duration-200 rounded-[10px] p-2"
           >
             {!authenticatedUserAddress ? (
               <NetworkIcon variant={"default"} />
@@ -361,14 +361,14 @@ export const NetworkDropdown = ({
         </Tooltip>
         {isOpen && (
           <div className="max-w-[280px]">
-            <div className="absolute xl:ml-2 lg:right-10 xl:right-auto xl:bottom-1 bg-white dark:bg-[#212322] overflow-hidden border dark:border-[#505150] rounded-xl dark:shadow-swap-connection-dropwdown">
+            <div className="absolute xl:ml-2 lg:right-10 xl:right-auto xl:bottom-1 bg-white dark:bg-midnightGreen overflow-hidden border dark:border-smokeGray rounded-xl dark:shadow-swap-connection-dropwdown">
               {Object.values(NetworkInfo).map((network, index) => (
                 <div
                   key={index}
                   onClick={() =>
                     handleDropdownItemClick(network.name as NetworkVariants)
                   }
-                  className="gap-2 flex px-4 py-2 p-small-variant-black-2 dark:p-small-dark-variant-grey items-center hover:dark:bg-[#353836] transition-colors duration-200"
+                  className="gap-2 flex px-4 py-2 p-small-variant-black-2 dark:p-small-dark-variant-grey items-center hover:dark:bg-darkGray transition-colors duration-200"
                 >
                   <NetworkIcon variant={network.name as NetworkVariants} />
                   <span className="w-[200px]">

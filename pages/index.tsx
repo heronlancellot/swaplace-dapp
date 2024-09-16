@@ -14,13 +14,13 @@ export default function IndexPage() {
           <BannerMintTokens />
           <div className="flex items-center gap-1">
             <Link href={"https://blockful.gitbook.io/swaplace"} target="_blank">
-              <DocsIcon className="dark:text-[#DDF23D] text-[#A3A9A5]" />
+              <DocsIcon className="dark:text-yellowGreen text-sageGray" />
             </Link>
             <Link
               href={"https://github.com/blockful-io/swaplace-contracts"}
               target="_blank"
             >
-              <GithubLogo className="dark:text-[#DDF23D] text-[#A3A9A5]" />
+              <GithubLogo className="dark:text-yellowGreen text-sageGray" />
             </Link>
           </div>
         </div> */}

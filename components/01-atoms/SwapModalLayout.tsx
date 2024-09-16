@@ -52,14 +52,14 @@ export const SwapModalLayout = ({
           leave="transition duration-75 ease-out"
           leaveFrom="transform scale-100 opacity-100"
           leaveTo="transform scale-95 opacity-0"
-          className="w-[80%] md:w-auto fixed left-1/2 top-1/2 z-50 bg-[#f8f8f8] dark:bg-[#212322] -translate-x-1/2 -translate-y-1/2 rounded-[20px] border-[#353836] "
+          className="w-[80%] md:w-auto fixed left-1/2 top-1/2 z-50 bg-faintGray dark:bg-midnightGreen -translate-x-1/2 -translate-y-1/2 rounded-[20px] border-darkGray "
         >
           <Dialog.Panel
             className={
-              "flex flex-col md:min-w-[480px] md:max-w-[480px] md:max-h-[620px] border border-[#353836] rounded-[20px] shadow"
+              "flex flex-col md:min-w-[480px] md:max-w-[480px] md:max-h-[620px] border border-darkGray rounded-[20px] shadow"
             }
           >
-            <div className="border-b border-[#353836]">
+            <div className="border-b border-darkGray">
               <Dialog.Title
                 className={
                   "dark:text-white text-black text-xl font-bold h-[76px] justify-between flex p-6"
@@ -85,7 +85,7 @@ export const SwapModalLayout = ({
             </div>
 
             {footer && (
-              <div className="flex justify-between items-center w-full p-6 border-t border-[#353836]">
+              <div className="flex justify-between items-center w-full p-6 border-t border-darkGray">
                 {footer}
               </div>
             )}

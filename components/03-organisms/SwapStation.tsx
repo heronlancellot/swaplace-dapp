@@ -107,7 +107,7 @@ export const SwapStation = () => {
   };
 
   return (
-    <div className="w-full p-5 bg-[#F6F6F6] dark:bg-[#212322] border rounded-2xl dark:border-[#353836] border-[#D6D5D5] dark:shadow-swap-station shadow-swap-station-light ">
+    <div className="w-full p-5 bg-offWhite dark:bg-midnightGreen border rounded-2xl dark:border-darkGray border-softGray dark:shadow-swap-station shadow-swap-station-light ">
       <div className="flex flex-col gap-6">
         <div className="flex justify-between max-h-[36px]">
           <h3 className="dark:title-h3-normal-dark title-h3-normal mb-7 contrast-50">
@@ -119,11 +119,11 @@ export const SwapStation = () => {
           <OfferSummary variant={ForWhom.Yours} />
           <OfferSummary variant={ForWhom.Their} />
 
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border dark:border-[#353836] border-[#E4E4E4] dark:bg-[#212322] bg-[#F6F6F6] rounded-[100px] w-[36px] h-[36px] items-center flex justify-center">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border dark:border-darkGray borderlightSilver dark:bg-midnightGreen bg-offWhite rounded-[100px] w-[36px] h-[36px] items-center flex justify-center">
             <SwapIcon
               variant={SwapIconVariant.VERTICAL}
               props={{
-                className: "text-[#A3A9A5] text-[#969696]",
+                className: "text-sageGray text-[#969696]",
               }}
             />
           </div>
@@ -145,15 +145,15 @@ export const SwapStation = () => {
             <button
               disabled={!isValidSwap}
               className={cc([
-                "pointer-events-none rounded-xl w-full disabled:bg-[#F0EEEE] dark:disabled:bg-[#282B29] dark:hover:bg-[#4b514d] bg-[#DDF23D] hover:bg-[#aabe13] disabled:border-gray-200  dark:disabled:border-[#353836]  disabled:border py-3 px-5 items-center flex justify-center gap-2 font-semibold text-[16px] leading-[20.4px] disabled:text-[#A3A9A5] disabled:dark:text-[#707572] text-[#181A19] dark:shadow-button-swap-station-offer",
+                "pointer-events-none rounded-xl w-full disabled:bg-[#F0EEEE] dark:disabled:bg-darkGreen dark:hover:bg-[#4b514d] bg-yellowGreen hover:bg-limeYellow disabled:border-gray-200  dark:disabled:border-darkGray  disabled:border py-3 px-5 items-center flex justify-center gap-2 font-semibold text-[16px] leading-[20.4px] disabled:text-sageGray disabled:dark:text-mediumGray text-blackGreen dark:shadow-button-swap-station-offer",
               ])}
             >
               <PaperPlane
                 className={cc([
                   "w-6",
                   isValidSwap
-                    ? "text-[#181A19]"
-                    : "dark:text-[#707572] text-[#A3A9A5]",
+                    ? "text-blackGreen"
+                    : "dark:text-mediumGray text-sageGray",
                 ])}
               />
               Swap

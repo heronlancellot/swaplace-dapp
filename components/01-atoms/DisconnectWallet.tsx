@@ -29,7 +29,7 @@ export const DisconnectWallet = () => {
       onClick={handleClick}
       className={cc([
         "flex gap-2 justify-center items-center",
-        isDark ? "text-[#DDF23D]" : "text-[#AABE13]",
+        isDark ? "text-yellowGreen" : "text-limeYellow",
       ])}
     >
       <PowerIcon />

@@ -34,7 +34,7 @@ export const TokensShelfTab = () => {
             key={tab.id}
             className={cc([
               isActiveTab === tab.id
-                ? "dark:p-medium-bold-dark p-medium-bold border-b border-[#AABE13] "
+                ? "dark:p-medium-bold-dark p-medium-bold border-b border-limeYellow "
                 : "dark:p-medium-bold p-medium-bold opacity-50",
               "flex cursor-pointer py-4 px-5",
             ])}

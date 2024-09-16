@@ -46,12 +46,12 @@ export const EtherFieldAddition = ({ variant }: { variant: ForWhom }) => {
       {etherValue === 0n || isInRange(etherRecipient, 0, 256) ? (
         <>
           <button
-            className="w-6 h-6 rounded-full dark:bg-[#FFFFFF1A] bg-[#E4E4E4] flex justify-center items-center"
+            className="w-6 h-6 rounded-full dark:bg-[#FFFFFF1A] bg-lightSilver flex justify-center items-center"
             onClick={() => {
               setIsOpen(!open);
             }}
           >
-            <PlusIconSmall className="text-[#A3A9A5] dark:text-[#E4E4E4]" />
+            <PlusIconSmall className="text-sageGray dark:textlightSilver" />
           </button>
           <EtherAmountSelectionModal
             open={open}

@@ -19,7 +19,7 @@ export const AddTokenCardManually = ({
       <Tooltip position="top" content="Add Token">
         <button
           onClick={() => setOpen(!open)}
-          className="relative flex flex-col items-center justify-center shadow-inner w-[80px] h-[80px] rounded-xl border-2 border-[#E0E0E0] dark:border-[#212322] bg-[#DDF23D10] hover:bg-[#DDF23D20] transition-all duration-200 cursor-pointer"
+          className="relative flex flex-col items-center justify-center shadow-inner w-[80px] h-[80px] rounded-xl border-2 border-lightGray dark:border-midnightGreen bg-[#DDF23D10] hover:bg-[#DDF23D20] transition-all duration-200 cursor-pointer"
         >
           <PlusIcon />
         </button>

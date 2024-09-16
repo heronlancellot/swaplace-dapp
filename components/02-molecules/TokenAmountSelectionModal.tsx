@@ -126,20 +126,20 @@ export const TokenAmountSelectionModal = ({
                     setTokenAmount(0n);
                   }
                 }}
-                className="w-full rounded-lg rounded-r-none p-3 text-left bg-[#e0e0e0] dark:bg-[#282B29] border-[#353836] border-r-0 focus:outline-none"
+                className="w-full rounded-lg rounded-r-none p-3 text-left bg-lightGray dark:bg-darkGreen border-darkGray border-r-0 focus:outline-none"
                 id={token.tokenType + "-amount-selector"}
               />
             </div>
             <label
               htmlFor={token.tokenType + "-amount-selector"}
-              className="rounded-lg rounded-l-none truncate bg-[#CCCCCC] dark:bg-[#353836] border-[#353836] text-sm text-[#707572] dark:text-[#A3A9A5] p-3 pt-3.5"
+              className="rounded-lg rounded-l-none truncate bg-[#CCCCCC] dark:bg-darkGray border-darkGray text-sm text-mediumGray dark:text-sageGray p-3 pt-3.5"
             >
               {getTokenName(token)}
             </label>
           </div>
           <button
             onClick={closeAmountSelectionModal}
-            className="w-full bg-[#DDF23D] p-2 text-center text-black rounded-lg"
+            className="w-full bg-yellowGreen p-2 text-center text-black rounded-lg"
           >
             Add to Swap
           </button>

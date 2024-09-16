@@ -20,8 +20,8 @@ export const ProgressBar = ({
               className={cc([
                 "h-2 w-full",
                 {
-                  "bg-[#DDF23D]": currentStep > index,
-                  "bg-[#353836]": currentStep <= index,
+                  "bg-yellowGreen": currentStep > index,
+                  "bg-darkGray": currentStep <= index,
                 },
               ])}
             />

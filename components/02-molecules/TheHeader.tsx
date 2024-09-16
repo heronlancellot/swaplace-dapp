@@ -48,10 +48,10 @@ export const TheHeader = () => {
   const isDark = currentTheme === "dark";
   return (
     <>
-      <header className="lg:mt-0 mt-20 bg-[#F6F6F6] dark:bg-[#212322] dark:border-[#353836] border-[#D6D5D5] border rounded-2xl z-40 w-full h-auto xl:w-[62px] py-4 flex xl:flex-col justify-between items-center xl:px-0 px-8  xl:pb-4 font-medium dark:shadow-swap-station shadow-swap-station-light">
+      <header className="lg:mt-0 mt-20 bg-offWhite dark:bg-midnightGreen dark:border-darkGray border-softGray border rounded-2xl z-40 w-full h-auto xl:w-[62px] py-4 flex xl:flex-col justify-between items-center xl:px-0 px-8  xl:pb-4 font-medium dark:shadow-swap-station shadow-swap-station-light">
         <div className="flex pr-4 xl:pr-0">
           <Link href={SWAPLACE_WEBSITE}>
-            <SwaplaceIcon className="w-10 text-[#AABE13] dark:text-[#DDF23D]" />
+            <SwaplaceIcon className="w-10 text-limeYellow dark:text-yellowGreen" />
           </Link>
         </div>
         <div className="xl:flex-col flex-row flex w-full">
@@ -62,23 +62,23 @@ export const TheHeader = () => {
             {isDark ? (
               <Tooltip position={"right"} content={"Light Mode"}>
                 <button
-                  className="cursor-pointer bg-black-500 hover:bg-[#353836] transition-colors duration-200 rounded-[10px] group"
+                  className="cursor-pointer bg-black-500 hover:bg-darkGray transition-colors duration-200 rounded-[10px] group"
                   onClick={() => {
                     setThemeMode("light");
                   }}
                 >
-                  <SunIcon className="w-10 p-2 dark:text-[#767777] group-hover:text-[#F6F6F6]" />
+                  <SunIcon className="w-10 p-2 dark:text-[#767777] group-hover:text-offWhite" />
                 </button>
               </Tooltip>
             ) : (
               <Tooltip position={"right"} content={"Dark Mode"}>
                 <button
-                  className="bg-black-500 outline-none hover:bg-[#E4E4E4] transition-colors duration-200 rounded-[10px]"
+                  className="bg-black-500 outline-none hover:bg-lightSilver transition-colors duration-200 rounded-[10px]"
                   onClick={() => {
                     setThemeMode("dark");
                   }}
                 >
-                  <MoonIcon className="w-10 p-2 text-[#A3A9A5]" />
+                  <MoonIcon className="w-10 p-2 text-sageGray" />
                 </button>
               </Tooltip>
             )}
@@ -101,7 +101,7 @@ export const TheHeader = () => {
               ) : (
                 <Tooltip position={"right"} content={"Connect a Wallet"}>
                   <ConnectWallet
-                    customStyle="w-full flex justify-center items-center h-10 w-10 rounded-[10px] bg-[#DDF23D]"
+                    customStyle="w-full flex justify-center items-center h-10 w-10 rounded-[10px] bg-yellowGreen"
                     walletIcon={true}
                   />
                 </Tooltip>

@@ -16,20 +16,20 @@ export const TheSidebarHeader = () => {
         className={cc([
           "rounded-full w-7 h-7 flex items-center justify-center",
           isDark
-            ? "border-[#353836] bg-[#282B29]"
-            : "border-[#D6D6D6] bg-[#F6F6F6]",
+            ? "border-darkGray bg-darkGreen"
+            : "border-[#D6D6D6] bg-offWhite",
         ])}
       >
         <CloseCTA
           onClick={() => toggleSidebar()}
-          className={cc([isDark ? "text-[#F6F6F1]" : "text-[#A3A9A5]"])}
+          className={cc([isDark ? "text-frostWhite" : "text-sageGray"])}
         />
       </div>
       <div className="w-full flex justify-between">
         <h3
           className={cc([
             "text-xl",
-            isDark ? "text-[#F6F6F6]" : "text-[#181A19]",
+            isDark ? "text-offWhite" : "text-blackGreen",
           ])}
         >
           Your wallet

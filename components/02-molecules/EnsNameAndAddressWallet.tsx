@@ -27,7 +27,7 @@ export const EnsNameAndAddressWallet = () => {
               {primaryName && (
                 <>
                   <h3 className="text-sm ">{`${primaryName}`}</h3>
-                  <h3 className="text-sm text-[#D6D5D5] dark:text-[#707572]">
+                  <h3 className="text-sm text-softGray dark:text-mediumGray">
                     |
                   </h3>
                 </>

@@ -6,10 +6,10 @@ export const WarningScreenSizeNotSupported = () => {
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center py-8 px-6 gap-6">
       <div className="flex gap-1">
-        <SwaplaceIcon className="w-9 text-[#AABE13] dark:text-[#DDF23D]" />
+        <SwaplaceIcon className="w-9 text-limeYellow dark:text-yellowGreen" />
         <p>swaplace</p>
       </div>
-      <div className="w-full h-full px-5 border border-[#353836] dark:bg-[#212322] bg-[#F6F6F6] rounded-lg flex flex-col justify-center items-center gap-6">
+      <div className="w-full h-full px-5 border border-darkGray dark:bg-midnightGreen bg-offWhite rounded-lg flex flex-col justify-center items-center gap-6">
         <div className="flex ">
           <ErrorIcon />
         </div>
@@ -21,7 +21,7 @@ export const WarningScreenSizeNotSupported = () => {
               <p>Oh no, mobile isn&apos;t available yet!</p>
             ) : null}
           </div>
-          <p className="p-small dark:!text-[#A3A9A5] !text-[#212322] ">
+          <p className="p-small dark:!text-sageGray !text-midnightGreen ">
             Please try our desktop version to get a better experience
           </p>
         </div>

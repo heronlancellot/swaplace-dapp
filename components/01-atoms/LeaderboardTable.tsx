@@ -83,9 +83,9 @@ export const LeaderboardTable = () => {
   );
 
   return (
-    <div className="w-full border border-[#282B29] rounded-lg dark:bg-[#282B29]  bg-[#E4E4E4]">
+    <div className="w-full border border-darkGreen rounded-lg dark:bg-darkGreen  bg-lightSilver overflow-auto max-h-[720px]">
       <table className="w-full text-left table-fixed">
-        <thead className="border-b border-[#353836]">
+        <thead className="border-b border-darkGray">
           <tr>
             {LeaderboardData.map((header, index) => (
               <th
@@ -107,9 +107,9 @@ export const LeaderboardTable = () => {
               {LeaderboardData.map((header, colIndex) => (
                 <td
                   className={cc([
-                    data.Rank === Ranking.FIRST && "!text-[#AABE13]",
-                    data.Rank === Ranking.SECOND && "!text-[#A3A9A5]",
-                    data.Rank === Ranking.THIRD && "!text-[#DE7B30]",
+                    data.Rank === Ranking.FIRST && "!text-limeYellow",
+                    data.Rank === Ranking.SECOND && "!text-sageGray",
+                    data.Rank === Ranking.THIRD && "!text-vividTangerine",
 
                     data[header] === Ranking.FIRST ||
                     data[header] === Ranking.SECOND ||
@@ -152,21 +152,21 @@ export const LeaderboardTable = () => {
             <tr>
               <td
                 colSpan={LeaderboardData.length}
-                className="border-t border-[#353836] "
+                className="border-t border-darkGray "
               ></td>
             </tr>
           )}
 
           {userData && (
             <tr>
-              <td className="px-6 py-3 dark:text-[#ddf23d] text-sm">
+              <td className="px-6 py-3 dark:text-yellowGreen text-sm">
                 {userRank !== null ? userRank : userData.Rank}
               </td>
-              <td className="px-3.5 py-3 dark:text-[#ddf23d] text-sm flex items-center">
-                <StarIcon className="mr-1.5  dark:text-[#DDF23D]" />
+              <td className="px-3.5 py-3 dark:text-yellowGreen text-sm flex items-center">
+                <StarIcon className="mr-1.5  dark:text-yellowGreen" />
                 {collapseAddress(userData.Address)}
               </td>
-              <td className="px-4 py-3 text-end dark:text-[#ddf23d] text-sm">
+              <td className="px-4 py-3 text-end dark:text-yellowGreen text-sm">
                 {userData.Points.toString()}
               </td>
             </tr>

@@ -66,7 +66,7 @@ export const ENSAvatar = ({
             "flex justify-center items-center",
           ])}
         >
-          <LoadingIndicator colors="dark:border-[#f6f6f6] border-[#212322]" />
+          <LoadingIndicator colors="dark:border-offWhite border-midnightGreen" />
         </div>
       ) : avatarQueryStatus === ENSAvatarQueryStatus.ERROR ||
         failedLoadingImage ? (
@@ -74,8 +74,8 @@ export const ENSAvatar = ({
           <div
             className={cc([
               ENSAvatarClassName[size] === "ens-avatar-small"
-                ? "bg-[#E4E4E4] dark:bg-[#353836] p-[5px] rounded-md"
-                : "w-full flex justify-center items-center h-10 rounded-[10px] bg-[#DDF23D]",
+                ? "bg-lightSilver dark:bg-darkGray p-[5px] rounded-md"
+                : "w-full flex justify-center items-center h-10 rounded-[10px] bg-yellowGreen",
               "",
             ])}
           >
@@ -85,8 +85,8 @@ export const ENSAvatar = ({
               }`}
               className={cc([
                 ENSAvatarClassName[size] === "ens-avatar-small"
-                  ? "text-[#A3A9A5] dark:text-[#707572]"
-                  : "text-[#a3a9a5] dark:text-[#181A19]",
+                  ? "text-sageGray dark:text-mediumGray"
+                  : "text-sageGray dark:text-blackGreen",
               ])}
             />
           </div>
