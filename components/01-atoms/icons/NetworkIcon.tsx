@@ -57,7 +57,7 @@ export const NetworkIcon = ({
     ),
     [SupportedNetworks.AMOY]: <ChainPolygonIcon className={props?.className} />,
     default: (
-      <ChainNetworkDefaultIcon className="dark:text-[#707572] text-[#A3A9A5]" />
+      <ChainNetworkDefaultIcon className="dark:text-mediumGray text-sageGray" />
     ),
   };
 

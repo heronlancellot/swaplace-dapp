@@ -106,10 +106,10 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className="w-full flex items-center border-l dark:border-[#353836]">
-      <div className="flex w-full items-center  rounded-2xl pl-4 pr-3 gap-4 bg-[#F6F6F6] hover:bg-[#F0EEEE75]  dark:bg-[#212322] border-[#D6D5D5] hover:border-[#AABE13] dark:border-[#353836] focus:border-[#FFFFFF] dark:hover:border-[#edff6259] transition duration-300 ease-in-out">
+    <div className="w-full flex items-center border-l dark:border-darkGray">
+      <div className="flex w-full items-center  rounded-2xl pl-4 pr-3 gap-4 bg-offWhite hover:bg-lightFrost  dark:bg-midnightGreen border-softGray hover:border-limeYellow dark:border-darkGray focus:border-white dark:hover:border-softLemon transition duration-300 ease-in-out">
         <div className="justify-center items-center">
-          <MagnifyingGlassIcon className="w-5 text-[#A3A9A5] dark:text-[#353836]" />
+          <MagnifyingGlassIcon className="w-5 text-sageGray dark:text-darkGray" />
         </div>
         <input
           id="search"

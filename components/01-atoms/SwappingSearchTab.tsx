@@ -77,7 +77,7 @@ export const SwappingSearchTab = () => {
           <div
             key={tab.id}
             className={cc([
-              publicOrPrivateSwap === tab.id && "bg-[#DDF23D]",
+              publicOrPrivateSwap === tab.id && "bg-yellowGreen",
               "flex cursor-pointer rounded-lg py-2 px-3 justify-center items-center dark:p-medium-bold-variant-black p-medium-bold-variant-black w-[100px]",
             ])}
             role="tab"

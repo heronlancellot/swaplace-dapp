@@ -71,7 +71,7 @@ export const SwappingShelfs = () => {
     [authenticatedUserAddress, lastWalletConnected];
 
   return (
-    <div className="w-full h-full dark:bg-[#212322] dark:border-[#353836] border border-[#D6D5D5] rounded-2xl dark:shadow-swap-station shadow-swap-station-light">
+    <div className="w-full h-full dark:bg-midnightGreen dark:border-darkGray border border-softGray rounded-2xl dark:shadow-swap-station shadow-swap-station-light">
       <div className="flex items-center justify-between max-h-[48px] border-b dark:border-[#313131] pr-2">
         <div className="flex max-w-[224px]">
           <TokensShelfTab />

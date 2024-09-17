@@ -97,114 +97,114 @@ input[type="number"] {
   }
 
   .title-h2-medium {
-    @apply font-onest font-medium text-[32px] leading-[40.8px] text-[#333333];
+    @apply font-onest font-medium text-[32px] leading-[40.8px] text-midnightGray;
   }
   .title-h2-medium-dark {
-    @apply font-onest font-medium text-[32px] leading-[40.8px] text-[#F6F6F6];
+    @apply font-onest font-medium text-[32px] leading-[40.8px] text-offWhite;
   }
 
   .title-h3-normal {
-    @apply font-onest font-normal text-[20px] leading-[25.5px] text-[#333333];
+    @apply font-onest font-normal text-[20px] leading-[25.5px] text-midnightGray;
   }
 
   .title-h3-normal-dark {
-    @apply font-onest font-normal text-[20px] leading-[25.5px] text-[#F6F6F6];
+    @apply font-onest font-normal text-[20px] leading-[25.5px] text-offWhite;
   }
 
   .p-semibold-dark {
-    @apply font-onest font-semibold text-[12px] leading-[16px] text-[#F6F6F6];
+    @apply font-onest font-semibold text-[12px] leading-[16px] text-offWhite;
   }
 
   .p-medium-2 {
-    @apply font-onest font-medium text-[16px] leading-[20px] text-[#212322];
+    @apply font-onest font-medium text-[16px] leading-[20px] text-midnightGreen;
   }
   .p-medium-2-dark {
-    @apply font-onest font-medium text-[16px] leading-[20px] text-[#F6F6F6];
+    @apply font-onest font-medium text-[16px] leading-[20px] text-offWhite;
   }
 
   .p-medium-2-small {
-    @apply font-onest font-medium text-[14px] leading-[16px] text-[#212322];
+    @apply font-onest font-medium text-[14px] leading-[16px] text-midnightGreen;
   }
   .p-medium-2-small-dark {
-    @apply font-onest font-medium text-[14px] leading-[16px] text-[#F6F6F6];
+    @apply font-onest font-medium text-[14px] leading-[16px] text-offWhite;
   }
   .p-medium-2-variant-yellow {
-    @apply font-onest font-medium text-[14px] leading-[16px] text-[#AABE13];
+    @apply font-onest font-medium text-[14px] leading-[16px] text-limeYellow;
   }
   .p-medium-2-variant-grey {
-    @apply font-onest font-medium text-[14px] leading-[16px] text-[#707572];
+    @apply font-onest font-medium text-[14px] leading-[16px] text-mediumGray;
   }
 
   .p-normal-2 {
-    @apply font-onest font-normal text-[16px] leading-[20px] text-[#707572];
+    @apply font-onest font-normal text-[16px] leading-[20px] text-mediumGray;
   }
   .p-normal-2-dark {
-    @apply font-onest font-normal text-[16px] leading-[20px] text-[#F6F6F6];
+    @apply font-onest font-normal text-[16px] leading-[20px] text-offWhite;
   }
   .p-normal-2-light {
-    @apply font-onest font-normal text-[16px] leading-[20px] text-[#212322];
+    @apply font-onest font-normal text-[16px] leading-[20px] text-midnightGreen;
   }
 
   .p-medium-bold-2 {
-    @apply font-onest font-medium text-[16px] leading-[20px] text-[#707572];
+    @apply font-onest font-medium text-[16px] leading-[20px] text-mediumGray;
   }
   .p-medium-bold-2-dark {
-    @apply font-onest font-medium text-[16px] leading-[20px] text-[#F6F6F6];
+    @apply font-onest font-medium text-[16px] leading-[20px] text-offWhite;
   }
   .p-medium-bold-2-dark-variant-black {
     @apply font-onest font-medium text-[16px] leading-[20px] text-black;
   }
 
   .p-medium-bold-variant-black {
-    @apply font-onest font-medium text-[14px] leading-[16px] text-[#181A19];
+    @apply font-onest font-medium text-[14px] leading-[16px] text-blackGreen;
   }
   .p-medium-bold {
-    @apply font-onest font-medium text-[14px] leading-[16px] text-[#707572];
+    @apply font-onest font-medium text-[14px] leading-[16px] text-mediumGray;
   }
   .p-medium-bold-dark {
-    @apply font-onest font-medium text-[14px] leading-[16px] text-[#F6F6F6];
+    @apply font-onest font-medium text-[14px] leading-[16px] text-offWhite;
   }
 
   .p-medium {
-    @apply font-onest font-medium text-[14px] leading-[20px] text-[#707572];
+    @apply font-onest font-medium text-[14px] leading-[20px] text-mediumGray;
   }
   .p-medium-dark {
-    @apply font-onest font-medium text-[14px] leading-[20px] text-[#F6F6F6];
+    @apply font-onest font-medium text-[14px] leading-[20px] text-offWhite;
   }
 
   .p-small-variant-black {
-    @apply font-onest font-normal text-[14px] leading-[20px] text-[#181A19];
+    @apply font-onest font-normal text-[14px] leading-[20px] text-blackGreen;
   }
   .p-small {
-    @apply font-onest font-normal text-[14px] leading-[20px] text-[#707572];
+    @apply font-onest font-normal text-[14px] leading-[20px] text-mediumGray;
   }
   .p-small-dark {
-    @apply font-onest font-normal text-[14px] leading-[20px] text-[#F6F6F6];
+    @apply font-onest font-normal text-[14px] leading-[20px] text-offWhite;
   }
   .p-small-dark-variant-grey {
-    @apply font-onest font-normal text-[14px] leading-[20px] text-[#A3A9A5];
+    @apply font-onest font-normal text-[14px] leading-[20px] text-sageGray;
   }
   .p-small-variant-black-2 {
-    @apply font-onest font-normal text-[14px] leading-[20px] text-[#353836];
+    @apply font-onest font-normal text-[14px] leading-[20px] text-darkGray;
   }
   .p-small-variant-black-3 {
-    @apply font-onest font-normal text-[14px] leading-[20px] text-[#212322];
+    @apply font-onest font-normal text-[14px] leading-[20px] text-midnightGreen;
   }
   .p-small-variant-light-2 {
-    @apply font-onest font-normal text-[14px] leading-[20px] text-[#F6F6F1];
+    @apply font-onest font-normal text-[14px] leading-[20px] text-frostWhite;
   }
 
   .card-token-normal {
-    @apply shadow-inner w-[90px] h-[90px] lg:w-[80px] lg:h-[80px] relative rounded-xl border border-[#E0E0E0] bg-[#E0E0E0] dark:bg-[#353836] dark:border-[#212322] flex flex-col shadow-token;
+    @apply shadow-inner w-[90px] h-[90px] lg:w-[80px] lg:h-[80px] relative rounded-xl border border-lightGray bg-lightGray dark:bg-darkGray dark:border-midnightGreen flex flex-col shadow-token;
   }
   .card-token-small {
-    @apply shadow-inner mx-auto w-[55px] h-[55px] lg:w-[55px] lg:h-[55px] relative rounded-lg border-2 border-[#E0E0E0] bg-[#E0E0E0] dark:bg-[#353836] dark:border-[#212322] flex flex-col shadow-token;
+    @apply shadow-inner mx-auto w-[55px] h-[55px] lg:w-[55px] lg:h-[55px] relative rounded-lg border-2 border-lightGray bg-lightGray dark:bg-darkGray dark:border-midnightGreen flex flex-col shadow-token;
   }
   .card-token-medium {
-    @apply shadow-inner w-[72px] h-[72px] lg:w-[72px] lg:h-[72px] relative rounded-xl border border-[#E0E0E0] bg-[#E0E0E0] dark:bg-[#353836] dark:border-[#212322] flex flex-col shadow-token;
+    @apply shadow-inner w-[72px] h-[72px] lg:w-[72px] lg:h-[72px] relative rounded-xl border border-lightGray bg-lightGray dark:bg-darkGray dark:border-midnightGreen flex flex-col shadow-token;
   }
   .card-token-large {
-    @apply shadow-inner mx-auto w-[90px] h-[90px] lg:w-[80px] lg:h-[80px] relative rounded-xl border-2 border-[#E0E0E0] bg-[#E0E0E0] dark:bg-[#353836] dark:border-[#212322] flex flex-col shadow-token;
+    @apply shadow-inner mx-auto w-[90px] h-[90px] lg:w-[80px] lg:h-[80px] relative rounded-xl border-2 border-lightGray bg-lightGray dark:bg-darkGray dark:border-midnightGreen flex flex-col shadow-token;
   }
 
   .ens-avatar-small {

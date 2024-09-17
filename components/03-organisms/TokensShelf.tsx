@@ -196,8 +196,8 @@ export const TokensShelf = ({ variant }: { variant: ForWhom }) => {
       ) : tokensQueryStatus == TokensQueryStatus.EMPTY_QUERY || !address ? (
         <div className="flex w-full h-full bg-inherit  justify-center items-center">
           <div className="flex-col flex items-center gap-5">
-            <div className="w-[80px] h-[80px] flex items-center border-[3px] rounded-full dark:border-[#DDF23D] border-[#A3A9A5] ">
-              <SelectUserIcon className="w-[100px] dark:text-[#DDF23D] text-[#A3A9A5]" />
+            <div className="w-[80px] h-[80px] flex items-center border-[3px] rounded-full dark:border-yellowGreen bordersageGray ">
+              <SelectUserIcon className="w-[100px] dark:text-yellowGreen text-sageGray" />
             </div>
             <div className="flex items-center justify-center flex-col gap-1 text-center">
               <p className="p-normal-2-light dark:p-normal-2-dark contrast-50 text-[16px] leading-[20px]">
@@ -225,9 +225,9 @@ export const TokensShelf = ({ variant }: { variant: ForWhom }) => {
         </div>
       ) : tokensQueryStatus == TokensQueryStatus.LOADING &&
         allTokensList.length === 0 ? (
-        <div className="flex justify-center w-full h-full bg-[#f8f8f8] dark:bg-[#212322] p-4">
+        <div className="flex justify-center w-full h-full bg-faintGray dark:bg-midnightGreen p-4">
           <div className="flex items-center">
-            <p className="dark:text-[#F6F6F6] font-onest font-medium text-[16px] leading-[20px]">
+            <p className="dark:text-offWhite font-onest font-medium text-[16px] leading-[20px]">
               Loading tokens of {address.getEllipsedAddress()}
             </p>
           </div>

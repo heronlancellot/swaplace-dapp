@@ -154,8 +154,8 @@ export const ApproveTokenCard = ({
       className={cc([
         "flex px-4 py-2 items-center gap-4",
         isApproved
-          ? "bg-[#DDF23D] p-medium dark:p-medium rounded-xl disabled cursor-auto pointer-events-none"
-          : "dark:bg-[#363836] bg-[#e0e0e0] p-medium dark:p-medium-dark dark:hover:p-medium dark:hover:text-[#212322] dark:hover:bg-[#DDF23D] hover:bg-[#DDF23D] transition rounded-xl border border-[#353836]",
+          ? "bg-yellowGreen p-medium dark:p-medium rounded-xl disabled cursor-auto pointer-events-none"
+          : "dark:bg-forestGray bg-lightGray p-medium dark:p-medium-dark dark:hover:p-medium dark:hover:text-midnightGreen dark:hover:bg-yellowGreen hover:bg-yellowGreen transition rounded-xl border border-darkGray",
       ])}
       onClick={() => {
         handleTokenApproval();
@@ -179,21 +179,21 @@ export const ApproveTokenCard = ({
           </div>
           <div className="flex p-semibold-dark">
             {tokenApprovalStatus === TokenApprovalStatus.CLICK_TO_APPROVE ? (
-              <p className="bg-[#707572] dark:bg-[#505150] p-1.5 w-fit rounded-[4px] min-h-6 items-center flex">
+              <p className="bg-mediumGray dark:bg-smokeGray p-1.5 w-fit rounded-[4px] min-h-6 items-center flex">
                 CLICK TO APPROVE
               </p>
             ) : tokenApprovalStatus ===
               TokenApprovalStatus.APPROVE_IN_YOUR_WALLET ? (
-              <p className="bg-[#707572] dark:bg-[#505150] p-1.5 w-fit rounded-[4px] min-h-6 items-center flex">
+              <p className="bg-mediumGray dark:bg-smokeGray p-1.5 w-fit rounded-[4px] min-h-6 items-center flex">
                 APPROVE TRANSACTION
               </p>
             ) : tokenApprovalStatus ===
               TokenApprovalStatus.WAITING_BLOCKCHAIN_CONFIRMATION ? (
-              <p className="bg-[#707572] dark:bg-[#505150] p-1.5 w-fit rounded-[4px] min-h-6 items-center flex">
+              <p className="bg-mediumGray dark:bg-smokeGray p-1.5 w-fit rounded-[4px] min-h-6 items-center flex">
                 WAIT FOR CONFIRMATION
               </p>
-            ) : TokenApprovalStatus.APPROVED ? (
-              <div className="bg-[#707572] dark:bg-[#505150] p-1.5 w-fit bg-opacity-30 rounded-[4px] min-h-6 items-center flex">
+            ) : tokenApprovalStatus === TokenApprovalStatus.APPROVED ? (
+              <div className="bg-mediumGray dark:bg-smokeGray p-1.5 w-fit bg-opacity-30 rounded-[4px] min-h-6 items-center flex">
                 <p className="text-white">APPROVED</p>
               </div>
             ) : null}

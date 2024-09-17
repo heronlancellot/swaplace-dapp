@@ -28,7 +28,7 @@ export const Tooltip = ({ position, content, children }: TooltipProps) =>
       <div className="pointer-events-none">
         <span
           className={cc([
-            "absolute hidden group-hover:inline-block bg-[#212322] border border-[#353836] dark:p-small-dark p-small-dark text-xs p-2 whitespace-nowrap rounded-lg",
+            "absolute hidden group-hover:inline-block bg-midnightGreen border border-darkGray dark:p-small-dark p-small-dark text-xs p-2 whitespace-nowrap rounded-lg z-40",
             {
               "left-1/2 -translate-x-1/2 bottom-[calc(100%+5px)]":
                 position === ToolTipPosition.TOP,
@@ -53,19 +53,19 @@ export const Tooltip = ({ position, content, children }: TooltipProps) =>
           className={cc([
             "absolute hidden group-hover:inline-block border-[6px]",
             {
-              "left-1/2 -translate-x-1/2 bottom-full border-l-transparent border-r-transparent border-b-0 border-[#353836]":
+              "left-1/2 -translate-x-1/2 bottom-full border-l-transparent border-r-transparent border-b-0 border-darkGray":
                 position === ToolTipPosition.TOP,
             },
             {
-              "left-1/2 -translate-x-1/2 top-full border-l-transparent border-r-transparent border-t-0 border-[#353836]":
+              "left-1/2 -translate-x-1/2 top-full border-l-transparent border-r-transparent border-t-0 border-darkGray":
                 position === ToolTipPosition.BOTTOM,
             },
             {
-              "top-1/2 -translate-y-1/2 right-full border-t-transparent border-b-transparent border-r-0 border-[#353836]":
+              "top-1/2 -translate-y-1/2 right-full border-t-transparent border-b-transparent border-r-0 border-darkGray":
                 position === ToolTipPosition.LEFT,
             },
             {
-              "top-1/2 -translate-y-1/2 left-full border-t-transparent border-b-transparent border-l-0 border-[#353836]":
+              "top-1/2 -translate-y-1/2 left-full border-t-transparent border-b-transparent border-l-0 border-darkGray":
                 position === ToolTipPosition.RIGHT,
             },
           ])}

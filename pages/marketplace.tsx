@@ -4,7 +4,7 @@ import { OffersSectionMarketplace } from "@/components/04-templates/OffersSectio
 export default function Offers() {
   return (
     <Layout>
-      <div className="w-screen h-screen flex flex-col justify-center items-center">
+      <div className="w-screen h-screen flex flex-col xl:justify-center justify-start items-center">
         <OffersSectionMarketplace />
       </div>
     </Layout>

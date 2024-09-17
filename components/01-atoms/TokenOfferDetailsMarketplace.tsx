@@ -53,7 +53,7 @@ export const TokenOfferDetailsMarketplace = ({
   return (
     <div className="flex w-full justify-between items-center py-2 px-3">
       <div>
-        <ul className="flex p-small dark:!text-[#A3A9A5] items-center gap-2">
+        <ul className="flex p-small dark:!text-sageGray items-center gap-2">
           <OfferTag status={swap.status} />
           {needsExpiryDate && (
             <li className="flex items-center gap-2">
@@ -75,7 +75,7 @@ export const TokenOfferDetailsMarketplace = ({
                 onClick={acceptOffer}
                 className="disabled:pointer-events-none rounded-lg w-full h-[28px] shadow-tag bg-[#d8f035] py-1 px-3 items-center flex justify-center gap-2"
               >
-                <DoneIcon className="text-[#181A19]" />
+                <DoneIcon className="text-blackGreen" />
                 <p className="p-medium-bold-variant-black">Accept</p>
               </button>
             </div>

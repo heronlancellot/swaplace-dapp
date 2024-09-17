@@ -26,13 +26,13 @@ const EmptyLayoutOffers = ({
   description,
   button,
 }: EmptyLayoutOffersProps) => (
-  <div className="md:w-[676px] md:h-[656px] w-[95%] h-full py-10 px-5 dark:bg-[#212322] bg-[#F6F6F6] border rounded-2xl dark:border-[#353836] border-[#D6D5D5] flex flex-col justify-center items-center gap-5 dark:shadow-swap-station shadow-swap-station-light">
+  <div className="md:w-[676px] xl:h-[656px] w-[95%] h-full p-5 dark:bg-midnightGreen bg-offWhite border rounded-2xl dark:border-darkGray border-softGray flex flex-col justify-center items-center gap-5 dark:shadow-swap-station shadow-swap-station-light">
     <div className="flex ">{icon}</div>
     <div className="flex flex-col text-center items-center">
       <p className="dark:p-medium-bold-2-dark p-medium-bold-2-dark-variant-black ">
         {title}
       </p>
-      <p className="p-small dark:!text-[#A3A9A5] !text-[#212322] ">
+      <p className="p-small dark:!text-sageGray !text-midnightGreen ">
         {description}
       </p>
     </div>
@@ -59,7 +59,7 @@ export const SwapOffersLayout = ({
       button={
         <>
           <button
-            className="p-medium-bold-variant-black bg-[#DDF23D] border border-[#DDF23D] rounded-[10px] py-2 px-4 h-[38px]"
+            className="p-medium-bold-variant-black bg-yellowGreen border border-yellowGreen rounded-[10px] py-2 px-4 h-[38px]"
             onClick={handleToggleManually}
           >
             Add swap manually
@@ -87,14 +87,14 @@ export const SwapOffersLayout = ({
 
   const SwapOffersLayoutNoSwapsCreated = () => (
     <EmptyLayoutOffers
-      icon={<NoSwapsIcon className="dark:text-[#DDF23D] " />}
+      icon={<NoSwapsIcon className="dark:text-yellowGreen " />}
       title={"No swaps here. Let's fill it up!"}
       description={
         "You haven't made or received any proposals. Time to jump in and start trading."
       }
       button={
         <button
-          className="p-medium-bold-variant-black bg-[#DDF23D] border border-[#DDF23D] rounded-[10px] py-2 px-4 h-[38px]"
+          className="p-medium-bold-variant-black bg-yellowGreen border border-yellowGreen rounded-[10px] py-2 px-4 h-[38px]"
           onClick={() => router.push("/")}
         >
           Start swapping

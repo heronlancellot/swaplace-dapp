@@ -124,7 +124,7 @@ export const EtherAmountSelectionModal = ({
       text={{ title: "Add Ether Amount" }}
       body={
         <>
-          <div className="w-full flex justify-between text-sm text-[#707572] dark:text-[#A3A9A5]">
+          <div className="w-full flex justify-between text-sm text-mediumGray dark:text-sageGray">
             <p>Balance:</p>
             <p>{userAddressBalance}</p>
           </div>
@@ -145,14 +145,14 @@ export const EtherAmountSelectionModal = ({
                 onChange={handleInputChange}
                 className={cc([
                   isMaxEtherSelected && "cursor-not-allowed",
-                  "w-full rounded-lg rounded-r-none p-3 text-left bg-[#e0e0e0] dark:bg-[#282B29] border-[#353836] border-r-0 focus:outline-none",
+                  "w-full rounded-lg rounded-r-none p-3 text-left bg-lightGray dark:bg-darkGreen border-darkGray border-r-0 focus:outline-none",
                 ])}
               />
             </div>
             <button
               className={cc([
-                "w-fit rounded-lg rounded-l-none  bg-[#CCCCCC] dark:bg-[#353836] border-[#353836] text-sm text-[#707572] dark:text-[#A3A9A5] p-3 pt-3.5",
-                isMaxEtherSelected && "dark:bg-[#DDF23D] dark:text-black",
+                "w-fit rounded-lg rounded-l-none  bg-[#CCCCCC] dark:bg-darkGray border-darkGray text-sm text-mediumGray dark:text-sageGray p-3 pt-3.5",
+                isMaxEtherSelected && "dark:bg-yellowGreen dark:text-black",
               ])}
               onClick={() => setIsMaxEtherSelected(!isMaxEtherSelected)}
             >
@@ -161,7 +161,7 @@ export const EtherAmountSelectionModal = ({
           </div>
           <button
             onClick={handleEtherAddition}
-            className="w-full bg-[#DDF23D] p-2 text-center text-black rounded-lg"
+            className="w-full bg-yellowGreen p-2 text-center text-black rounded-lg"
           >
             Add to offer
           </button>

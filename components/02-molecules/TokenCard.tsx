@@ -230,8 +230,8 @@ export const TokenCard = ({
       >
         {currentNftIsSelected && withSelectionValidation && (
           <div className="flex items-end justify-end absolute bottom-0 right-0 w-full h-full rounded-xl z-20">
-            <div className=" dark:bg-[#212322] bg-[#F6F6F6] translate-x-[1px] translate-y-[1px] p-1 rounded-tl-xl">
-              <SwaplaceIcon className="text-[#AABE13] dark:text-[#DDF23D] w-4 h-4" />
+            <div className=" dark:bg-midnightGreen bg-offWhite translate-x-[1px] translate-y-[1px] p-1 rounded-tl-xl">
+              <SwaplaceIcon className="text-limeYellow dark:text-yellowGreen w-4 h-4" />
             </div>
           </div>
         )}
@@ -247,14 +247,14 @@ export const TokenCard = ({
           onError={handleImageLoadError}
           src={tokenDisplayableData.symbol}
           alt={getTokenName(tokenData)}
-          className="dark:text-[#707572] text-[#707572] text-center static z-10 w-full h-full overflow-y-auto rounded-xl"
+          className="dark:text-mediumGray text-mediumGray text-center static z-10 w-full h-full overflow-y-auto rounded-xl"
         />,
       )}
     </>
   ) : (
     <>
       {ButtonLayout(
-        <div className="p-2 dark:text-[#707572] overflow-hidden text-[#707572] flex justify-center items-center w-full h-full text-[10px] font-medium oveflow-y-scroll break-all">
+        <div className="p-2 dark:text-mediumGray overflow-hidden text-mediumGray flex justify-center items-center w-full h-full text-[10px] font-medium oveflow-y-scroll break-all">
           {getTokenName(tokenData, {
             withAmountPrefix: tokenData.tokenType === TokenType.ERC20,
             displayTokenAmount: displayERC20TokensAmount,

@@ -81,9 +81,9 @@ export const SwapOffersMarketplace = () => {
             </div>
           )}
         </div>
-        <div className="flex justify-end mt-5">
+        <div className="flex justify-end">
           <button
-            className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
+            className="p-medium-bold-variant-black bg-yellowGreen border rounded-[10px] py-2 px-4 h-[38px] dark:border-blackGreen border-white"
             onClick={() => setToggleManually(!toggleManually)}
           >
             Add swap manually
@@ -108,9 +108,9 @@ const SwapOffer = ({ swap }: { swap: PopulatedSwapOfferCard }) => {
     value: BigInt(swap.value),
   };
   return (
-    <div className="flex flex-col no-scrollbar border border-solid border-[#D6D5D5] dark:border-[#353836] dark:shadow-swap-station shadow-swap-station-light dark:bg-[#212322] font-onest rounded-lg ">
-      <div className="flex flex-row border-b mb-auto dark:border-[#353836] relative">
-        <div className="border-r dark:border-[#353836]">
+    <div className="flex flex-col no-scrollbar border border-solid border-softGray dark:border-darkGray dark:shadow-swap-station shadow-swap-station-light dark:bg-midnightGreen font-onest rounded-lg ">
+      <div className="flex flex-row border-b mb-auto dark:border-darkGray relative">
+        <div className="border-r dark:border-darkGray">
           <SwapOfferCardMarketplace
             tokens={swap.askerTokens.tokens}
             address={swap.bidderTokens.address} // Should be inversed to display different in the UI
@@ -122,7 +122,7 @@ const SwapOffer = ({ swap }: { swap: PopulatedSwapOfferCard }) => {
           address={swap.askerTokens.address} // Should be inversed to display different in the UI
           nativeEther={nativeEtherSwap}
         />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-[#70757230] bg-[#f6f6f6] dark:bg-[#212322] rounded-[100px] w-[24px] h-[24px] items-center flex justify-center">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-translucentGray bg-offWhite dark:bg-midnightGreen rounded-[100px] w-[24px] h-[24px] items-center flex justify-center">
           <SwapIcon />
         </div>
       </div>

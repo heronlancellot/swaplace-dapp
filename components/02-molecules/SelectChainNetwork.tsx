@@ -20,12 +20,12 @@ export const SelectChainNetwork = () => {
           {isMobile ? (
             <SwapIcon
               variant={SwapIconVariant.VERTICAL}
-              props={{ className: "text-[#707572] " }}
+              props={{ className: "text-mediumGray " }}
             />
           ) : (
             <SwapIcon
               variant={SwapIconVariant.HORIZONTAL}
-              props={{ className: "text-[#707572] " }}
+              props={{ className: "text-mediumGray " }}
             />
           )}
         </div>

@@ -158,14 +158,14 @@ const SwapBody = () => {
         <div>
           <input
             onChange={(e) => setSwapId(BigInt(e.target.value))}
-            className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
+            className="w-full p-3 dark:bg-deepSlate border border-darkGray focus-visible:outline-yellowGreen rounded-lg h-[44px]"
           />
         </div>
       </div>
       <div className="flex h-[36px]">
         <button
           onClick={addSwapId}
-          className="bg-[#DDF23D] hover:bg-[#aabe13] w-full dark:shadow-add-manually-button py-2 px-4 rounded-[10px] p-medium-bold-variant-black"
+          className="bg-yellowGreen hover:bg-limeYellow w-full dark:shadow-add-manually-button py-2 px-4 rounded-[10px] p-medium-bold-variant-black"
         >
           Add Swap
         </button>
@@ -384,10 +384,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
         <div className="flex justify-between gap-3 ">
           <button
             className={cc([
-              "w-full border border-[#353836] rounded-lg py-3 pl-3 pr-4 text-start dark:bg-[#282B29]",
+              "w-full border border-darkGray rounded-lg py-3 pl-3 pr-4 text-start dark:bg-darkGreen",
               tokenType === TokenType.ERC20
-                ? "dark:bg-[#ddf23d] bg-[#ddf23d] p-medium-2"
-                : "dark:p-medium-2-dark dark:hover:bg-[#353836] hover:bg-[#35383617]",
+                ? "dark:bg-yellowGreen bg-yellowGreen p-medium-2"
+                : "dark:p-medium-2-dark dark:hover:bg-darkGray hover:bg-shadowGray",
             ])}
             onClick={() => {
               setTokenType(TokenType.ERC20);
@@ -397,10 +397,10 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
           </button>
           <button
             className={cc([
-              "w-full  border border-[#353836] rounded-lg py-3 pl-3 pr-4 text-start dark:bg-[#282B29]",
+              "w-full  border border-darkGray rounded-lg py-3 pl-3 pr-4 text-start dark:bg-darkGreen",
               tokenType === TokenType.ERC721
-                ? "dark:bg-[#ddf23d] bg-[#ddf23d] p-medium-2"
-                : "dark:p-medium-2-dark dark:hover:bg-[#353836] hover:bg-[#35383617]",
+                ? "dark:bg-yellowGreen bg-yellowGreen p-medium-2"
+                : "dark:p-medium-2-dark dark:hover:bg-darkGray hover:bg-shadowGray",
             ])}
             onClick={() => {
               setTokenType(TokenType.ERC721);
@@ -419,7 +419,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
             <div>
               <input
                 onChange={(e) => setContractAddress(e.target.value)}
-                className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
+                className="w-full p-3 dark:bg-deepSlate border border-darkGray focus-visible:outline-yellowGreen rounded-lg h-[44px]"
               />
             </div>
           </div>
@@ -432,7 +432,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
               <div>
                 <input
                   onChange={(e) => setContractAddress(e.target.value)}
-                  className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
+                  className="w-full p-3 dark:bg-deepSlate border border-darkGray focus-visible:outline-yellowGreen rounded-lg h-[44px]"
                 />
               </div>
             </div>
@@ -443,7 +443,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
               <div>
                 <input
                   onChange={(e) => setTokenId(e.target.value)}
-                  className="w-full p-3 dark:bg-[#282a29] border border-[#353836] focus-visible:outline-[#DDF23D] rounded-lg h-[44px]"
+                  className="w-full p-3 dark:bg-deepSlate border border-darkGray focus-visible:outline-yellowGreen rounded-lg h-[44px]"
                 />
               </div>
             </div>
@@ -453,7 +453,7 @@ const TokenBody = ({ forWhom }: TokenBodyProps) => {
       <div className="flex h-[36px]">
         <button
           onClick={addTokenCard}
-          className="bg-[#DDF23D] hover:bg-[#aabe13] w-full dark:shadow-add-manually-button py-2 px-4 rounded-[10px] p-medium-bold-variant-black"
+          className="bg-yellowGreen hover:bg-limeYellow w-full dark:shadow-add-manually-button py-2 px-4 rounded-[10px] p-medium-bold-variant-black"
         >
           Add token
         </button>

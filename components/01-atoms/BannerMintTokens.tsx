@@ -10,6 +10,11 @@ import cc from "classcat";
 import { type WalletClient, useNetwork, useWalletClient } from "wagmi";
 import toast from "react-hot-toast";
 
+/**
+ * Renders a banner component for minting tokens.
+ *
+ * @deprecated This component is not in use currently.
+ */
 export const BannerMintTokens = () => {
   const [tokenType, setTokenType] = useState<TokenType | null>(null);
   const [toggleManually, setToggleManually] = useState<boolean>(false);
@@ -42,10 +47,10 @@ export const BannerMintTokens = () => {
       <div className="flex justify-between gap-3 ">
         <button
           className={cc([
-            "w-full border border-[#353836] rounded-lg py-3 pl-3 pr-4 text-start dark:bg-[#282B29]",
+            "w-full border border-darkGray rounded-lg py-3 pl-3 pr-4 text-start dark:bg-darkGreen",
             tokenType === TokenType.ERC20
-              ? "dark:bg-[#ddf23d] bg-[#ddf23d] p-medium-2"
-              : "dark:p-medium-2-dark dark:hover:bg-[#353836] hover:bg-[#35383617]",
+              ? "dark:bg-yellowGreen bg-yellowGreen p-medium-2"
+              : "dark:p-medium-2-dark dark:hover:bg-darkGray hover:bg-shadowGray",
           ])}
           onClick={async () => {
             setTokenType(TokenType.ERC20);
@@ -56,10 +61,10 @@ export const BannerMintTokens = () => {
         </button>
         <button
           className={cc([
-            "w-full  border border-[#353836] rounded-lg py-3 pl-3 pr-4 text-start dark:bg-[#282B29]",
+            "w-full  border border-darkGray rounded-lg py-3 pl-3 pr-4 text-start dark:bg-darkGreen",
             tokenType === TokenType.ERC721
-              ? "dark:bg-[#ddf23d] bg-[#ddf23d] p-medium-2"
-              : "dark:p-medium-2-dark dark:hover:bg-[#353836] hover:bg-[#35383617]",
+              ? "dark:bg-yellowGreen bg-yellowGreen p-medium-2"
+              : "dark:p-medium-2-dark dark:hover:bg-darkGray hover:bg-shadowGray",
           ])}
           onClick={async () => {
             setTokenType(TokenType.ERC721);
@@ -79,7 +84,7 @@ export const BannerMintTokens = () => {
           The alpha phase is live!
           <div className="flex flex-col gap-6 ml-2">
             <button
-              className="p-medium-bold-variant-black bg-[#DDF23D] border rounded-[10px] py-2 px-4 h-[38px] dark:border-[#181a19] border-white"
+              className="p-medium-bold-variant-black bg-yellowGreen border rounded-[10px] py-2 px-4 h-[38px] dark:border-blackGreen border-white"
               onClick={() => setToggleManually(!toggleManually)}
             >
               Mint your tokens 🔥

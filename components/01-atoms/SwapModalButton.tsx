@@ -36,7 +36,7 @@ interface ButtonVariantConfig {
 const ButtonVariantsConfigs: Record<ButtonVariant, ButtonVariantConfig> = {
   [ButtonVariant.DEFAULT]: {
     style:
-      "border border-[#353836] bg-[#282B29] rounded-[10px] px-4 py-2 p-medium  dark:p-medium-2-small h-9 flex justify-center items-center gap-3",
+      "border border-darkGray bg-darkGreen rounded-[10px] px-4 py-2 p-medium  dark:p-medium-2-small h-9 flex justify-center items-center gap-3",
     arrowColorInHex: (theme, tokenApproved) =>
       !!tokenApproved
         ? theme === "dark"
@@ -48,7 +48,7 @@ const ButtonVariantsConfigs: Record<ButtonVariant, ButtonVariantConfig> = {
   },
   [ButtonVariant.ALTERNATIVE]: {
     style:
-      "border border-[#353836] bg-[#DDF23D] bg-opacity-20 rounded-[10px] px-4 py-2 dark:p-medium p-medium-dark h-9 flex justify-center items-center gap-2 dark:!text-[#DDF23D] !text-black",
+      "border border-darkGray bg-yellowGreen bg-opacity-20 rounded-[10px] px-4 py-2 dark:p-medium p-medium-dark h-9 flex justify-center items-center gap-2 dark:!text-yellowGreen !text-black",
     arrowColorInHex: (theme, tokenApproved) =>
       theme === "dark" && !!tokenApproved
         ? ArrowColor.YELLOW
@@ -57,7 +57,7 @@ const ButtonVariantsConfigs: Record<ButtonVariant, ButtonVariantConfig> = {
 
   [ButtonVariant.SECONDARY]: {
     style:
-      "border border-[#353836] bg-[#282B29] rounded-[10px] px-4 py-2 dark:p-medium-bold !text-[#181A19] p-medium-bold-dark disabled:pointer-events-none shadow justify-center items-center gap-3",
+      "border border-darkGray bg-darkGreen rounded-[10px] px-4 py-2 dark:p-medium-bold !text-blackGreen p-medium-bold-dark disabled:pointer-events-none shadow justify-center items-center gap-3",
     arrowColorInHex: (theme, tokenApproved) =>
       theme === "dark" && !!tokenApproved ? ArrowColor.BLACK : ArrowColor.GRAY,
   },
@@ -93,15 +93,15 @@ export function SwapModalButton({
         "flex items-center gap-2",
         aditionalStyle,
         disabled
-          ? "p-medium-bold dark:p-medium-bold cursor-not-allowed pointer-events-none bg-[#DDF23D]"
-          : "p-medium-bold-dark bg-[#DDF23D]",
+          ? "p-medium-bold dark:p-medium-bold cursor-not-allowed pointer-events-none bg-yellowGreen"
+          : "p-medium-bold-dark bg-yellowGreen",
       ])}
       {...props}
       disabled={disabled}
     >
       {isLoading ? (
         <>
-          <LoadingIndicator colors="dark:border-[#212322] border-[#212322]" />
+          <LoadingIndicator colors="dark:border-midnightGreen border-midnightGreen" />
           {label}
         </>
       ) : variant === ButtonVariant.DEFAULT ? (

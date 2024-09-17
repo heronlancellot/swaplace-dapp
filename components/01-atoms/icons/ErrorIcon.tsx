@@ -4,7 +4,7 @@ export const ErrorIcon = (props: SVGProps<SVGSVGElement>) => {
   return (
     <div
       className={
-        "w-20 h-20 rounded-[100px] shadow border-[3px] dark:border-[#DDF23D] dark:text-[#DDF23D] text-black border-black justify-center items-center gap-2.5 inline-flex"
+        "w-20 h-20 rounded-[100px] shadow border-[3px] dark:border-yellowGreen dark:text-yellowGreen text-black border-black justify-center items-center gap-2.5 inline-flex"
       }
     >
       <svg

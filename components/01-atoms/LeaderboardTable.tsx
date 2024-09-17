@@ -83,16 +83,16 @@ export const LeaderboardTable = () => {
   );
 
   return (
-    <div className="w-full border border-[#282B29] rounded-lg bg-[#282B29]">
-      <table className="w-full text-left table-fixed ">
-        <thead className="border-b border-[#353836]">
+    <div className="w-full border border-darkGreen rounded-lg dark:bg-darkGreen  bg-lightSilver overflow-auto max-h-[720px]">
+      <table className="w-full text-left table-fixed">
+        <thead className="border-b border-darkGray">
           <tr>
             {LeaderboardData.map((header, index) => (
               <th
                 className={cc([
                   header === Leaderboard.Points && "text-end",
                   header === Leaderboard.Rank && "flex justify-start",
-                  "px-4 py-3 p-small-dark-variant-grey",
+                  "px-4 py-3 dark:p-small-dark-variant-grey p-small-variant-black-2",
                 ])}
                 key={index}
               >
@@ -107,15 +107,15 @@ export const LeaderboardTable = () => {
               {LeaderboardData.map((header, colIndex) => (
                 <td
                   className={cc([
-                    data.Rank === Ranking.FIRST && "!text-[#AABE13]",
-                    data.Rank === Ranking.SECOND && "!text-[#A3A9A5]",
-                    data.Rank === Ranking.THIRD && "!text-[#DE7B30]",
+                    data.Rank === Ranking.FIRST && "!text-limeYellow",
+                    data.Rank === Ranking.SECOND && "!text-sageGray",
+                    data.Rank === Ranking.THIRD && "!text-vividTangerine",
 
                     data[header] === Ranking.FIRST ||
                     data[header] === Ranking.SECOND ||
                     data[header] === Ranking.THIRD
                       ? "flex items-start justify-start px-3" // That padding will fill the center of the cell
-                      : "px-4 py-3 p-small-dark",
+                      : "px-4 py-3 dark:p-small-dark p-small-variant-black",
                     data[header] === Ranking.FIRST ||
                     data[header] === Ranking.SECOND ||
                     data[header] === Ranking.THIRD
@@ -152,21 +152,21 @@ export const LeaderboardTable = () => {
             <tr>
               <td
                 colSpan={LeaderboardData.length}
-                className="border-t border-[#353836] "
+                className="border-t border-darkGray "
               ></td>
             </tr>
           )}
 
           {userData && (
             <tr>
-              <td className="px-6 py-3 text-[#ddf23d] text-sm">
+              <td className="px-6 py-3 dark:text-yellowGreen text-sm">
                 {userRank !== null ? userRank : userData.Rank}
               </td>
-              <td className="px-3.5 py-3 text-[#ddf23d] text-sm flex items-center">
-                <StarIcon className="mr-1.5" />{" "}
+              <td className="px-3.5 py-3 dark:text-yellowGreen text-sm flex items-center">
+                <StarIcon className="mr-1.5  dark:text-yellowGreen" />
                 {collapseAddress(userData.Address)}
               </td>
-              <td className="px-4 py-3 text-end text-[#ddf23d] text-sm">
+              <td className="px-4 py-3 text-end dark:text-yellowGreen text-sm">
                 {userData.Points.toString()}
               </td>
             </tr>
