@@ -5,11 +5,11 @@ import { ForWhom } from "../03-organisms";
 import { MagnifyingGlassIcon } from "@/components/01-atoms";
 import { EthereumAddress } from "@/lib/shared/types";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
-import { normalizeENSName } from "@/lib/client/blockchain-utils";
+// import { normalizeENSName } from "@/lib/client/blockchain-utils";
 import { SwapContext } from "@/lib/client/contexts";
 import { useContext, useEffect } from "react";
-import { ENS } from "web3-eth-ens";
-import Web3 from "web3";
+// import { ENS } from "web3-eth-ens";
+// import Web3 from "web3";
 import toast from "react-hot-toast";
 
 export const SearchBar = () => {
@@ -18,10 +18,10 @@ export const SearchBar = () => {
       "Cannot get the ENS primary name`s address without an Alchemy API Key",
     );
   }
-  const provider = new Web3.providers.HttpProvider(
-    process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_HTTP,
-  );
-  const ens = new ENS(undefined, provider);
+  // const provider = new Web3.providers.HttpProvider(
+  //   process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_HTTP,
+  // );
+  // const ens = new ENS(undefined, provider);
 
   const {
     lastWalletConnected,
@@ -75,19 +75,19 @@ export const SearchBar = () => {
 
   const getUserAddress = async () => {
     if (lastWalletConnected && inputAddress.length > 2) {
-      const _inputAddress = inputAddress;
-      const formattedAddress = normalizeENSName(inputAddress);
+      // const _inputAddress = inputAddress;
+      // const formattedAddress = normalizeENSName(inputAddress);
 
       try {
-        const address: unknown = await ens.getOwner(formattedAddress);
-        if (typeof address !== "string") {
-          toast.error(
-            "Wrong type of address returned by provider. Please contact the team",
-          );
-          return;
-        }
+        // const address: unknown = await ens.getOwner(formattedAddress);
+        // if (typeof address !== "string") {
+        //   toast.error(
+        //     "Wrong type of address returned by provider. Please contact the team",
+        //   );
+        //   return;
+        // }
         validateAddressToSwap(
-          address === ADDRESS_ZERO ? _inputAddress : address,
+          inputAddress !== ADDRESS_ZERO ? inputAddress : ADDRESS_ZERO,
         );
       } catch (error) {
         toast.error("Invalid Ethereum Address");

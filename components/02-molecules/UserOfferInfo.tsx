@@ -1,8 +1,8 @@
-import { ENSAvatar, ENSAvatarSize } from "@/components/01-atoms";
+// import { ENSAvatar, ENSAvatarSize } from "@/components/01-atoms";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { SwapContext } from "@/lib/client/contexts";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-import { useEnsData } from "@/lib/client/hooks/useENSData";
+// import { useEnsData } from "@/lib/client/hooks/useENSData";
 import { PopulatedSwapOfferCard } from "@/lib/client/offers-utils";
 import { SwapNativeEther } from "@/lib/client/swap-utils";
 import { isInRange } from "@/lib/client/utils";
@@ -36,9 +36,9 @@ export const UserOfferInfo = ({
   nativeEther,
   swap,
 }: UserOfferInfoProps) => {
-  const { primaryName } = useEnsData({
-    ensAddress: address,
-  });
+  // const { primaryName } = useEnsData({
+  //   ensAddress: address,
+  // });
   const { etherValue, etherRecipient } = useContext(SwapContext);
   const [isMounted, setIsMounted] = useState(false);
   const { chain } = useNetwork();
@@ -64,15 +64,16 @@ export const UserOfferInfo = ({
       <div>
         <div className="flex gap-2">
           <div>
-            {address && (
+            {/* {address && (
               <ENSAvatar
                 avatarENSAddress={address}
                 size={ENSAvatarSize.SMALL}
               />
-            )}
+            )} */}
           </div>
           <div className="flex ">
-            {primaryName ? <p>{primaryName}</p> : <p>{displayAddress}</p>}
+            {/* {primaryName ? <p>{primaryName}</p> :<p>{displayAddress}</p> } */}
+            <p>{displayAddress}</p>
           </div>
         </div>
       </div>
@@ -82,19 +83,19 @@ export const UserOfferInfo = ({
         <div className="flex justify-between">
           <div className="flex gap-2">
             <div>
-              {address && (
+              {/* {address && (
                 <ENSAvatar
                   avatarENSAddress={address}
                   size={ENSAvatarSize.SMALL}
                 />
-              )}
+              )} */}
             </div>
             <div className="flex ">
-              {primaryName ? (
+              {/* {primaryName ? (
                 <p>{primaryName} gets</p>
-              ) : (
-                <p>{displayAddress} gets</p>
-              )}
+              ) : ( */}
+              <p>{displayAddress} gets</p>
+              {/* )} */}
             </div>
           </div>
           {address?.address !== authenticatedUserAddress?.address &&
@@ -128,19 +129,19 @@ export const UserOfferInfo = ({
         <div className="flex justify-between">
           <div className="flex gap-2">
             <div>
-              {address && (
+              {/* {address && (
                 <ENSAvatar
                   avatarENSAddress={address}
                   size={ENSAvatarSize.SMALL}
                 />
-              )}
+              )} */}
             </div>
             <div className="flex ">
-              {primaryName ? (
+              {/* {primaryName ? (
                 <p>{primaryName} gets</p>
-              ) : (
-                <p>{displayAddress} gets</p>
-              )}
+              ) : ( */}
+              <p>{displayAddress} gets</p>
+              {/* )} */}
             </div>
           </div>
           {nativeEther &&
@@ -176,19 +177,19 @@ export const UserOfferInfo = ({
         <div className="flex justify-between">
           <div className="flex gap-2">
             <div>
-              {address && (
+              {/* {address && (
                 <ENSAvatar
                   avatarENSAddress={address}
                   size={ENSAvatarSize.SMALL}
                 />
-              )}
+              )} */}
             </div>
             <div className="flex">
-              {primaryName ? (
+              {/* {primaryName ? (
                 <p>{primaryName} gets</p>
-              ) : (
-                <p>{displayAddress} gets</p>
-              )}
+              ) : ( */}
+              <p>{displayAddress} gets</p>
+              {/* )} */}
             </div>
           </div>
           {address?.address !== ADDRESS_ZERO &&

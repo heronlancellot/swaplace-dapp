@@ -3,7 +3,7 @@ export * from "./ApproveTokenCards";
 export * from "./BlockExplorerExternalLinkButton";
 export * from "./ConnectWallet";
 export * from "./DisconnectWallet";
-export * from "./ENSAvatar";
+// export * from "./ENSAvatar";
 export * from "./LoadingIndicator";
 export * from "./NetworkDropdown";
 export * from "./MobileNotSupported";
