@@ -11,6 +11,30 @@ import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 // import { useEnsData } from "@/lib/client/hooks/useENSData";
 import { useContext } from "react";
 
+/**
+ * OfferSummary component displays a summary of token offers for a given user.
+ *
+ * @param {Object} props - The properties object.
+ * @param {ForWhom} props.variant - Specifies whether the summary is for the authenticated user or another user.
+ *
+ * @returns {JSX.Element} The rendered OfferSummary component.
+ *
+ * @remarks
+ * This component uses the `SwapContext` to fetch the necessary data for rendering the token offers.
+ * It also utilizes the `useAuthenticatedUser` hook to get the authenticated user's address.
+ *
+ * The component conditionally renders different sections based on the `variant` prop:
+ * - If `variant` is `ForWhom.Yours`, it displays the authenticated user's token offers.
+ * - If `variant` is `ForWhom.Their`, it displays the searched user's token offers.
+ *
+ * The ENS-related sections are currently commented out due to issues with fetching the correct ENS address.
+ * These sections include:
+ * - Displaying the ENS avatar for the searched address.
+ * - Displaying the ENS name for the searched address.
+ *
+ * These sections are currently commented out because the `ens-avatar-searched-address` has issues fetching the correct address.
+ * Since the ENS are not working properly. We're commenting those sections.
+ */
 export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
   const {
     validatedAddressToSwap,
@@ -24,12 +48,14 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
       ? authenticatedUserTokensList
       : searchedUserTokensList;
 
-  // const { primaryName: searchedENSName } = useEnsData({
-  //   ensAddress: validatedAddressToSwap,
-  // });
-  // const { primaryName: authenticatedUserENSName } = useEnsData({
-  //   ensAddress: authenticatedUserAddress,
-  // });
+  /**
+  const { primaryName: searchedENSName } = useEnsData({
+    ensAddress: validatedAddressToSwap,
+  });
+  const { primaryName: authenticatedUserENSName } = useEnsData({
+    ensAddress: authenticatedUserAddress,
+  });
+   */
 
   return (
     <div className="w-full h-full dark:bg-darkGreen border dark:border-darkGray bg-[#F0EEEE] borderlightSilver rounded-lg ">

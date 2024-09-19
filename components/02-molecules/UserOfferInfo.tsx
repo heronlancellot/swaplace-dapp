@@ -29,6 +29,18 @@ interface UserOfferInfoProps {
  * The component will render the ENS name and avatar of the user.
  * The component variant will render the amount of ether being sent in the swap or the amount of ether in the swap already created.
  *
+ * @param {UserOfferInfoProps} props - The properties to configure the UserOfferInfo component.
+ * @param {EthereumAddress | null} props.address - The Ethereum address of the user.
+ * @param {UserOfferVariant} [props.variant=UserOfferVariant.NAME_ENS] - The variant of the user offer information to display.
+ * @param {SwapNativeEther} [props.nativeEther] - The native ether details for the swap.
+ * @param {PopulatedSwapOfferCard} [props.swap] - The populated swap offer card details.
+ *
+ * @returns {JSX.Element} The JSX element representing the user offer information.
+ *
+ * @remarks
+ * The ENS name and avatar rendering sections are commented out due to issues with the ENS data retrieval.
+ * Specifically, the ENS avatar is not working properly because the searched address by ENS is not functioning correctly.
+ * For more details, refer to the `useENSData` file.
  */
 export const UserOfferInfo = ({
   address,
@@ -36,9 +48,11 @@ export const UserOfferInfo = ({
   nativeEther,
   swap,
 }: UserOfferInfoProps) => {
-  // const { primaryName } = useEnsData({
-  //   ensAddress: address,
-  // });
+  /**
+  const { primaryName } = useEnsData({
+    ensAddress: address,
+  });
+   */
   const { etherValue, etherRecipient } = useContext(SwapContext);
   const [isMounted, setIsMounted] = useState(false);
   const { chain } = useNetwork();
@@ -64,6 +78,8 @@ export const UserOfferInfo = ({
       <div>
         <div className="flex gap-2">
           <div>
+            {/*This section is commented because the ENS-AVATAR is not working properly since the searched address by ens not working correctly. Check more about in useENSData file. */}
+
             {/* {address && (
               <ENSAvatar
                 avatarENSAddress={address}
@@ -72,6 +88,8 @@ export const UserOfferInfo = ({
             )} */}
           </div>
           <div className="flex ">
+            {/*This section is commented because the ENS-AVATAR is not working properly since the searched address by ens not working correctly. Check more about in useENSData file. */}
+
             {/* {primaryName ? <p>{primaryName}</p> :<p>{displayAddress}</p> } */}
             <p>{displayAddress}</p>
           </div>
@@ -83,6 +101,8 @@ export const UserOfferInfo = ({
         <div className="flex justify-between">
           <div className="flex gap-2">
             <div>
+              {/*This section is commented because the ENS-AVATAR is not working properly since the searched address by ens not working correctly. Check more about in useENSData file. */}
+
               {/* {address && (
                 <ENSAvatar
                   avatarENSAddress={address}
@@ -91,6 +111,8 @@ export const UserOfferInfo = ({
               )} */}
             </div>
             <div className="flex ">
+              {/*This section is commented because the ENS-AVATAR is not working properly since the searched address by ens not working correctly. Check more about in useENSData file. */}
+
               {/* {primaryName ? (
                 <p>{primaryName} gets</p>
               ) : ( */}
@@ -129,6 +151,8 @@ export const UserOfferInfo = ({
         <div className="flex justify-between">
           <div className="flex gap-2">
             <div>
+              {/*This section is commented because the ENS-AVATAR is not working properly since the searched address by ens not working correctly. Check more about in useENSData file. */}
+
               {/* {address && (
                 <ENSAvatar
                   avatarENSAddress={address}
@@ -137,6 +161,8 @@ export const UserOfferInfo = ({
               )} */}
             </div>
             <div className="flex ">
+              {/*This section is commented because the ENS-AVATAR is not working properly since the searched address by ens not working correctly. Check more about in useENSData file. */}
+
               {/* {primaryName ? (
                 <p>{primaryName} gets</p>
               ) : ( */}
@@ -177,6 +203,8 @@ export const UserOfferInfo = ({
         <div className="flex justify-between">
           <div className="flex gap-2">
             <div>
+              {/*This section is commented because the ENS-AVATAR is not working properly since the searched address by ens not working correctly. Check more about in useENSData file. */}
+
               {/* {address && (
                 <ENSAvatar
                   avatarENSAddress={address}
@@ -185,6 +213,8 @@ export const UserOfferInfo = ({
               )} */}
             </div>
             <div className="flex">
+              {/*This section is commented because the ENS-AVATAR is not working properly since the searched address by ens not working correctly. Check more about in useENSData file. */}
+
               {/* {primaryName ? (
                 <p>{primaryName} gets</p>
               ) : ( */}

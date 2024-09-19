@@ -96,6 +96,7 @@ export const TheHeader = () => {
                     onClick={() => toggleSidebar()}
                     className="rounded-[10px] flex items-center justify-center w-full h-full"
                   >
+                    {/*This section is commented because the ENS-AVATAR is not working properly since the searched address by ens not working correctly. Check more about in useENSData file. */}
                     {/* <ENSAvatar avatarENSAddress={authenticatedUserAddress} /> */}
                     <PersonIcon
                       size={"20"}
