@@ -1,7 +1,5 @@
 /**
- * @deprecated This hook is deprecated because the searched ENS address
- * sometimes returns incorrect results, which negatively impacts the user flow
- * of the application.
+ * This section is commented because the ENSAvatar is not working properly since the searched address by ens not working correctly. Check more about in useENSData file.
  *
  * The `useEnsData` hook is responsible for fetching and managing Ethereum Name Service (ENS)
  * data based on the provided ENS address. It fetches the primary ENS name and avatar status
