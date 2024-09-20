@@ -89,15 +89,15 @@ export const SearchBar = () => {
        */
 
       try {
-        /**
-        const address: unknown = await ens.getOwner(formattedAddress);
-        if (typeof address !== "string") {
-          toast.error(
-            "Wrong type of address returned by provider. Please contact the team",
-          );
-          return;
-        }
-           */
+      /**
+       * const address: unknown = await ens.getOwner(formattedAddress);
+       * if (typeof address !== "string") {
+       * toast.error(
+       *  "Wrong type of address returned by provider. Please contact the team",
+       * );
+       * return;
+       * }
+       */
 
         validateAddressToSwap(
           inputAddress !== ADDRESS_ZERO ? inputAddress : ADDRESS_ZERO,
