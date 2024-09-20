@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 /**
  *
  * These sections are currently commented out because the `ens-avatar-searched-address` has issues fetching the correct address.
- * Since the ENS are not working properly. We're commenting those sections.
+ * Since ENS related feature is not working properly, we are commenting those sections.
  */
 
 export const SearchBar = () => {
