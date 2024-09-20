@@ -1,7 +1,7 @@
 /**
  * @deprecated This component is deprecated because the searched ENS address
  * sometimes returns incorrect results, which negatively impacts the user experience
- * of the application.
+ * in the application.
  *
  * The `ENSAvatar` component is responsible for displaying an Ethereum Name Service (ENS)
  * avatar based on the provided ENS address. It supports two sizes: small and medium.
