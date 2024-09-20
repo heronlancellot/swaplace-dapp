@@ -25,12 +25,10 @@ export const SearchBar = () => {
     );
   }
   /**
-
-    const provider = new Web3.providers.HttpProvider(
-      process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_HTTP,
-    );
-    const ens = new ENS(undefined, provider);
-    * 
+   * const provider = new Web3.providers.HttpProvider(
+   *  process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_HTTP,
+   * );
+   * const ens = new ENS(undefined, provider);
    */
 
   const {
