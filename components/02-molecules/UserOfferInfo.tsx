@@ -213,7 +213,7 @@ export const UserOfferInfo = ({
               )} */}
             </div>
             <div className="flex">
-              {/*This section is commented because the ENS-AVATAR is not working properly since the searched address by ens not working correctly. Check more about in useENSData file. */}
+              {/* This section is commented because the ENSAvatar is not working properly since the searched address by ens not working correctly. Check more about in useENSData file. */}
 
               {/* {primaryName ? (
                 <p>{primaryName} gets</p>
