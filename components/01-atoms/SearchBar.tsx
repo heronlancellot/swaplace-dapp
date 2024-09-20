@@ -84,8 +84,8 @@ export const SearchBar = () => {
   const getUserAddress = async () => {
     if (lastWalletConnected && inputAddress.length > 2) {
       /**
-        const _inputAddress = inputAddress;
-        const formattedAddress = normalizeENSName(inputAddress);
+       * const _inputAddress = inputAddress;
+       * const formattedAddress = normalizeENSName(inputAddress);
        */
 
       try {
