@@ -11,9 +11,6 @@
  * `ensAddress` changes. It updates the state variables `primaryName` and `avatarQueryStatus`
  * based on the fetched data or any errors encountered during the fetch process.
  *
- * @param {Props} props - The properties object.
- * @param {EthereumAddress | null} props.ensAddress - The ENS address to fetch the data for.
- *
  * @returns {object} An object containing the primary ENS name, avatar query status, and avatar source URL.
  */
 
