@@ -8,7 +8,11 @@ import {
 import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { SwapContext } from "@/lib/client/contexts";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-// import { useEnsData } from "@/lib/client/hooks/useENSData";
+/**
+*  @deprecated
+*
+*  import { useEnsData } from "@/lib/client/hooks/useENSData";
+*/ 
 import { useContext } from "react";
 
 /**
