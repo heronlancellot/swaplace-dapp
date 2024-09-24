@@ -90,6 +90,10 @@ export const SearchBar = () => {
   const getUserAddress = async () => {
     if (lastWalletConnected && inputAddress.length > 2) {
       /**
+       * @deprecated
+       * The Ethereum address related ENS primary name getter function is
+       * under refactoring, thus, this feature is currently commented out.
+       * 
        * const _inputAddress = inputAddress;
        * const formattedAddress = normalizeENSName(inputAddress);
        */
