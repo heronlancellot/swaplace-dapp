@@ -19,9 +19,6 @@ import { useContext, useEffect } from "react";
 */
 import toast from "react-hot-toast";
 
-/**
- * These sections are currently commented out because we are facing issues fetching the correct address ENS name Ethereum address. Since ENS related feature is not working properly, we are commenting those sections.
- */
 
 export const SearchBar = () => {
   if (!process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_HTTP) {
