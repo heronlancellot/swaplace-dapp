@@ -29,7 +29,6 @@ interface UserOfferInfoProps {
  * The component will render the ENS name and avatar of the user.
  * The component variant will render the amount of ether being sent in the swap or the amount of ether in the swap already created.
  *
- * @param {UserOfferInfoProps} props - The properties to configure the UserOfferInfo component.
  * @param {EthereumAddress | null} address - The Ethereum address of the user.
  * @param {UserOfferVariant} [props.variant=UserOfferVariant.NAME_ENS] - The variant of the user offer information to display.
  * @param {SwapNativeEther} [props.nativeEther] - The native ether details for the swap.
