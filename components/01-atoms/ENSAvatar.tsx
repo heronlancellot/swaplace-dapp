@@ -1,5 +1,5 @@
 /**
- * @deprecated This component is deprecated because the searched ENS address
+ * @deprecated This component is deprecated because the searched Ethereum addresses
  * sometimes returns incorrect results, which negatively impacts the user experience
  * in the application.
  *
