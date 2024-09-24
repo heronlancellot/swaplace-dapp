@@ -1,4 +1,6 @@
-/**
+/** import { useEnsData } from "@/lib/client/hooks/useENSData";
+ *  import { ENSAvatar  } from "@/components/01-atoms";
+ *
  * Component that displays the authenticated user's ENS name and address wallet.
  *
  * This component utilizes the `useAuthenticatedUser` hook to retrieve the authenticated user's address.
@@ -15,12 +17,8 @@
  */
 
 import { CopyAdressButton } from "@/components/02-molecules";
-import {
-  BlockExplorerExternalLinkButton,
-  /*ENSAvatar */
-} from "@/components/01-atoms";
+import { BlockExplorerExternalLinkButton } from "@/components/01-atoms";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
-/*import { useEnsData } from "@/lib/client/hooks/useENSData";*/
 
 export const EnsNameAndAddressWallet = () => {
   const { authenticatedUserAddress } = useAuthenticatedUser();
@@ -39,13 +37,13 @@ export const EnsNameAndAddressWallet = () => {
     <div className="flex gap-3 pb-5">
       {authenticatedUserAddress && (
         <>
-          {/** 
-            * @deprecated
-            * The Ethereum address related ENS primary name getter function is
-            * under refactoring, thus, this feature is currently commented out.
-            *
-            * <ENSAvatar avatarENSAddress={authenticatedUserAddress} />
-            */}
+          {/**
+           * @deprecated
+           * The Ethereum address related ENS primary name getter function is
+           * under refactoring, thus, this feature is currently commented out.
+           *
+           * <ENSAvatar avatarENSAddress={authenticatedUserAddress} />
+           */}
           <div className="flex flex-col">
             <div className="flex items-center justify-start gap-2">
               {/* {primaryName && (
