@@ -5,20 +5,19 @@ import { ForWhom } from "../03-organisms";
 import { MagnifyingGlassIcon } from "@/components/01-atoms";
 import { EthereumAddress } from "@/lib/shared/types";
 import { ADDRESS_ZERO } from "@/lib/client/constants";
-/* import { normalizeENSName } from "@/lib/client/blockchain-utils"; */
 import { SwapContext } from "@/lib/client/contexts";
 import { useContext, useEffect } from "react";
-/**
-* @deprecated
-* The Ethereum address related ENS primary name getter function is
-* under refactoring, thus, this feature is currently commented out.
-*
-* import { normalizeENSName } from "@/lib/client/blockchain-utils";
-* import { ENS } from "web3-eth-ens";
-* import Web3 from "web3";
-*/
 import toast from "react-hot-toast";
 
+/**
+ * @deprecated
+ * The Ethereum address related ENS primary name getter function is
+ * under refactoring, thus, this feature is currently commented out.
+ *
+ * import { normalizeENSName } from "@/lib/client/blockchain-utils";
+ * import { ENS } from "web3-eth-ens";
+ * import Web3 from "web3";
+ */
 
 export const SearchBar = () => {
   if (!process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_HTTP) {
@@ -27,10 +26,9 @@ export const SearchBar = () => {
     );
   }
   /**
-   * @deprecated
    * The Ethereum address related ENS primary name getter function is
    * under refactoring, thus, this feature is currently commented out.
-   * 
+   *
    * const provider = new Web3.providers.HttpProvider(
    *  process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_HTTP,
    * );
@@ -93,25 +91,25 @@ export const SearchBar = () => {
        * @deprecated
        * The Ethereum address related ENS primary name getter function is
        * under refactoring, thus, this feature is currently commented out.
-       * 
+       *
        * const _inputAddress = inputAddress;
        * const formattedAddress = normalizeENSName(inputAddress);
        */
 
       try {
-      /**
-       * @deprecated
-       * The Ethereum address related ENS primary name getter function is
-       * under refactoring, thus, this feature is currently commented out.
-       * 
-       * const address: unknown = await ens.getOwner(formattedAddress);
-       * if (typeof address !== "string") {
-       * toast.error(
-       *  "Wrong type of address returned by provider. Please contact the team",
-       * );
-       * return;
-       * }
-       */
+        /**
+         * @deprecated
+         * The Ethereum address related ENS primary name getter function is
+         * under refactoring, thus, this feature is currently commented out.
+         *
+         * const address: unknown = await ens.getOwner(formattedAddress);
+         * if (typeof address !== "string") {
+         * toast.error(
+         *  "Wrong type of address returned by provider. Please contact the team",
+         * );
+         * return;
+         * }
+         */
 
         validateAddressToSwap(
           inputAddress !== ADDRESS_ZERO ? inputAddress : ADDRESS_ZERO,
