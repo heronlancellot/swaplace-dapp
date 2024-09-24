@@ -77,7 +77,7 @@ export const UserOfferInfo = ({
       <div>
         <div className="flex gap-2">
           <div>
-            {/*This section is commented because the ENS-AVATAR is not working properly since the searched address by ens not working correctly. Check more about in useENSData file. */}
+            {/*This section is commented because the ENSAvatar is not working properly since the searched address by ENS not working correctly. Check more about in useENSData file. */}
 
             {/* {address && (
               <ENSAvatar
