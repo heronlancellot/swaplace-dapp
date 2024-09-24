@@ -26,6 +26,7 @@ export const SearchBar = () => {
     );
   }
   /**
+   * @deprecated
    * The Ethereum address related ENS primary name getter function is
    * under refactoring, thus, this feature is currently commented out.
    *
