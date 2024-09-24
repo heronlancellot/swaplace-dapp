@@ -1,8 +1,8 @@
+/* import { ENSAvatar } from "@/components/01-atoms"; */
 import { useScreenSize } from "@/lib/client/hooks/useScreenSize";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 import {
   ConnectWallet,
-  // ENSAvatar,
   MoonIcon,
   NetworkDropdown,
   NetworkVariantPosition,
@@ -96,7 +96,6 @@ export const TheHeader = () => {
                     onClick={() => toggleSidebar()}
                     className="rounded-[10px] flex items-center justify-center w-full h-full"
                   >
-                    {/* This section is commented because the ENSAvatar is not working properly since the searched address is not working correctly. Check more about in useENSData file. */}
                     {/* <ENSAvatar avatarENSAddress={authenticatedUserAddress} /> */}
                     <PersonIcon
                       size={"20"}
