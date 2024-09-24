@@ -11,7 +11,7 @@
  * fetched avatar image.
  *
  * @component
- * @param {EthereumAddress} avatarENSAddress - The Ethereum address to fetch the avatar for.
+ * @param {EthereumAddress} avatarETHAddress - The Ethereum address to fetch the avatar for.
  * @param {ENSAvatarSize} ENSAvatarSize - The size of the avatar to display. Defaults to ENSAvatarSize.MEDIUM
  *
  * @returns {JSX.Element} The rendered ENS avatar component.
