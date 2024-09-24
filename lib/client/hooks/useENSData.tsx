@@ -9,7 +9,9 @@
  * `ensAddress` changes. It updates the state variables `primaryName` and `avatarQueryStatus`
  * based on the fetched data or any errors encountered during the fetch process.
  *
- * @returns {object} An object containing the primary ENS name, avatar query status, and avatar source URL.
+ * @deprecated
+ * These sections are currently commented out because the `ens-avatar-searched-address` has issues fetching the correct address.
+ * Since the ENS are not working properly. We're commenting those sections.
  */
 
 /**
