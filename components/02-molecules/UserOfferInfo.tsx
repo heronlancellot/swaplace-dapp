@@ -31,7 +31,7 @@ interface UserOfferInfoProps {
  *
  * @param {EthereumAddress | null} address - The Ethereum address of the user.
  * @param {UserOfferVariant} variant - The variant of the user offer information to display. Defaults to UserOfferVariant.NAME_ENS
- * @param {SwapNativeEther} [props.nativeEther] - The native ether details for the swap.
+ * @param {SwapNativeEther} nativeEther - The native ether details for the swap.
  * @param {PopulatedSwapOfferCard} swap - The populated swap offer card details.
  *
  * @returns {JSX.Element} The JSX element representing the user offer information.
