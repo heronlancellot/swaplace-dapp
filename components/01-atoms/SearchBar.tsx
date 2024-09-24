@@ -9,8 +9,13 @@ import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { SwapContext } from "@/lib/client/contexts";
 import { useContext, useEffect } from "react";
 /**
-import { ENS } from "web3-eth-ens";
-import Web3 from "web3";
+* @deprecated
+* The Ethereum address related ENS primary name getter function is
+* under refactoring, thus, this feature is currently commented out.
+*
+* import { normalizeENSName } from "@/lib/client/blockchain-utils";
+* import { ENS } from "web3-eth-ens";
+* import Web3 from "web3";
 */
 import toast from "react-hot-toast";
 
