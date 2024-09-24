@@ -1,5 +1,4 @@
 /**
- *
  * Component that displays the authenticated user's ENS name and address wallet.
  *
  * This component utilizes the `useAuthenticatedUser` hook to retrieve the authenticated user's address.
