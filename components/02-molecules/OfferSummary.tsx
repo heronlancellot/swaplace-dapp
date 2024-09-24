@@ -9,19 +9,17 @@ import { ADDRESS_ZERO } from "@/lib/client/constants";
 import { SwapContext } from "@/lib/client/contexts";
 import { useAuthenticatedUser } from "@/lib/client/hooks/useAuthenticatedUser";
 /**
-*  @deprecated
-*
-*  import { useEnsData } from "@/lib/client/hooks/useENSData";
-*/ 
+ *  @deprecated
+ *
+ *  import { useEnsData } from "@/lib/client/hooks/useENSData";
+ */
 import { useContext } from "react";
 
 /**
  * OfferSummary component displays a summary of token offers for a given user.
  *
- * @param {Object} props - The properties object.
- * @param {ForWhom} props.variant - Specifies whether the summary is for the authenticated user or another user.
+ * @param {ForWhom} variant - Specifies whether the summary is for the authenticated user or another user.
  *
- * @returns {JSX.Element} The rendered OfferSummary component.
  *
  * @remarks
  * This component uses the `SwapContext` to fetch the necessary data for rendering the token offers.
@@ -53,12 +51,12 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
       : searchedUserTokensList;
 
   /**
-  const { primaryName: searchedENSName } = useEnsData({
-    ensAddress: validatedAddressToSwap,
-  });
-  const { primaryName: authenticatedUserENSName } = useEnsData({
-    ensAddress: authenticatedUserAddress,
-  });
+   * const { primaryName: searchedENSName } = useEnsData({
+   *  ensAddress: validatedAddressToSwap,
+   * });
+   * const { primaryName: authenticatedUserENSName } = useEnsData({
+   *  ensAddress: authenticatedUserAddress,
+   * });
    */
 
   return (
@@ -68,16 +66,16 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
           <div className="flex space-x-2 items-center">
             <div className="flex items-center">
               {/* {variant === ForWhom.Their && validatedAddressToSwap ? (
-                <ENSAvatar
-                  avatarENSAddress={validatedAddressToSwap}
-                  size={ENSAvatarSize.SMALL}
-                />
-              ) : variant === ForWhom.Yours && authenticatedUserAddress ? (
-                <ENSAvatar
-                  avatarENSAddress={authenticatedUserAddress}
-                  size={ENSAvatarSize.SMALL}
-                />
-              ) : ( */}
+               *<ENSAvatar
+               *  avatarENSAddress={validatedAddressToSwap}
+               *  size={ENSAvatarSize.SMALL}
+               *  />
+               *) : variant === ForWhom.Yours && authenticatedUserAddress ? (
+               *  <ENSAvatar
+               *    avatarENSAddress={authenticatedUserAddress}
+               *    size={ENSAvatarSize.SMALL}
+               *  />
+               *) : ( */}
               <div className="bg-lightSilver dark:bg-darkGray p-[5px] rounded-md">
                 <PersonIcon
                   size="14"
@@ -90,8 +88,12 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
               <p className="p-small-variant-black-3 dark:p-small-variant-light-2 contrast-50">
                 {variant === ForWhom.Their && validatedAddressToSwap
                   ? `${
-                      // searchedENSName
-                      //   ? `${searchedENSName} offers`
+                      /**
+                       * searchedENSName
+                       * ? `${searchedENSName} offers`
+                       *
+                       *
+                       */
                       validatedAddressToSwap
                         ? `${
                             validatedAddressToSwap.address === ADDRESS_ZERO
@@ -105,8 +107,10 @@ export const OfferSummary = ({ variant }: { variant: ForWhom }) => {
                   ? "They offer"
                   : variant === ForWhom.Yours && authenticatedUserAddress
                   ? `${
-                      // authenticatedUserENSName
-                      //   ? `${authenticatedUserENSName} offers`
+                      /**
+                       * authenticatedUserENSName
+                       * ? `${authenticatedUserENSName} offers`
+                       */
                       authenticatedUserAddress
                         ? `${authenticatedUserAddress.getEllipsedAddress()} offers`
                         : "Connect your wallet"
