@@ -1,5 +1,4 @@
-/** import { useEnsData } from "@/lib/client/hooks/useENSData";
- *  import { ENSAvatar  } from "@/components/01-atoms";
+/**
  *
  * Component that displays the authenticated user's ENS name and address wallet.
  *
@@ -10,10 +9,13 @@
  * - `useEnsData` hook: This hook is used to fetch ENS data, such as the primary name associated with an address.
  * - `ENSAvatar` component: This component is used to display the ENS avatar for a given address.
  *
+ * @deprecated
  * These sections are currently commented out because the `ens-avatar-searched-address` has issues fetching the correct address.
  *
  * The component renders a copy address button and a block explorer external link button if the authenticated user's address is available.
  *
+ * import { useEnsData } from "@/lib/client/hooks/useENSData";
+ * import { ENSAvatar  } from "@/components/01-atoms";
  */
 
 import { CopyAdressButton } from "@/components/02-molecules";
