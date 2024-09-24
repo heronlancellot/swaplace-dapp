@@ -27,6 +27,10 @@ export const SearchBar = () => {
     );
   }
   /**
+   * @deprecated
+   * The Ethereum address related ENS primary name getter function is
+   * under refactoring, thus, this feature is currently commented out.
+   * 
    * const provider = new Web3.providers.HttpProvider(
    *  process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_HTTP,
    * );
