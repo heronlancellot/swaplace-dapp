@@ -4,7 +4,7 @@
  * in the application.
  *
  * The `ENSAvatar` component is responsible for displaying an Ethereum Name Service (ENS)
- * avatar based on the provided ENS address. It supports two sizes: small and medium.
+ * avatar based on the provided Ethereum address. It supports two sizes: small and medium.
  *
  * The component uses the `useEnsData` hook to fetch the avatar data. Depending on the
  * status of the query, it either shows a loading indicator, an error icon, or the
