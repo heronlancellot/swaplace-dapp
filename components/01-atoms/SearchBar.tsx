@@ -100,6 +100,10 @@ export const SearchBar = () => {
 
       try {
       /**
+       * @deprecated
+       * The Ethereum address related ENS primary name getter function is
+       * under refactoring, thus, this feature is currently commented out.
+       * 
        * const address: unknown = await ens.getOwner(formattedAddress);
        * if (typeof address !== "string") {
        * toast.error(
