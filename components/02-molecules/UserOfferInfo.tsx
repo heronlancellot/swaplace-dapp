@@ -30,7 +30,7 @@ interface UserOfferInfoProps {
  * The component variant will render the amount of ether being sent in the swap or the amount of ether in the swap already created.
  *
  * @param {EthereumAddress | null} address - The Ethereum address of the user.
- * @param {UserOfferVariant} [props.variant=UserOfferVariant.NAME_ENS] - The variant of the user offer information to display.
+ * @param {UserOfferVariant} variant - The variant of the user offer information to display. Defaults to UserOfferVariant.NAME_ENS
  * @param {SwapNativeEther} [props.nativeEther] - The native ether details for the swap.
  * @param {PopulatedSwapOfferCard} swap - The populated swap offer card details.
  *
